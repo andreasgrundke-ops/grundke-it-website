@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Font-Vergleich – Grundke IT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@400;600;700;800&family=Space+Grotesk:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { background:#0f1117; color:#f1f5f9; font-family:'Manrope',sans-serif; padding:3rem; }
+    h1 { font-size:1.8rem; font-weight:800; margin-bottom:.5rem; color:#26bdef; }
+    .subtitle { color:#94a3b8; font-size:.9rem; margin-bottom:3rem; }
+    .grid { display:grid; grid-template-columns:1fr 1fr; gap:2rem; margin-bottom:3rem; }
+    .card {
+      background:#1e2538; border:1px solid #2d3748; border-radius:16px; padding:2rem;
+      transition:border-color .2s;
+    }
+    .card:hover { border-color:#0c4da2; }
+    .card-label {
+      font-family:'JetBrains Mono',monospace; font-size:.7rem; color:#26bdef;
+      letter-spacing:.1em; text-transform:uppercase; margin-bottom:1.5rem;
+      padding-bottom:.5rem; border-bottom:1px solid #2d3748;
+    }
+    .card-label span { color:#64748b; font-weight:400; }
+    .demo-h1 { font-size:clamp(1.6rem,3vw,2.4rem); font-weight:800; line-height:1.15; letter-spacing:-.03em; margin-bottom:1rem; }
+    .demo-h1 em { font-style:normal; color:#26bdef; }
+    .demo-h2 { font-size:1.2rem; font-weight:700; line-height:1.3; margin-bottom:.8rem; }
+    .demo-flip-q { font-size:1.15rem; font-weight:800; line-height:1.35; margin-bottom:.8rem; color:#f1f5f9; }
+    .demo-flip-q::before { content:'"'; font-size:2.5rem; font-weight:800; color:#26bdef; opacity:.35; display:block; line-height:.6; margin-bottom:.3rem; }
+    .demo-p { font-size:.88rem; color:#94a3b8; line-height:1.7; }
+    .section-title { font-size:1.1rem; font-weight:700; color:#f1f5f9; margin:2rem 0 1rem; }
+
+    .font-syne    { font-family:'Syne',sans-serif; }
+    .font-inter   { font-family:'Inter',sans-serif; }
+    .font-space   { font-family:'Space Grotesk',sans-serif; }
+    .font-jakarta { font-family:'Plus Jakarta Sans',sans-serif; }
+
+    .verdict { background:#1a1f2e; border:1px solid #2d3748; border-radius:12px; padding:1.5rem; margin-top:.5rem; }
+    .verdict h3 { font-size:.9rem; color:#26bdef; margin-bottom:.5rem; }
+    .verdict p { font-size:.84rem; color:#94a3b8; line-height:1.7; }
+
+    .badge { display:inline-block; font-size:.65rem; padding:.2rem .6rem; border-radius:20px; font-weight:600; letter-spacing:.05em; margin-left:.5rem; }
+    .badge-current { background:rgba(100,116,139,.2); color:#64748b; }
+    .badge-rec { background:rgba(38,189,239,.15); color:#26bdef; }
+  </style>
+</head>
+<body>
+  <h1>Font-Vergleich: Headline-Schrift</h1>
+  <p class="subtitle">Aktuell: Syne (eckig, geometrisch) — hier 3 besser lesbare Alternativen im direkten Vergleich.</p>
+
+  <!-- ═══ HERO HEADLINES ═══ -->
+  <div class="section-title">Hero-Slider Headlines</div>
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-label">Aktuell: Syne <span class="badge badge-current">Aktuell</span></div>
+      <div class="demo-h1 font-syne">Dein ITler geht<br>nicht ran?<br><em>Ich schon.</em></div>
+      <div class="demo-h2 font-syne">Acht Situationen. Ein Anruf.</div>
+      <p class="demo-p">Geometrisch, eckig, modern – aber bei größeren Textmengen schwer lesbar. Buchstaben wie „a", „e", „s" sind sehr ähnlich.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Vorschlag 1: Inter <span class="badge badge-rec">Empfehlung</span></div>
+      <div class="demo-h1 font-inter">Dein ITler geht<br>nicht ran?<br><em>Ich schon.</em></div>
+      <div class="demo-h2 font-inter">Acht Situationen. Ein Anruf.</div>
+      <p class="demo-p">Die meistgenutzte UI-Schrift der Welt. Extrem gut lesbar, professionell, neutral. Funktioniert in jeder Größe perfekt.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Vorschlag 2: Space Grotesk</div>
+      <div class="demo-h1 font-space">Dein ITler geht<br>nicht ran?<br><em>Ich schon.</em></div>
+      <div class="demo-h2 font-space">Acht Situationen. Ein Anruf.</div>
+      <p class="demo-p">Geometrisch wie Syne, aber mit offeneren Buchstabenformen. Tech-Look ohne die Lesbarkeits-Probleme. Guter Kompromiss.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Vorschlag 3: Plus Jakarta Sans</div>
+      <div class="demo-h1 font-jakarta">Dein ITler geht<br>nicht ran?<br><em>Ich schon.</em></div>
+      <div class="demo-h2 font-jakarta">Acht Situationen. Ein Anruf.</div>
+      <p class="demo-p">Modern, freundlich, sehr gut lesbar. Etwas weicher als Inter, wirkt einladender. Beliebt bei SaaS- und Service-Websites.</p>
+    </div>
+  </div>
+
+  <!-- ═══ FLIP-CARD TEXT ═══ -->
+  <div class="section-title">Flip-Card Texte (Probleme &amp; Lösungen)</div>
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-label">Aktuell: Syne <span class="badge badge-current">Aktuell</span></div>
+      <div class="demo-flip-q font-syne">Es ist 16:30 Uhr – mein IT-Dienstleister hat schon zu.</div>
+      <div class="demo-flip-q font-syne">Der Server ist abgestürzt – keiner weiß, was los ist.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Inter <span class="badge badge-rec">Empfehlung</span></div>
+      <div class="demo-flip-q font-inter">Es ist 16:30 Uhr – mein IT-Dienstleister hat schon zu.</div>
+      <div class="demo-flip-q font-inter">Der Server ist abgestürzt – keiner weiß, was los ist.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Space Grotesk</div>
+      <div class="demo-flip-q font-space">Es ist 16:30 Uhr – mein IT-Dienstleister hat schon zu.</div>
+      <div class="demo-flip-q font-space">Der Server ist abgestürzt – keiner weiß, was los ist.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Plus Jakarta Sans</div>
+      <div class="demo-flip-q font-jakarta">Es ist 16:30 Uhr – mein IT-Dienstleister hat schon zu.</div>
+      <div class="demo-flip-q font-jakarta">Der Server ist abgestürzt – keiner weiß, was los ist.</div>
+    </div>
+  </div>
+
+  <!-- ═══ BEWERTUNG ═══ -->
+  <div class="section-title">Meine Einschätzung</div>
+  <div class="grid">
+    <div class="verdict">
+      <h3>Inter — Empfehlung Nr. 1</h3>
+      <p>Maximale Lesbarkeit bei jeder Größe. Professionell, seriös, vertrauenserweckend. Funktioniert perfekt für IT-Dienstleister. Kostenlos via Google Fonts. Die sicherste Wahl.</p>
+    </div>
+    <div class="verdict">
+      <h3>Space Grotesk — Alternative</h3>
+      <p>Wenn dir der geometrische Tech-Look von Syne grundsätzlich gefällt, aber die Lesbarkeit stört: Space Grotesk hat denselben Charakter, ist aber deutlich besser lesbar.</p>
+    </div>
+    <div class="verdict">
+      <h3>Plus Jakarta Sans — Freundlich</h3>
+      <p>Etwas weicher und einladender als Inter. Passt gut zum „persönlich, gerne per Du"-Ansatz. Weniger technisch, dafür nahbarer.</p>
+    </div>
+    <div class="verdict">
+      <h3>Syne beibehalten?</h3>
+      <p>Syne sieht in großen H1-Headlines (Hero) noch okay aus, ist aber bei mittleren Größen (Flip-Cards, Section-Titles) schlecht lesbar. Wechsel empfohlen.</p>
+    </div>
+  </div>
+
+</body>
+</html>

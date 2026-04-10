@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /tree/
+
+Sitemap: https://www.grundke-it.de/sitemap.xml

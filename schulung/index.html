@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>IT-Sicherheitsschulung &amp; Datenschutz – Grundke IT-Service</title>
+  <meta name="description" content="IT-Sicherheitsschulung für KMUs: Live per Teams oder als Online-Portal mit Quiz und Zertifikat. Ab €135 pauschal. Grundke IT-Service, München Ost."/>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+  <link rel="stylesheet" href="../assets/css/fonts.css"/>
+  <link rel="stylesheet" href="../assets/css/style.css"/>
+  <style>
+    .page-wrap { margin-top:var(--nav-h); padding:clamp(3rem,8vw,5rem) 0; }
+    .page-content { max-width:960px; }
+    .page-content h1 { font-family:var(--fh); font-size:clamp(1.8rem,4vw,2.8rem); font-weight:800; color:var(--text); letter-spacing:-.04em; margin-bottom:.5rem; }
+    .page-content h1 em { font-style:normal; color:var(--cyan); }
+    .page-sub { font-size:clamp(.9rem,1.5vw,1.05rem); color:var(--text2); max-width:600px; line-height:1.7; margin-bottom:3rem; }
+    .schulung-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr)); gap:1.5rem; margin-bottom:3rem; }
+    .sch-card { background:var(--bg2); border:1px solid var(--border); border-radius:16px; padding:2rem; transition:border-color .2s,transform .2s; }
+    .sch-card:hover { border-color:var(--accent); transform:translateY(-4px); }
+    .sch-card.feat { border-color:var(--cyan); box-shadow:0 0 0 1px var(--cyan),0 16px 48px rgba(38,189,239,.08); }
+    .sch-badge { position:absolute; top:-12px; left:50%; transform:translateX(-50%); background:var(--cyan); color:#0f1117; font-family:var(--fm); font-size:.67rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; padding:.22rem .9rem; border-radius:20px; white-space:nowrap; }
+    .sch-head { display:flex; align-items:center; gap:.7rem; margin-bottom:1.3rem; }
+    .sch-ico { width:40px; height:40px; flex-shrink:0; display:flex; align-items:center; justify-content:center; background:rgba(12,77,162,.18); border:1px solid rgba(12,77,162,.3); border-radius:10px; color:var(--cyan); }
+    .sch-tier { font-family:var(--fm); font-size:.67rem; letter-spacing:.1em; text-transform:uppercase; color:var(--text3); }
+    .sch-name { font-family:var(--fh); font-size:1.05rem; font-weight:800; color:var(--text); }
+    .sch-desc { font-size:.86rem; color:var(--text2); line-height:1.7; margin-bottom:1.2rem; }
+    .sch-feats { list-style:none; display:flex; flex-direction:column; gap:.5rem; margin-bottom:1.5rem; }
+    .sch-feats li { display:flex; align-items:flex-start; gap:.55rem; font-size:.84rem; color:var(--text2); }
+    .sch-price { display:flex; align-items:baseline; gap:.5rem; margin-bottom:.3rem; }
+    .sch-price-val { font-family:var(--fm); font-size:2rem; font-weight:600; color:var(--cyan); letter-spacing:-.04em; line-height:1; }
+    .sch-price-val sup { font-size:.9rem; }
+    .sch-price-note { font-size:.78rem; color:var(--text3); }
+    .sch-price-sub { font-size:.82rem; color:var(--text2); margin-bottom:1.3rem; }
+    .page-content h2 { font-family:var(--fh); font-size:1.3rem; font-weight:700; color:var(--text); margin:3rem 0 1.2rem; }
+    .topics-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr)); gap:1rem; margin-bottom:3rem; }
+    .topic { background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:1.3rem; }
+    .topic-name { font-family:var(--fh); font-size:.9rem; font-weight:700; color:var(--text); margin-bottom:.3rem; }
+    .topic-desc { font-size:.8rem; color:var(--text2); line-height:1.6; }
+    .calc-box { background:var(--bg2); border:1px solid var(--border); border-radius:var(--r); padding:1.5rem; font-size:.86rem; color:var(--text2); line-height:1.7; margin-bottom:2rem; }
+    .calc-box strong { color:var(--text); }
+  </style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner inner">
+    <a href="/" class="logo" title="Grundke IT-Service – München Ost"><div class="logo-bar"><div class="logo-inner"><span class="logo-name">grundke</span><span class="logo-service">IT-Service</span></div></div></a>
+    <ul class="nav-links">
+      <li><a href="/">Startseite</a></li>
+      <li><a href="/#preise">Preise</a></li>
+      <li><a href="tel:+491782584438" class="nav-cta">&#9742; Jetzt anrufen</a></li>
+    </ul>
+    <button class="hamburger" id="ham" aria-label="Menü"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="/">Startseite</a>
+  <a href="/#preise">Preise</a>
+  <a href="tel:+491782584438" class="m-cta">&#9742; 0178 258 44 38</a>
+</div>
+
+<div class="page-wrap">
+  <div class="inner">
+    <div class="page-content">
+      <h1>IT-Sicherheitsschulung<br>&amp; <em>Datenschutz</em></h1>
+      <p class="page-sub">Die größte Schwachstelle sitzt vor dem Bildschirm. Sensibilisiere dein Team – als Live-Schulung, über unser Online-Portal oder beides kombiniert.</p>
+
+      <!-- Schulungs-Pakete -->
+      <div class="schulung-grid">
+
+        <!-- Live-Schulung -->
+        <div class="sch-card">
+          <div class="sch-head">
+            <div class="sch-ico"></div>
+            <div>
+              <div class="sch-tier">Persönlich per Teams</div>
+              <div class="sch-name">Live-Schulung</div>
+            </div>
+          </div>
+          <p class="sch-desc">Interaktive Schulung mit Präsentation, echten Beispielen und Raum für Fragen. Direkt auf dein Unternehmen zugeschnitten – für Teams jeder Größe.</p>
+          <ul class="sch-feats">
+            <li><span class="pfy">&#10003;</span>1:1 oder Gruppenformat per Microsoft Teams</li>
+            <li><span class="pfy">&#10003;</span>Phishing, Passwörter, Social Engineering, DSGVO</li>
+            <li><span class="pfy">&#10003;</span>Empfohlene Dauer: 1,5 Stunden</li>
+            <li><span class="pfy">&#10003;</span>Unterlagen als PDF zum Nachschlagen</li>
+          </ul>
+          <div class="sch-price">
+            <span class="sch-price-val"><sup>€</sup>135</span>
+            <span class="sch-price-note">pauschal (1,5h) · danach €110/h</span>
+          </div>
+          <a href="mailto:info@grundke-it.de?subject=Anfrage%20IT-Sicherheitsschulung%20(Live)%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0Aich%20interessiere%20mich%20f%C3%BCr%20eine%20pers%C3%B6nliche%20IT-Sicherheitsschulung%20per%20Teams.%0A%0AAnzahl%20Teilnehmer%3A%20%0AGew%C3%BCnschter%20Termin%3A%20%0A%0AMein%20Unternehmen%20%2F%20meine%20Situation%3A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fwww.grundke-it.de%2Fdatenschutz%2F)." class="price-btn out" style="display:block;width:100%;text-align:center;">Schulung anfragen</a>
+        </div>
+
+        <!-- Online-Portal -->
+        <div class="sch-card">
+          <div class="sch-head">
+            <div class="sch-ico"></div>
+            <div>
+              <div class="sch-tier">Selbstständig durcharbeiten</div>
+              <div class="sch-name">Online-Portal</div>
+            </div>
+          </div>
+          <p class="sch-desc">Deine Mitarbeiter arbeiten die Schulung eigenständig durch – wann und wo sie wollen. Inhalte werden mindestens halbjährlich an aktuelle Bedrohungen angepasst.</p>
+          <ul class="sch-feats">
+            <li><span class="pfy">&#10003;</span>Eigener Firmenzugang mit Mitarbeiterverwaltung</li>
+            <li><span class="pfy">&#10003;</span>Inhalte mindestens alle 6 Monate aktualisiert</li>
+            <li><span class="pfy">&#10003;</span>Quiz + PDF-Zertifikat pro Teilnehmer</li>
+            <li><span class="pfy">&#10003;</span>Teilnahmeliste als Nachweis für den Inhaber</li>
+          </ul>
+          <div class="sch-price">
+            <span class="sch-price-val"><sup>€</sup>49</span>
+            <span class="sch-price-note">Grundpauschale / Halbjahr</span>
+          </div>
+          <div class="sch-price-sub">+ <strong style="color:var(--cyan);">€5</strong> pro Mitarbeiter / Halbjahr</div>
+          <a href="mailto:info@grundke-it.de?subject=Anfrage%20Schulungs-Portal%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0Aich%20interessiere%20mich%20f%C3%BCr%20den%20Zugang%20zum%20Online-Schulungsportal.%0A%0AAnzahl%20Mitarbeiter%3A%20%0A%0AMein%20Unternehmen%20%2F%20meine%20Situation%3A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fwww.grundke-it.de%2Fdatenschutz%2F)." class="price-btn out" style="display:block;width:100%;text-align:center;">Portal-Zugang anfragen</a>
+        </div>
+
+        <!-- Kombi -->
+        <div class="sch-card feat" style="position:relative;">
+          <div class="sch-badge">Beste Wahl</div>
+          <div class="sch-head">
+            <div class="sch-ico"></div>
+            <div>
+              <div class="sch-tier">Live + Portal</div>
+              <div class="sch-name">Kombi-Paket</div>
+            </div>
+          </div>
+          <p class="sch-desc">Das Beste aus beiden Welten: Starte mit einer Live-Schulung, damit alle auf dem gleichen Stand sind – und halte das Wissen mit dem Portal dauerhaft aktuell.</p>
+          <ul class="sch-feats">
+            <li><span class="pfy">&#10003;</span>Live-Schulung per Teams (1,5h)</li>
+            <li><span class="pfy">&#10003;</span>Portal-Zugang für alle Mitarbeiter</li>
+            <li><span class="pfy">&#10003;</span>Quiz, Zertifikate &amp; Teilnahmeliste</li>
+            <li><span class="pfy">&#10003;</span>10% Rabatt auf den Gesamtpreis</li>
+          </ul>
+          <div class="sch-price">
+            <span class="sch-price-val"><sup>€</sup>165</span>
+            <span class="sch-price-note">ab / Halbjahr (statt €184)</span>
+          </div>
+          <div class="sch-price-sub">Inkl. Live-Schulung + Portal + <strong style="color:var(--cyan);">€4,50</strong>/Mitarbeiter</div>
+          <a href="mailto:info@grundke-it.de?subject=Anfrage%20Kombi-Schulungspaket%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0Aich%20interessiere%20mich%20f%C3%BCr%20das%20Kombi-Paket%20(Live-Schulung%20%2B%20Portal-Zugang).%0A%0AAnzahl%20Mitarbeiter%3A%20%0AGew%C3%BCnschter%20Termin%20f%C3%BCr%20Live-Schulung%3A%20%0A%0AMein%20Unternehmen%20%2F%20meine%20Situation%3A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fwww.grundke-it.de%2Fdatenschutz%2F)." class="price-btn solid" style="display:block;width:100%;text-align:center;">Kombi-Paket anfragen</a>
+        </div>
+      </div>
+
+      <!-- Rechenbeispiel -->
+      <div class="calc-box">
+        <strong>Rechenbeispiel:</strong> Firma mit 8 Mitarbeitern → Live-Schulung <strong>€135</strong> + Portal-Halbjahr <strong>€49 + 40 (8×€5)</strong> = <strong>€224</strong> für ein komplett geschultes Team mit Zertifikat. Mit Kombi-Rabatt nur <strong>€201</strong>.
+        <br><span style="color:var(--text3);font-size:.78rem;">Alle Preise zzgl. MwSt.</span>
+      </div>
+
+      <!-- Schulungsinhalte -->
+      <h2>Was dein Team lernt</h2>
+      <div class="topics-grid">
+        <div class="topic">
+          <div class="topic-name">Phishing erkennen</div>
+          <p class="topic-desc">Gefälschte E-Mails, Links und Anhänge identifizieren – mit echten Beispielen aus der Praxis.</p>
+        </div>
+        <div class="topic">
+          <div class="topic-name">Passwort-Sicherheit</div>
+          <p class="topic-desc">Sichere Passwörter erstellen, Passwort-Manager nutzen, Zwei-Faktor-Authentifizierung einrichten.</p>
+        </div>
+        <div class="topic">
+          <div class="topic-name">Social Engineering</div>
+          <p class="topic-desc">Manipulationstechniken erkennen – am Telefon, per E-Mail und persönlich.</p>
+        </div>
+        <div class="topic">
+          <div class="topic-name">DSGVO-Grundlagen</div>
+          <p class="topic-desc">Personenbezogene Daten schützen, Meldepflichten kennen, datenschutzkonform arbeiten.</p>
+        </div>
+        <div class="topic">
+          <div class="topic-name">Sicherer Umgang mit Geräten</div>
+          <p class="topic-desc">Bildschirmsperre, USB-Sticks, öffentliches WLAN, Arbeiten unterwegs.</p>
+        </div>
+        <div class="topic">
+          <div class="topic-name">Notfall-Verhalten</div>
+          <p class="topic-desc">Was tun bei Verdacht auf einen Angriff? Richtig reagieren, richtig melden.</p>
+        </div>
+      </div>
+
+      <!-- Online-Portal Details -->
+      <h2>Das Online-Portal im Detail</h2>
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:2rem;margin-bottom:3rem;">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:1.5rem;">
+          <div>
+            <div style="font-family:var(--fh);font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:.5rem;">Für den Firmeninhaber</div>
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:.4rem;">
+              <li style="display:flex;align-items:flex-start;gap:.5rem;font-size:.84rem;color:var(--text2);"><span class="pfy">&#10003;</span>Eigener Admin-Zugang</li>
+              <li style="display:flex;align-items:flex-start;gap:.5rem;font-size:.84rem;color:var(--text2);"><span class="pfy">&#10003;</span>Mitarbeiter einladen und verwalten</li>
+              <li style="display:flex;align-items:flex-start;gap:.5rem;font-size:.84rem;color:var(--text2);"><span class="pfy">&#10003;</span>Teilnahmeliste mit Bestätigung herunterladen</li>
+              <li style="display:flex;align-items:flex-start;gap:.5rem;font-size:.84rem;color:var(--text2);"><span class="pfy">&#10003;</span>Nachweis für Versicherung und Auditierung</li>
+            </ul>
+          </div>
+          <div>
+            <div style="font-family:var(--fh);font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:.5rem;">Für die Mitarbeiter</div>
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:.4rem;">
+              <li style="display:flex;align-items:flex-start;gap:.5rem;font-size:.84rem;color:var(--text2);"><span class="pfy">&#10003;</span>Schulung im eigenen Tempo durcharbeiten</li>
+              <li style="display:flex;align-items:flex-start;gap:.5rem;font-size:.84rem;color:var(--text2);"><span class="pfy">&#10003;</span>Verständlich, praxisnah, kein IT-Fachwissen nötig</li>
+              <li style="display:flex;align-items:flex-start;gap:.5rem;font-size:.84rem;color:var(--text2);"><span class="pfy">&#10003;</span>Freiwilliger Quiz am Ende</li>
+              <li style="display:flex;align-items:flex-start;gap:.5rem;font-size:.84rem;color:var(--text2);"><span class="pfy">&#10003;</span>PDF-Zertifikat als Teilnahmenachweis</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div style="text-align:center;padding:2rem 0;">
+        <div style="font-family:var(--fh);font-size:1.3rem;font-weight:800;color:var(--text);margin-bottom:.5rem;">Noch Fragen?</div>
+        <p style="font-size:.9rem;color:var(--text2);margin-bottom:1.5rem;">Schreib mir – ich berate dich gerne, welche Variante für dein Team passt.</p>
+        <div style="display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap;">
+          <a href="tel:+491782584438" class="btn-p">Anrufen</a>
+          <a href="https://wa.me/491782584438" target="_blank" rel="noopener" class="btn-wa" style="padding:clamp(.7rem,.9rem,1rem) clamp(1.2rem,1.8rem,2rem);font-size:clamp(.82rem,.9rem,1rem);">WhatsApp</a>
+          <a href="mailto:info@grundke-it.de?subject=Anfrage%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0AMein%20Anliegen%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fwww.grundke-it.de%2Fdatenschutz%2F)." class="btn-email">E-Mail</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="inner">
+    <div class="foot-bottom">
+      <span>&copy; 2026 Grundke IT-Service · Andreas Grundke · Beethovenring 16 · 85630 Grasbrunn</span>
+      <span class="foot-ci">v2026.04-r10 · grundke-it.de</span>
+    </div>
+  </div>
+</footer>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>
