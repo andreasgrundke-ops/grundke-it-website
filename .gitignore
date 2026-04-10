@@ -5,3 +5,6 @@ node_modules/
 
 # Claude Code interne Memory-Dateien (nicht ins Public-Repo)
 .claude/
+
+# Lokale Infrastruktur-Dokumentation (nicht ins Public-Repo)
+ionos-dns-*.md
