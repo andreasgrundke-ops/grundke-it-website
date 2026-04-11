@@ -90,29 +90,44 @@ button { font-family: var(--fb); cursor: pointer; }
 .inner { max-width: var(--inner); margin: 0 auto; padding: 0 clamp(1rem,5vw,2.5rem); }
 .section-pad { padding: clamp(3.5rem,8vw,6.5rem) 0; }
 
-/* Release-2 (Schritt 6): Sticky Call-CTA — nur auf Mobile (<768px) sichtbar.
-   Liegt fixed am unteren Rand, beruecksichtigt iPhone-Safe-Area-Inset.
-   .has-sticky-call setzt body-padding-bottom, damit Inhalt nicht verdeckt wird. */
+/* Release-2 (Schritt 6 + Fix): Sticky Call-CTA im CI-Look (Gradient + Cyan-Glow).
+   Identische Farb-DNA wie der "Du hast eine Frage"-Block. */
 .sticky-call { display: none; }
 @media (max-width: 767px) {
   .sticky-call {
-    display: flex;
-    align-items: center; justify-content: center;
-    gap: var(--space-xs, .75rem);
     position: fixed; left: 0; right: 0; bottom: 0;
     z-index: 1000;
-    padding: .875rem 1rem calc(.875rem + env(safe-area-inset-bottom));
-    background: var(--accent);
+    display: flex;
+    align-items: center; justify-content: center;
+    gap: .75rem;
+    padding: .95rem 1rem calc(.95rem + env(safe-area-inset-bottom));
+    /* Gleicher Gradient wie .contact-bar */
+    background: linear-gradient(135deg, #0c4da2, #0000FE, #0a0a80);
     color: #ffffff;
-    font-family: var(--fb);
-    font-weight: 700; font-size: var(--fs-body, .95rem);
+    font-family: 'Manrope', Arial, sans-serif;
+    font-weight: 700;
+    font-size: .95rem;
     text-decoration: none;
-    box-shadow: 0 -2px 12px rgba(0,0,0,.18);
-    min-height: 52px;
+    box-shadow: 0 -4px 16px rgba(0,0,254,.35), 0 -1px 0 rgba(255,255,255,.08) inset;
+    min-height: 56px;
+    overflow: hidden;
+    isolation: isolate;
   }
-  .sticky-call:active { background: #0a4290; }
-  .sticky-call svg { flex-shrink: 0; }
-  body.has-sticky-call { padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
+  /* Radialer Cyan-Glow-Overlay (gleiches Pattern wie .contact-bar::before) */
+  .sticky-call::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 120% at 75% 50%, rgba(38,189,239,.22), transparent 60%),
+      radial-gradient(ellipse 50% 100% at 25% 50%, rgba(255,255,255,.10), transparent 55%);
+    pointer-events: none;
+    z-index: -1;
+  }
+  .sticky-call:active { transform: translateY(1px); }
+  .sticky-call svg { flex-shrink: 0; filter: drop-shadow(0 1px 2px rgba(0,0,0,.3)); }
+  .sticky-call span { text-shadow: 0 1px 2px rgba(0,0,0,.25); letter-spacing: .01em; }
+  body.has-sticky-call { padding-bottom: calc(72px + env(safe-area-inset-bottom)); }
 }
 
 /* Release-2: Primary-/Accent-Flaeche mit subtilem radialen Highlight
@@ -157,12 +172,29 @@ nav {
   border-bottom: 1px solid var(--border);
 }
 .nav-inner { height:100%; display:flex; align-items:center; justify-content:space-between; }
-.logo { display:flex; align-items:center; flex-shrink:0; }
-/* Header-Logo: CI-konformes Badge-PNG (mobile-first, skaliert nach oben) */
+.logo { display:flex; align-items:center; flex-shrink:0; position:relative; isolation:isolate; }
+/* Header-Logo: CI-konformes Badge-PNG (mobile-first, skaliert nach oben).
+   Dezenter Cyan-/Visitenkarten-Blau-Glow als Highlight (gleiche DNA wie
+   .contact-bar / .sticky-call). */
+.logo::before {
+  content: '';
+  position: absolute;
+  inset: -8px -14px;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse 70% 140% at 50% 50%, rgba(38,189,239,.22), transparent 65%),
+    radial-gradient(ellipse 60% 120% at 50% 50%, rgba(0,0,254,.18),   transparent 70%);
+  filter: blur(10px);
+  opacity: .85;
+  pointer-events: none;
+  transition: opacity .25s ease, filter .25s ease;
+}
+.logo:hover::before { opacity: 1; filter: blur(14px); }
 .logo-img {
   display: block;
   height: clamp(2.25rem, 8vw, 2.75rem); /* Mobile: ~36–44 px */
   width: auto;
+  filter: drop-shadow(0 2px 6px rgba(0,0,254,.35));
 }
 @media (min-width: 1024px) {
   .logo-img { height: clamp(2.75rem, 4vw, 3.25rem); } /* Desktop: ~44–52 px */

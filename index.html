@@ -175,16 +175,15 @@
     .cb-btn small { display: none; }
   }
 
-  /* Hero — Release-2 Mobile-First:
-     Mobile: kompakte fixe Hoehe (~380-560px), kein 100vh-Scrollberg mehr
-     Tablet+ (>=768px): zurueck zu Full-Viewport-Height wie vorher */
+  /* Hero — Release-2 Mobile-First (Fix v2):
+     Mobile braucht eine ECHTE height (nicht auto), weil .slides-wrap und
+     .slide mit height:100% sonst auf 0 kollabieren. clamp() liefert eine
+     fluide aber fixe Pixel-/svh-Hoehe. Tablet+ wieder Viewport-Height. */
   .hero {
     margin-top: var(--nav-h);
     position: relative;
     overflow: hidden;
-    height: auto;
-    min-height: clamp(380px, 65svh, 560px);
-    max-height: none;
+    height: clamp(420px, 68svh, 580px);
   }
   @media (min-width: 768px) {
     .hero {

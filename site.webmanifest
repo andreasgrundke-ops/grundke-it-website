@@ -46,22 +46,22 @@
   ],
   "shortcuts": [
     {
-      "name": "Anrufen",
-      "short_name": "Anrufen",
-      "description": "Direkt Andreas Grundke anrufen",
-      "url": "tel:+491782584438"
-    },
-    {
-      "name": "WhatsApp",
-      "short_name": "WhatsApp",
-      "description": "Per WhatsApp schreiben",
-      "url": "https://wa.me/491782584438"
-    },
-    {
       "name": "IT-Schnellcheck",
       "short_name": "Schnellcheck",
       "description": "Kostenloser IT-Schnellcheck",
       "url": "/#schnellcheck"
+    },
+    {
+      "name": "Kontakt",
+      "short_name": "Kontakt",
+      "description": "Alle Kontaktwege auf einen Blick",
+      "url": "/tree/"
+    },
+    {
+      "name": "FAQ",
+      "short_name": "FAQ",
+      "description": "Haeufig gestellte Fragen",
+      "url": "/#faq"
     }
   ]
 }

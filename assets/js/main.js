@@ -359,13 +359,15 @@ function initServiceWorker() {
   });
 }
 
-/* ── Install-Prompt UI (PWA): zeigt nichts proaktiv, sammelt nur das
-   beforeinstallprompt-Event und macht es ueber window.gIT.installPWA()
-   manuell triggerbar. So kann spaeter ein Button ergaenzt werden. */
+/* ── Install-Prompt (PWA):
+   Wir greifen das beforeinstallprompt-Event NICHT mehr ab — Chrome
+   zeigt seinen Default-Hinweis (Mini-Infobar / Address-Bar-Icon).
+   Wir merken uns den Event nur fuer eventuelle spaetere manuelle
+   Trigger via window.gIT.installPWA(). */
 function initInstallPrompt() {
   let deferredPrompt = null;
   window.addEventListener('beforeinstallprompt', e => {
-    e.preventDefault();
+    /* KEIN preventDefault — Chrome darf seinen Banner zeigen */
     deferredPrompt = e;
     document.documentElement.classList.add('pwa-installable');
   });
