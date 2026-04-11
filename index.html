@@ -866,17 +866,27 @@
   .testi-who { font-weight:700; font-size:.86rem; color:var(--text); }
   .testi-role { font-size:.75rem; color:var(--text3); font-family:var(--fm); }
 
-  /* FAQ */
+  /* FAQ — Release-2 (Schritt 5): natives <details>/<summary>, kein JS noetig */
   .faq { background:var(--bg2); }
   .faq-wrap { max-width:820px; margin-top:3rem; display:flex; flex-direction:column; gap:.6rem; }
   .faq-item { background:var(--bg3); border:1px solid var(--border); border-radius:10px; overflow:hidden; transition:border-color .2s; }
-  .faq-item.open { border-color:var(--accent); }
-  .faq-q { padding:1.15rem 1.4rem; display:flex; justify-content:space-between; align-items:center; font-weight:600; font-size:.9rem; cursor:pointer; color:var(--text); user-select:none; }
-  .faq-q:hover { color:var(--cyan); }
+  .faq-item[open] { border-color:var(--accent); }
+  .faq-item summary {
+    padding:1.15rem 1.4rem;
+    display:flex; justify-content:space-between; align-items:center;
+    font-weight:600; font-size:.9rem;
+    cursor:pointer; color:var(--text); user-select:none;
+    list-style:none; min-height:44px; /* Touch-Target */
+  }
+  .faq-item summary::-webkit-details-marker { display:none; }
+  .faq-item summary::marker { content:''; }
+  .faq-item summary:hover { color:var(--cyan); }
   .faq-ico { color:var(--cyan); font-size:1.1rem; transition:transform .3s; flex-shrink:0; margin-left:1rem; }
-  .faq-item.open .faq-ico { transform:rotate(45deg); }
-  .faq-a { max-height:0; overflow:hidden; font-size:.87rem; color:var(--text2); line-height:1.7; padding:0 1.4rem; transition:max-height .4s ease,padding .3s; }
-  .faq-item.open .faq-a { max-height:600px; padding:0 1.4rem 1.3rem; }
+  .faq-item[open] .faq-ico { transform:rotate(45deg); }
+  .faq-a {
+    font-size:.87rem; color:var(--text2); line-height:1.7;
+    padding:0 1.4rem 1.3rem;
+  }
 
   /* CTA Final */
   .cta-sec { background:var(--bg); padding:clamp(4rem,10vw,8rem) 0; text-align:center; position:relative; overflow:hidden; }
@@ -2082,18 +2092,18 @@
     <div class="s-label">Häufige Fragen</div>
     <h2 class="s-title">FAQ</h2>
     <div class="faq-wrap">
-      <div class="faq-item"><div class="faq-q">Welche IT-Services gibt es in Grasbrunn und Ottobrunn? <span class="faq-ico">+</span></div><div class="faq-a">Ich biete das komplette Spektrum der IT-Betreuung für kleine Unternehmen: Netzwerk, WLAN, PC, Microsoft 365, IT-Sicherheit, Backup, Kassenanlagen, Kameras und mehr – vor Ort in Grasbrunn, Ottobrunn, Vaterstetten, Haar, Neubiberg und Umgebung.</div></div>
-      <div class="faq-item"><div class="faq-q">Was kostet eine IT-Betreuung für meinen Betrieb? <span class="faq-ico">+</span></div><div class="faq-a">Ohne Vertrag: €110/h netto im 15-Minuten-Takt, kein Wochenendzuschlag. Mit Betreuungsvertrag ab €149/Monat – inklusive IT-Assessment, Remote-Zugriff und bevorzugtem Support.</div></div>
-      <div class="faq-item"><div class="faq-q">Wie schnell bist du bei einem IT-Notfall erreichbar? <span class="faq-ico">+</span></div><div class="faq-a">Managed-Kunden haben Priorität und werden bevorzugt behandelt. Für alle anderen: Ich melde mich so schnell wie möglich – in der Regel noch am selben Tag.</div></div>
-      <div class="faq-item"><div class="faq-q">Was unterscheidet dich von einem großen IT-Systemhaus? <span class="faq-ico">+</span></div><div class="faq-a">Kein Ticketsystem, kein anonymes Team, kein Rückruf nächste Woche. Du hast einen festen Ansprechpartner – mich. Ich lerne dein System, denke mit und handle proaktiv.</div></div>
-      <div class="faq-item"><div class="faq-q">Was passiert wenn du im Urlaub oder krank bist? <span class="faq-ico">+</span></div><div class="faq-a">Ich habe ein Netzwerk aus vertrauenswürdigen Kollegen, die im Notfall einspringen. Du wirst rechtzeitig informiert und bist nie ohne Ansprechpartner.</div></div>
-      <div class="faq-item"><div class="faq-q">Kannst du auch bei KI und Automatisierung helfen? <span class="faq-ico">+</span></div><div class="faq-a">Ja – ich helfe dir dabei, wiederkehrende Aufgaben zu automatisieren, KI-Tools sinnvoll einzuführen und Zeit im Büroalltag zu sparen. Als Gen-X-IT-Profi bin ich selbst täglich mit KI-Werkzeugen unterwegs.</div></div>
-      <div class="faq-item"><div class="faq-q">Welche Region betreust du? <span class="faq-ico">+</span></div><div class="faq-a">Vor Ort bin ich schnell erreichbar in Grasbrunn, Ottobrunn, Vaterstetten, Haar, Neubiberg, Putzbrunn und Hohenbrunn – ca. 15 km Radius. Per Remote-Support helfe ich deutschlandweit. Für Vor-Ort-Einsätze bleibe ich bewusst im Münchner Osten: auf der anderen Seite Münchens steh ich im Stau – und das hilft dir nicht.</div></div>
-      <div class="faq-item"><div class="faq-q">Mein WLAN funktioniert nicht mehr – was kann ich tun? <span class="faq-ico">+</span></div><div class="faq-a">Ruf mich an oder schreib auf WhatsApp. Die meisten WLAN-Probleme lassen sich remote lösen – in unter einer Stunde. Ich greife mich per TeamViewer auf deinen Router oder Rechner auf und behebe den Fehler, ohne dass ich vor Ort kommen muss. Wenn Hardware kaputt ist, bin ich schnell bei dir. Einsatzgebiet: Grasbrunn, Ottobrunn, Vaterstetten, Haar, Neubiberg und Umgebung München Ost.</div></div>
-      <div class="faq-item"><div class="faq-q">Mein IT-Betreuer ist nicht mehr erreichbar – wer hilft mir kurzfristig? <span class="faq-ico">+</span></div><div class="faq-a">Das ist einer der häufigsten Gründe warum Leute bei mir anrufen. Ich übernehme auch kurzfristig – ohne langen Onboarding-Prozess. Ein kurzes Erstgespräch, Zugang zu deinen Systemen, und ich kann sofort loslegen. Ruf einfach an: 0178 258 44 38.</div></div>
-      <div class="faq-item"><div class="faq-q">Gibt es IT-Support auch abends, am Wochenende oder an Feiertagen? <span class="faq-ico">+</span></div><div class="faq-a">Ja – ich habe keine klassischen Öffnungszeiten. Schreib mir auf WhatsApp oder ruf an, wann das Problem auftritt. Managed-Kunden werden bevorzugt behandelt. Für alle anderen melde ich mich so schnell wie möglich – auch außerhalb der üblichen Bürozeiten.</div></div>
-      <div class="faq-item"><div class="faq-q">Kann ich IT-Support auch remote bekommen ohne dass jemand vorbeikommt? <span class="faq-ico">+</span></div><div class="faq-a">Ja, das ist mein Alltag. Mit TeamViewer oder ähnlichen Tools greife ich auf deinen Rechner, dein Netzwerk oder deine Server zu und löse das Problem live – du siehst dabei zu oder machst einfach weiter. Die meisten Probleme löse ich so in unter einer Stunde. Für Remote-Support bin ich deutschlandweit erreichbar.</div></div>
-      <div class="faq-item"><div class="faq-q">Was kostet ein einmaliger IT-Notfall-Einsatz? <span class="faq-ico">+</span></div><div class="faq-a">€110,– netto pro Stunde, Abrechnung im 15-Minuten-Takt. Kein Mindestbetrag, kein Wochenendzuschlag, keine versteckten Kosten. Du bekommst nach dem Einsatz eine transparente Rechnung mit genauen Zeiten.</div></div>
+      <details class="faq-item"><summary>Welche IT-Services gibt es in Grasbrunn und Ottobrunn? <span class="faq-ico">+</span></summary><div class="faq-a">Ich biete das komplette Spektrum der IT-Betreuung für kleine Unternehmen: Netzwerk, WLAN, PC, Microsoft 365, IT-Sicherheit, Backup, Kassenanlagen, Kameras und mehr – vor Ort in Grasbrunn, Ottobrunn, Vaterstetten, Haar, Neubiberg und Umgebung.</div></details>
+      <details class="faq-item"><summary>Was kostet eine IT-Betreuung für meinen Betrieb? <span class="faq-ico">+</span></summary><div class="faq-a">Ohne Vertrag: €110/h netto im 15-Minuten-Takt, kein Wochenendzuschlag. Mit Betreuungsvertrag ab €149/Monat – inklusive IT-Assessment, Remote-Zugriff und bevorzugtem Support.</div></details>
+      <details class="faq-item"><summary>Wie schnell bist du bei einem IT-Notfall erreichbar? <span class="faq-ico">+</span></summary><div class="faq-a">Managed-Kunden haben Priorität und werden bevorzugt behandelt. Für alle anderen: Ich melde mich so schnell wie möglich – in der Regel noch am selben Tag.</div></details>
+      <details class="faq-item"><summary>Was unterscheidet dich von einem großen IT-Systemhaus? <span class="faq-ico">+</span></summary><div class="faq-a">Kein Ticketsystem, kein anonymes Team, kein Rückruf nächste Woche. Du hast einen festen Ansprechpartner – mich. Ich lerne dein System, denke mit und handle proaktiv.</div></details>
+      <details class="faq-item"><summary>Was passiert wenn du im Urlaub oder krank bist? <span class="faq-ico">+</span></summary><div class="faq-a">Ich habe ein Netzwerk aus vertrauenswürdigen Kollegen, die im Notfall einspringen. Du wirst rechtzeitig informiert und bist nie ohne Ansprechpartner.</div></details>
+      <details class="faq-item"><summary>Kannst du auch bei KI und Automatisierung helfen? <span class="faq-ico">+</span></summary><div class="faq-a">Ja – ich helfe dir dabei, wiederkehrende Aufgaben zu automatisieren, KI-Tools sinnvoll einzuführen und Zeit im Büroalltag zu sparen. Als Gen-X-IT-Profi bin ich selbst täglich mit KI-Werkzeugen unterwegs.</div></details>
+      <details class="faq-item"><summary>Welche Region betreust du? <span class="faq-ico">+</span></summary><div class="faq-a">Vor Ort bin ich schnell erreichbar in Grasbrunn, Ottobrunn, Vaterstetten, Haar, Neubiberg, Putzbrunn und Hohenbrunn – ca. 15 km Radius. Per Remote-Support helfe ich deutschlandweit. Für Vor-Ort-Einsätze bleibe ich bewusst im Münchner Osten: auf der anderen Seite Münchens steh ich im Stau – und das hilft dir nicht.</div></details>
+      <details class="faq-item"><summary>Mein WLAN funktioniert nicht mehr – was kann ich tun? <span class="faq-ico">+</span></summary><div class="faq-a">Ruf mich an oder schreib auf WhatsApp. Die meisten WLAN-Probleme lassen sich remote lösen – in unter einer Stunde. Ich greife mich per TeamViewer auf deinen Router oder Rechner auf und behebe den Fehler, ohne dass ich vor Ort kommen muss. Wenn Hardware kaputt ist, bin ich schnell bei dir. Einsatzgebiet: Grasbrunn, Ottobrunn, Vaterstetten, Haar, Neubiberg und Umgebung München Ost.</div></details>
+      <details class="faq-item"><summary>Mein IT-Betreuer ist nicht mehr erreichbar – wer hilft mir kurzfristig? <span class="faq-ico">+</span></summary><div class="faq-a">Das ist einer der häufigsten Gründe warum Leute bei mir anrufen. Ich übernehme auch kurzfristig – ohne langen Onboarding-Prozess. Ein kurzes Erstgespräch, Zugang zu deinen Systemen, und ich kann sofort loslegen. Ruf einfach an: 0178 258 44 38.</div></details>
+      <details class="faq-item"><summary>Gibt es IT-Support auch abends, am Wochenende oder an Feiertagen? <span class="faq-ico">+</span></summary><div class="faq-a">Ja – ich habe keine klassischen Öffnungszeiten. Schreib mir auf WhatsApp oder ruf an, wann das Problem auftritt. Managed-Kunden werden bevorzugt behandelt. Für alle anderen melde ich mich so schnell wie möglich – auch außerhalb der üblichen Bürozeiten.</div></details>
+      <details class="faq-item"><summary>Kann ich IT-Support auch remote bekommen ohne dass jemand vorbeikommt? <span class="faq-ico">+</span></summary><div class="faq-a">Ja, das ist mein Alltag. Mit TeamViewer oder ähnlichen Tools greife ich auf deinen Rechner, dein Netzwerk oder deine Server zu und löse das Problem live – du siehst dabei zu oder machst einfach weiter. Die meisten Probleme löse ich so in unter einer Stunde. Für Remote-Support bin ich deutschlandweit erreichbar.</div></details>
+      <details class="faq-item"><summary>Was kostet ein einmaliger IT-Notfall-Einsatz? <span class="faq-ico">+</span></summary><div class="faq-a">€110,– netto pro Stunde, Abrechnung im 15-Minuten-Takt. Kein Mindestbetrag, kein Wochenendzuschlag, keine versteckten Kosten. Du bekommst nach dem Einsatz eine transparente Rechnung mit genauen Zeiten.</div></details>
     </div>
     <div style="margin-top:2rem;padding:1.3rem 1.5rem;background:var(--bg3);border:1px solid var(--border);border-left:3px solid var(--cyan);border-radius:10px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
       <div>

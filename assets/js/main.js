@@ -78,17 +78,10 @@ function initSlider() {
   resetTimer();
 }
 
-/* ── FAQ Accordion ── */
-function initFAQ() {
-  document.querySelectorAll('.faq-q').forEach(q => {
-    q.addEventListener('click', () => {
-      const item   = q.parentElement;
-      const isOpen = item.classList.contains('open');
-      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-      if (!isOpen) item.classList.add('open');
-    });
-  });
-}
+/* ── FAQ Accordion (Release-2 Schritt 5):
+   FAQ ist jetzt natives <details>/<summary> — kein JS noetig.
+   Funktion bleibt als No-Op, falls sie irgendwo aufgerufen wird. */
+function initFAQ() { /* native details/summary */ }
 
 /* ── Active Nav on Scroll ── */
 function initScrollNav() {
