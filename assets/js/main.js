@@ -167,6 +167,150 @@ function initLenis() {
   return lenis;
 }
 
+/* ── IT-Schnellcheck: Info-Modals + Report-Vorschau ── */
+function initSchnellcheck() {
+  // Texte fuer die 9 Info-Popups (wartbar an einem Ort)
+  const INFO_TEXTS = {
+    netzwerk: {
+      title: 'Netzwerk & WLAN',
+      body:  'Ich schau mir die Ausleuchtung an, die Auslastung, wie viele Geräte drin sind, wo es klemmt. Bei Bedarf mit Mess-App. Wenn das WLAN instabil ist, weißt du danach warum.'
+    },
+    clients: {
+      title: 'Arbeitsplätze & Server',
+      body:  'Welche Rechner laufen, wie alt sind sie, wie voll sind sie, welcher Windows-Stand, welche Software ist drauf. Kurzcheck auf offensichtliche Bremsen und Risiken.'
+    },
+    m365: {
+      title: 'Microsoft 365 / E-Mail',
+      body:  'Welche Lizenzen hast du, wofür zahlst du zu viel oder zu wenig, wie ist die E-Mail konfiguriert, sind Spam und Phishing abgedeckt. Falls du noch bei POP3 oder einem alten Provider bist: ehrlicher Blick drauf.'
+    },
+    security: {
+      title: 'Virenschutz & Firewall',
+      body:  'Läuft ein aktiver Virenschutz oder nur die Windows-Basisausstattung? Ist die Firewall richtig konfiguriert oder hängt alles offen im Netz? Gefahrenpunkte werden benannt, nicht dramatisiert.'
+    },
+    backup: {
+      title: 'Datensicherung (Backup)',
+      body:  'Hast du überhaupt ein Backup? Wo liegt es? Wann wurde es zuletzt getestet? Die 3-2-1-Regel ist der Maßstab — ich bewerte, wie weit du davon weg bist und was der einfachste Weg dahin wäre.'
+    },
+    router: {
+      title: 'Router & Internet-Anschluss',
+      body:  'FritzBox? Speedport? Alter? Firmware aktuell? Wird der Router noch mit Sicherheits-Updates versorgt oder ist er End-of-Life? Welche Anschlussgeschwindigkeit kommt bei dir wirklich an.'
+    },
+    peripherie: {
+      title: 'Drucker, Kameras, Peripherie',
+      body:  'Was hängt alles mit drin, wo gibt\u2019s kleine Stolperfallen. Netzwerk-Drucker ohne Passwort? Unbekannte IP-Kameras? Ich prüfe, ob da was sichtbar wird, das später zum Problem werden kann.'
+    },
+    eol: {
+      title: 'Software-Aktualität (EOL, BSI)',
+      body:  'Welche Software hast du im Einsatz, läuft davon etwas auf End-of-Life? Gibt es aktuelle BSI-Warnungen, die dich betreffen? Beispiel: TP-Link-Router, bestimmte Exchange-Stände, alte FritzBox-Firmwares.'
+    },
+    doku: {
+      title: 'Benutzer, Passwörter, Dokumentation',
+      body:  'Gibt es eine saubere Benutzerstruktur, nutzen alle eigene Konten, gibt es einen Passwortmanager, existiert überhaupt eine Dokumentation für deine Vertretung oder den Notfall? Das ist oft der meistvergessene Punkt.'
+    }
+  };
+
+  const FOCUSABLE = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"]), input, select, textarea';
+
+  // Modal-Helfer ── generisch fuer beide Modals (Info + Report)
+  let lastTrigger = null;
+
+  function openModal(modalEl) {
+    if (!modalEl) return;
+    lastTrigger = document.activeElement;
+    modalEl.hidden = false;
+    modalEl.classList.add('open');
+    document.body.classList.add('modal-open');
+    // Initial-Fokus auf den Dialog (nicht auf den Close-Button — angenehmer)
+    const dialog = modalEl.querySelector('.modal-dialog');
+    if (dialog) {
+      // microtask, damit Animation startet bevor Fokus wandert
+      requestAnimationFrame(() => dialog.focus());
+    }
+  }
+
+  function closeModal(modalEl) {
+    if (!modalEl || !modalEl.classList.contains('open')) return;
+    modalEl.classList.remove('open');
+    modalEl.hidden = true;
+    // Body-Scroll-Lock nur entfernen, wenn kein anderes Modal mehr offen ist
+    if (!document.querySelector('.modal.open')) {
+      document.body.classList.remove('modal-open');
+    }
+    if (lastTrigger && typeof lastTrigger.focus === 'function') {
+      lastTrigger.focus();
+      lastTrigger = null;
+    }
+  }
+
+  function trapFocus(e, modalEl) {
+    if (e.key !== 'Tab') return;
+    const dialog = modalEl.querySelector('.modal-dialog');
+    if (!dialog) return;
+    const focusables = Array.from(dialog.querySelectorAll(FOCUSABLE))
+      .filter(el => !el.hasAttribute('disabled') && el.offsetParent !== null);
+    if (focusables.length === 0) { e.preventDefault(); dialog.focus(); return; }
+    const first = focusables[0];
+    const last  = focusables[focusables.length - 1];
+    const active = document.activeElement;
+    if (e.shiftKey) {
+      if (active === first || active === dialog) {
+        e.preventDefault(); last.focus();
+      }
+    } else {
+      if (active === last) {
+        e.preventDefault(); first.focus();
+      }
+    }
+  }
+
+  // Info-Popups verdrahten
+  const infoModal      = document.getElementById('info-modal');
+  const infoModalTitle = document.getElementById('info-modal-title');
+  const infoModalBody  = document.getElementById('info-modal-body');
+  const infoBtns       = document.querySelectorAll('.info-btn[data-info]');
+
+  if (infoModal && infoModalTitle && infoModalBody) {
+    infoBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const key = btn.dataset.info;
+        const data = INFO_TEXTS[key];
+        if (!data) return;
+        infoModalTitle.textContent = data.title;
+        infoModalBody.innerHTML = '<p>' + data.body + '</p>';
+        openModal(infoModal);
+      });
+    });
+  }
+
+  // Report-Vorschau verdrahten
+  const previewModal = document.getElementById('preview-modal');
+  const previewBtn   = document.getElementById('sc-preview-btn');
+  if (previewModal && previewBtn) {
+    previewBtn.addEventListener('click', () => openModal(previewModal));
+  }
+
+  // Globale Schliess-Logik fuer alle Modals (Click-Outside via [data-modal-close])
+  document.querySelectorAll('.modal').forEach(modalEl => {
+    modalEl.addEventListener('click', e => {
+      if (e.target.closest('[data-modal-close]')) {
+        closeModal(modalEl);
+      }
+    });
+  });
+
+  // ESC schliesst das oberste offene Modal, Tab bleibt im Modal gefangen
+  document.addEventListener('keydown', e => {
+    const openModalEl = document.querySelector('.modal.open');
+    if (!openModalEl) return;
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      closeModal(openModalEl);
+    } else if (e.key === 'Tab') {
+      trapFocus(e, openModalEl);
+    }
+  });
+}
+
 /* ── Scroll-to-Top ── */
 function initScrollTop(lenis) {
   const btn = document.getElementById('scrollTop');
@@ -189,6 +333,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initFAQ();
   initScrollNav();
   initVCard();
+  initSchnellcheck();
   var lenis = initLenis();
   initScrollTop(lenis);
 });

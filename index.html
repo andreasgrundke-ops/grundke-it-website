@@ -293,6 +293,293 @@
   .c-row:last-child { border-bottom:none; }
   .c-bad { color:var(--text3); text-decoration:line-through; } .c-mid { color:var(--text3); text-align:center; font-size:.7rem; } .c-good { color:var(--text); font-weight:600; text-align:right; }
 
+  /* ───────────────────────────────────────────
+     Schnellcheck (Lead-Magnet, Task 2 Release 1)
+  ─────────────────────────────────────────── */
+  .schnellcheck { background:var(--bg2); position:relative; overflow:hidden; }
+  .schnellcheck::before {
+    content:''; position:absolute; inset:0;
+    background:radial-gradient(ellipse 60% 50% at 50% 0%,rgba(0,0,254,.08),transparent 60%);
+    pointer-events:none;
+  }
+  .sc-card {
+    position:relative; background:var(--bg3); border:1px solid var(--border); border-radius:18px;
+    padding:clamp(2rem,5vw,3.5rem); margin-top:2rem;
+    box-shadow:0 0 0 1px rgba(0,0,254,.18),0 24px 64px rgba(0,0,254,.06);
+  }
+  .sc-card::before {
+    content:''; position:absolute; top:0; left:5%; right:5%; height:2px;
+    background:linear-gradient(90deg,transparent,var(--blue-vi),var(--cyan),var(--blue-vi),transparent);
+  }
+  .sc-icon {
+    width:64px; height:64px; border-radius:14px;
+    background:linear-gradient(135deg,rgba(0,0,254,.18),rgba(38,189,239,.12));
+    border:1px solid rgba(0,0,254,.35);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--cyan); margin-bottom:1.4rem;
+  }
+  .sc-icon svg { width:32px; height:32px; }
+  .sc-card h2 {
+    font-family:var(--fh); font-size:clamp(1.6rem,3.5vw,2.4rem); font-weight:800;
+    color:var(--text); letter-spacing:-.03em; line-height:1.15; margin-bottom:.9rem;
+  }
+  .sc-card h2 em { font-style:normal; color:var(--cyan); }
+  .sc-sub {
+    font-size:clamp(.9rem,1.4vw,1rem); color:var(--text2); line-height:1.7;
+    max-width:680px; margin-bottom:2.2rem;
+  }
+  .sc-grid {
+    display:grid; grid-template-columns:1.1fr 1fr; gap:clamp(1.5rem,3vw,2.5rem);
+    margin-bottom:2rem;
+  }
+  @media (max-width:900px) { .sc-grid { grid-template-columns:1fr; } }
+  .sc-block { background:var(--bg2); border:1px solid var(--border); border-radius:14px; padding:1.6rem 1.7rem; }
+  .sc-block h3 {
+    font-family:var(--fh); font-size:.95rem; font-weight:800; color:var(--text);
+    margin-bottom:1.1rem; padding-bottom:.7rem; border-bottom:1px solid var(--border);
+    display:flex; align-items:center; gap:.5rem;
+  }
+  .sc-block h3 svg { width:18px; height:18px; color:var(--cyan); }
+  .sc-checklist { list-style:none; display:flex; flex-direction:column; gap:.55rem; }
+  .sc-checklist li {
+    display:flex; align-items:center; gap:.65rem; padding:.55rem .25rem;
+    font-size:.86rem; color:var(--text2); line-height:1.5;
+    border-radius:8px; transition:background .15s;
+  }
+  .sc-checklist li:hover { background:rgba(38,189,239,.05); }
+  .sc-checklist li > svg.sc-chk { width:16px; height:16px; color:var(--cyan); flex-shrink:0; }
+  .sc-checklist li .sc-label { flex:1; }
+  .info-btn {
+    width:26px; height:26px; min-width:26px; border-radius:50%;
+    background:rgba(0,0,254,.1); border:1px solid rgba(0,0,254,.25);
+    color:var(--cyan); cursor:pointer; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    transition:all .15s;
+  }
+  .info-btn svg { width:14px; height:14px; }
+  .info-btn:hover { background:var(--blue-vi); color:#fff; border-color:var(--blue-vi); }
+  .info-btn:focus-visible { outline:2px solid var(--cyan); outline-offset:2px; }
+
+  .sc-deliverable-list {
+    list-style:none; display:flex; flex-direction:column; gap:.55rem; margin-bottom:1.3rem;
+  }
+  .sc-deliverable-list li {
+    display:flex; align-items:flex-start; gap:.6rem;
+    font-size:.85rem; color:var(--text2); line-height:1.55;
+  }
+  .sc-deliverable-list li::before {
+    content:''; flex-shrink:0; width:6px; height:6px; border-radius:50%;
+    background:var(--cyan); margin-top:.55rem;
+  }
+  .sc-preview-btn {
+    display:inline-flex; align-items:center; gap:.55rem;
+    padding:.75rem 1.3rem; border-radius:8px; border:1px solid var(--border);
+    background:rgba(38,189,239,.08); color:var(--cyan);
+    font-family:var(--fb); font-weight:700; font-size:.85rem;
+    cursor:pointer; transition:all .15s;
+  }
+  .sc-preview-btn svg { width:16px; height:16px; }
+  .sc-preview-btn:hover { border-color:var(--cyan); background:rgba(38,189,239,.15); transform:translateY(-1px); }
+
+  .sc-promise {
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));
+    gap:.7rem; margin-bottom:2rem;
+  }
+  .sc-promise span {
+    display:flex; align-items:center; gap:.5rem;
+    font-family:var(--fm); font-size:.78rem; color:var(--text2);
+    background:rgba(34,197,94,.06); border:1px solid rgba(34,197,94,.18);
+    border-radius:8px; padding:.7rem 1rem;
+  }
+  .sc-promise svg { width:14px; height:14px; color:var(--success); flex-shrink:0; }
+
+  .sc-cta-row { display:flex; align-items:center; gap:1.2rem; flex-wrap:wrap; }
+  .sc-cta {
+    display:inline-flex; align-items:center; gap:.6rem;
+    padding:1rem 2rem; border-radius:10px;
+    background:var(--blue-vi); color:#fff; border:none;
+    font-family:var(--fb); font-weight:800; font-size:.95rem;
+    text-decoration:none; cursor:pointer;
+    transition:background .2s,transform .15s,box-shadow .2s;
+  }
+  .sc-cta:hover { background:#2222ff; transform:translateY(-2px); box-shadow:0 10px 28px rgba(0,0,254,.4); }
+  .sc-cta svg { width:18px; height:18px; }
+  .sc-hint { font-size:.78rem; color:var(--text3); line-height:1.6; max-width:380px; }
+  .sc-hint a { color:var(--cyan); text-decoration:none; border-bottom:1px dashed rgba(38,189,239,.4); }
+  .sc-hint a:hover { color:var(--blue-vi); border-bottom-color:var(--blue-vi); }
+
+  /* ───────────────────────────────────────────
+     Modal-Infrastruktur (generisch, wiederverwendbar)
+  ─────────────────────────────────────────── */
+  .modal {
+    position:fixed; inset:0; z-index:9999;
+    display:none; align-items:center; justify-content:center;
+    padding:1rem;
+  }
+  .modal.open { display:flex; }
+  .modal-backdrop {
+    position:absolute; inset:0;
+    background:rgba(7,9,14,.78); backdrop-filter:blur(4px);
+    animation:modalFadeIn .2s ease-out;
+  }
+  @keyframes modalFadeIn { from { opacity:0; } to { opacity:1; } }
+  @keyframes modalSlideIn { from { opacity:0; transform:translateY(16px) scale(.97); } to { opacity:1; transform:translateY(0) scale(1); } }
+  .modal-dialog {
+    position:relative; max-width:560px; width:100%; max-height:calc(100vh - 2rem);
+    background:var(--bg2); border:1px solid var(--border); border-radius:16px;
+    box-shadow:0 24px 80px rgba(0,0,0,.6),0 0 0 1px rgba(38,189,239,.12);
+    display:flex; flex-direction:column; overflow:hidden;
+    animation:modalSlideIn .25s cubic-bezier(.16,1,.3,1);
+  }
+  .modal-dialog.modal-large { max-width:760px; }
+  .modal-header {
+    display:flex; align-items:flex-start; justify-content:space-between; gap:1rem;
+    padding:1.4rem 1.6rem 1rem; border-bottom:1px solid var(--border);
+  }
+  .modal-title {
+    font-family:var(--fh); font-size:1.15rem; font-weight:800; color:var(--text);
+    line-height:1.3; margin:0;
+  }
+  .modal-close {
+    width:36px; height:36px; min-width:36px; border-radius:8px;
+    background:rgba(255,255,255,.05); border:1px solid var(--border);
+    color:var(--text2); cursor:pointer; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    transition:all .15s;
+  }
+  .modal-close svg { width:18px; height:18px; }
+  .modal-close:hover { background:rgba(239,68,68,.12); border-color:var(--danger); color:var(--danger); }
+  .modal-close:focus-visible { outline:2px solid var(--cyan); outline-offset:2px; }
+  .modal-body {
+    padding:1.4rem 1.6rem 1.6rem;
+    overflow-y:auto;
+    font-size:.9rem; color:var(--text2); line-height:1.7;
+  }
+  .modal-body p { margin-bottom:.8rem; }
+  .modal-body p:last-child { margin-bottom:0; }
+  body.modal-open { overflow:hidden; }
+
+  /* ───────────────────────────────────────────
+     Report-Preview "Blick ins Buch"
+     CI 2026.01 Profil "Dokument" — Navy/LightBlau
+  ─────────────────────────────────────────── */
+  .report-preview {
+    --doc-navy:    #1F3864;
+    --doc-blau:    #2E6096;
+    --doc-light:   #D6E4F0;
+    --doc-text:    #111;
+    --doc-muted:   #666;
+    --doc-bg:      #ffffff;
+    --doc-warn-bg: #FFF2CC;
+    --doc-warn-bd: #CC8800;
+    --doc-danger:  #C00000;
+
+    background:var(--doc-bg); color:var(--doc-text);
+    font-family:Arial,'Helvetica Neue',Helvetica,sans-serif;
+    border-radius:10px; overflow:hidden;
+    margin:0 -.4rem; /* leichter Bleed in den Modal-Body */
+    border:1px solid #d8e0ec;
+    position:relative;
+  }
+  .rp-head {
+    background:var(--doc-navy); color:#fff;
+    padding:1rem 1.4rem; display:flex; align-items:center; justify-content:space-between; gap:1rem;
+    flex-wrap:wrap;
+  }
+  .rp-head-l { font-family:Arial,sans-serif; font-size:.78rem; letter-spacing:.04em; opacity:.85; }
+  .rp-head-l strong { display:block; font-size:1.05rem; letter-spacing:.01em; opacity:1; margin-top:.15rem; }
+  .rp-head-r { font-family:'JetBrains Mono',monospace; font-size:.7rem; opacity:.85; text-align:right; }
+  .rp-body { padding:1.4rem 1.6rem 0; }
+  .rp-section-title {
+    font-family:Arial,sans-serif; font-size:.95rem; font-weight:700;
+    color:var(--doc-navy); padding-bottom:.4rem; border-bottom:2px solid var(--doc-light);
+    margin:0 0 .9rem;
+  }
+  .rp-summary { font-size:.85rem; line-height:1.65; color:var(--doc-text); margin-bottom:1.5rem; }
+  .rp-ampel {
+    display:grid; grid-template-columns:repeat(2,1fr); gap:.5rem 1rem;
+    margin-bottom:1.5rem;
+  }
+  @media (max-width:520px) { .rp-ampel { grid-template-columns:1fr; } }
+  .rp-ampel-row {
+    display:flex; align-items:center; gap:.6rem;
+    padding:.55rem .8rem; background:var(--doc-light); border-radius:6px;
+    font-size:.8rem; color:var(--doc-text);
+  }
+  .rp-dot {
+    width:11px; height:11px; border-radius:50%; flex-shrink:0;
+    box-shadow:0 0 0 1px rgba(0,0,0,.08);
+  }
+  .rp-dot-g { background:#1a7a5e; }
+  .rp-dot-y { background:#cc8800; }
+  .rp-dot-r { background:#C00000; }
+  .rp-ampel-row b { font-weight:700; margin-right:.15rem; }
+  .rp-handlung { list-style:none; padding:0; margin:0 0 2rem; counter-reset:rp; }
+  .rp-handlung li {
+    counter-increment:rp; position:relative;
+    padding:.85rem 1rem .85rem 3rem; margin-bottom:.5rem;
+    background:var(--doc-light); border-left:4px solid var(--doc-navy); border-radius:0 6px 6px 0;
+    font-size:.83rem; line-height:1.55; color:var(--doc-text);
+  }
+  .rp-handlung li::before {
+    content:counter(rp);
+    position:absolute; left:.85rem; top:.85rem;
+    width:24px; height:24px; border-radius:50%;
+    background:var(--doc-navy); color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'JetBrains Mono',monospace; font-size:.75rem; font-weight:700;
+  }
+  .rp-handlung li.rp-urgent { border-left-color:var(--doc-danger); background:#FDECEA; }
+  .rp-handlung li.rp-urgent::before { background:var(--doc-danger); }
+  .rp-handlung li.rp-warn { border-left-color:var(--doc-warn-bd); background:var(--doc-warn-bg); }
+  .rp-handlung li.rp-warn::before { background:var(--doc-warn-bd); }
+  .rp-handlung b { font-weight:700; color:var(--doc-navy); }
+  .rp-blur {
+    position:relative; height:90px; margin:0 -1.6rem;
+    background:linear-gradient(180deg,transparent,var(--doc-bg) 80%);
+    pointer-events:none;
+  }
+  .rp-blur::before {
+    content:''; position:absolute; top:0; left:1.6rem; right:1.6rem; height:50px;
+    background:linear-gradient(180deg,rgba(214,228,240,.5),transparent);
+    border-radius:6px; filter:blur(3px);
+  }
+  .rp-blur-text {
+    position:absolute; bottom:.4rem; left:0; right:0; text-align:center;
+    font-family:Arial,sans-serif; font-size:.78rem; color:var(--doc-muted); font-style:italic;
+  }
+  .rp-foot {
+    background:var(--doc-light); padding:.6rem 1.4rem;
+    font-family:'JetBrains Mono',monospace; font-size:.65rem;
+    color:var(--doc-muted); display:flex; justify-content:space-between; gap:1rem;
+    border-top:1px solid #c9d6e6;
+  }
+
+  /* Modal-Footer-Hinweis fuer Report-Vorschau */
+  .preview-footer {
+    margin-top:1rem; padding-top:1rem; border-top:1px solid var(--border);
+    font-size:.85rem; color:var(--text2); display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap;
+  }
+  .preview-footer a {
+    color:var(--cyan); font-weight:700; text-decoration:none;
+    display:inline-flex; align-items:center; gap:.35rem;
+  }
+  .preview-footer a:hover { color:var(--blue-vi); }
+  .preview-footer a svg { width:14px; height:14px; }
+
+  /* Mobile-Anpassung Modal */
+  @media (max-width:600px) {
+    .modal { padding:.5rem; }
+    .modal-dialog { max-height:calc(100vh - 1rem); border-radius:12px; }
+    .modal-header { padding:1.1rem 1.2rem .8rem; }
+    .modal-body { padding:1.1rem 1.2rem 1.3rem; }
+    .modal-title { font-size:1rem; }
+    .rp-body { padding:1.1rem 1.2rem 0; }
+    .rp-blur { margin:0 -1.2rem; }
+    .rp-blur::before { left:1.2rem; right:1.2rem; }
+    .rp-foot { padding:.6rem 1.2rem; }
+  }
+
   /* Services */
   .services { background:var(--bg); }
   .srv-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr)); gap:1rem; margin-top:3rem; }
@@ -660,6 +947,11 @@
   <symbol id="ico-chev-l" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></symbol>
   <symbol id="ico-chev-r" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></symbol>
   <symbol id="ico-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></symbol>
+  <symbol id="ico-search-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m8 11 2 2 4-4"/><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+  <symbol id="ico-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol>
+  <symbol id="ico-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+  <symbol id="ico-file-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></symbol>
+  <symbol id="ico-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></symbol>
 </svg>
 
 <!-- NAV -->
@@ -1011,6 +1303,140 @@
     </div>
   </div>
 </section>
+
+<!-- IT-SCHNELLCHECK (Lead-Magnet, Task 2 Release 1) -->
+<section class="schnellcheck section-pad" id="schnellcheck">
+  <div class="inner">
+    <div class="s-label">Bevor wir reden – schauen wir uns deine IT an</div>
+    <h2 class="s-title">Kostenloser IT-Schnellcheck</h2>
+    <p class="s-sub">Kein Verkaufsgespräch. Kein Druck. Du bekommst etwas Konkretes in der Hand – einen schriftlichen Bericht zum Behalten.</p>
+
+    <div class="sc-card">
+      <div class="sc-icon"><svg><use href="#ico-search-check"/></svg></div>
+      <h2>30–45 Minuten. Vor Ort. <em>Du behältst den Bericht.</em></h2>
+      <p class="sc-sub">Bevor ich dir irgendwas verkaufe, schau ich's mir an. 30 bis 45 Minuten bei dir vor Ort. Danach bekommst du einen schriftlichen Kurz-Bericht mit den wichtigsten Handlungsempfehlungen – per Mail, in deinem Namen, zum Behalten.</p>
+
+      <div class="sc-grid">
+
+        <!-- Was ich mir anschaue -->
+        <div class="sc-block">
+          <h3><svg><use href="#ico-list"/></svg> Was ich mir anschaue</h3>
+          <ul class="sc-checklist" id="sc-checklist">
+            <li><svg class="sc-chk"><use href="#ico-check"/></svg><span class="sc-label">Netzwerk &amp; WLAN</span><button type="button" class="info-btn" data-info="netzwerk" aria-label="Mehr Infos zu Netzwerk &amp; WLAN"><svg><use href="#ico-info"/></svg></button></li>
+            <li><svg class="sc-chk"><use href="#ico-check"/></svg><span class="sc-label">Arbeitsplätze &amp; Server</span><button type="button" class="info-btn" data-info="clients" aria-label="Mehr Infos zu Arbeitsplätze &amp; Server"><svg><use href="#ico-info"/></svg></button></li>
+            <li><svg class="sc-chk"><use href="#ico-check"/></svg><span class="sc-label">Microsoft 365 / E-Mail</span><button type="button" class="info-btn" data-info="m365" aria-label="Mehr Infos zu Microsoft 365"><svg><use href="#ico-info"/></svg></button></li>
+            <li><svg class="sc-chk"><use href="#ico-check"/></svg><span class="sc-label">Virenschutz &amp; Firewall</span><button type="button" class="info-btn" data-info="security" aria-label="Mehr Infos zu Virenschutz &amp; Firewall"><svg><use href="#ico-info"/></svg></button></li>
+            <li><svg class="sc-chk"><use href="#ico-check"/></svg><span class="sc-label">Datensicherung (Backup)</span><button type="button" class="info-btn" data-info="backup" aria-label="Mehr Infos zu Backup"><svg><use href="#ico-info"/></svg></button></li>
+            <li><svg class="sc-chk"><use href="#ico-check"/></svg><span class="sc-label">Router &amp; Internet-Anschluss</span><button type="button" class="info-btn" data-info="router" aria-label="Mehr Infos zu Router"><svg><use href="#ico-info"/></svg></button></li>
+            <li><svg class="sc-chk"><use href="#ico-check"/></svg><span class="sc-label">Drucker, Kameras, Peripherie</span><button type="button" class="info-btn" data-info="peripherie" aria-label="Mehr Infos zu Peripherie"><svg><use href="#ico-info"/></svg></button></li>
+            <li><svg class="sc-chk"><use href="#ico-check"/></svg><span class="sc-label">Software-Aktualität (EOL, BSI)</span><button type="button" class="info-btn" data-info="eol" aria-label="Mehr Infos zu EOL/BSI"><svg><use href="#ico-info"/></svg></button></li>
+            <li><svg class="sc-chk"><use href="#ico-check"/></svg><span class="sc-label">Benutzer, Passwörter, Doku</span><button type="button" class="info-btn" data-info="doku" aria-label="Mehr Infos zu Benutzer und Doku"><svg><use href="#ico-info"/></svg></button></li>
+          </ul>
+        </div>
+
+        <!-- Was du danach in der Hand hast -->
+        <div class="sc-block">
+          <h3><svg><use href="#ico-file-text"/></svg> Was du danach in der Hand hast</h3>
+          <p style="font-size:.85rem;color:var(--text2);line-height:1.65;margin-bottom:1rem;">Einen schriftlichen Kurz-Bericht (4–6 Seiten PDF) mit:</p>
+          <ul class="sc-deliverable-list">
+            <li>Bestandsaufnahme deiner IT in Stichpunkten</li>
+            <li>3 bis 5 konkrete Handlungsempfehlungen – priorisiert nach Dringlichkeit</li>
+            <li>Ampel-Bewertung je Bereich (grün / gelb / rot)</li>
+            <li>Offene Punkte, um die du dich kümmern solltest</li>
+            <li>Unverbindliche Grob-Kostenschätzung, falls was ansteht</li>
+          </ul>
+          <button type="button" class="sc-preview-btn" id="sc-preview-btn" aria-haspopup="dialog">
+            <svg><use href="#ico-file-text"/></svg> Blick in einen Beispiel-Bericht
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Versprechen -->
+      <div class="sc-promise">
+        <span><svg><use href="#ico-check"/></svg> Kein Verkaufsgespräch</span>
+        <span><svg><use href="#ico-check"/></svg> Keine Folgekosten</span>
+        <span><svg><use href="#ico-check"/></svg> Bericht bleibt bei dir</span>
+        <span><svg><use href="#ico-check"/></svg> Wiederverwendbar als Baseline</span>
+      </div>
+
+      <!-- CTA -->
+      <div class="sc-cta-row">
+        <a href="mailto:info@grundke-it.de?subject=IT-Schnellcheck%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0Aich%20interessiere%20mich%20f%C3%BCr%20den%20kostenlosen%20IT-Schnellcheck.%0A%0AMein%20Unternehmen%20%2F%20meine%20Situation%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fwww.grundke-it.de%2Fdatenschutz%2F)." class="sc-cta">
+          Jetzt Termin anfragen <svg><use href="#ico-arrow-r"/></svg>
+        </a>
+        <p class="sc-hint">Der Schnellcheck ist auch die Basis für die monatlichen Zustandsberichte in den <a href="#preise">Business- und Premium-Paketen</a>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Modal: Info-Popups (9 Stueck, Texte aus JS-Objekt geladen) -->
+<div class="modal" id="info-modal" role="dialog" aria-modal="true" aria-labelledby="info-modal-title" hidden>
+  <div class="modal-backdrop" data-modal-close></div>
+  <div class="modal-dialog" tabindex="-1">
+    <div class="modal-header">
+      <h3 class="modal-title" id="info-modal-title">Info</h3>
+      <button type="button" class="modal-close" data-modal-close aria-label="Schließen"><svg><use href="#ico-x"/></svg></button>
+    </div>
+    <div class="modal-body" id="info-modal-body"></div>
+  </div>
+</div>
+
+<!-- Modal: Report-Vorschau "Blick ins Buch" (Profil Dokument) -->
+<div class="modal" id="preview-modal" role="dialog" aria-modal="true" aria-labelledby="preview-modal-title" hidden>
+  <div class="modal-backdrop" data-modal-close></div>
+  <div class="modal-dialog modal-large" tabindex="-1">
+    <div class="modal-header">
+      <h3 class="modal-title" id="preview-modal-title">Auszug aus einem Beispiel-Bericht</h3>
+      <button type="button" class="modal-close" data-modal-close aria-label="Schließen"><svg><use href="#ico-x"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:.78rem;color:var(--text3);margin-bottom:1rem;">Anonymisiertes Beispiel. So sieht dein Schnellcheck-Bericht aus.</p>
+
+      <div class="report-preview" aria-label="Beispiel IT-Schnellcheck-Bericht">
+        <div class="rp-head">
+          <div class="rp-head-l">IT-Schnellcheck<strong>Beispielbetrieb GmbH</strong></div>
+          <div class="rp-head-r">Stand 2026-04-01<br>CI 2026.01</div>
+        </div>
+        <div class="rp-body">
+          <h4 class="rp-section-title">Management Summary</h4>
+          <p class="rp-summary">Geprüft wurden Netzwerk, Backup, Microsoft 365, Endgeräte und der Internet-Anschluss. Der Gesamtzustand ist solide, mit drei dringenden Handlungspunkten – allen voran das fehlende externe Backup. Die übrigen Punkte sind im laufenden Betrieb planbar.</p>
+
+          <h4 class="rp-section-title">Ampel-Übersicht</h4>
+          <div class="rp-ampel">
+            <div class="rp-ampel-row"><span class="rp-dot rp-dot-g"></span><b>Netzwerk:</b> Stabil, gut ausgelastet</div>
+            <div class="rp-ampel-row"><span class="rp-dot rp-dot-r"></span><b>Backup:</b> Kein externes Backup</div>
+            <div class="rp-ampel-row"><span class="rp-dot rp-dot-y"></span><b>Windows-Stand:</b> 2× Windows 10 (EOL)</div>
+            <div class="rp-ampel-row"><span class="rp-dot rp-dot-g"></span><b>Virenschutz:</b> ESET aktiv</div>
+            <div class="rp-ampel-row"><span class="rp-dot rp-dot-y"></span><b>Router:</b> FritzBox 7490 ohne Updates</div>
+            <div class="rp-ampel-row"><span class="rp-dot rp-dot-g"></span><b>M365:</b> Business Standard, sauber</div>
+          </div>
+
+          <h4 class="rp-section-title">Top-3-Handlungsempfehlungen</h4>
+          <ol class="rp-handlung">
+            <li class="rp-urgent"><b>Sofort:</b> Externes Backup einführen (Synology NAS + Cloud-Sync). Geschätzte Kosten: ca. 900–1.200 €.</li>
+            <li class="rp-warn"><b>In den nächsten 4 Wochen:</b> Windows 10 Rechner auf Windows 11 migrieren oder ersetzen. 2× Migration je ca. 2 h.</li>
+            <li><b>Innerhalb 3 Monate:</b> FritzBox 7490 tauschen, da End-of-Life. Alternative: UniFi Dream Router.</li>
+          </ol>
+
+          <div class="rp-blur">
+            <div class="rp-blur-text">Vollständiger Bericht nach deinem Schnellcheck</div>
+          </div>
+        </div>
+        <div class="rp-foot">
+          <span>CI 2026.01 · Grundke IT-Service · grundke-it.de</span>
+          <span>Seite 1 / 5</span>
+        </div>
+      </div>
+
+      <div class="preview-footer">
+        <span>Möchtest du deinen eigenen Bericht bekommen?</span>
+        <a href="mailto:info@grundke-it.de?subject=IT-Schnellcheck%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0Aich%20interessiere%20mich%20f%C3%BCr%20den%20kostenlosen%20IT-Schnellcheck.%0A%0AMein%20Unternehmen%20%2F%20meine%20Situation%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fwww.grundke-it.de%2Fdatenschutz%2F).">Termin anfragen <svg><use href="#ico-arrow-r"/></svg></a>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- LEISTUNGEN -->
 <section class="services section-pad" id="leistungen">
