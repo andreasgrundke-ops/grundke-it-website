@@ -168,8 +168,24 @@
     .cb-btn small { display: none; }
   }
 
-  /* Hero */
-  .hero { margin-top:var(--nav-h); position:relative; overflow:hidden; height:calc(100vh - var(--nav-h)); min-height:480px; max-height:900px; }
+  /* Hero — Release-2 Mobile-First:
+     Mobile: kompakte fixe Hoehe (~380-560px), kein 100vh-Scrollberg mehr
+     Tablet+ (>=768px): zurueck zu Full-Viewport-Height wie vorher */
+  .hero {
+    margin-top: var(--nav-h);
+    position: relative;
+    overflow: hidden;
+    height: auto;
+    min-height: clamp(380px, 65svh, 560px);
+    max-height: none;
+  }
+  @media (min-width: 768px) {
+    .hero {
+      height: calc(100vh - var(--nav-h));
+      min-height: 480px;
+      max-height: 900px;
+    }
+  }
   .slides-wrap { display:flex; height:100%; transition:transform .75s cubic-bezier(.76,0,.24,1); will-change:transform; }
   .slide { min-width:100%; height:100%; position:relative; overflow:hidden; }
   .slide-bg { position:absolute; inset:0; background-size:cover; background-position:center; filter:brightness(.32) saturate(.75); transform:scale(1.06); transition:transform 9s ease; }
@@ -829,7 +845,7 @@
   /* Responsive */
   @media (max-width:1023px) { .usp-grid { grid-template-columns:1fr; gap:2rem; } }
   @media (max-width:767px) {
-    .hero { max-height:640px; }
+    /* .hero max-height entfaellt — Mobile-Default ist jetzt Mobile-First (siehe oben) */
     .steps-wrap { grid-template-columns:1fr; gap:1rem; }
     .steps-wrap::before { display:none; }
     .step-item { flex-direction:row; text-align:left; gap:1rem; align-items:flex-start; }
