@@ -32,6 +32,47 @@
   --nav-h:     70px;
   --r:         12px;
   --inner:     1280px;
+
+  /* ── Release-2: Spacing-Scale (Mobile-First, fluide via clamp) ── */
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.5rem;
+  --space-xs:  0.75rem;
+  --space-sm:  1rem;
+  --space-md:  1.5rem;
+  --space-lg:  2rem;
+  --space-xl:  3rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
+
+  /* Section-Padding — der groesste Hebel fuer Mobile-Verkuerzung */
+  --section-pad-y: clamp(2.5rem, 8vw, 6rem);
+  --section-pad-x: clamp(1rem, 4vw, 2rem);
+
+  /* Typography-Scale (fluide) */
+  --fs-hero:   clamp(1.875rem, 7vw, 3.75rem);
+  --fs-h1:     clamp(1.625rem, 5.5vw, 2.75rem);
+  --fs-h2:     clamp(1.375rem, 4.5vw, 2.25rem);
+  --fs-h3:     clamp(1.125rem, 3.5vw, 1.5rem);
+  --fs-body:   clamp(0.9375rem, 2.6vw, 1.0625rem);
+  --fs-sm:     clamp(0.8125rem, 2.2vw, 0.9375rem);
+
+  /* Line-Heights */
+  --lh-tight:  1.15;
+  --lh-snug:   1.35;
+  --lh-body:   1.6;
+
+  /* Container-Maximum (Release-2 Variante, --inner bleibt fuer Bestand) */
+  --container-max: 1200px;
+
+  /* Radialer Highlight-Overlay fuer Primary-/Accent-Flaechen (Schritt 2.5) */
+  --section-highlight:
+    radial-gradient(
+      ellipse 75% 65% at 50% 50%,
+      rgba(255, 255, 255, 0.14) 0%,
+      rgba(255, 255, 255, 0.07) 35%,
+      rgba(255, 255, 255, 0.00) 60%,
+      rgba(0, 0, 0, 0.10) 100%
+    );
 }
 
 /* ── Reset ── */
@@ -48,6 +89,19 @@ button { font-family: var(--fb); cursor: pointer; }
 /* ── Layout Utilities ── */
 .inner { max-width: var(--inner); margin: 0 auto; padding: 0 clamp(1rem,5vw,2.5rem); }
 .section-pad { padding: clamp(3.5rem,8vw,6.5rem) 0; }
+
+/* Release-2: Primary-/Accent-Flaeche mit subtilem radialen Highlight
+   (Schritt 2.5 — wirkt wie natuerliches Licht auf Blau, kein Disco-Effekt) */
+.section-primary {
+  background-color: var(--accent);          /* CI Primary Blau */
+  background-image: var(--section-highlight);
+  color: #ffffff;
+}
+.section-accent {
+  background-color: var(--cyan);            /* CI Accent Cyan */
+  background-image: var(--section-highlight);
+  color: #ffffff;
+}
 
 /* ── Typography Utilities ── */
 .s-label {
