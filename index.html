@@ -611,6 +611,53 @@
     width:4px; height:4px; border-radius:50%; background:#cc8800;
   }
 
+  /* Bullet-Liste fuer Standard-Leistungs-Kacheln (Cyan-Punkte, dezent) */
+  .srv-bullet-list {
+    list-style:none; display:flex; flex-direction:column; gap:.35rem;
+    margin-top:.7rem; padding-top:.6rem; border-top:1px dashed rgba(38,189,239,.25);
+  }
+  .srv-bullet-list li {
+    position:relative; padding-left:.95rem; font-size:.74rem;
+    color:var(--text2); line-height:1.4;
+  }
+  .srv-bullet-list li::before {
+    content:''; position:absolute; left:0; top:.55rem;
+    width:4px; height:4px; border-radius:50%; background:var(--cyan);
+  }
+
+  /* BSI-Info-Banner unter dem Leistungs-Grid (Task 4 Release 1) */
+  .bsi-info {
+    margin-top:2rem; padding:1.4rem 1.6rem;
+    background:linear-gradient(135deg,rgba(12,77,162,.12),rgba(38,189,239,.05));
+    border:1px solid var(--border); border-left:4px solid var(--cyan);
+    border-radius:12px;
+    display:flex; gap:1.2rem; align-items:flex-start;
+  }
+  .bsi-info-ico {
+    width:36px; height:36px; flex-shrink:0; border-radius:8px;
+    background:rgba(38,189,239,.12); border:1px solid rgba(38,189,239,.3);
+    color:var(--cyan); display:flex; align-items:center; justify-content:center;
+  }
+  .bsi-info-ico svg { width:18px; height:18px; }
+  .bsi-info-body { flex:1; min-width:0; }
+  .bsi-info-body strong {
+    display:block; font-family:var(--fh); font-size:.88rem; font-weight:700;
+    color:var(--text); margin-bottom:.3rem;
+  }
+  .bsi-info-body p {
+    font-size:.82rem; color:var(--text2); line-height:1.65;
+  }
+  .bsi-info-body a {
+    display:inline-flex; align-items:center; gap:.3rem;
+    margin-top:.5rem; font-size:.78rem; color:var(--cyan);
+    font-family:var(--fm); font-weight:600; text-decoration:none;
+    border-bottom:1px dashed rgba(38,189,239,.35);
+  }
+  .bsi-info-body a:hover { color:var(--blue-vi); border-bottom-color:var(--blue-vi); }
+  @media (max-width:600px) {
+    .bsi-info { flex-direction:column; gap:.8rem; padding:1.2rem 1.3rem; }
+  }
+
   /* Leistungs-Detail-Blöcke (8 Themenbereiche, abgeleitet aus 496 realen Einsätzen) */
   .leist-intro { text-align:center; margin:3.5rem 0 2rem; }
   .leist-intro h3 { font-family:var(--fh); font-size:clamp(1.3rem,2.5vw,1.7rem); font-weight:800; color:var(--text); margin:.4rem 0 .6rem; letter-spacing:-.02em; }
@@ -1477,7 +1524,21 @@
       <div class="srv-card"><div class="srv-ico"><svg><use href="#ico-cloud"/></svg></div><div class="srv-name">Cloud &amp; Hosting</div><p class="srv-desc">Website, E-Mail-Hosting, Cloud-Backup, M365 – DSGVO-konform betrieben.</p></div>
       <div class="srv-card"><div class="srv-ico"><svg><use href="#ico-cpu"/></svg></div><div class="srv-name">KI &amp; Automatisierung</div><p class="srv-desc">Wiederkehrende Aufgaben automatisieren, KI-Tools einführen – Zeit sparen.</p></div>
 
-      <!-- Kachel 9: Sicherheits-Updates & Handlungsbedarf (Task 3 Release 1) -->
+      <!-- Kachel 9 (neu): Firewall, VPN & Netzwerkschutz (Task 4 Release 1) -->
+      <div class="srv-card">
+        <div class="srv-ico"><svg><use href="#ico-shield"/></svg></div>
+        <div class="srv-name">Firewall, VPN &amp; Netzwerkschutz</div>
+        <p class="srv-desc">Eine FritzBox ist kein Schutz – sie ist ein Router mit Grundabsicherung. Ich baue dir ein richtiges Netzwerk auf Basis von UniFi: echte Firewall, getrenntes Gäste-WLAN, VPN für mobiles Arbeiten, klar definierte Zonen.</p>
+        <ul class="srv-bullet-list">
+          <li>UniFi Dream Router / Gateway</li>
+          <li>Gäste-WLAN mit Captive Portal</li>
+          <li>WireGuard-VPN für mobiles Arbeiten</li>
+          <li>VLAN-Trennung (Büro / Gast / Kameras / IoT)</li>
+          <li>Zentral verwaltet, klar dokumentiert</li>
+        </ul>
+      </div>
+
+      <!-- Kachel 10: Sicherheits-Updates & Handlungsbedarf (Task 3 Release 1) -->
       <div class="srv-card srv-warn">
         <div class="srv-ico"><svg><use href="#ico-alert"/></svg></div>
         <div class="srv-name">Sicherheits-Updates &amp; Handlungsbedarf</div>
@@ -1490,6 +1551,16 @@
         </ul>
       </div>
     </div>
+
+    <!-- BSI-Info-Banner unter dem Grid (Task 4 Release 1) -->
+    <aside class="bsi-info" aria-label="Hinweis zur Bedrohungslage">
+      <div class="bsi-info-ico"><svg><use href="#ico-info"/></svg></div>
+      <div class="bsi-info-body">
+        <strong>Warum eine richtige Firewall?</strong>
+        <p>Laut aktuellem BSI-Lagebericht finden täglich Millionen automatisierter Angriffsversuche auf Netzwerke im deutschsprachigen Raum statt – überwiegend vollautomatisch. Eine richtig konfigurierte Firewall filtert davon den Großteil weg, bevor dein Rechner sie überhaupt bemerkt.</p>
+        <a href="https://www.bsi.bund.de/DE/Service-Navi/Publikationen/Lagebericht/lagebericht_node.html" target="_blank" rel="noopener">→ BSI Lagebericht zur IT-Sicherheit</a>
+      </div>
+    </aside>
 
     <!-- Detail-Block: 8 Themenbereiche aus 496 realen Einsätzen -->
     <div class="leist-intro">
