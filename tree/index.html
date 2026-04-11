@@ -100,15 +100,19 @@
     to   { opacity:1; transform:translateY(0)    scale(1);   }
   }
 
-  /* Cyan top accent line */
-  .card::before {
+  /* Cyan vertikale Akzent-Linien links + rechts (gleiche DNA wie .slide::before/::after im Hero) */
+  .card::before,
+  .card::after {
     content: '';
     position: absolute;
-    top: 0; left: 15%; right: 15%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
-    border-radius: 0 0 2px 2px;
+    top: 12%; bottom: 12%;
+    width: 3px;
+    background: linear-gradient(180deg, transparent, var(--cyan), transparent);
+    z-index: 2;
+    pointer-events: none;
   }
+  .card::before { left: 0; }
+  .card::after  { right: 0; }
 
   /* ── Avatar / Logo ── */
   .avatar-wrap {
@@ -381,7 +385,8 @@
       animation: none;
       width: 100%;
     }
-    .card::before { display: none; }
+    /* Vertikale Cyan-Linien (::before/::after) bleiben auf Mobile sichtbar
+       — sie liegen direkt am Bildschirmrand und wirken wie Hero-Akzent */
   }
 
   /* ── Große Phones (S21 Ultra, iPhone 14 Pro Max): Großzügig ── */
