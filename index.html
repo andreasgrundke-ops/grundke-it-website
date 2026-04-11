@@ -625,6 +625,64 @@
     width:4px; height:4px; border-radius:50%; background:var(--cyan);
   }
 
+  /* "Aus der Praxis"-Story-Block (Task 5 Release 1) - eigene Section */
+  .praxis { background:var(--bg2); position:relative; overflow:hidden; }
+  .praxis::before {
+    content:''; position:absolute; inset:0;
+    background:radial-gradient(ellipse 50% 60% at 15% 40%,rgba(192,57,43,.06),transparent 65%);
+    pointer-events:none;
+  }
+  .praxis-card {
+    position:relative; background:var(--bg3); border:1px solid var(--border); border-radius:18px;
+    border-left:4px solid var(--danger);
+    padding:clamp(2rem,4vw,3rem);
+    display:grid; grid-template-columns:auto 1fr; gap:clamp(1.5rem,3vw,2.5rem);
+    align-items:start; max-width:920px;
+    box-shadow:0 16px 48px rgba(0,0,0,.2);
+  }
+  .praxis-icon {
+    width:72px; height:72px; flex-shrink:0; border-radius:16px;
+    background:rgba(192,57,43,.12); border:1px solid rgba(192,57,43,.35);
+    color:var(--danger);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .praxis-icon svg { width:36px; height:36px; }
+  .praxis-body { min-width:0; }
+  .praxis-tag {
+    font-family:var(--fm); font-size:.68rem; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--danger); margin-bottom:.5rem; font-weight:600;
+    display:inline-flex; align-items:center; gap:.5rem;
+  }
+  .praxis-tag::before { content:''; width:18px; height:1px; background:var(--danger); }
+  .praxis-card h3 {
+    font-family:var(--fh); font-size:clamp(1.3rem,2.6vw,1.8rem); font-weight:800;
+    color:var(--text); letter-spacing:-.02em; line-height:1.2; margin-bottom:1.1rem;
+  }
+  .praxis-card h3 em { font-style:italic; color:var(--text); font-weight:700; }
+  .praxis-text { font-size:.92rem; color:var(--text2); line-height:1.75; }
+  .praxis-text p { margin-bottom:.9rem; }
+  .praxis-text p.praxis-rule {
+    background:rgba(38,189,239,.06); border-left:3px solid var(--cyan);
+    padding:.85rem 1.1rem; border-radius:0 8px 8px 0; color:var(--text);
+    margin:1.2rem 0;
+  }
+  .praxis-text p.praxis-rule strong { color:var(--cyan); font-weight:800; }
+  .praxis-cta {
+    display:inline-flex; align-items:center; gap:.55rem;
+    margin-top:1rem; padding:.85rem 1.7rem; border-radius:10px;
+    background:var(--blue-vi); color:#fff; border:none;
+    font-family:var(--fb); font-weight:700; font-size:.9rem;
+    text-decoration:none; cursor:pointer;
+    transition:background .2s,transform .15s,box-shadow .2s;
+  }
+  .praxis-cta:hover { background:#2222ff; transform:translateY(-2px); box-shadow:0 10px 28px rgba(0,0,254,.4); }
+  .praxis-cta svg { width:16px; height:16px; }
+  @media (max-width:700px) {
+    .praxis-card { grid-template-columns:1fr; gap:1.2rem; padding:1.6rem 1.4rem; }
+    .praxis-icon { width:56px; height:56px; }
+    .praxis-icon svg { width:28px; height:28px; }
+  }
+
   /* BSI-Info-Banner unter dem Leistungs-Grid (Task 4 Release 1) */
   .bsi-info {
     margin-top:2rem; padding:1.4rem 1.6rem;
@@ -1020,6 +1078,7 @@
   <symbol id="ico-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
   <symbol id="ico-file-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></symbol>
   <symbol id="ico-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="ico-alert-octagon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16h.01"/><path d="M12 8v4"/><path d="M15.312 2a2 2 0 0 1 1.414.586l4.688 4.688A2 2 0 0 1 22 8.688v6.624a2 2 0 0 1-.586 1.414l-4.688 4.688a2 2 0 0 1-1.414.586H8.688a2 2 0 0 1-1.414-.586l-4.688-4.688A2 2 0 0 1 2 15.312V8.688a2 2 0 0 1 .586-1.414l4.688-4.688A2 2 0 0 1 8.688 2z"/></symbol>
 </svg>
 
 <!-- NAV -->
@@ -1671,6 +1730,25 @@
       <div style="display:flex;gap:.6rem;flex-wrap:wrap;">
         <a href="mailto:info@grundke-it.de?subject=Anfrage%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0AMein%20Anliegen%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fwww.grundke-it.de%2Fdatenschutz%2F)." class="btn-email" style="font-size:.85rem;padding:.7rem 1.4rem;"><svg width="16" height="16"><use href="#ico-mail"/></svg> E-Mail schreiben</a>
         <a href="https://wa.me/491782584438" target="_blank" rel="noopener" class="btn-wa" style="font-size:.85rem;padding:.7rem 1.4rem;"><svg width="16" height="16"><use href="#ico-wa"/></svg> WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AUS DER PRAXIS - Story-Block (Task 5 Release 1) -->
+<section class="praxis section-pad" id="praxis">
+  <div class="inner">
+    <div class="praxis-card">
+      <div class="praxis-icon"><svg><use href="#ico-alert-octagon"/></svg></div>
+      <div class="praxis-body">
+        <div class="praxis-tag">Aus der Praxis</div>
+        <h3>„Ich muss <em>heute noch</em> fertig werden!"</h3>
+        <div class="praxis-text">
+          <p>Ein Kunde ruft an: Sein Rechner startet plötzlich nicht mehr. Er arbeitet für seine eigenen Kunden und muss heute noch ein wichtiges Projekt abgeben. Keine Datensicherung. Festplatte fest verbaut. Nicht austauschbar.</p>
+          <p>Wir haben es an dem Tag gelöst – mit viel Aufwand und ohne Garantie, dass es klappt. Solche Situationen wünscht sich niemand. Und sie sind auch komplett vermeidbar.</p>
+          <p class="praxis-rule"><strong>Die Regel ist einfach:</strong> Wenn dein Rechner heute kaputtgeht, musst du morgen weiterarbeiten können. Dafür braucht es keine teure Lösung – aber eine, die funktioniert, automatisch läuft und regelmäßig getestet wird.</p>
+          <a href="#schnellcheck" class="praxis-cta">Lass uns drüber reden <svg><use href="#ico-arrow-r"/></svg></a>
+        </div>
       </div>
     </div>
   </div>
