@@ -90,6 +90,31 @@ button { font-family: var(--fb); cursor: pointer; }
 .inner { max-width: var(--inner); margin: 0 auto; padding: 0 clamp(1rem,5vw,2.5rem); }
 .section-pad { padding: clamp(3.5rem,8vw,6.5rem) 0; }
 
+/* Release-2 (Schritt 6): Sticky Call-CTA — nur auf Mobile (<768px) sichtbar.
+   Liegt fixed am unteren Rand, beruecksichtigt iPhone-Safe-Area-Inset.
+   .has-sticky-call setzt body-padding-bottom, damit Inhalt nicht verdeckt wird. */
+.sticky-call { display: none; }
+@media (max-width: 767px) {
+  .sticky-call {
+    display: flex;
+    align-items: center; justify-content: center;
+    gap: var(--space-xs, .75rem);
+    position: fixed; left: 0; right: 0; bottom: 0;
+    z-index: 1000;
+    padding: .875rem 1rem calc(.875rem + env(safe-area-inset-bottom));
+    background: var(--accent);
+    color: #ffffff;
+    font-family: var(--fb);
+    font-weight: 700; font-size: var(--fs-body, .95rem);
+    text-decoration: none;
+    box-shadow: 0 -2px 12px rgba(0,0,0,.18);
+    min-height: 52px;
+  }
+  .sticky-call:active { background: #0a4290; }
+  .sticky-call svg { flex-shrink: 0; }
+  body.has-sticky-call { padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
+}
+
 /* Release-2: Primary-/Accent-Flaeche mit subtilem radialen Highlight
    (Schritt 2.5 — wirkt wie natuerliches Licht auf Blau, kein Disco-Effekt) */
 .section-primary {
