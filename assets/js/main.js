@@ -333,6 +333,57 @@ function initFlipCards() {
   });
 }
 
+/* ── Service Worker Registration (Release-2 PWA-Setup)
+   Registriert den SW unter Scope "/", sodass die ganze Site
+   als PWA installierbar wird (Add-to-Home, Offline-Cache).
+   Nur in produktiven HTTPS-/localhost-Kontexten registriert. */
+function initServiceWorker() {
+  if (!('serviceWorker' in navigator)) return;
+  if (location.protocol !== 'https:' && location.hostname !== 'localhost') return;
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js', { scope: '/' })
+      .then(reg => {
+        // Bei Update sofort skipWaiting triggern, damit neue Version greift
+        if (reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+        reg.addEventListener('updatefound', () => {
+          const sw = reg.installing;
+          if (!sw) return;
+          sw.addEventListener('statechange', () => {
+            if (sw.state === 'installed' && navigator.serviceWorker.controller) {
+              sw.postMessage({ type: 'SKIP_WAITING' });
+            }
+          });
+        });
+      })
+      .catch(err => console.warn('[SW] Registration failed:', err));
+  });
+}
+
+/* ── Install-Prompt UI (PWA): zeigt nichts proaktiv, sammelt nur das
+   beforeinstallprompt-Event und macht es ueber window.gIT.installPWA()
+   manuell triggerbar. So kann spaeter ein Button ergaenzt werden. */
+function initInstallPrompt() {
+  let deferredPrompt = null;
+  window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault();
+    deferredPrompt = e;
+    document.documentElement.classList.add('pwa-installable');
+  });
+  window.addEventListener('appinstalled', () => {
+    deferredPrompt = null;
+    document.documentElement.classList.remove('pwa-installable');
+    document.documentElement.classList.add('pwa-installed');
+  });
+  window.gIT = window.gIT || {};
+  window.gIT.installPWA = async () => {
+    if (!deferredPrompt) return false;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    deferredPrompt = null;
+    return outcome === 'accepted';
+  };
+}
+
 /* ── Init ── */
 document.addEventListener('DOMContentLoaded', () => {
   initHamburger();
@@ -342,6 +393,10 @@ document.addEventListener('DOMContentLoaded', () => {
   initVCard();
   initSchnellcheck();
   initFlipCards();
+  initInstallPrompt();
   var lenis = initLenis();
   initScrollTop(lenis);
 });
+
+/* SW-Registrierung laeuft eigenstaendig ueber window.load */
+initServiceWorker();

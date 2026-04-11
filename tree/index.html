@@ -12,6 +12,11 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
   <link rel="manifest" href="/site.webmanifest"/>
   <meta name="theme-color" content="#0c4da2"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="Grundke IT"/>
+  <meta name="application-name" content="Grundke IT"/>
   <link rel="stylesheet" href="../assets/css/fonts.css"/>
 
   <style>
@@ -572,6 +577,15 @@ document.getElementById('vcardBtn').addEventListener('click', function(e) {
   a.click();
   URL.revokeObjectURL(url);
 });
+
+/* Release-2 PWA: Service Worker auch von tree-Page registrieren,
+   damit Add-to-Home-Screen ueberall greift. */
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js', { scope: '/' })
+      .catch(err => console.warn('[SW] tree page registration failed:', err));
+  });
+}
 </script>
 </body>
 </html>

@@ -1,11 +1,67 @@
 {
   "name": "Grundke IT-Service",
   "short_name": "Grundke IT",
-  "icons": [
-    { "src": "/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "/android-chrome-512x512.png", "sizes": "512x512", "type": "image/png" }
-  ],
+  "description": "IT-Service für KMU im Münchner Osten — persönlich, schnell, verlässlich.",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "lang": "de",
+  "dir": "ltr",
   "theme_color": "#0c4da2",
-  "background_color": "#f4f7fc",
-  "display": "standalone"
+  "background_color": "#0f1117",
+  "categories": ["business", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Anrufen",
+      "short_name": "Anrufen",
+      "description": "Direkt Andreas Grundke anrufen",
+      "url": "tel:+491782584438"
+    },
+    {
+      "name": "WhatsApp",
+      "short_name": "WhatsApp",
+      "description": "Per WhatsApp schreiben",
+      "url": "https://wa.me/491782584438"
+    },
+    {
+      "name": "IT-Schnellcheck",
+      "short_name": "Schnellcheck",
+      "description": "Kostenloser IT-Schnellcheck",
+      "url": "/#schnellcheck"
+    }
+  ]
 }
