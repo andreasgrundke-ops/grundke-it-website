@@ -244,13 +244,36 @@
   /* Probleme */
   .problems { background:var(--bg); }
   .prob-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr)); margin-top:3rem; gap:1.2rem; }
-  .flip-wrap { perspective:800px; min-height:220px; }
+
+  /* Release-2 (Schritt 4.5): Flip-Cards sind jetzt <button>-Elemente
+     - Button-Reset (kein Default-Styling)
+     - Tap-Toggle via aria-expanded / .flipped (greift immer)
+     - Hover nur auf Devices mit echtem Pointer (hover:hover) */
+  .flip-wrap {
+    /* Button-Reset */
+    background:none; border:none; padding:0; font:inherit;
+    text-align:left; color:inherit; cursor:pointer;
+    width:100%; display:block;
+    /* Flip-Card-Eigenes */
+    perspective:800px; min-height:220px;
+  }
+  .flip-wrap:focus-visible {
+    outline:2px solid var(--cyan); outline-offset:3px; border-radius:14px;
+  }
   .flip-inner {
     position:relative; width:100%; height:100%; min-height:220px;
     transition:transform .55s cubic-bezier(.4,0,.2,1);
     transform-style:preserve-3d;
   }
-  .flip-wrap:hover .flip-inner { transform:rotateY(180deg); }
+  /* Toggle via Tap/Klick — greift immer (Touch + Desktop) */
+  .flip-wrap.flipped .flip-inner,
+  .flip-wrap[aria-expanded="true"] .flip-inner {
+    transform:rotateY(180deg);
+  }
+  /* Hover-Effekt nur auf Devices mit echtem Pointer */
+  @media (hover:hover) and (pointer:fine) {
+    .flip-wrap:hover .flip-inner { transform:rotateY(180deg); }
+  }
   .flip-front, .flip-back {
     position:absolute; inset:0; backface-visibility:hidden;
     border-radius:14px; padding:2rem; display:flex; flex-direction:column; justify-content:center;
@@ -290,10 +313,7 @@
     letter-spacing:.08em; text-transform:uppercase; color:var(--cyan);
     margin-bottom:.8rem;
   }
-  /* Touch-Geräte: Tap statt Hover */
-  @media (hover:none) {
-    .flip-wrap.flipped .flip-inner { transform:rotateY(180deg); }
-  }
+  /* (Touch/Tap-Logik ist jetzt im Default-Selector .flip-wrap.flipped/[aria-expanded] oben) */
 
   /* USP */
   .usp { background:var(--bg2); }
@@ -1327,7 +1347,7 @@
     </div>
     <div class="prob-grid">
 
-      <div class="flip-wrap" onclick="this.classList.toggle('flipped')">
+      <button type="button" class="flip-wrap" aria-expanded="false">
         <div class="flip-inner">
           <div class="flip-front">
             <div class="prob-q">Mein ITler ist nicht erreichbar.</div>
@@ -1338,9 +1358,9 @@
             <p class="prob-a">Zu langsam, zu teuer oder einfach weg. Ich bin dein neuer Ansprechpartner – persönlich, verlässlich, erreichbar wann du mich brauchst.</p>
           </div>
         </div>
-      </div>
+      </button>
 
-      <div class="flip-wrap" onclick="this.classList.toggle('flipped')">
+      <button type="button" class="flip-wrap" aria-expanded="false">
         <div class="flip-inner">
           <div class="flip-front">
             <div class="prob-q">Es muss heute noch laufen.</div>
@@ -1351,9 +1371,9 @@
             <p class="prob-a">Internet weg, Outlook spinnt, Drucker streikt – mitten im Arbeitstag. Ruf an. Ich löse das. Heute noch.</p>
           </div>
         </div>
-      </div>
+      </button>
 
-      <div class="flip-wrap" onclick="this.classList.toggle('flipped')">
+      <button type="button" class="flip-wrap" aria-expanded="false">
         <div class="flip-inner">
           <div class="flip-front">
             <div class="prob-q">Meine IT ist zu groß geworden.</div>
@@ -1364,9 +1384,9 @@
             <p class="prob-a">Du hast keine Zeit mehr, dich darum zu kümmern – und willst dich um dein echtes Geschäft kümmern. Gib sie ab. Ich übernehme.</p>
           </div>
         </div>
-      </div>
+      </button>
 
-      <div class="flip-wrap" onclick="this.classList.toggle('flipped')">
+      <button type="button" class="flip-wrap" aria-expanded="false">
         <div class="flip-inner">
           <div class="flip-front">
             <div class="prob-q">Der Kollege hat IT nebenbei gemacht.</div>
@@ -1377,9 +1397,9 @@
             <p class="prob-a">Jetzt ist er weg, befördert oder überlastet. Klassisch. Ich lerne dein System, übernehme und halte es am Laufen.</p>
           </div>
         </div>
-      </div>
+      </button>
 
-      <div class="flip-wrap" onclick="this.classList.toggle('flipped')">
+      <button type="button" class="flip-wrap" aria-expanded="false">
         <div class="flip-inner">
           <div class="flip-front">
             <div class="prob-q">Ich will keine Ticketnummer.</div>
@@ -1390,9 +1410,9 @@
             <p class="prob-a">Kein Portal, kein anonymes Team, kein Rückruf nächste Woche. Schreib mir einfach – ich bin dran. Gerne per Du.</p>
           </div>
         </div>
-      </div>
+      </button>
 
-      <div class="flip-wrap" onclick="this.classList.toggle('flipped')">
+      <button type="button" class="flip-wrap" aria-expanded="false">
         <div class="flip-inner">
           <div class="flip-front">
             <div class="prob-q">Es ist 16:30 Uhr – mein IT-Dienstleister hat schon zu.</div>
@@ -1403,9 +1423,9 @@
             <p class="prob-a">Kein Problem. Ich hab keine klassischen Öffnungszeiten. Ruf an, schreib per WhatsApp – auch abends, am Wochenende oder an Feiertagen.</p>
           </div>
         </div>
-      </div>
+      </button>
 
-      <div class="flip-wrap" onclick="this.classList.toggle('flipped')">
+      <button type="button" class="flip-wrap" aria-expanded="false">
         <div class="flip-inner">
           <div class="flip-front">
             <div class="prob-q">Der Server ist abgestürzt – keiner weiß, was los ist.</div>
@@ -1416,9 +1436,9 @@
             <p class="prob-a">Panik im Büro, kein Zugriff auf Dateien, E-Mails weg. Ich schalte mich sofort remote drauf und bring das System wieder online.</p>
           </div>
         </div>
-      </div>
+      </button>
 
-      <div class="flip-wrap" onclick="this.classList.toggle('flipped')">
+      <button type="button" class="flip-wrap" aria-expanded="false">
         <div class="flip-inner">
           <div class="flip-front">
             <div class="prob-q">Mein Mitarbeiter kommt nicht mehr in sein Konto.</div>
@@ -1429,7 +1449,7 @@
             <p class="prob-a">Passwort vergessen, Account gesperrt, Zwei-Faktor-Problem – und der Termin ist in 20 Minuten. Meld dich. Ich löse das schnell und sicher.</p>
           </div>
         </div>
-      </div>
+      </button>
 
     </div>
   </div>

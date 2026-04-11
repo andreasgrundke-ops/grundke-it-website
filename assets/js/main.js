@@ -326,6 +326,20 @@ function initScrollTop(lenis) {
   });
 }
 
+/* ── Flip-Cards (Release-2 Schritt 4.5)
+   Tap-Toggle fuer .flip-wrap <button>-Elemente. Synchronisiert
+   aria-expanded und .flipped-Klasse fuer A11y + CSS-Trigger.
+   Hover-Effekt auf Pointer-Devices laeuft rein per CSS. */
+function initFlipCards() {
+  document.querySelectorAll('.flip-wrap').forEach(card => {
+    card.addEventListener('click', () => {
+      const isOpen = card.getAttribute('aria-expanded') === 'true';
+      card.setAttribute('aria-expanded', String(!isOpen));
+      card.classList.toggle('flipped', !isOpen);
+    });
+  });
+}
+
 /* ── Init ── */
 document.addEventListener('DOMContentLoaded', () => {
   initHamburger();
@@ -334,6 +348,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollNav();
   initVCard();
   initSchnellcheck();
+  initFlipCards();
   var lenis = initLenis();
   initScrollTop(lenis);
 });
