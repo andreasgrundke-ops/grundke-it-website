@@ -79,36 +79,14 @@ nav {
 }
 .nav-inner { height:100%; display:flex; align-items:center; justify-content:space-between; }
 .logo { display:flex; align-items:center; flex-shrink:0; }
-.logo-bar {
-  display:flex; align-items:center;
-  background:#0000FE;
-  padding:.55rem clamp(1.2rem,3vw,2rem);
-  border-radius:8px;
+/* Header-Logo: CI-konformes Badge-PNG (mobile-first, skaliert nach oben) */
+.logo-img {
+  display: block;
+  height: clamp(2.25rem, 8vw, 2.75rem); /* Mobile: ~36–44 px */
+  width: auto;
 }
-.logo-inner {
-  display:flex; flex-direction:column; line-height:1; position:relative;
-  padding:3px;
-}
-/* Eckklammer unten-links */
-.logo-inner::before {
-  content:''; position:absolute; bottom:0; left:0;
-  width:9px; height:11px;
-  border-left:2px solid rgba(255,255,255,.55); border-bottom:2px solid rgba(255,255,255,.55);
-}
-/* Eckklammer oben-rechts */
-.logo-inner::after {
-  content:''; position:absolute; top:0; right:0;
-  width:9px; height:11px;
-  border-right:2px solid rgba(255,255,255,.55); border-top:2px solid rgba(255,255,255,.55);
-}
-.logo-name {
-  font-family:var(--fh); font-weight:700; font-size:clamp(1.3rem,3vw,1.65rem);
-  color:#fff; letter-spacing:-.08em; line-height:1.05;
-}
-.logo-service {
-  font-family:var(--fb); font-weight:400; font-size:clamp(.55rem,1vw,.65rem);
-  color:rgba(255,255,255,.65); letter-spacing:.01em; line-height:1; margin-top:.12rem;
-  align-self:flex-end; margin-right:1px;
+@media (min-width: 1024px) {
+  .logo-img { height: clamp(2.75rem, 4vw, 3.25rem); } /* Desktop: ~44–52 px */
 }
 .nav-links { display:flex; align-items:center; gap:clamp(1rem,2vw,2rem); list-style:none; }
 .nav-links a { font-size:.875rem; font-weight:500; color:var(--text2); transition:color .2s; white-space:nowrap; }
