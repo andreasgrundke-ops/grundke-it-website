@@ -590,6 +590,27 @@
   .srv-name { font-family:var(--fh); font-size:.95rem; font-weight:700; color:var(--text); margin-bottom:.45rem; }
   .srv-desc { font-size:.83rem; color:var(--text2); line-height:1.6; }
 
+  /* Variante B: Warning-Akzent-Card fuer "Sicherheits-Updates & Handlungsbedarf"
+     Bewusster Bruch mit dem Primary-Blau, gelb statt rot - beruhigend, nicht alarmierend.
+     Border + Icon-Bg in Warning #cc8800, Card-Look sonst identisch zum Standard. */
+  .srv-card.srv-warn { border-color:rgba(204,136,0,.45); }
+  .srv-card.srv-warn:hover { border-color:#cc8800; box-shadow:0 8px 28px rgba(204,136,0,.18); }
+  .srv-card.srv-warn .srv-ico {
+    background:rgba(204,136,0,.15); border-color:rgba(204,136,0,.4); color:#e8a814;
+  }
+  .srv-warn-list {
+    list-style:none; display:flex; flex-direction:column; gap:.35rem;
+    margin-top:.7rem; padding-top:.6rem; border-top:1px dashed rgba(204,136,0,.3);
+  }
+  .srv-warn-list li {
+    position:relative; padding-left:.95rem; font-size:.74rem;
+    color:var(--text2); line-height:1.4;
+  }
+  .srv-warn-list li::before {
+    content:''; position:absolute; left:0; top:.55rem;
+    width:4px; height:4px; border-radius:50%; background:#cc8800;
+  }
+
   /* Leistungs-Detail-Blöcke (8 Themenbereiche, abgeleitet aus 496 realen Einsätzen) */
   .leist-intro { text-align:center; margin:3.5rem 0 2rem; }
   .leist-intro h3 { font-family:var(--fh); font-size:clamp(1.3rem,2.5vw,1.7rem); font-weight:800; color:var(--text); margin:.4rem 0 .6rem; letter-spacing:-.02em; }
@@ -1455,6 +1476,19 @@
       <div class="srv-card"><div class="srv-ico"><svg><use href="#ico-printer"/></svg></div><div class="srv-name">Drucker &amp; Peripherie</div><p class="srv-desc">Einrichtung, Treiber, Netzwerkdrucker, Kassensysteme – läuft oder wird gelöst.</p></div>
       <div class="srv-card"><div class="srv-ico"><svg><use href="#ico-cloud"/></svg></div><div class="srv-name">Cloud &amp; Hosting</div><p class="srv-desc">Website, E-Mail-Hosting, Cloud-Backup, M365 – DSGVO-konform betrieben.</p></div>
       <div class="srv-card"><div class="srv-ico"><svg><use href="#ico-cpu"/></svg></div><div class="srv-name">KI &amp; Automatisierung</div><p class="srv-desc">Wiederkehrende Aufgaben automatisieren, KI-Tools einführen – Zeit sparen.</p></div>
+
+      <!-- Kachel 9: Sicherheits-Updates & Handlungsbedarf (Task 3 Release 1) -->
+      <div class="srv-card srv-warn">
+        <div class="srv-ico"><svg><use href="#ico-alert"/></svg></div>
+        <div class="srv-name">Sicherheits-Updates &amp; Handlungsbedarf</div>
+        <p class="srv-desc">Ich beobachte den Markt und melde mich, wenn End-of-Life, Sicherheitslücken oder BSI-Warnungen für dich relevant werden – bei Software, Hardware oder ganzen Produktlinien. Du musst dich nicht melden. Ich melde mich bei dir.</p>
+        <ul class="srv-warn-list">
+          <li>Windows 10 / 11 Migration</li>
+          <li>Router- und Firewall-Checks (FritzBox, TP-Link, UniFi)</li>
+          <li>BSI-Warnungen im Blick</li>
+          <li>Software mit auslaufendem Support</li>
+        </ul>
+      </div>
     </div>
 
     <!-- Detail-Block: 8 Themenbereiche aus 496 realen Einsätzen -->
