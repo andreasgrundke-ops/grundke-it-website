@@ -21,8 +21,8 @@
  *   1.0.0 / 2026-04-11 — Initial Release-2 PWA-Setup
  */
 
-const CACHE_NAME    = 'grundke-it-v1.0.0';
-const RUNTIME_CACHE = 'grundke-it-runtime-v1';
+const CACHE_NAME    = 'grundke-it-v1.1.0';
+const RUNTIME_CACHE = 'grundke-it-runtime-v2';
 
 /* Pre-Cache: minimaler Kern fuer Offline-First-Boot */
 const PRECACHE_URLS = [
