@@ -175,6 +175,9 @@ button { font-family: var(--fb); cursor: pointer; }
 
 /* Inline-Kontakt-Buttons ausblenden — Sticky-Bar uebernimmt */
 .inline-cta { display: none !important; }
+@media (max-width: 767px) {
+  .inline-cta-mobile { display: none !important; }
+}
 
 /* ── Shimmer-Sweep auf Sticky-Bar + QR-Code ──
    1x sweep, dann 10s Pause. Gesamtzyklus 12s, davon 2s Bewegung. */
