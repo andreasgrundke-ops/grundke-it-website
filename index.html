@@ -1105,11 +1105,7 @@
     background:linear-gradient(90deg, transparent 0%, rgba(255,255,255,.08) 25%, rgba(255,255,255,.22) 50%, rgba(255,255,255,.08) 75%, transparent 100%);
     width:50%;
     transform:translateX(-100%) skewX(-20deg);
-    animation:shimmer-sweep 1.6s ease-in-out 8s infinite;
-  }
-  @keyframes shimmer-sweep {
-    0%   { transform:translateX(-100%) skewX(-20deg); }
-    100% { transform:translateX(300%) skewX(-20deg); }
+    animation:shimmer-sweep 12s ease-in-out 5s infinite;
   }
   .hero-qr a:hover {
     border-color:rgba(255,255,255,.4); transform:scale(1.05);
@@ -1331,7 +1327,7 @@
       <strong>Du hast eine Frage oder ein Problem?</strong>
       <span>Probier's einfach – ich bin erreichbar. Jetzt.</span>
     </div>
-    <div class="cb-actions inline-cta">
+    <div class="cb-actions inline-cta" style="display:none">
       <a href="tel:+491782584438" class="cb-btn cb-phone">
         <svg width="20" height="20"><use href="#ico-phone"/></svg>
         <span>Anrufen</span>

@@ -132,6 +132,7 @@ button { font-family: var(--fb); cursor: pointer; }
     background: linear-gradient(135deg, #0c4da2, #0000FE, #0a0a80);
     box-shadow: 0 -4px 16px rgba(0,0,254,.35), 0 -1px 0 rgba(255,255,255,.08) inset;
     padding-bottom: env(safe-area-inset-bottom);
+    overflow: hidden;
   }
   .sc-btn {
     flex: 1;
@@ -144,7 +145,6 @@ button { font-family: var(--fb); cursor: pointer; }
   }
   .sc-btn:last-child { border-right: none; }
   .sc-btn svg { width: 22px; height: 22px; }
-  .sc-wa { background: rgba(37,211,102,.15); }
   body.has-sticky-call { padding-bottom: calc(72px + env(safe-area-inset-bottom)); }
 }
 
@@ -170,18 +170,18 @@ button { font-family: var(--fb); cursor: pointer; }
   }
   .sc-btn:last-child { border-bottom: none; }
   .sc-btn svg { width: 22px; height: 22px; }
-  .sc-btn:hover { background: rgba(255,255,255,.1); }
-  .sc-wa:hover { background: rgba(37,211,102,.2); }
+  .sc-btn:hover { background: rgba(255,255,255,.12); }
 }
 
 /* Inline-Kontakt-Buttons ausblenden — Sticky-Bar uebernimmt */
 .inline-cta { display: none !important; }
 
-/* ── Shimmer-Sweep auf Sticky-Bar ──
-   Diagonaler Lichtbalken laeuft alle 8s ueber die Buttons */
+/* ── Shimmer-Sweep auf Sticky-Bar + QR-Code ──
+   1x sweep, dann 10s Pause. Gesamtzyklus 12s, davon 2s Bewegung. */
 @keyframes shimmer-sweep {
-  0%   { transform: translateX(-100%) skewX(-20deg); }
-  100% { transform: translateX(300%) skewX(-20deg); }
+  0%    { transform: translateX(-100%) skewX(-20deg); }
+  16%   { transform: translateX(300%) skewX(-20deg); }
+  100%  { transform: translateX(300%) skewX(-20deg); }
 }
 .sticky-contact::after {
   content: '';
@@ -198,10 +198,10 @@ button { font-family: var(--fb); cursor: pointer; }
     transparent 100%
   );
   width: 40%;
-  animation: shimmer-sweep 1.6s ease-in-out 8s infinite;
+  animation: shimmer-sweep 12s ease-in-out 5s infinite;
 }
 @media (prefers-reduced-motion: reduce) {
-  .sticky-contact::after { animation: none; display: none; }
+  .sticky-contact::after, .hero-qr a::after { animation: none; display: none; }
 }
 
 /* Release-2: Primary-/Accent-Flaeche mit subtilem radialen Highlight
