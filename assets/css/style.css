@@ -90,44 +90,118 @@ button { font-family: var(--fb); cursor: pointer; }
 .inner { max-width: var(--inner); margin: 0 auto; padding: 0 clamp(1rem,5vw,2.5rem); }
 .section-pad { padding: clamp(3.5rem,8vw,6.5rem) 0; }
 
-/* Release-2 (Schritt 6 + Fix): Sticky Call-CTA im CI-Look (Gradient + Cyan-Glow).
-   Identische Farb-DNA wie der "Du hast eine Frage"-Block. */
-.sticky-call { display: none; }
+/* ── Sticky Contact Bar ──
+   Mobile: Bottom-Leiste mit 3 Buttons nebeneinander
+   Desktop: Sidebar rechts, vertikal, mitscrollend */
+.sticky-contact {
+  position: fixed;
+  z-index: 1000;
+  display: flex;
+  isolation: isolate;
+}
+.sticky-contact::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 120% at 75% 50%, rgba(38,189,239,.22), transparent 60%),
+    radial-gradient(ellipse 50% 100% at 25% 50%, rgba(255,255,255,.10), transparent 55%);
+  pointer-events: none;
+  z-index: -1;
+}
+.sc-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  text-decoration: none;
+  color: #fff;
+  font-family: 'Manrope', Arial, sans-serif;
+  font-weight: 700;
+  transition: background .2s, transform .15s;
+}
+.sc-btn svg { flex-shrink: 0; filter: drop-shadow(0 1px 2px rgba(0,0,0,.3)); }
+.sc-btn span { text-shadow: 0 1px 2px rgba(0,0,0,.25); letter-spacing: .01em; }
+.sc-btn:active { transform: scale(.96); }
+
+/* ── Mobile: Bottom-Bar ── */
 @media (max-width: 767px) {
-  .sticky-call {
-    position: fixed; left: 0; right: 0; bottom: 0;
-    z-index: 1000;
-    display: flex;
-    align-items: center; justify-content: center;
-    gap: .75rem;
-    padding: .95rem 1rem calc(.95rem + env(safe-area-inset-bottom));
-    /* Gleicher Gradient wie .contact-bar */
+  .sticky-contact {
+    left: 0; right: 0; bottom: 0;
+    flex-direction: row;
     background: linear-gradient(135deg, #0c4da2, #0000FE, #0a0a80);
-    color: #ffffff;
-    font-family: 'Manrope', Arial, sans-serif;
-    font-weight: 700;
-    font-size: .95rem;
-    text-decoration: none;
     box-shadow: 0 -4px 16px rgba(0,0,254,.35), 0 -1px 0 rgba(255,255,255,.08) inset;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .sc-btn {
+    flex: 1;
+    flex-direction: column;
+    gap: .2rem;
+    padding: .65rem .25rem;
+    font-size: .7rem;
     min-height: 56px;
-    overflow: hidden;
-    isolation: isolate;
+    border-right: 1px solid rgba(255,255,255,.1);
   }
-  /* Radialer Cyan-Glow-Overlay (gleiches Pattern wie .contact-bar::before) */
-  .sticky-call::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 60% 120% at 75% 50%, rgba(38,189,239,.22), transparent 60%),
-      radial-gradient(ellipse 50% 100% at 25% 50%, rgba(255,255,255,.10), transparent 55%);
-    pointer-events: none;
-    z-index: -1;
-  }
-  .sticky-call:active { transform: translateY(1px); }
-  .sticky-call svg { flex-shrink: 0; filter: drop-shadow(0 1px 2px rgba(0,0,0,.3)); }
-  .sticky-call span { text-shadow: 0 1px 2px rgba(0,0,0,.25); letter-spacing: .01em; }
+  .sc-btn:last-child { border-right: none; }
+  .sc-btn svg { width: 22px; height: 22px; }
+  .sc-wa { background: rgba(37,211,102,.15); }
   body.has-sticky-call { padding-bottom: calc(72px + env(safe-area-inset-bottom)); }
+}
+
+/* ── Desktop: Sidebar rechts ── */
+@media (min-width: 768px) {
+  .sticky-contact {
+    right: 0; top: 50%; transform: translateY(-50%);
+    flex-direction: column;
+    background: linear-gradient(180deg, #0c4da2, #0000FE, #0a0a80);
+    border-radius: 12px 0 0 12px;
+    box-shadow: -4px 0 16px rgba(0,0,254,.25), 0 0 0 1px rgba(255,255,255,.08) inset;
+    overflow: hidden;
+  }
+  .sticky-contact::before {
+    border-radius: 12px 0 0 12px;
+  }
+  .sc-btn {
+    padding: .85rem .9rem;
+    font-size: .72rem;
+    flex-direction: column;
+    gap: .25rem;
+    border-bottom: 1px solid rgba(255,255,255,.1);
+  }
+  .sc-btn:last-child { border-bottom: none; }
+  .sc-btn svg { width: 22px; height: 22px; }
+  .sc-btn:hover { background: rgba(255,255,255,.1); }
+  .sc-wa:hover { background: rgba(37,211,102,.2); }
+}
+
+/* Inline-Kontakt-Buttons ausblenden — Sticky-Bar uebernimmt */
+.inline-cta { display: none !important; }
+
+/* ── Shimmer-Sweep auf Sticky-Bar ──
+   Diagonaler Lichtbalken laeuft alle 8s ueber die Buttons */
+@keyframes shimmer-sweep {
+  0%   { transform: translateX(-100%) skewX(-20deg); }
+  100% { transform: translateX(300%) skewX(-20deg); }
+}
+.sticky-contact::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255,255,255,.08) 25%,
+    rgba(255,255,255,.18) 50%,
+    rgba(255,255,255,.08) 75%,
+    transparent 100%
+  );
+  width: 40%;
+  animation: shimmer-sweep 1.6s ease-in-out 8s infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sticky-contact::after { animation: none; display: none; }
 }
 
 /* Release-2: Primary-/Accent-Flaeche mit subtilem radialen Highlight
