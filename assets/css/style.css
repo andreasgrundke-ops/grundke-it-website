@@ -285,12 +285,12 @@ nav {
 .logo:hover::before { filter: blur(18px); }
 .logo-img {
   display: block;
-  height: clamp(2rem, 7vw, 2.4rem); /* Mobile: ~32–38 px */
+  height: clamp(2.4rem, 8vw, 2.9rem); /* Mobile: ~38–46 px */
   width: auto;
 }
 @media (min-width: 1024px) {
-  /* Desktop: ~34–40 px — sauberer PNG-Downscale. */
-  .logo-img { height: clamp(2.1rem, 2.4vw, 2.4rem); }
+  /* Desktop: ~42–50 px. */
+  .logo-img { height: clamp(2.6rem, 3vw, 3.1rem); }
 }
 /* ── Location-Tag neben dem Logo (Desktop only, klickbar zu Google Maps) ── */
 .nav-loc {
