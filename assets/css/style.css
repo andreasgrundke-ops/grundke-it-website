@@ -129,8 +129,8 @@ button { font-family: var(--fb); cursor: pointer; }
   .sticky-contact {
     left: 0; right: 0; bottom: 0;
     flex-direction: row;
-    background: linear-gradient(135deg, #0c4da2, #0000FE, #0a0a80);
-    box-shadow: 0 -4px 16px rgba(0,0,254,.35), 0 -1px 0 rgba(255,255,255,.08) inset;
+    background: #0a0a2e; /* Fallback falls Button-Flaechen luecken */
+    box-shadow: 0 -4px 16px rgba(0,0,0,.35), 0 -1px 0 rgba(255,255,255,.08) inset;
     padding-bottom: env(safe-area-inset-bottom);
     overflow: hidden;
   }
@@ -141,7 +141,7 @@ button { font-family: var(--fb); cursor: pointer; }
     padding: .65rem .25rem;
     font-size: .7rem;
     min-height: 56px;
-    border-right: 1px solid rgba(255,255,255,.1);
+    border-right: 1px solid rgba(255,255,255,.18);
   }
   .sc-btn:last-child { border-right: none; }
   .sc-btn svg { width: 22px; height: 22px; }
@@ -153,9 +153,9 @@ button { font-family: var(--fb); cursor: pointer; }
   .sticky-contact {
     right: 0; top: 50%; transform: translateY(-50%);
     flex-direction: column;
-    background: linear-gradient(180deg, #0c4da2, #0000FE, #0a0a80);
+    background: #0a0a2e;
     border-radius: 12px 0 0 12px;
-    box-shadow: -4px 0 16px rgba(0,0,254,.25), 0 0 0 1px rgba(255,255,255,.08) inset;
+    box-shadow: -4px 0 16px rgba(0,0,0,.28), 0 0 0 1px rgba(255,255,255,.08) inset;
     overflow: hidden;
   }
   .sticky-contact::before {
@@ -166,12 +166,18 @@ button { font-family: var(--fb); cursor: pointer; }
     font-size: .72rem;
     flex-direction: column;
     gap: .25rem;
-    border-bottom: 1px solid rgba(255,255,255,.1);
+    border-bottom: 1px solid rgba(255,255,255,.18);
   }
   .sc-btn:last-child { border-bottom: none; }
   .sc-btn svg { width: 22px; height: 22px; }
-  .sc-btn:hover { background: rgba(255,255,255,.12); }
+  .sc-btn:hover { filter: brightness(1.1); }
 }
+
+/* ── Per-Button-Farben: identisch zur Kontakt-Bar "Frage/Problem"
+     Telefon = CI-Blau, WhatsApp = Gruen #25d366, E-Mail = Orange #d97706 ── */
+.sc-phone { background: linear-gradient(135deg, #0c4da2 0%, #0000FE 100%); }
+.sc-wa    { background: linear-gradient(135deg, #25d366 0%, #1fb557 100%); }
+.sc-mail  { background: linear-gradient(135deg, #e58800 0%, #b45309 100%); }
 
 /* Inline-Kontakt-Buttons ausblenden — Sticky-Bar uebernimmt */
 .inline-cta { display: none !important; }
@@ -249,32 +255,44 @@ nav {
   border-bottom: 1px solid var(--border);
 }
 .nav-inner { height:100%; display:flex; align-items:center; justify-content:space-between; }
-.logo { display:flex; align-items:center; flex-shrink:0; position:relative; isolation:isolate; }
-/* Header-Logo: CI-konformes Badge-PNG (mobile-first, skaliert nach oben).
-   Dezenter Cyan-/Visitenkarten-Blau-Glow als Highlight (gleiche DNA wie
-   .contact-bar / .sticky-call). */
+/* Header-Logo: CI-Badge auf Visitenkarten-Blau #0000FE mit statischem
+   Highlight (gleiche DNA wie .contact-bar – kein animierter Shimmer,
+   sondern ruhiger Licht-Effekt). */
+.logo {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  position: relative;
+  isolation: isolate;
+  background: linear-gradient(135deg, #0c4da2 0%, #0000FE 60%, #0a0a80 100%);
+  padding: .25rem .55rem;
+  border-radius: 10px;
+  box-shadow:
+    0 2px 10px rgba(0,0,254,.35),
+    0 0 0 1px rgba(255,255,255,.10) inset;
+  overflow: hidden;
+}
 .logo::before {
   content: '';
   position: absolute;
-  inset: -8px -14px;
+  inset: 0;
   z-index: -1;
   background:
-    radial-gradient(ellipse 70% 140% at 50% 50%, rgba(38,189,239,.22), transparent 65%),
-    radial-gradient(ellipse 60% 120% at 50% 50%, rgba(0,0,254,.18),   transparent 70%);
-  filter: blur(10px);
-  opacity: .85;
+    radial-gradient(ellipse 60% 120% at 75% 50%, rgba(38,189,239,.22), transparent 60%),
+    radial-gradient(ellipse 50% 100% at 25% 50%, rgba(255,255,255,.14), transparent 55%);
   pointer-events: none;
-  transition: opacity .25s ease, filter .25s ease;
 }
-.logo:hover::before { opacity: 1; filter: blur(14px); }
+.logo:hover { box-shadow: 0 3px 14px rgba(0,0,254,.45), 0 0 0 1px rgba(255,255,255,.14) inset; }
 .logo-img {
   display: block;
-  height: clamp(2.25rem, 8vw, 2.75rem); /* Mobile: ~36–44 px */
+  height: clamp(2.1rem, 7.5vw, 2.6rem); /* Mobile: ~34–42 px (Badge-Padding einrechnen) */
   width: auto;
-  filter: drop-shadow(0 2px 6px rgba(0,0,254,.35));
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,.35));
+  position: relative;
+  z-index: 1;
 }
 @media (min-width: 1024px) {
-  .logo-img { height: clamp(2.75rem, 4vw, 3.25rem); } /* Desktop: ~44–52 px */
+  .logo-img { height: clamp(2.6rem, 3.8vw, 3.1rem); } /* Desktop: ~42–50 px */
 }
 .nav-links { display:none; align-items:center; gap:clamp(1rem,2vw,2rem); list-style:none; }
 .nav-links a { font-size:.875rem; font-weight:500; color:var(--text2); transition:color .2s; white-space:nowrap; }

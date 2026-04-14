@@ -73,15 +73,10 @@
      Startseite-spezifische Styles
   ═══════════════════════════════════════════════ */
 
-  /* ── Platzhalter-Markierung (vor Launch entfernen!) ── */
-  .placeholder-marker {
-    background: rgba(204,136,0,.2) !important;
-    border: 1px dashed var(--warning) !important;
-    border-radius: 4px;
-    padding: 2px 6px;
-    color: var(--warning) !important;
-    font-weight: 700;
-  }
+  /* ── Platzhalter: live komplett ausblenden bis echte Google-Stimmen vorliegen.
+     HTML bleibt erhalten, damit Namen/Branche nach dem Einpflegen nur die
+     Klasse verlieren muessen. ── */
+  .placeholder-marker { display: none !important; }
 
   /* ── Kontakt-Bar ── */
   .contact-bar {
