@@ -997,7 +997,11 @@
   .nav-cta {
     background: var(--blue-vi) !important;
     color: #fff !important;
+    display: inline-flex !important;
+    align-items: center;
+    gap: .45rem;
   }
+  .nav-cta svg { stroke: currentColor; fill: none; }
 
   /* ── Hero Dots aktiv ── */
   .hero-dot.on {
@@ -1087,10 +1091,10 @@
   }
   .slide.active .hero-qr { opacity:1; }
   .hero-qr a {
-    display:block; border-radius:12px; overflow:hidden;
-    border:2px solid rgba(255,255,255,.15);
-    background:transparent; padding:0;
-    transition:border-color .2s,transform .2s,box-shadow .2s;
+    display:block; border-radius:14px; overflow:hidden;
+    background:#0000FE; padding:10px;
+    box-shadow:0 0 0 1px rgba(255,255,255,.22) inset, 0 6px 20px rgba(0,0,254,.35);
+    transition:transform .2s, box-shadow .2s;
     position:relative;
   }
   .hero-qr a::after {
@@ -1103,8 +1107,8 @@
     animation:shimmer-sweep 12s ease-in-out 5s infinite;
   }
   .hero-qr a:hover {
-    border-color:rgba(255,255,255,.4); transform:scale(1.05);
-    box-shadow:0 8px 28px rgba(0,0,254,.4);
+    transform:scale(1.05);
+    box-shadow:0 0 0 1px rgba(255,255,255,.35) inset, 0 10px 32px rgba(0,0,254,.5);
   }
   .hero-qr img { width:140px; height:140px; display:block; border-radius:10px; }
   .hero-qr span {
@@ -1170,6 +1174,7 @@
     <a href="/" class="logo" title="Grundke IT-Service – München Ost">
       <img class="logo-img" src="assets/img/logo-grundke-it-white.png" alt="Grundke IT-Service" />
     </a>
+    <a class="nav-loc" href="https://www.google.com/maps/place/IT-Service+-+Andreas+Grundke/@48.0944159,11.7631063,17z/data=!3m1!4b1!4m6!3m5!1s0x479de3eede6923f3:0x1ad9e3b1fcbd1081!8m2!3d48.0944123!4d11.7656812!16s%2Fg%2F11j7r45y6q" target="_blank" rel="noopener" aria-label="Standort auf Google Maps anzeigen"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>München Ost</a>
     <ul class="nav-links">
       <li><a href="#schnellcheck">IT-Schnellcheck</a></li>
       <li><a href="#leistungen">IT-Service</a></li>
@@ -1178,7 +1183,7 @@
       <li><a href="https://www.teamviewer.com/de/download/portal/windows/" target="_blank" rel="noopener">Fernwartung</a></li>
       <li><a href="empfehlungen/">Empfehlungen</a></li>
       <li><a href="#faq">FAQ</a></li>
-      <li><a href="tel:+491782584438" class="nav-cta">☎ Jetzt anrufen</a></li>
+      <li><a href="tel:+491782584438" class="nav-cta"><svg width="16" height="16" aria-hidden="true"><use href="#ico-phone"/></svg><span>Jetzt anrufen</span></a></li>
     </ul>
     <button class="hamburger" id="ham" aria-label="Menü öffnen">
       <span></span><span></span><span></span>
@@ -1215,7 +1220,7 @@
         </div>
         <div class="hero-qr">
           <a href="tree/" title="Alle Kontaktwege"><img src="assets/img/qr-tree.png" alt="QR-Code – Kontakt aufnehmen" width="140" height="140"/></a>
-          <span>Handy zur Hand?<br>Scannen &amp; Kanal wählen.</span>
+          <span>Scan mich.<br>Dann reden wir.</span>
         </div>
       </div>
     </div>
@@ -1236,7 +1241,7 @@
         </div>
         <div class="hero-qr">
           <a href="tree/" title="Alle Kontaktwege"><img src="assets/img/qr-tree.png" alt="QR-Code – Kontakt aufnehmen" width="140" height="140"/></a>
-          <span>Handy zur Hand?<br>Scannen &amp; Kanal wählen.</span>
+          <span>Scan mich.<br>Dann reden wir.</span>
         </div>
       </div>
     </div>
@@ -1257,7 +1262,7 @@
         </div>
         <div class="hero-qr">
           <a href="tree/" title="Alle Kontaktwege"><img src="assets/img/qr-tree.png" alt="QR-Code – Kontakt aufnehmen" width="140" height="140"/></a>
-          <span>Handy zur Hand?<br>Scannen &amp; Kanal wählen.</span>
+          <span>Scan mich.<br>Dann reden wir.</span>
         </div>
       </div>
     </div>
@@ -1278,7 +1283,7 @@
         </div>
         <div class="hero-qr">
           <a href="tree/" title="Alle Kontaktwege"><img src="assets/img/qr-tree.png" alt="QR-Code – Kontakt aufnehmen" width="140" height="140"/></a>
-          <span>Handy zur Hand?<br>Scannen &amp; Kanal wählen.</span>
+          <span>Scan mich.<br>Dann reden wir.</span>
         </div>
       </div>
     </div>
@@ -1299,7 +1304,7 @@
         </div>
         <div class="hero-qr">
           <a href="tree/" title="Alle Kontaktwege"><img src="assets/img/qr-tree.png" alt="QR-Code – Kontakt aufnehmen" width="140" height="140"/></a>
-          <span>Handy zur Hand?<br>Scannen &amp; Kanal wählen.</span>
+          <span>Scan mich.<br>Dann reden wir.</span>
         </div>
       </div>
     </div>
@@ -2116,7 +2121,7 @@
       <details class="faq-item"><summary>Was unterscheidet dich von einem großen IT-Systemhaus? <span class="faq-ico">+</span></summary><div class="faq-a">Kein Ticketsystem, kein anonymes Team, kein Rückruf nächste Woche. Du hast einen festen Ansprechpartner – mich. Ich lerne dein System, denke mit und handle proaktiv.</div></details>
       <details class="faq-item"><summary>Was passiert wenn du im Urlaub oder krank bist? <span class="faq-ico">+</span></summary><div class="faq-a">Ich habe ein Netzwerk aus vertrauenswürdigen Kollegen, die im Notfall einspringen. Du wirst rechtzeitig informiert und bist nie ohne Ansprechpartner.</div></details>
       <details class="faq-item"><summary>Kannst du auch bei KI und Automatisierung helfen? <span class="faq-ico">+</span></summary><div class="faq-a">Ja – ich helfe dir dabei, wiederkehrende Aufgaben zu automatisieren, KI-Tools sinnvoll einzuführen und Zeit im Büroalltag zu sparen. Als Gen-X-IT-Profi bin ich selbst täglich mit KI-Werkzeugen unterwegs.</div></details>
-      <details class="faq-item"><summary>Welche Region betreust du? <span class="faq-ico">+</span></summary><div class="faq-a">Vor Ort bin ich schnell erreichbar in Grasbrunn, Ottobrunn, Vaterstetten, Haar, Neubiberg, Putzbrunn und Hohenbrunn – ca. 15 km Radius. Per Remote-Support helfe ich deutschlandweit. Für Vor-Ort-Einsätze bleibe ich bewusst im Münchner Osten: auf der anderen Seite Münchens steh ich im Stau – und das hilft dir nicht.</div></details>
+      <details class="faq-item"><summary>Welche Region betreust du? <span class="faq-ico">+</span></summary><div class="faq-a">Vor Ort bin ich schnell erreichbar in Grasbrunn, Ottobrunn, Vaterstetten, Haar, Neubiberg, Putzbrunn und Hohenbrunn – ca. 25 km Radius. Per Remote-Support helfe ich deutschlandweit. Für Vor-Ort-Einsätze bleibe ich bewusst im Münchner Osten: auf der anderen Seite Münchens steh ich im Stau – und das hilft dir nicht.</div></details>
       <details class="faq-item"><summary>Mein WLAN funktioniert nicht mehr – was kann ich tun? <span class="faq-ico">+</span></summary><div class="faq-a">Ruf mich an oder schreib auf WhatsApp. Die meisten WLAN-Probleme lassen sich remote lösen – in unter einer Stunde. Ich greife mich per TeamViewer auf deinen Router oder Rechner auf und behebe den Fehler, ohne dass ich vor Ort kommen muss. Wenn Hardware kaputt ist, bin ich schnell bei dir. Einsatzgebiet: Grasbrunn, Ottobrunn, Vaterstetten, Haar, Neubiberg und Umgebung München Ost.</div></details>
       <details class="faq-item"><summary>Mein IT-Betreuer ist nicht mehr erreichbar – wer hilft mir kurzfristig? <span class="faq-ico">+</span></summary><div class="faq-a">Das ist einer der häufigsten Gründe warum Leute bei mir anrufen. Ich übernehme auch kurzfristig – ohne langen Onboarding-Prozess. Ein kurzes Erstgespräch, Zugang zu deinen Systemen, und ich kann sofort loslegen. Ruf einfach an: 0178 258 44 38.</div></details>
       <details class="faq-item"><summary>Gibt es IT-Support auch abends, am Wochenende oder an Feiertagen? <span class="faq-ico">+</span></summary><div class="faq-a">Ja – ich habe keine klassischen Öffnungszeiten. Schreib mir auf WhatsApp oder ruf an, wann das Problem auftritt. Managed-Kunden werden bevorzugt behandelt. Für alle anderen melde ich mich so schnell wie möglich – auch außerhalb der üblichen Bürozeiten.</div></details>
@@ -2142,7 +2147,7 @@
 
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:1.5rem;margin-top:2.5rem;">
       <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:1.8rem;">
-        <div style="font-family:var(--fm);font-size:.68rem;color:var(--cyan);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1rem;">Vor-Ort-Einsatz · ~15 km Radius</div>
+        <div style="font-family:var(--fm);font-size:.68rem;color:var(--cyan);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1rem;">Vor-Ort-Einsatz · ~25 km Radius</div>
         <div style="font-family:var(--fh);font-size:1rem;font-weight:700;color:var(--text);margin-bottom:.8rem;">Schnell bei dir – ohne Stau</div>
         <p style="font-size:.85rem;color:var(--text2);line-height:1.7;margin-bottom:1rem;">Grasbrunn · Ottobrunn · Vaterstetten · Haar · Neubiberg · Putzbrunn · Hohenbrunn · Baldham · Parsdorf · Zorneding · Eglharting</p>
         <p style="font-size:.78rem;color:var(--text3);line-height:1.6;">Ich bleibe bewusst im Münchner Osten. Auf der anderen Seite Münchens steh ich im Stau – und das hilft dir nicht wenn dein Server steht.</p>
@@ -2179,7 +2184,7 @@
       <a href="https://wa.me/491782584438" target="_blank" rel="noopener" class="btn-wa"><svg width="20" height="20"><use href="#ico-wa"/></svg> WhatsApp</a>
       <a href="mailto:info@grundke-it.de?subject=Anfrage%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0AMein%20Anliegen%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fwww.grundke-it.de%2Fdatenschutz%2F)." class="btn-email" style="padding:1rem 2rem;font-size:.95rem;"><svg width="20" height="20"><use href="#ico-mail"/></svg> E-Mail schreiben</a>
     </div>
-    <p class="cta-region">Einsatzgebiet: Grasbrunn · Ottobrunn · Vaterstetten · Haar · Neubiberg · München Ost · ~15 km Radius</p>
+    <p class="cta-region">Einsatzgebiet: Grasbrunn · Ottobrunn · Vaterstetten · Haar · Neubiberg · München Ost · ~25 km Radius</p>
   </div>
 </section>
 

@@ -19,6 +19,9 @@
   --accent:    #0c4da2;
   --cyan:      #26bdef;
   --cyan-dim:  rgba(38,189,239,0.12);
+  --blue-vi:     #0000FE;               /* Visitenkarten-Blau */
+  --blue-vi-dim: rgba(0,0,254,.12);
+  --blue-vi-glow:rgba(0,0,254,.25);
   --text:      #f1f5f9;
   --text2:     #94a3b8;
   --text3:     #64748b;
@@ -151,7 +154,9 @@ button { font-family: var(--fb); cursor: pointer; }
 /* ── Desktop: Sidebar rechts ── */
 @media (min-width: 768px) {
   .sticky-contact {
-    right: 0; top: 50%; transform: translateY(-50%);
+    /* Oberhalb des Hero-Slider-Pfeils (der sitzt bei top:50%) — damit die
+       Slider-Navigation rechts nicht verdeckt wird. */
+    right: 0; top: 22%;
     flex-direction: column;
     background: #0a0a2e;
     border-radius: 12px 0 0 12px;
@@ -255,50 +260,84 @@ nav {
   border-bottom: 1px solid var(--border);
 }
 .nav-inner { height:100%; display:flex; align-items:center; justify-content:space-between; }
-/* Header-Logo: CI-Badge auf Visitenkarten-Blau #0000FE mit statischem
-   Highlight (gleiche DNA wie .contact-bar – kein animierter Shimmer,
-   sondern ruhiger Licht-Effekt). */
+/* Header-Logo: weisser Schriftzug mit kraeftigem blauem Glow
+   (kein Badge — das Licht ist der Akzent). */
 .logo {
   display: flex;
   align-items: center;
   flex-shrink: 0;
   position: relative;
   isolation: isolate;
-  background: linear-gradient(135deg, #0c4da2 0%, #0000FE 60%, #0a0a80 100%);
-  padding: .25rem .55rem;
-  border-radius: 10px;
-  box-shadow:
-    0 2px 10px rgba(0,0,254,.35),
-    0 0 0 1px rgba(255,255,255,.10) inset;
-  overflow: hidden;
 }
 .logo::before {
   content: '';
   position: absolute;
-  inset: 0;
+  inset: -18px -28px;
   z-index: -1;
   background:
-    radial-gradient(ellipse 60% 120% at 75% 50%, rgba(38,189,239,.22), transparent 60%),
-    radial-gradient(ellipse 50% 100% at 25% 50%, rgba(255,255,255,.14), transparent 55%);
+    radial-gradient(ellipse 70% 140% at 50% 50%, rgba(38,189,239,.45), transparent 65%),
+    radial-gradient(ellipse 55% 110% at 50% 50%, rgba(0,0,254,.55),   transparent 70%);
+  filter: blur(14px);
+  opacity: 1;
   pointer-events: none;
+  transition: filter .25s ease, opacity .25s ease;
 }
-.logo:hover { box-shadow: 0 3px 14px rgba(0,0,254,.45), 0 0 0 1px rgba(255,255,255,.14) inset; }
+.logo:hover::before { filter: blur(18px); }
 .logo-img {
   display: block;
-  height: clamp(2.1rem, 7.5vw, 2.6rem); /* Mobile: ~34–42 px (Badge-Padding einrechnen) */
+  height: clamp(2rem, 7vw, 2.4rem); /* Mobile: ~32–38 px */
   width: auto;
-  filter: drop-shadow(0 1px 2px rgba(0,0,0,.35));
-  position: relative;
-  z-index: 1;
 }
 @media (min-width: 1024px) {
-  .logo-img { height: clamp(2.6rem, 3.8vw, 3.1rem); } /* Desktop: ~42–50 px */
+  /* Desktop: ~34–40 px — sauberer PNG-Downscale. */
+  .logo-img { height: clamp(2.1rem, 2.4vw, 2.4rem); }
 }
+/* ── Location-Tag neben dem Logo (Desktop only, klickbar zu Google Maps) ── */
+.nav-loc {
+  display: none;
+  margin-left: .85rem;
+  padding: .22rem .7rem;
+  border-radius: 999px;
+  background: var(--cyan-dim);
+  border: 1px solid rgba(38,189,239,.35);
+  color: var(--cyan);
+  font-family: var(--fm);
+  font-size: .7rem;
+  font-weight: 600;
+  letter-spacing: .05em;
+  white-space: nowrap;
+  line-height: 1.25;
+  align-items: center;
+  gap: .35rem;
+  text-decoration: none;
+  transition: background .2s, border-color .2s, color .2s, transform .15s;
+}
+.nav-loc:hover {
+  background: rgba(38,189,239,.22);
+  border-color: var(--cyan);
+  color: #fff;
+  transform: translateY(-1px);
+}
+.nav-loc svg { width: 11px; height: 11px; stroke: currentColor; fill: none; flex-shrink: 0; }
+@media (min-width: 768px) { .nav-loc { display: inline-flex; } }
+
 .nav-links { display:none; align-items:center; gap:clamp(1rem,2vw,2rem); list-style:none; }
 .nav-links a { font-size:.875rem; font-weight:500; color:var(--text2); transition:color .2s; white-space:nowrap; }
 .nav-links a:hover { color:var(--cyan); }
-.nav-cta { background:var(--cyan); color:#0f1117 !important; padding:.5rem 1.3rem; border-radius:8px; font-weight:700 !important; font-size:.85rem !important; transition:opacity .2s,transform .15s !important; }
-.nav-cta:hover { opacity:.88; transform:translateY(-1px); }
+.nav-cta {
+  background:var(--blue-vi) !important;
+  color:#fff !important;
+  padding:.5rem 1.1rem;
+  border-radius:8px;
+  font-weight:700 !important;
+  font-size:.85rem !important;
+  transition:background .2s, transform .15s, box-shadow .2s !important;
+  display:inline-flex !important;
+  align-items:center;
+  gap:.45rem;
+}
+.nav-cta svg { stroke: currentColor; fill: none; flex-shrink: 0; }
+.nav-cta:hover { transform:translateY(-1px); box-shadow: 0 4px 14px var(--blue-vi-glow); }
 .hamburger { display:flex; flex-direction:column; gap:5px; background:none; border:none; padding:.4rem; cursor:pointer; }
 .hamburger span { display:block; width:24px; height:2px; background:var(--text); border-radius:2px; transition:transform .3s,opacity .3s; }
 .hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }

@@ -21,7 +21,7 @@
  *   1.0.0 / 2026-04-11 — Initial Release-2 PWA-Setup
  */
 
-const CACHE_NAME    = 'grundke-it-v1.2.2';
+const CACHE_NAME    = 'grundke-it-v1.3.6';
 const RUNTIME_CACHE = 'grundke-it-runtime-v2';
 
 /* Pre-Cache: minimaler Kern fuer Offline-First-Boot */
@@ -34,7 +34,7 @@ const PRECACHE_URLS = [
   '/assets/css/fonts.css',
   '/assets/js/main.js',
   '/assets/js/lenis.min.js',
-  '/assets/img/logo-grundke-it-badge.png',
+  '/assets/img/logo-grundke-it-white.png',
   '/favicon.ico',
   '/favicon-32x32.png',
   '/favicon-16x16.png',
