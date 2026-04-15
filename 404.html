@@ -21,7 +21,7 @@
   <meta name="msapplication-TileImage" content="/android-chrome-192x192.png"/>
   <link rel="stylesheet" href="/assets/css/style.css"/>
   <style>
-    .err-wrap { margin-top:var(--nav-h); min-height:calc(100vh - var(--nav-h)); display:flex; align-items:center; justify-content:center; padding:2rem; text-align:center; }
+    .err-wrap { margin-top:var(--nav-h); min-height:calc(100vh - var(--nav-h) - 80px); display:flex; align-items:center; justify-content:center; padding:2rem; text-align:center; }
     .err-code { font-family:var(--fm); font-size:clamp(5rem,15vw,9rem); font-weight:600; color:var(--border); letter-spacing:-.05em; line-height:1; margin-bottom:1rem; }
     .err-title { font-family:var(--fh); font-size:clamp(1.4rem,3vw,2rem); font-weight:800; color:var(--text); margin-bottom:.8rem; }
     .err-sub { font-size:.95rem; color:var(--text2); max-width:400px; margin:0 auto 2rem; line-height:1.7; }
@@ -47,16 +47,25 @@
 <main id="main">
 <div class="err-wrap">
   <div>
-    <div class="err-code">404</div>
-    <div class="err-title">Seite nicht gefunden.</div>
-    <p class="err-sub">Die gesuchte Seite existiert nicht oder wurde verschoben. Kein Problem – einfach zurück zur Startseite.</p>
+    <div class="err-code" aria-hidden="true">404</div>
+    <h1 class="err-title">Seite nicht gefunden.</h1>
+    <p class="err-sub">Die gesuchte Seite existiert nicht oder wurde verschoben. Kein Problem – einfach zurück zur Startseite oder direkt anrufen.</p>
     <div class="err-btns">
       <a href="/" class="btn-p">Zur Startseite</a>
-      <a href="tel:+491782584438" class="btn-g">☎ Anrufen</a>
+      <a href="tel:+491782584438" class="btn-g">☎ 0178 258 44 38</a>
     </div>
   </div>
 </div>
 </main>
+
+<footer class="site-footer">
+  <div class="inner">
+    <div class="foot-bottom">
+      <span>&copy; 2026 Grundke IT-Service · Andreas Grundke · Beethovenring 16 · 85630 Grasbrunn</span>
+      <span class="foot-ci">CI 2026.01 · grundke-it.de</span>
+    </div>
+  </div>
+</footer>
 
 <script src="/assets/js/main.js"></script>
 </body>
