@@ -76,9 +76,27 @@
     },
     "areaServed":["Grasbrunn","Ottobrunn","Vaterstetten","Haar","Neubiberg","Putzbrunn","Hohenbrunn","München Ost"],
     "priceRange":"€€",
+    "paymentAccepted":"Invoice, SEPA, PayPal, Cash",
+    "currenciesAccepted":"EUR",
+    "openingHoursSpecification":[{
+      "@type":"OpeningHoursSpecification",
+      "dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+      "opens":"07:00",
+      "closes":"22:00"
+    }],
+    "geo":{
+      "@type":"GeoCoordinates",
+      "latitude":48.0944,
+      "longitude":11.7657
+    },
+    "hasMap":"https://www.google.com/maps/place/IT-Service+-+Andreas+Grundke/@48.0944123,11.7656812,17z",
+    "image":"https://www.grundke-it.de/assets/img/logo-grundke-it-badge.png",
+    "logo":"https://www.grundke-it.de/assets/img/logo-grundke-it-badge.png",
     "founder":{"@type":"Person","name":"Andreas Grundke"}
   }
   </script>
+  <!-- TODO Andy: Oeffnungszeiten (07:00-22:00 Mo-So) sind eine konservative Annahme fuer die LocalBusiness-Struktur. Bitte bestaetigen oder Zeiten anpassen. -->
+  <!-- TODO Andy: sameAs-Profile (LinkedIn, Google Business, Facebook etc.) sind bewusst nicht im Schema — sobald verifizierte URLs vorliegen, als "sameAs":[...] ergaenzen. -->
 
   <style>
   /* ═══════════════════════════════════════════════
