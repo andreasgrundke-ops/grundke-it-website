@@ -154,9 +154,9 @@ button { font-family: var(--fb); cursor: pointer; }
 /* ── Desktop: Sidebar rechts ── */
 @media (min-width: 768px) {
   .sticky-contact {
-    /* Oberhalb des Hero-Slider-Pfeils (der sitzt bei top:50%) — damit die
-       Slider-Navigation rechts nicht verdeckt wird. */
-    right: 0; top: 22%;
+    /* Knapp unter der Nav-Leiste — damit der Hero-Slider-Pfeil rechts
+       (der bei top:50% sitzt) klar sichtbar bleibt. */
+    right: 0; top: calc(var(--nav-h) + 24px);
     flex-direction: column;
     background: #0a0a2e;
     border-radius: 12px 0 0 12px;
