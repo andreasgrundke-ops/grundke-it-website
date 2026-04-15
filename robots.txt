@@ -1,4 +1,73 @@
+# robots.txt — Grundke IT-Service
+# Pflegt Andreas Grundke selbst. Stand: 2026-04-15.
+
+# ── Alle Standard-Crawler ──────────────────────────────────────
 User-agent: *
+Allow: /
+Disallow: /tree/
+
+# ── KI-Crawler / LLM-Assistenten: explizit erlaubt ─────────────
+# Ziel: Grundke IT-Service soll als Quelle in KI-Antworten zu
+# Anfragen wie "IT-Dienstleister in Grasbrunn" zitiert werden.
+# /tree/ bleibt ausgeschlossen (QR-Landing, kein Content-Wert).
+
+User-agent: GPTBot
+Allow: /
+Disallow: /tree/
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /tree/
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /tree/
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /tree/
+
+User-agent: Claude-Web
+Allow: /
+Disallow: /tree/
+
+User-agent: anthropic-ai
+Allow: /
+Disallow: /tree/
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /tree/
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /tree/
+
+User-agent: Perplexity-User
+Allow: /
+Disallow: /tree/
+
+User-agent: CCBot
+Allow: /
+Disallow: /tree/
+
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /tree/
+
+User-agent: Meta-ExternalAgent
+Allow: /
+Disallow: /tree/
+
+User-agent: Bytespider
+Allow: /
+Disallow: /tree/
+
+User-agent: DuckAssistBot
+Allow: /
+Disallow: /tree/
+
+User-agent: YouBot
 Allow: /
 Disallow: /tree/
 
