@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1200 630" width="1200" height="630">
+  <title>Grundke IT-Service – Dein ITler geht nicht ran? Ich schon.</title>
+  <defs>
+    <linearGradient id="bg4" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0"   stop-color="#0f1117"/>
+      <stop offset=".7"  stop-color="#141826"/>
+      <stop offset="1"   stop-color="#1a1f2e"/>
+    </linearGradient>
+    <radialGradient id="glow4" cx="15%" cy="30%" r="70%">
+      <stop offset="0"   stop-color="#26bdef" stop-opacity=".3"/>
+      <stop offset=".55" stop-color="#0c4da2" stop-opacity=".12"/>
+      <stop offset="1"   stop-color="#0c4da2" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow4b" cx="95%" cy="95%" r="50%">
+      <stop offset="0"   stop-color="#0000FE" stop-opacity=".25"/>
+      <stop offset="1"   stop-color="#0000FE" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="stripe4" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0"   stop-color="#26bdef" stop-opacity="0"/>
+      <stop offset=".5"  stop-color="#26bdef" stop-opacity="1"/>
+      <stop offset="1"   stop-color="#26bdef" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg4)"/>
+  <rect width="1200" height="630" fill="url(#glow4)"/>
+  <rect width="1200" height="630" fill="url(#glow4b)"/>
+
+  <!-- Vertikale Accent Stripes (wie im Hero-Slider) -->
+  <rect x="0"    y="70" width="6" height="490" fill="url(#stripe4)"/>
+  <rect x="1194" y="70" width="6" height="490" fill="url(#stripe4)"/>
+
+  <!-- Tag -->
+  <g transform="translate(85,118)">
+    <rect x="0" y="8" width="26" height="2" fill="#26bdef"/>
+    <text x="38" y="14" fill="#26bdef" font-family="Arial,Helvetica,sans-serif" font-size="20" letter-spacing="3" font-weight="600">IT-NOTDIENST · MÜNCHEN OST</text>
+  </g>
+
+  <!-- Headline (identisch zur Hero-H1) -->
+  <g font-family="Arial Black,Arial,Helvetica,sans-serif" font-weight="900" letter-spacing="-2.5">
+    <text x="85" y="225" fill="#f1f5f9" font-size="76">Dein ITler geht</text>
+    <text x="85" y="305" fill="#f1f5f9" font-size="76">nicht ran?</text>
+    <text x="85" y="412" fill="#26bdef" font-size="96" letter-spacing="-3">Ich schon.</text>
+  </g>
+
+  <!-- Sub -->
+  <text x="85" y="462" fill="#94a3b8" font-family="Arial,Helvetica,sans-serif" font-size="22">Kein Ticket · kein Warten · gerne per Du</text>
+
+  <!-- Phone-Block unten -->
+  <g transform="translate(85,500)">
+    <rect x="0" y="0" width="520" height="88" rx="12" fill="#26bdef"/>
+    <text x="30" y="38" fill="#0f1117" font-family="Arial,Helvetica,sans-serif" font-size="16" font-weight="700" letter-spacing="3">JETZT ANRUFEN</text>
+    <text x="30" y="76" fill="#0f1117" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="36" letter-spacing="-1">0178 258 44 38</text>
+  </g>
+
+  <!-- Logo unten rechts -->
+  <image xlink:href="../logo-grundke-it-white.png" x="820" y="515" width="300" height="100"/>
+</svg>
