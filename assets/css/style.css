@@ -412,3 +412,54 @@ nav {
   html { font-size:16px; }
   .inner { max-width:1440px; }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   A11y — Release 3 Audit-Fix
+   Focus-Indikator, Reduced-Motion, Skip-Link
+═══════════════════════════════════════════════════════════════ */
+
+/* ── Fokus-Indikator CI-konform (Accent Cyan) ── */
+*:focus-visible {
+  outline: 3px solid var(--cyan);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+/* Buttons / Links mit eigener border-radius respektieren das weiterhin */
+.btn-p:focus-visible, .btn-g:focus-visible, .btn-wa:focus-visible,
+.btn-tel:focus-visible, .btn-email:focus-visible, .btn-ghost:focus-visible,
+.nav-cta:focus-visible {
+  outline: 3px solid var(--cyan);
+  outline-offset: 3px;
+}
+
+/* ── Reduced Motion — vestibulaer empfindliche Nutzer ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Skip-Link zum Hauptinhalt ── */
+.skip-link {
+  position: absolute;
+  top: 0; left: 0;
+  transform: translateY(-120%);
+  z-index: 10000;
+  padding: .75rem 1.2rem;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--fb);
+  font-weight: 700;
+  font-size: .9rem;
+  text-decoration: none;
+  border-radius: 0 0 8px 0;
+  transition: transform .2s ease-out;
+}
+.skip-link:focus {
+  transform: translateY(0);
+  outline: 3px solid var(--cyan);
+  outline-offset: 2px;
+}
