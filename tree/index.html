@@ -219,17 +219,46 @@
     position: relative; overflow: hidden;
   }
 
-  /* Shimmer on tap */
-  .btn::after {
+  /* ── Auto-Shimmer: lauft alle 10s einmal sanft ueber jeden Button ── */
+  .btn::before,
+  .btn-referral::before,
+  .btn-dual::before {
     content: '';
-    position: absolute; inset: 0;
-    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,.08) 50%, transparent 100%);
-    transform: translateX(-100%);
-    transition: transform .4s;
+    position: absolute;
+    top: 0; bottom: 0;
+    left: -60%;
+    width: 55%;
+    background: linear-gradient(
+      100deg,
+      transparent 0%,
+      rgba(255,255,255,0) 35%,
+      rgba(255,255,255,.38) 50%,
+      rgba(255,255,255,0) 65%,
+      transparent 100%
+    );
+    transform: skewX(-18deg);
+    pointer-events: none;
+    z-index: 2;
+    animation: shimmerLoop 10s ease-in-out infinite;
   }
 
-  .btn:active::after { transform: translateX(100%); }
-  .btn:active { transform: scale(.97); }
+  @keyframes shimmerLoop {
+    0%   { left: -60%; }
+    8%   { left: 160%; }  /* ~0.8s Durchlauf, 9.2s Pause */
+    100% { left: 160%; }
+  }
+
+  /* Versatz pro Button — damit nicht alle synchron blinken */
+  .btn-phone::before    { animation-delay: 0s;    }
+  .btn-wa::before       { animation-delay: 1.4s;  }
+  .btn-mail::before     { animation-delay: 2.8s;  }
+  .btn-referral::before { animation-delay: 4.2s;  }
+  .btn-vcard-v2::before { animation-delay: 5.6s;  }
+  .btn-web-v2::before   { animation-delay: 7.0s;  }
+
+  .btn:active,
+  .btn-referral:active,
+  .btn-dual:active { transform: scale(.97); }
 
   /* Phone */
   .btn-phone {
@@ -262,18 +291,6 @@
     transform: translateY(-2px);
   }
 
-  /* vCard */
-  .btn-vcard {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    color: var(--text);
-  }
-  .btn-vcard:hover {
-    border-color: rgba(255,255,255,.2);
-    transform: translateY(-2px);
-  }
-
-
   /* Button icon */
   .btn-ico {
     width: 38px; height: 38px; flex-shrink: 0;
@@ -284,7 +301,6 @@
   .btn-phone .btn-ico { background: rgba(255,255,255,.15); }
   .btn-wa    .btn-ico { background: rgba(0,0,0,.12); }
   .btn-mail  .btn-ico { background: rgba(0,0,0,.12); color: #fff; }
-  .btn-vcard .btn-ico { background: rgba(255,255,255,.06); color: var(--text2); }
 
   .btn-ico svg { width: 20px; height: 20px; }
 
@@ -317,20 +333,50 @@
 
   /* ── Secondary Row (vCard + Website) ── */
   .actions-row {
-    display: flex; gap: .6rem; margin-top: .8rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .7rem; margin-top: .9rem;
     animation: fadeUp .5s .25s both;
   }
-  .btn-compact {
-    flex: 1; display: flex; align-items: center; justify-content: center;
-    gap: .4rem; padding: .7rem .6rem;
-    border-radius: 10px; border: 1px solid var(--border);
-    background: var(--bg3); color: var(--text2);
-    font-family: var(--fb); font-weight: 500; font-size: .78rem;
+
+  .btn-dual {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: .45rem;
+    padding: 1rem .6rem;
+    border-radius: 12px;
+    font-family: var(--fb); font-weight: 700; font-size: .85rem;
     text-decoration: none; cursor: pointer;
-    transition: border-color .2s, color .2s, transform .15s;
+    text-align: center; line-height: 1.2;
+    position: relative; overflow: hidden;
+    transition: transform .18s, box-shadow .18s, background .18s, border-color .18s;
   }
-  .btn-compact:hover { border-color: var(--cyan); color: var(--cyan); transform: translateY(-1px); }
-  .btn-compact svg { color: var(--text3); flex-shrink: 0; }
+  .btn-dual svg { width: 22px; height: 22px; flex-shrink: 0; }
+
+  /* Visitenkarte speichern — dezent aber markant (Cyan-Outline + Akzent-Glow) */
+  .btn-vcard-v2 {
+    background: var(--bg3);
+    border: 1.5px solid var(--cyan);
+    color: var(--cyan);
+    box-shadow: inset 0 0 0 1px rgba(38,189,239,.08);
+  }
+  .btn-vcard-v2:hover {
+    background: rgba(38,189,239,.10);
+    box-shadow: 0 8px 24px rgba(38,189,239,.28);
+    transform: translateY(-2px);
+  }
+
+  /* Website besuchen — gefuellt Cyan, dunkler Text fuer Kontrast */
+  .btn-web-v2 {
+    background: var(--cyan);
+    color: #0b1220;
+    border: 1.5px solid var(--cyan);
+  }
+  .btn-web-v2:hover {
+    background: #44c9f2;
+    box-shadow: 0 8px 28px rgba(38,189,239,.45);
+    transform: translateY(-2px);
+  }
 
   /* ── Footer ── */
   .foot {
@@ -356,31 +402,57 @@
     to   { opacity:1; transform:translateY(0); }
   }
 
-  /* ── Referral Block ── */
-  .referral-block {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.10);
-    border-radius: 12px;
-    padding: 16px 20px;
-    margin: 12px 0;
-    text-align: center;
+  /* ── Referral CTA (klickbarer Gradient-Button → WhatsApp-Share) ── */
+  .btn-referral {
+    display: flex; align-items: center; gap: .9rem;
+    padding: .95rem 1.1rem;
+    margin: 1rem 0 .2rem;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #0c4da2 0%, #1763c6 50%, #26bdef 100%);
+    color: #fff;
+    text-decoration: none; cursor: pointer;
+    position: relative; overflow: hidden;
+    box-shadow:
+      0 0 0 1px rgba(38,189,239,.25),
+      0 10px 28px rgba(12,77,162,.35),
+      0 0 32px rgba(38,189,239,.12);
+    transition: transform .18s, box-shadow .18s;
     animation: fadeUp .5s .22s both;
   }
-
-  .referral-title {
-    font-weight: 700;
-    font-size: 14px;
-    color: #ffffff;
-    margin-bottom: 6px;
-    margin-top: 0;
+  .btn-referral:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 0 0 1px rgba(38,189,239,.35),
+      0 14px 36px rgba(12,77,162,.45),
+      0 0 40px rgba(38,189,239,.2);
   }
-
-  .referral-text {
-    font-size: 13px;
-    color: rgba(255, 255, 255, 0.65);
-    line-height: 1.5;
-    margin: 0;
+  .btn-referral .ref-ico {
+    width: 40px; height: 40px; flex-shrink: 0;
+    border-radius: 10px;
+    background: rgba(255,255,255,.16);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff;
   }
+  .btn-referral .ref-ico svg { width: 20px; height: 20px; }
+  .btn-referral .ref-label { flex: 1; min-width: 0; }
+  .btn-referral .ref-title {
+    display: block;
+    font-family: var(--fb); font-weight: 700;
+    font-size: .95rem; line-height: 1.2;
+    letter-spacing: -.01em;
+  }
+  .btn-referral .ref-sub {
+    display: block;
+    font-size: .73rem; font-weight: 500;
+    opacity: .85; margin-top: .15rem;
+    font-family: var(--fm); letter-spacing: .01em;
+  }
+  .btn-referral .ref-wa {
+    width: 28px; height: 28px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; opacity: .9;
+  }
+  .btn-referral .ref-wa svg { width: 22px; height: 22px; }
 
   /* ── Empfehlungen Link ── */
   .recommend-link {
@@ -436,12 +508,13 @@
     .btn         { padding: 1.05rem 1.2rem; font-size: .96rem; }
     .btn-ico     { width: 40px; height: 40px; }
     .actions-row { margin-top: 1.4rem; gap: .8rem; }
-    .btn-compact { padding: .95rem .8rem; font-size: .85rem; }
+    .btn-dual    { padding: 1.1rem .7rem; font-size: .9rem; }
+    .btn-dual svg { width: 24px; height: 24px; }
     .foot        { margin-top: 2.4rem; }
     .recommend-link { margin-top: 1.4rem; }
-    .referral-block { margin: 14px 0; padding: 14px 18px; }
-    .referral-title { font-size: 14px; }
-    .referral-text  { font-size: 13px; }
+    .btn-referral  { margin: 1.3rem 0 .3rem; padding: 1.05rem 1.2rem; }
+    .btn-referral .ref-title { font-size: 1rem; }
+    .btn-referral .ref-sub   { font-size: .76rem; }
   }
 
   /* ── Mittlere Phones (iPhone 13/14, Galaxy S20): Komfortabel ── */
@@ -454,13 +527,14 @@
     .actions     { gap: .85rem; }
     .btn         { padding: .95rem 1.1rem; font-size: .92rem; }
     .btn-ico     { width: 38px; height: 38px; }
-    .actions-row { margin-top: 1.2rem; gap: .75rem; }
-    .btn-compact { padding: .85rem .7rem; font-size: .82rem; }
+    .actions-row { margin-top: 1.2rem; gap: .7rem; }
+    .btn-dual    { padding: .95rem .6rem; font-size: .84rem; }
+    .btn-dual svg { width: 22px; height: 22px; }
     .foot        { margin-top: 1.8rem; }
     .recommend-link { margin-top: 1.2rem; }
-    .referral-block { margin: 10px 0; padding: 12px 16px; }
-    .referral-title { font-size: 13px; }
-    .referral-text  { font-size: 12px; }
+    .btn-referral  { margin: 1rem 0 .2rem; padding: .9rem 1rem; }
+    .btn-referral .ref-title { font-size: .92rem; }
+    .btn-referral .ref-sub   { font-size: .72rem; }
   }
 
   /* ── Kleine Phones (Galaxy S9, iPhone SE): Kompakt ── */
@@ -479,10 +553,19 @@
     .btn-ico svg { width: 15px; height: 15px; }
     .btn-sub { font-size: .58rem; }
     .actions-row { margin-top: .5rem; gap: .4rem; }
-    .btn-compact { padding: .55rem .5rem; font-size: .7rem; }
+    .btn-dual { padding: .6rem .5rem; font-size: .72rem; border-radius: 9px; }
+    .btn-dual svg { width: 16px; height: 16px; }
     .foot { margin-top: .5rem; }
     .foot-logo { font-size: .55rem; }
-    .referral-block { display: none; }
+    .btn-referral {
+      margin: .6rem 0 .2rem; padding: .6rem .8rem;
+      gap: .6rem;
+    }
+    .btn-referral .ref-ico { width: 30px; height: 30px; border-radius: 8px; }
+    .btn-referral .ref-ico svg { width: 16px; height: 16px; }
+    .btn-referral .ref-title { font-size: .82rem; }
+    .btn-referral .ref-sub   { font-size: .64rem; }
+    .btn-referral .ref-wa svg { width: 18px; height: 18px; }
   }
 
   /* ── Desktop: Card-Style ── */
@@ -585,26 +668,33 @@
 
   </div>
 
-  <!-- Empfehlungshinweis -->
-  <div class="referral-block">
-    <p class="referral-title">Zufrieden mit meiner Arbeit?</p>
-    <p class="referral-text">Falls Sie jemanden kennen, der sich über seine IT ärgert — ich freue mich über jede Empfehlung.</p>
-  </div>
+  <!-- Empfehlungs-CTA — oeffnet WhatsApp mit vorgefertigter Empfehlungsnachricht -->
+  <a href="https://wa.me/?text=Hey%2C%20ich%20kann%20dir%20Andreas%20Grundke%20von%20Grundke%20IT-Service%20empfehlen%20%E2%80%94%20pers%C3%B6nlicher%20IT-Ansprechpartner%2C%20kein%20Callcenter%2C%20kein%20Ticketsystem.%20Hier%20sein%20Kontakt%3A%20https%3A%2F%2Fwww.grundke-it.de%2Ftree%2F"
+     target="_blank" rel="noopener" class="btn-referral">
+    <div class="ref-ico"><svg><use href="#i-star"/></svg></div>
+    <div class="ref-label">
+      <span class="ref-title">Zufrieden mit meiner Arbeit?</span>
+      <span class="ref-sub">Jetzt per WhatsApp empfehlen</span>
+    </div>
+    <span class="ref-wa"><svg><use href="#i-wa"/></svg></span>
+  </a>
 
   <!-- Secondary row: vCard + Website nebeneinander -->
   <div class="actions-row">
-    <a href="#" id="vcardBtn" download="Andreas-Grundke-IT-Service.vcf" class="btn-compact">
-      <svg width="16" height="16"><use href="#i-vcard"/></svg> Visitenkarte speichern
+    <a href="#" id="vcardBtn" download="Andreas-Grundke-IT-Service.vcf" class="btn-dual btn-vcard-v2">
+      <svg><use href="#i-vcard"/></svg>
+      <span>Visitenkarte speichern</span>
     </a>
-    <a href="https://www.grundke-it.de" class="btn-compact">
-      <svg width="16" height="16"><use href="#i-globe"/></svg> Website besuchen
+    <a href="https://www.grundke-it.de" class="btn-dual btn-web-v2">
+      <svg><use href="#i-globe"/></svg>
+      <span>Website besuchen</span>
     </a>
   </div>
 
   <!-- Footer -->
   <div class="foot">
     <div class="foot-logo">Grundke IT-Service · Beethovenring 16 · 85630 Grasbrunn</div>
-    <div class="foot-ci">v2026.04-r13 · grundke-it.de/tree</div>
+    <div class="foot-ci">v2026.04-r14 · grundke-it.de/tree</div>
   </div>
 
 </div>
