@@ -1,9 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Sitemap · Grundke IT-Service · www.grundke-it.de
+  Stand: 2026-04-17
+  Enthalten sind ausschliesslich Seiten mit <meta name="robots" content="index, follow">.
+  /agb/, /impressum/, /datenschutz/ sind bewusst noindex und daher NICHT gelistet.
+  /tree/ ist QR-Landing (noindex) und via robots.txt Disallow.
+-->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://www.grundke-it.de/</loc><lastmod>2026-04-05</lastmod><changefreq>monthly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://www.grundke-it.de/kontakt/</loc><lastmod>2026-04-05</lastmod><changefreq>yearly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.grundke-it.de/empfehlungen/</loc><lastmod>2026-04-05</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.grundke-it.de/agb/</loc><lastmod>2026-04-05</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://www.grundke-it.de/impressum/</loc><lastmod>2026-04-05</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://www.grundke-it.de/datenschutz/</loc><lastmod>2026-04-05</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url>
+    <loc>https://www.grundke-it.de/</loc>
+    <lastmod>2026-04-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://www.grundke-it.de/kontakt/</loc>
+    <lastmod>2026-04-15</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.grundke-it.de/schulung/</loc>
+    <lastmod>2026-04-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.grundke-it.de/empfehlungen/</loc>
+    <lastmod>2026-04-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
 </urlset>
