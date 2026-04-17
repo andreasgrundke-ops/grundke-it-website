@@ -1,28 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Grundke IT-Service · Open-Graph Image · Version V4.2 (center-safe)
+  Grundke IT-Service · Open-Graph Image · Version V5 (2026-04-17)
   Format: 1200 x 630 — Standard OG / Twitter summary_large_image.
-  WhatsApp croppt auf ~630 x 630 aus der Mitte — alle wichtigen Elemente
-  liegen daher innerhalb der zentralen 700 px Breite (x: 250 bis 950).
+  Canonical renderer: assets/img/og/og-image-generate.py (Python + Pillow).
+  Diese SVG-Datei dient als Struktur-Referenz fuer manuelle Reviews.
+
+  Aenderungen gegenueber V4:
+    - Vertikale Cyan-Stripes beidseitig (links + rechts gespiegelt)
+    - Seiten-Glow beidseitig gleich stark (Randmittelpunkte bei x=0 und x=1200)
+    - "JETZT ANRUFEN"-Button entfernt (fuer OG-Image irrelevant, verursachte
+      weisse Flaeche bei einigen Social-Previews)
+    - Layout vertikal rebalanciert, URL wandert in den freigewordenen Platz
 -->
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1200 630" width="1200" height="630">
   <title>Grundke IT-Service – Dein ITler geht nicht ran? Ich schon.</title>
   <defs>
-    <linearGradient id="bg4" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="bg5" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0"   stop-color="#0f1117"/>
-      <stop offset=".6"  stop-color="#141826"/>
+      <stop offset=".5"  stop-color="#141826"/>
       <stop offset="1"   stop-color="#1a1f2e"/>
     </linearGradient>
-    <radialGradient id="glow4" cx="50%" cy="35%" r="65%">
+    <radialGradient id="glowTop" cx="50%" cy="30%" r="55%">
       <stop offset="0"   stop-color="#26bdef" stop-opacity=".28"/>
-      <stop offset=".55" stop-color="#0c4da2" stop-opacity=".12"/>
-      <stop offset="1"   stop-color="#0c4da2" stop-opacity="0"/>
+      <stop offset="1"   stop-color="#26bdef" stop-opacity="0"/>
     </radialGradient>
-    <radialGradient id="glow4b" cx="50%" cy="95%" r="55%">
-      <stop offset="0"   stop-color="#0000FE" stop-opacity=".2"/>
+    <radialGradient id="glowBot" cx="50%" cy="95%" r="50%">
+      <stop offset="0"   stop-color="#0000FE" stop-opacity=".22"/>
       <stop offset="1"   stop-color="#0000FE" stop-opacity="0"/>
     </radialGradient>
-    <linearGradient id="stripe4" x1="0" y1="0" x2="0" y2="1">
+    <radialGradient id="glowLeft" cx="0%" cy="50%" r="30%">
+      <stop offset="0"   stop-color="#26bdef" stop-opacity=".22"/>
+      <stop offset="1"   stop-color="#26bdef" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowRight" cx="100%" cy="50%" r="30%">
+      <stop offset="0"   stop-color="#26bdef" stop-opacity=".22"/>
+      <stop offset="1"   stop-color="#26bdef" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="stripe5" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0"   stop-color="#26bdef" stop-opacity="0"/>
       <stop offset=".5"  stop-color="#26bdef" stop-opacity="1"/>
       <stop offset="1"   stop-color="#26bdef" stop-opacity="0"/>
@@ -30,45 +44,38 @@
   </defs>
 
   <!-- Background -->
-  <rect width="1200" height="630" fill="url(#bg4)"/>
-  <rect width="1200" height="630" fill="url(#glow4)"/>
-  <rect width="1200" height="630" fill="url(#glow4b)"/>
+  <rect width="1200" height="630" fill="url(#bg5)"/>
+  <rect width="1200" height="630" fill="url(#glowTop)"/>
+  <rect width="1200" height="630" fill="url(#glowBot)"/>
+  <rect width="1200" height="630" fill="url(#glowLeft)"/>
+  <rect width="1200" height="630" fill="url(#glowRight)"/>
 
-  <!-- Vertikale Accent Stripes — bleiben aussen, sind Deko -->
-  <rect x="0"    y="70" width="6" height="490" fill="url(#stripe4)"/>
-  <rect x="1194" y="70" width="6" height="490" fill="url(#stripe4)"/>
-
-  <!-- Center-Safe Zone (ca. x: 285 - 915, 630 px breit) -->
+  <!-- Vertikale Cyan-Stripes (beidseitig, 8 px breit) -->
+  <rect x="0"    y="60" width="8" height="510" fill="url(#stripe5)"/>
+  <rect x="1192" y="60" width="8" height="510" fill="url(#stripe5)"/>
 
   <!-- Logo zentriert oben -->
-  <image xlink:href="../logo-grundke-it-white.png" x="450" y="55" width="300" height="100"/>
+  <image xlink:href="../logo-grundke-it-white.png" x="450" y="70" width="300" height="100"/>
 
-  <!-- Tag -->
+  <!-- Tag: — IT-NOTDIENST · MÜNCHEN OST — -->
   <g text-anchor="middle">
-    <rect x="350" y="184" width="26" height="2" fill="#26bdef"/>
-    <text x="600" y="191" fill="#26bdef" font-family="Arial,Helvetica,sans-serif" font-size="20" letter-spacing="3" font-weight="600">IT-NOTDIENST · MÜNCHEN OST</text>
-    <rect x="824" y="184" width="26" height="2" fill="#26bdef"/>
+    <rect x="350" y="208" width="32" height="2" fill="#26bdef"/>
+    <text x="600" y="214" fill="#26bdef" font-family="Arial,Helvetica,sans-serif" font-size="22" letter-spacing="2" font-weight="700">IT-NOTDIENST  ·  MÜNCHEN OST</text>
+    <rect x="818" y="208" width="32" height="2" fill="#26bdef"/>
   </g>
 
-  <!-- Headline — zentriert, zwei Zeilen wie Website-Hero -->
-  <g font-family="Arial Black,Arial,Helvetica,sans-serif" font-weight="900" letter-spacing="-2.5" text-anchor="middle">
-    <text x="600" y="258" fill="#f1f5f9" font-size="60">Dein ITler geht</text>
-    <text x="600" y="320" fill="#f1f5f9" font-size="60">nicht ran?</text>
-    <text x="600" y="408" fill="#26bdef" font-size="86" letter-spacing="-3">Ich schon.</text>
+  <!-- Headline -->
+  <g font-family="Arial Black,Arial,Helvetica,sans-serif" font-weight="900" letter-spacing="-2" text-anchor="middle">
+    <text x="600" y="280" fill="#f1f5f9" font-size="66">Dein ITler geht</text>
+    <text x="600" y="350" fill="#f1f5f9" font-size="66">nicht ran?</text>
+    <text x="600" y="450" fill="#26bdef" font-size="92" letter-spacing="-3">Ich schon.</text>
   </g>
 
   <!-- Subline -->
-  <text x="600" y="452" text-anchor="middle" fill="#94a3b8" font-family="Arial,Helvetica,sans-serif" font-size="20">
-    Kein Ticket · kein Warten · gerne per Du
+  <text x="600" y="540" text-anchor="middle" fill="#94a3b8" font-family="Arial,Helvetica,sans-serif" font-size="22">
+    Kein Ticket  ·  kein Warten  ·  gerne per Du
   </text>
 
-  <!-- Phone-Block unten zentriert (520 breit, komplett in center-safe zone) -->
-  <g transform="translate(340,490)">
-    <rect x="0" y="0" width="520" height="88" rx="14" fill="#26bdef"/>
-    <text x="260" y="34" text-anchor="middle" fill="#0f1117" font-family="Arial,Helvetica,sans-serif" font-size="14" font-weight="700" letter-spacing="3">JETZT ANRUFEN</text>
-    <text x="260" y="72" text-anchor="middle" fill="#0f1117" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="36" letter-spacing="-1">0178 258 44 38</text>
-  </g>
-
   <!-- URL ganz unten -->
-  <text x="600" y="615" text-anchor="middle" fill="#64748b" font-family="Arial,Helvetica,sans-serif" font-size="15" font-weight="500" letter-spacing="2">GRUNDKE-IT.DE</text>
+  <text x="600" y="598" text-anchor="middle" fill="#64748b" font-family="Arial,Helvetica,sans-serif" font-size="22" font-weight="700" letter-spacing="2">GRUNDKE-IT.DE</text>
 </svg>
