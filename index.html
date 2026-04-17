@@ -60,12 +60,24 @@
 
   <script type="application/ld+json">
   {
-    "@context":"https://schema.org","@type":"LocalBusiness",
+    "@context":"https://schema.org",
+    "@type":"LocalBusiness",
+    "additionalType":"http://www.productontology.org/id/Managed_services",
     "name":"Grundke IT-Service",
     "description":"IT-Betreuung für KMUs und Selbstständige im Raum München Ost",
     "url":"https://www.grundke-it.de",
+    "foundingDate":"2024",
+    "numberOfEmployees":{"@type":"QuantitativeValue","value":1},
     "telephone":"+49-178-2584438",
     "email":"info@grundke-it.de",
+    "contactPoint":{
+      "@type":"ContactPoint",
+      "telephone":"+49-178-2584438",
+      "contactType":"customer service",
+      "availableLanguage":["German","English"],
+      "areaServed":"DE"
+    },
+    "knowsLanguage":["de","en"],
     "address":{
       "@type":"PostalAddress",
       "streetAddress":"Beethovenring 16",
@@ -80,8 +92,8 @@
     "currenciesAccepted":"EUR",
     "openingHoursSpecification":[{
       "@type":"OpeningHoursSpecification",
-      "dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
-      "opens":"00:00",
+      "dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],
+      "opens":"06:00",
       "closes":"23:59"
     }],
     "geo":{
@@ -93,7 +105,8 @@
     "image":"https://www.grundke-it.de/assets/img/logo-grundke-it-badge.png",
     "logo":"https://www.grundke-it.de/assets/img/logo-grundke-it-badge.png",
     "sameAs":[
-      "https://www.linkedin.com/in/andreas-grundke-843355187"
+      "https://www.linkedin.com/in/andreas-grundke-843355187",
+      "https://www.google.com/maps/place/IT-Service+-+Andreas+Grundke/@48.0944123,11.7656812,17z"
     ],
     "founder":{"@type":"Person","name":"Andreas Grundke"}
   }
