@@ -398,7 +398,35 @@ document.addEventListener('DOMContentLoaded', () => {
   initInstallPrompt();
   var lenis = initLenis();
   initScrollTop(lenis);
+  initFernwartungDropdown();
 });
 
+
+/* ── Fernwartung Dropdown ── */
+function toggleFernwartungDropdown(event) {
+  event.stopPropagation();
+  const dd = document.getElementById('fernwartungDropdown');
+  if (!dd) return;
+  const isOpen = dd.classList.contains('nav-dropdown--open');
+  document.querySelectorAll('.nav-dropdown--open').forEach(function(el) {
+    el.classList.remove('nav-dropdown--open');
+    var btn = el.querySelector('.nav-dropdown-toggle');
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+  });
+  if (!isOpen) {
+    dd.classList.add('nav-dropdown--open');
+    dd.querySelector('.nav-dropdown-toggle').setAttribute('aria-expanded', 'true');
+  }
+}
+
+function initFernwartungDropdown() {
+  document.addEventListener('click', function() {
+    document.querySelectorAll('.nav-dropdown--open').forEach(function(el) {
+      el.classList.remove('nav-dropdown--open');
+      var btn = el.querySelector('.nav-dropdown-toggle');
+      if (btn) btn.setAttribute('aria-expanded', 'false');
+    });
+  });
+}
 /* SW-Registrierung laeuft eigenstaendig ueber window.load */
 initServiceWorker();

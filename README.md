@@ -1,4 +1,4 @@
-# Grundke IT-Service – Website
+﻿# Grundke IT-Service – Website
 
 **© 2026 Grundke IT-Service · Andreas Grundke**
 CI 2026.01 · Vanilla HTML + CSS + JS · Static Site
@@ -18,7 +18,7 @@ grundke-it-website/
 │   ├── css/
 │   │   └── style.css       # Shared CI 2026.01 Dark Mode Styles
 │   ├── js/
-│   │   └── main.js         # Shared JavaScript (Nav, Slider, FAQ, vCard)
+│   │   └── main.js         # Shared JavaScript (Nav, Dropdown, Slider, FAQ, vCard)
 │   └── agb/
 │       └── AGB-Grundke-IT-Service.pdf   # ← PDF hier ablegen!
 ├── tree/

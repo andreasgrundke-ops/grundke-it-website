@@ -1,0 +1,310 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Fernwartung starten – Grundke IT-Service</title>
+  <meta name="description" content="Fernwartung mit Grundke IT-Service starten. Laden Sie das Programm herunter und folgen Sie der Anleitung – Ihr IT-Betreuer verbindet sich in wenigen Sekunden."/>
+  <meta name="author" content="Andreas Grundke"/>
+  <meta name="robots" content="noindex, follow"/>
+  <link rel="canonical" href="https://www.grundke-it.de/fernwartung/"/>
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Fernwartung starten – Grundke IT-Service"/>
+  <meta property="og:description" content="Fernwartung mit Grundke IT-Service – einfach Programm herunterladen und starten."/>
+  <meta property="og:url" content="https://www.grundke-it.de/fernwartung/"/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:locale" content="de_DE"/>
+  <meta property="og:site_name" content="Grundke IT-Service"/>
+  <meta property="og:image" content="https://www.grundke-it.de/assets/img/og-image.png"/>
+  <meta property="og:image:alt" content="Grundke IT-Service – Fernwartung München Ost"/>
+
+  <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
+  <link rel="manifest" href="/site.webmanifest"/>
+  <meta name="theme-color" content="#0c4da2"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="Grundke IT"/>
+  <link rel="stylesheet" href="../assets/css/fonts.css"/>
+  <link rel="stylesheet" href="../assets/css/style.css"/>
+  <style>
+    .fw-wrap {
+      margin-top: var(--nav-h);
+      padding: clamp(3rem, 8vw, 5rem) 0;
+      min-height: calc(100vh - var(--nav-h) - 80px);
+    }
+    .fw-inner {
+      max-width: 660px;
+      margin: 0 auto;
+      padding: 0 var(--section-pad-x);
+    }
+
+    /* Header */
+    .fw-header { text-align: center; margin-bottom: 2rem; }
+    .fw-icon { font-size: 2.8rem; margin-bottom: .75rem; line-height: 1; }
+    .fw-header h1 {
+      font-family: var(--fh);
+      font-size: clamp(1.5rem, 5vw, 2rem);
+      font-weight: 800;
+      color: var(--text);
+      margin: 0 0 .6rem;
+    }
+    .fw-subtitle {
+      font-size: var(--fs-sm);
+      color: var(--text2);
+      max-width: 480px;
+      margin: 0 auto;
+      line-height: var(--lh-body);
+    }
+
+    /* Session-Code Box */
+    .fw-code-box {
+      background: rgba(38,189,239,.08);
+      border: 1px solid rgba(38,189,239,.3);
+      border-radius: var(--r);
+      padding: 1.25rem 1.5rem;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .fw-code-label {
+      font-family: var(--fm);
+      font-size: .7rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--text3);
+      margin: 0 0 .5rem;
+    }
+    .fw-code-value {
+      font-family: var(--fm);
+      font-size: clamp(1.6rem, 6vw, 2.2rem);
+      font-weight: 700;
+      color: var(--cyan);
+      letter-spacing: .2em;
+      margin: 0 0 .4rem;
+    }
+    .fw-code-hint {
+      font-size: .78rem;
+      color: var(--text3);
+      margin: 0;
+    }
+
+    /* Schritte */
+    .fw-steps { display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 2rem; }
+    .fw-step {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 1.25rem;
+    }
+    .fw-step-num {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      font-size: .95rem;
+      font-family: var(--fh);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .fw-step-body h3 {
+      margin: 0 0 .35rem;
+      font-family: var(--fh);
+      font-size: .95rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .fw-step-body p {
+      margin: 0 0 .6rem;
+      font-size: var(--fs-sm);
+      color: var(--text2);
+      line-height: var(--lh-body);
+    }
+    .fw-step-body p:last-child { margin-bottom: 0; }
+    .fw-step-body code {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-family: var(--fm);
+      font-size: .82em;
+      color: var(--text);
+    }
+    .fw-step-note {
+      font-size: .75rem !important;
+      color: var(--text3) !important;
+    }
+
+    /* Download Button */
+    .btn-fw-download {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--cyan);
+      color: #0f1117;
+      padding: .7rem 1.4rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 700;
+      font-family: var(--fh);
+      font-size: .9rem;
+      transition: opacity .2s, transform .15s;
+      margin-bottom: .5rem;
+    }
+    .btn-fw-download:hover { opacity: .88; transform: translateY(-1px); }
+
+    /* Fallback */
+    .fw-fallback {
+      text-align: center;
+      margin-bottom: 1.75rem;
+      font-size: .82rem;
+      color: var(--text3);
+    }
+    .fw-fallback a { color: var(--text3); text-decoration: underline; }
+    .fw-fallback a:hover { color: var(--cyan); }
+
+    /* Trust-Badges */
+    .fw-trust {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      font-size: .78rem;
+      color: var(--text3);
+      border-top: 1px solid var(--border);
+      padding-top: 1.25rem;
+    }
+    .fw-trust span { white-space: nowrap; }
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#main">Zum Inhalt springen</a>
+
+<header class="site-header">
+<nav aria-label="Hauptnavigation">
+  <div class="nav-inner inner">
+    <a href="/" class="logo" title="Grundke IT-Service – München Ost"><img class="logo-img" src="../assets/img/logo-grundke-it-white.png" alt="Grundke IT-Service"/></a>
+    <a class="nav-loc" href="https://www.google.com/maps/place/IT-Service+-+Andreas+Grundke/@48.0944159,11.7631063,17z/data=!3m1!4b1!4m6!3m5!1s0x479de3eede6923f3:0x1ad9e3b1fcbd1081!8m2!3d48.0944123!4d11.7656812!16s%2Fg%2F11j7r45y6q" target="_blank" rel="noopener" aria-label="Standort auf Google Maps anzeigen"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>München Ost</a>
+    <ul class="nav-links">
+      <li><a href="/">Startseite</a></li>
+      <li><a href="/#leistungen">Leistungen</a></li>
+      <li><a href="/#preise">Preise</a></li>
+      <li class="nav-dropdown" id="fernwartungDropdown"><button class="nav-dropdown-toggle" onclick="toggleFernwartungDropdown(event)" aria-haspopup="true" aria-expanded="false">Fernwartung<svg class="nav-dropdown-arrow" xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul class="nav-dropdown-menu" role="menu"><li><a href="https://www.teamviewer.com/de/download/portal/windows/" target="_blank" rel="noopener" class="nav-dropdown-item"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>TeamViewer</a></li><li><a href="/fernwartung" class="nav-dropdown-item nav-dropdown-item--highlight"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>Fernwartung starten</a></li></ul></li>
+      <li><a href="tel:+491782584438" class="nav-cta"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.8a16 16 0 0 0 6 6l.94-.94a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>Jetzt anrufen</span></a></li>
+    </ul>
+    <button class="hamburger" id="ham" aria-label="Menü"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="/">Startseite</a>
+  <a href="/#leistungen">Leistungen</a>
+  <a href="https://www.teamviewer.com/de/download/portal/windows/" target="_blank" rel="noopener">Fernwartung (TeamViewer)</a>
+  <a href="/fernwartung" style="color:var(--cyan);font-weight:700;">&#9889; Fernwartung starten</a>
+  <a href="tel:+491782584438" class="m-cta">Jetzt anrufen · 0178 258 44 38</a>
+</div>
+</header>
+
+<main id="main">
+<section class="fw-wrap">
+  <div class="fw-inner">
+
+    <!-- Titel -->
+    <div class="fw-header">
+      <div class="fw-icon">&#9889;</div>
+      <h1>Fernwartung starten</h1>
+      <p class="fw-subtitle">Ihr IT-Betreuer von Grundke IT-Service wird Ihren PC gleich aus der Ferne unterstützen.</p>
+    </div>
+
+    <!-- Session-Code Box (wird per JS eingeblendet wenn ?code= vorhanden) -->
+    <div class="fw-code-box" id="fwCodeBox" style="display:none;" aria-live="polite">
+      <p class="fw-code-label">Ihr Sitzungscode</p>
+      <div class="fw-code-value" id="fwCodeValue">–</div>
+      <p class="fw-code-hint">Halten Sie diesen Code bereit, falls das Programm danach fragt.</p>
+    </div>
+
+    <!-- Schritt-für-Schritt -->
+    <div class="fw-steps">
+
+      <div class="fw-step">
+        <div class="fw-step-num">1</div>
+        <div class="fw-step-body">
+          <h3>Programm herunterladen</h3>
+          <p>Klicken Sie auf den Button und laden Sie das Fernwartungs-Programm herunter.</p>
+          <a href="https://msp.grundke-it.de/dist/grundke-support.exe"
+             class="btn-fw-download" id="fwDownloadBtn" download="grundke-support.exe">
+            &#8595; Fernwartung herunterladen
+          </a>
+          <p class="fw-step-note">Windows 10/11 &middot; Portable &middot; Kein Installer</p>
+        </div>
+      </div>
+
+
+      <div class="fw-step">
+        <div class="fw-step-num">2</div>
+        <div class="fw-step-body">
+          <h3>Programm starten</h3>
+          <p>Starten Sie <code>grundke-support.exe</code> direkt aus dem Downloads-Ordner per Doppelklick. Windows zeigt möglicherweise eine Sicherheitsmeldung – klicken Sie auf <strong>„Trotzdem ausführen"</strong>.</p>
+        </div>
+      </div>
+
+      <div class="fw-step">
+        <div class="fw-step-num">3</div>
+        <div class="fw-step-body">
+          <h3>Bereit!</h3>
+          <p>Das Programm zeigt Ihnen eine Bestätigung, wenn alles bereit ist. Ihr IT-Betreuer verbindet sich dann automatisch.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Fallback TeamViewer -->
+    <div class="fw-fallback">
+      <p>Probleme mit dem Download?
+        <a href="https://www.teamviewer.com/de/download/portal/windows/" target="_blank" rel="noopener">Alternativ TeamViewer verwenden &rarr;</a>
+      </p>
+    </div>
+
+    <!-- Trust -->
+    <div class="fw-trust">
+      <span>&#128274; Verschlüsselte Verbindung</span>
+      <span>&#8987; Sitzung endet automatisch</span>
+      <span>&#10003; Kein dauerhafter Zugriff</span>
+    </div>
+
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="inner">
+    <div class="foot-bottom">
+      <span>&copy; 2026 Grundke IT-Service &middot; Andreas Grundke &middot; Beethovenring 16 &middot; 85630 Grasbrunn</span>
+      <span class="foot-ci">CI 2026.01 &middot; grundke-it.de</span>
+    </div>
+  </div>
+</footer>
+
+<script src="../assets/js/main.js"></script>
+<script>
+// Session-Code aus URL lesen und anzeigen
+(function () {
+  var params = new URLSearchParams(window.location.search);
+  var code   = params.get('code');
+  if (code && /^[a-f0-9]{10}$/i.test(code)) {
+    document.getElementById('fwCodeBox').style.display  = 'block';
+    document.getElementById('fwCodeValue').textContent  = code.toUpperCase();
+  }
+})();
+</script>
+</body>
+</html>
