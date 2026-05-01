@@ -145,6 +145,45 @@
       color: var(--text3) !important;
     }
 
+    /* Windows-Sicherheitshinweis innerhalb eines Schritts */
+    .fw-step-warn {
+      background: rgba(245,158,11,.08);
+      border: 1px solid rgba(245,158,11,.3);
+      border-left: 3px solid var(--warning);
+      border-radius: 8px;
+      padding: .7rem .9rem;
+      margin-top: .7rem;
+      font-size: .82rem !important;
+      color: var(--text2) !important;
+      line-height: 1.55;
+    }
+    .fw-step-warn strong { color: var(--text); }
+    .fw-step-warn .fw-warn-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 700;
+      color: var(--warning);
+      margin-bottom: .35rem;
+      font-family: var(--fh);
+      font-size: .82rem;
+    }
+    .fw-step-warn ol {
+      margin: .4rem 0 0 1.1rem;
+      padding: 0;
+    }
+    .fw-step-warn ol li { margin-bottom: .2rem; }
+    .fw-step-warn ol li:last-child { margin-bottom: 0; }
+    .fw-step-warn code {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1px 5px;
+      font-family: var(--fm);
+      font-size: .9em;
+      color: var(--text);
+    }
+
     /* Download Button */
     .btn-fw-download {
       display: inline-flex;
@@ -303,6 +342,11 @@
             &#8595; Fernwartung herunterladen
           </a>
           <p class="fw-step-note">Windows 10/11 &middot; Portable &middot; Kein Installer</p>
+
+          <div class="fw-step-warn">
+            <div class="fw-warn-title">&#9888; Browser zeigt „Verdächtiger Download blockiert"?</div>
+            Das ist normal – die Datei ist noch nicht signiert. Klicken Sie auf <strong>„Trotzdem herunterladen"</strong> (Chrome / Edge) bzw. <strong>„Datei behalten"</strong> (Firefox).
+          </div>
         </div>
       </div>
 
@@ -311,7 +355,17 @@
         <div class="fw-step-num">2</div>
         <div class="fw-step-body">
           <h3>Programm starten</h3>
-          <p>Starten Sie <code>grundke-support.exe</code> direkt aus dem Downloads-Ordner per Doppelklick. Windows zeigt möglicherweise eine Sicherheitsmeldung – klicken Sie auf <strong>„Trotzdem ausführen"</strong>.</p>
+          <p>Starten Sie die heruntergeladene Datei direkt aus dem Downloads-Ordner per Doppelklick.</p>
+
+          <div class="fw-step-warn">
+            <div class="fw-warn-title">&#9888; „Der Computer wurde durch Windows geschützt"?</div>
+            Auch das ist normal. So kommen Sie weiter:
+            <ol>
+              <li>Auf <strong>„Weitere Informationen"</strong> klicken</li>
+              <li>Dann auf <strong>„Trotzdem ausführen"</strong> klicken</li>
+            </ol>
+            <p style="margin:.5rem 0 0;font-size:.78rem;color:var(--text3);">Eine offizielle Code-Signierung folgt in Kürze – dann entfällt diese Meldung.</p>
+          </div>
         </div>
       </div>
 
