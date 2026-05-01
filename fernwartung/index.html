@@ -339,7 +339,7 @@
           <h3>Programm herunterladen</h3>
           <p>Klicken Sie auf den Button und laden Sie das Fernwartungs-Programm herunter.</p>
           <a href="https://msp.grundke-it.de/dist/grundke-support.exe"
-             class="btn-fw-download" id="fwDownloadBtn" download="grundke-support.exe">
+             class="btn-fw-download" id="fwDownloadBtn">
             &#8595; Fernwartung herunterladen
           </a>
           <p class="fw-step-note">Windows 10/11 &middot; Portable &middot; Kein Installer</p>
@@ -424,23 +424,17 @@
   var dlBtn     = document.getElementById('fwDownloadBtn');
 
   if (validCode) {
-    /* Code vorhanden: Code-Box einblenden, Download-URL mit Code im Pfad.
-       Browser speichert garantiert als grundke-support-<code>.exe (cross-origin-sicher).
-       EXE liest den Code dann aus dem eigenen Dateinamen. */
+    /* Code vorhanden: Code-Box einblenden, Download-URL mit ?code= aufrufen.
+       Backend setzt Content-Disposition: attachment; filename="grundke-support-<code>.exe".
+       EXE liest den Code dann aus dem eigenen Dateinamen.
+       Hinweis: download-Attribut wird bei Cross-Origin von Browsern ignoriert
+       — daher entfernt. Server liefert den korrekten Filename via HTTP-Header. */
     codeBox.style.display  = 'block';
     codeValue.textContent  = code.toUpperCase();
 
-    var dlUrl = 'https://msp.grundke-it.de/dist/grundke-support-' + code + '.exe';
+    var dlUrl = 'https://msp.grundke-it.de/dist/grundke-support.exe?code=' + encodeURIComponent(code);
     dlBtn.setAttribute('href', dlUrl);
-    dlBtn.setAttribute('download', 'grundke-support-' + code + '.exe');
-
-    /* Zusatz-Fallback: Code beim Download-Klick ins Clipboard kopieren —
-       falls der Filename verloren geht, greift der Clipboard-Pfad der EXE. */
-    dlBtn.addEventListener('click', function () {
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(code.toUpperCase()).catch(function () { /* still */ });
-      }
-    });
+    dlBtn.removeAttribute('download');
   } else {
     /* Kein Code: Download sperren — wir wollen keine manuelle Code-Eingabe. */
     noCodeBox.style.display = 'block';
