@@ -201,34 +201,6 @@
       margin-bottom: .5rem;
     }
     .btn-fw-download:hover { opacity: .88; transform: translateY(-1px); }
-    .btn-fw-download.is-disabled {
-      background: var(--bg3);
-      color: var(--text3);
-      pointer-events: none;
-      cursor: not-allowed;
-    }
-
-    /* Kein-Code Warnung */
-    .fw-nocode-box {
-      background: rgba(245,158,11,.08);
-      border: 1px solid rgba(245,158,11,.4);
-      border-radius: var(--r);
-      padding: 1.25rem 1.5rem;
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-    .fw-nocode-box h3 {
-      color: var(--warning);
-      font-family: var(--fh);
-      font-size: 1rem;
-      margin: 0 0 .5rem;
-    }
-    .fw-nocode-box p {
-      color: var(--text2);
-      font-size: var(--fs-sm);
-      margin: 0;
-      line-height: var(--lh-body);
-    }
 
     /* Copy-Button */
     .fw-copy-btn {
@@ -323,11 +295,6 @@
       <p class="fw-code-hint" style="margin-top:.6rem;">Falls das Programm nach einem Code fragt, geben Sie diesen ein.</p>
     </div>
 
-    <!-- Warnung: Kein Code in URL -->
-    <div class="fw-nocode-box" id="fwNoCodeBox" style="display:none;" aria-live="polite">
-      <h3>&#9888; Sitzungslink fehlt</h3>
-      <p>Bitte öffnen Sie den persönlichen Fernwartungs-Link, den Sie per WhatsApp oder E-Mail erhalten haben. Ohne diesen Link kann die Sitzung nicht gestartet werden.</p>
-    </div>
 
     <!-- Schritt-für-Schritt -->
     <div class="fw-steps">
@@ -408,9 +375,9 @@
 
 <script src="../assets/js/main.js"></script>
 <script>
-/* Session-Code aus URL lesen, anzeigen und an Download-URL anhaengen.
-   Ohne Code wird der Download gesperrt, weil die EXE sonst
-   "Kein Sitzungscode!" anzeigt. */
+/* Session-Code aus URL lesen.
+   Mit Code: Filename-Append (grundke-support-<code>.exe) + Anzeige + Clipboard-Fallback.
+   Ohne Code: generischer Download – EXE fragt dann selbst per InputBox. */
 (function () {
   var params      = new URLSearchParams(window.location.search);
   var code        = (params.get('code') || '').toLowerCase();
@@ -418,15 +385,13 @@
 
   var codeBox     = document.getElementById('fwCodeBox');
   var codeValue   = document.getElementById('fwCodeValue');
-  var noCodeBox   = document.getElementById('fwNoCodeBox');
   var dlBtn       = document.getElementById('fwDownloadBtn');
   var copyBtn     = document.getElementById('fwCopyBtn');
   var copyLabel   = document.getElementById('fwCopyLabel');
 
   if (validCode) {
-    /* Code vorhanden: anzeigen + Filename-Append an Download-URL.
-       Der Code steckt direkt im URL-Pfad → Browser speichert garantiert
-       als grundke-support-<code>.exe (cross-origin-sicher).
+    /* Code vorhanden: Code-Box einblenden, Download-URL mit Code im Pfad.
+       Browser speichert garantiert als grundke-support-<code>.exe (cross-origin-sicher).
        EXE liest den Code dann aus dem eigenen Dateinamen (v2.2). */
     codeBox.style.display  = 'block';
     codeValue.textContent  = code.toUpperCase();
@@ -436,15 +401,14 @@
     dlBtn.setAttribute('download', 'grundke-support-' + code + '.exe');
 
     /* Zusatz-Fallback: Code beim Download-Klick ins Clipboard kopieren —
-       falls der Filename mal verloren geht (z.B. durch Umbenennen oder
-       bestimmte Browser-Konfigurationen), greift der Clipboard-Pfad der EXE. */
+       falls der Filename verloren geht, greift der Clipboard-Pfad der EXE. */
     dlBtn.addEventListener('click', function () {
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(code.toUpperCase()).catch(function () { /* still */ });
       }
     });
 
-    /* Copy-to-Clipboard */
+    /* Manueller Copy-Button */
     copyBtn.addEventListener('click', function () {
       var c = code.toUpperCase();
       var done = function () {
@@ -457,7 +421,6 @@
       };
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(c).then(done).catch(function () {
-          /* Fallback */
           var ta = document.createElement('textarea');
           ta.value = c; document.body.appendChild(ta);
           ta.select(); document.execCommand('copy');
@@ -470,15 +433,9 @@
         document.body.removeChild(ta); done();
       }
     });
-  } else {
-    /* Kein Code: Download sperren + Warnung anzeigen */
-    noCodeBox.style.display = 'block';
-    dlBtn.classList.add('is-disabled');
-    dlBtn.setAttribute('aria-disabled', 'true');
-    dlBtn.removeAttribute('href');
-    dlBtn.removeAttribute('download');
-    dlBtn.addEventListener('click', function (e) { e.preventDefault(); });
   }
+  /* Ohne Code: nichts tun – Default-Download bleibt aktiv,
+     EXE fragt dann selbst per InputBox nach dem Code. */
 })();
 </script>
 </body>
