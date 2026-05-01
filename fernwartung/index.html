@@ -354,24 +354,24 @@
 /* Session-Code aus URL optional uebernehmen.
    Mit Code: Code-Box anzeigen, Download-URL mit ?code= → Backend setzt
    Filename via Content-Disposition → EXE liest Code aus Dateinamen.
-   Ohne Code: Standard-Download bleibt aktiv — Andreas Grundke verbindet
-   sich dann manuell mit der RustDesk-ID, die dem Kunden angezeigt wird. */
+   Ohne Code: Standard-Download bleibt aktiv. */
 (function () {
-  var params    = new URLSearchParams(window.location.search);
-  var code      = (params.get('code') || '').toLowerCase();
-  var validCode = /^[a-f0-9]{10}$/.test(code);
+  var rawCode = (new URLSearchParams(window.location.search).get('code') || '').trim();
 
-  if (!validCode) return;
+  /* Permissive Pruefung: alphanumerisch + - + _, 4-64 Zeichen.
+     Kein striktes Hex-Format mehr - der Server validiert das echte Format,
+     wir pruefen hier nur grob auf "sieht wie ein Code aus" (Anti-XSS). */
+  if (!/^[a-zA-Z0-9_-]{4,64}$/.test(rawCode)) return;
 
+  var dlBtn     = document.getElementById('fwDownloadBtn');
   var codeBox   = document.getElementById('fwCodeBox');
   var codeValue = document.getElementById('fwCodeValue');
-  var dlBtn     = document.getElementById('fwDownloadBtn');
 
   codeBox.style.display = 'block';
-  codeValue.textContent = code.toUpperCase();
+  codeValue.textContent = rawCode.toUpperCase();
   dlBtn.setAttribute(
     'href',
-    'https://msp.grundke-it.de/dist/grundke-support.exe?code=' + encodeURIComponent(code)
+    'https://msp.grundke-it.de/dist/grundke-support.exe?code=' + encodeURIComponent(rawCode)
   );
 })();
 </script>
