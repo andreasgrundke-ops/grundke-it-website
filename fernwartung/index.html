@@ -201,53 +201,6 @@
       margin-bottom: .5rem;
     }
     .btn-fw-download:hover { opacity: .88; transform: translateY(-1px); }
-    .btn-fw-download.is-disabled {
-      background: var(--bg3);
-      color: var(--text3);
-      pointer-events: none;
-      cursor: not-allowed;
-      opacity: .6;
-    }
-
-    /* Kein-Code Warnung */
-    .fw-nocode-box {
-      background: rgba(245,158,11,.08);
-      border: 1px solid rgba(245,158,11,.4);
-      border-radius: var(--r);
-      padding: 1.5rem;
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-    .fw-nocode-box h3 {
-      color: var(--warning);
-      font-family: var(--fh);
-      font-size: 1.05rem;
-      margin: 0 0 .6rem;
-    }
-    .fw-nocode-box p {
-      color: var(--text2);
-      font-size: var(--fs-sm);
-      margin: 0 0 .5rem;
-      line-height: var(--lh-body);
-    }
-    .fw-nocode-box p:last-child { margin-bottom: 0; }
-    .fw-nocode-contact {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      margin-top: .8rem;
-      padding: .5rem 1rem;
-      background: rgba(38,189,239,.12);
-      border: 1px solid rgba(38,189,239,.4);
-      border-radius: 8px;
-      color: var(--cyan);
-      text-decoration: none;
-      font-weight: 600;
-      font-size: .85rem;
-      transition: background .15s;
-    }
-    .fw-nocode-contact:hover { background: rgba(38,189,239,.22); }
-
 
     /* Fallback */
     .fw-fallback {
@@ -311,22 +264,11 @@
       <p class="fw-subtitle">Ihr IT-Betreuer von Grundke IT-Service wird Ihren PC gleich aus der Ferne unterstützen.</p>
     </div>
 
-    <!-- Session-Code Box (wird per JS eingeblendet wenn ?code= vorhanden) -->
+    <!-- Sitzungs-Info-Box (nur sichtbar wenn ?code= in URL vorhanden) -->
     <div class="fw-code-box" id="fwCodeBox" style="display:none;" aria-live="polite">
       <p class="fw-code-label">Ihre Sitzung</p>
       <div class="fw-code-value" id="fwCodeValue">–</div>
       <p class="fw-code-hint">Verbindung wird automatisch hergestellt – kein Eintippen nötig.</p>
-    </div>
-
-    <!-- Warnung: Kein Code in URL -->
-    <div class="fw-nocode-box" id="fwNoCodeBox" style="display:none;" aria-live="polite">
-      <h3>&#9888; Sitzungslink fehlt</h3>
-      <p>Diese Seite funktioniert nur über Ihren <strong>persönlichen Sitzungslink</strong>, den Sie per WhatsApp oder E-Mail von Andreas Grundke bekommen haben.</p>
-      <p>Bitte öffnen Sie den Original-Link – dann startet die Fernwartung automatisch.</p>
-      <a href="tel:+491782584438" class="fw-nocode-contact">
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.8a16 16 0 0 0 6 6l.94-.94a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-        Link nicht zur Hand? Anrufen: 0178 258 44 38
-      </a>
     </div>
 
 
@@ -409,41 +351,28 @@
 
 <script src="../assets/js/main.js"></script>
 <script>
-/* Session-Code aus URL lesen.
-   Mit Code: Filename-Append → grundke-support-<code>.exe → Auto-Verbindung.
-   Ohne Code: Download sperren + Hinweis, dass der Sitzungslink benoetigt wird.
-   (Wir wollen NIE die InputBox der EXE sehen — Codeeingabe ist nicht vorgesehen.) */
+/* Session-Code aus URL optional uebernehmen.
+   Mit Code: Code-Box anzeigen, Download-URL mit ?code= → Backend setzt
+   Filename via Content-Disposition → EXE liest Code aus Dateinamen.
+   Ohne Code: Standard-Download bleibt aktiv — Andreas Grundke verbindet
+   sich dann manuell mit der RustDesk-ID, die dem Kunden angezeigt wird. */
 (function () {
   var params    = new URLSearchParams(window.location.search);
   var code      = (params.get('code') || '').toLowerCase();
   var validCode = /^[a-f0-9]{10}$/.test(code);
 
+  if (!validCode) return;
+
   var codeBox   = document.getElementById('fwCodeBox');
   var codeValue = document.getElementById('fwCodeValue');
-  var noCodeBox = document.getElementById('fwNoCodeBox');
   var dlBtn     = document.getElementById('fwDownloadBtn');
 
-  if (validCode) {
-    /* Code vorhanden: Code-Box einblenden, Download-URL mit ?code= aufrufen.
-       Backend setzt Content-Disposition: attachment; filename="grundke-support-<code>.exe".
-       EXE liest den Code dann aus dem eigenen Dateinamen.
-       Hinweis: download-Attribut wird bei Cross-Origin von Browsern ignoriert
-       — daher entfernt. Server liefert den korrekten Filename via HTTP-Header. */
-    codeBox.style.display  = 'block';
-    codeValue.textContent  = code.toUpperCase();
-
-    var dlUrl = 'https://msp.grundke-it.de/dist/grundke-support.exe?code=' + encodeURIComponent(code);
-    dlBtn.setAttribute('href', dlUrl);
-    dlBtn.removeAttribute('download');
-  } else {
-    /* Kein Code: Download sperren — wir wollen keine manuelle Code-Eingabe. */
-    noCodeBox.style.display = 'block';
-    dlBtn.classList.add('is-disabled');
-    dlBtn.setAttribute('aria-disabled', 'true');
-    dlBtn.removeAttribute('href');
-    dlBtn.removeAttribute('download');
-    dlBtn.addEventListener('click', function (e) { e.preventDefault(); });
-  }
+  codeBox.style.display = 'block';
+  codeValue.textContent = code.toUpperCase();
+  dlBtn.setAttribute(
+    'href',
+    'https://msp.grundke-it.de/dist/grundke-support.exe?code=' + encodeURIComponent(code)
+  );
 })();
 </script>
 </body>
