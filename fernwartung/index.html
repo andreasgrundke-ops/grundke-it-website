@@ -370,13 +370,25 @@
   var copyLabel   = document.getElementById('fwCopyLabel');
 
   if (validCode) {
-    /* Code vorhanden: anzeigen + an Download-URL haengen */
+    /* Code vorhanden: anzeigen + Filename-Append an Download-URL.
+       Der Code steckt direkt im URL-Pfad → Browser speichert garantiert
+       als grundke-support-<code>.exe (cross-origin-sicher).
+       EXE liest den Code dann aus dem eigenen Dateinamen (v2.2). */
     codeBox.style.display  = 'block';
     codeValue.textContent  = code.toUpperCase();
 
-    var base = 'https://msp.grundke-it.de/dist/grundke-support.exe';
-    dlBtn.setAttribute('href', base + '?code=' + encodeURIComponent(code));
+    var dlUrl = 'https://msp.grundke-it.de/dist/grundke-support-' + code + '.exe';
+    dlBtn.setAttribute('href', dlUrl);
     dlBtn.setAttribute('download', 'grundke-support-' + code + '.exe');
+
+    /* Zusatz-Fallback: Code beim Download-Klick ins Clipboard kopieren —
+       falls der Filename mal verloren geht (z.B. durch Umbenennen oder
+       bestimmte Browser-Konfigurationen), greift der Clipboard-Pfad der EXE. */
+    dlBtn.addEventListener('click', function () {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(code.toUpperCase()).catch(function () { /* still */ });
+      }
+    });
 
     /* Copy-to-Clipboard */
     copyBtn.addEventListener('click', function () {
