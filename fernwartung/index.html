@@ -162,6 +162,54 @@
       margin-bottom: .5rem;
     }
     .btn-fw-download:hover { opacity: .88; transform: translateY(-1px); }
+    .btn-fw-download.is-disabled {
+      background: var(--bg3);
+      color: var(--text3);
+      pointer-events: none;
+      cursor: not-allowed;
+    }
+
+    /* Kein-Code Warnung */
+    .fw-nocode-box {
+      background: rgba(245,158,11,.08);
+      border: 1px solid rgba(245,158,11,.4);
+      border-radius: var(--r);
+      padding: 1.25rem 1.5rem;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .fw-nocode-box h3 {
+      color: var(--warning);
+      font-family: var(--fh);
+      font-size: 1rem;
+      margin: 0 0 .5rem;
+    }
+    .fw-nocode-box p {
+      color: var(--text2);
+      font-size: var(--fs-sm);
+      margin: 0;
+      line-height: var(--lh-body);
+    }
+
+    /* Copy-Button */
+    .fw-copy-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(38,189,239,.15);
+      border: 1px solid rgba(38,189,239,.4);
+      color: var(--cyan);
+      padding: .35rem .8rem;
+      border-radius: 6px;
+      font-family: var(--fb);
+      font-size: .78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .15s, transform .15s;
+      margin-top: .5rem;
+    }
+    .fw-copy-btn:hover { background: rgba(38,189,239,.25); transform: translateY(-1px); }
+    .fw-copy-btn.copied { background: var(--success); color: #fff; border-color: var(--success); }
 
     /* Fallback */
     .fw-fallback {
@@ -229,7 +277,17 @@
     <div class="fw-code-box" id="fwCodeBox" style="display:none;" aria-live="polite">
       <p class="fw-code-label">Ihr Sitzungscode</p>
       <div class="fw-code-value" id="fwCodeValue">–</div>
-      <p class="fw-code-hint">Halten Sie diesen Code bereit, falls das Programm danach fragt.</p>
+      <button type="button" class="fw-copy-btn" id="fwCopyBtn" title="Code in Zwischenablage kopieren">
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span id="fwCopyLabel">Code kopieren</span>
+      </button>
+      <p class="fw-code-hint" style="margin-top:.6rem;">Falls das Programm nach einem Code fragt, geben Sie diesen ein.</p>
+    </div>
+
+    <!-- Warnung: Kein Code in URL -->
+    <div class="fw-nocode-box" id="fwNoCodeBox" style="display:none;" aria-live="polite">
+      <h3>&#9888; Sitzungslink fehlt</h3>
+      <p>Bitte öffnen Sie den persönlichen Fernwartungs-Link, den Sie per WhatsApp oder E-Mail erhalten haben. Ohne diesen Link kann die Sitzung nicht gestartet werden.</p>
     </div>
 
     <!-- Schritt-für-Schritt -->
@@ -296,13 +354,64 @@
 
 <script src="../assets/js/main.js"></script>
 <script>
-// Session-Code aus URL lesen und anzeigen
+/* Session-Code aus URL lesen, anzeigen und an Download-URL anhaengen.
+   Ohne Code wird der Download gesperrt, weil die EXE sonst
+   "Kein Sitzungscode!" anzeigt. */
 (function () {
-  var params = new URLSearchParams(window.location.search);
-  var code   = params.get('code');
-  if (code && /^[a-f0-9]{10}$/i.test(code)) {
-    document.getElementById('fwCodeBox').style.display  = 'block';
-    document.getElementById('fwCodeValue').textContent  = code.toUpperCase();
+  var params      = new URLSearchParams(window.location.search);
+  var code        = (params.get('code') || '').toLowerCase();
+  var validCode   = /^[a-f0-9]{10}$/.test(code);
+
+  var codeBox     = document.getElementById('fwCodeBox');
+  var codeValue   = document.getElementById('fwCodeValue');
+  var noCodeBox   = document.getElementById('fwNoCodeBox');
+  var dlBtn       = document.getElementById('fwDownloadBtn');
+  var copyBtn     = document.getElementById('fwCopyBtn');
+  var copyLabel   = document.getElementById('fwCopyLabel');
+
+  if (validCode) {
+    /* Code vorhanden: anzeigen + an Download-URL haengen */
+    codeBox.style.display  = 'block';
+    codeValue.textContent  = code.toUpperCase();
+
+    var base = 'https://msp.grundke-it.de/dist/grundke-support.exe';
+    dlBtn.setAttribute('href', base + '?code=' + encodeURIComponent(code));
+    dlBtn.setAttribute('download', 'grundke-support-' + code + '.exe');
+
+    /* Copy-to-Clipboard */
+    copyBtn.addEventListener('click', function () {
+      var c = code.toUpperCase();
+      var done = function () {
+        copyBtn.classList.add('copied');
+        copyLabel.textContent = 'Kopiert!';
+        setTimeout(function () {
+          copyBtn.classList.remove('copied');
+          copyLabel.textContent = 'Code kopieren';
+        }, 2000);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(c).then(done).catch(function () {
+          /* Fallback */
+          var ta = document.createElement('textarea');
+          ta.value = c; document.body.appendChild(ta);
+          ta.select(); document.execCommand('copy');
+          document.body.removeChild(ta); done();
+        });
+      } else {
+        var ta = document.createElement('textarea');
+        ta.value = c; document.body.appendChild(ta);
+        ta.select(); document.execCommand('copy');
+        document.body.removeChild(ta); done();
+      }
+    });
+  } else {
+    /* Kein Code: Download sperren + Warnung anzeigen */
+    noCodeBox.style.display = 'block';
+    dlBtn.classList.add('is-disabled');
+    dlBtn.setAttribute('aria-disabled', 'true');
+    dlBtn.removeAttribute('href');
+    dlBtn.removeAttribute('download');
+    dlBtn.addEventListener('click', function (e) { e.preventDefault(); });
   }
 })();
 </script>
