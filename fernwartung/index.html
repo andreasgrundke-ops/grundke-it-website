@@ -201,26 +201,53 @@
       margin-bottom: .5rem;
     }
     .btn-fw-download:hover { opacity: .88; transform: translateY(-1px); }
+    .btn-fw-download.is-disabled {
+      background: var(--bg3);
+      color: var(--text3);
+      pointer-events: none;
+      cursor: not-allowed;
+      opacity: .6;
+    }
 
-    /* Copy-Button */
-    .fw-copy-btn {
+    /* Kein-Code Warnung */
+    .fw-nocode-box {
+      background: rgba(245,158,11,.08);
+      border: 1px solid rgba(245,158,11,.4);
+      border-radius: var(--r);
+      padding: 1.5rem;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .fw-nocode-box h3 {
+      color: var(--warning);
+      font-family: var(--fh);
+      font-size: 1.05rem;
+      margin: 0 0 .6rem;
+    }
+    .fw-nocode-box p {
+      color: var(--text2);
+      font-size: var(--fs-sm);
+      margin: 0 0 .5rem;
+      line-height: var(--lh-body);
+    }
+    .fw-nocode-box p:last-child { margin-bottom: 0; }
+    .fw-nocode-contact {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: rgba(38,189,239,.15);
+      margin-top: .8rem;
+      padding: .5rem 1rem;
+      background: rgba(38,189,239,.12);
       border: 1px solid rgba(38,189,239,.4);
+      border-radius: 8px;
       color: var(--cyan);
-      padding: .35rem .8rem;
-      border-radius: 6px;
-      font-family: var(--fb);
-      font-size: .78rem;
+      text-decoration: none;
       font-weight: 600;
-      cursor: pointer;
-      transition: background .15s, transform .15s;
-      margin-top: .5rem;
+      font-size: .85rem;
+      transition: background .15s;
     }
-    .fw-copy-btn:hover { background: rgba(38,189,239,.25); transform: translateY(-1px); }
-    .fw-copy-btn.copied { background: var(--success); color: #fff; border-color: var(--success); }
+    .fw-nocode-contact:hover { background: rgba(38,189,239,.22); }
+
 
     /* Fallback */
     .fw-fallback {
@@ -286,13 +313,20 @@
 
     <!-- Session-Code Box (wird per JS eingeblendet wenn ?code= vorhanden) -->
     <div class="fw-code-box" id="fwCodeBox" style="display:none;" aria-live="polite">
-      <p class="fw-code-label">Ihr Sitzungscode</p>
+      <p class="fw-code-label">Ihre Sitzung</p>
       <div class="fw-code-value" id="fwCodeValue">–</div>
-      <button type="button" class="fw-copy-btn" id="fwCopyBtn" title="Code in Zwischenablage kopieren">
-        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-        <span id="fwCopyLabel">Code kopieren</span>
-      </button>
-      <p class="fw-code-hint" style="margin-top:.6rem;">Falls das Programm nach einem Code fragt, geben Sie diesen ein.</p>
+      <p class="fw-code-hint">Verbindung wird automatisch hergestellt – kein Eintippen nötig.</p>
+    </div>
+
+    <!-- Warnung: Kein Code in URL -->
+    <div class="fw-nocode-box" id="fwNoCodeBox" style="display:none;" aria-live="polite">
+      <h3>&#9888; Sitzungslink fehlt</h3>
+      <p>Diese Seite funktioniert nur über Ihren <strong>persönlichen Sitzungslink</strong>, den Sie per WhatsApp oder E-Mail von Andreas Grundke bekommen haben.</p>
+      <p>Bitte öffnen Sie den Original-Link – dann startet die Fernwartung automatisch.</p>
+      <a href="tel:+491782584438" class="fw-nocode-contact">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.8a16 16 0 0 0 6 6l.94-.94a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        Link nicht zur Hand? Anrufen: 0178 258 44 38
+      </a>
     </div>
 
 
@@ -376,23 +410,23 @@
 <script src="../assets/js/main.js"></script>
 <script>
 /* Session-Code aus URL lesen.
-   Mit Code: Filename-Append (grundke-support-<code>.exe) + Anzeige + Clipboard-Fallback.
-   Ohne Code: generischer Download – EXE fragt dann selbst per InputBox. */
+   Mit Code: Filename-Append → grundke-support-<code>.exe → Auto-Verbindung.
+   Ohne Code: Download sperren + Hinweis, dass der Sitzungslink benoetigt wird.
+   (Wir wollen NIE die InputBox der EXE sehen — Codeeingabe ist nicht vorgesehen.) */
 (function () {
-  var params      = new URLSearchParams(window.location.search);
-  var code        = (params.get('code') || '').toLowerCase();
-  var validCode   = /^[a-f0-9]{10}$/.test(code);
+  var params    = new URLSearchParams(window.location.search);
+  var code      = (params.get('code') || '').toLowerCase();
+  var validCode = /^[a-f0-9]{10}$/.test(code);
 
-  var codeBox     = document.getElementById('fwCodeBox');
-  var codeValue   = document.getElementById('fwCodeValue');
-  var dlBtn       = document.getElementById('fwDownloadBtn');
-  var copyBtn     = document.getElementById('fwCopyBtn');
-  var copyLabel   = document.getElementById('fwCopyLabel');
+  var codeBox   = document.getElementById('fwCodeBox');
+  var codeValue = document.getElementById('fwCodeValue');
+  var noCodeBox = document.getElementById('fwNoCodeBox');
+  var dlBtn     = document.getElementById('fwDownloadBtn');
 
   if (validCode) {
     /* Code vorhanden: Code-Box einblenden, Download-URL mit Code im Pfad.
        Browser speichert garantiert als grundke-support-<code>.exe (cross-origin-sicher).
-       EXE liest den Code dann aus dem eigenen Dateinamen (v2.2). */
+       EXE liest den Code dann aus dem eigenen Dateinamen. */
     codeBox.style.display  = 'block';
     codeValue.textContent  = code.toUpperCase();
 
@@ -407,35 +441,15 @@
         navigator.clipboard.writeText(code.toUpperCase()).catch(function () { /* still */ });
       }
     });
-
-    /* Manueller Copy-Button */
-    copyBtn.addEventListener('click', function () {
-      var c = code.toUpperCase();
-      var done = function () {
-        copyBtn.classList.add('copied');
-        copyLabel.textContent = 'Kopiert!';
-        setTimeout(function () {
-          copyBtn.classList.remove('copied');
-          copyLabel.textContent = 'Code kopieren';
-        }, 2000);
-      };
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(c).then(done).catch(function () {
-          var ta = document.createElement('textarea');
-          ta.value = c; document.body.appendChild(ta);
-          ta.select(); document.execCommand('copy');
-          document.body.removeChild(ta); done();
-        });
-      } else {
-        var ta = document.createElement('textarea');
-        ta.value = c; document.body.appendChild(ta);
-        ta.select(); document.execCommand('copy');
-        document.body.removeChild(ta); done();
-      }
-    });
+  } else {
+    /* Kein Code: Download sperren — wir wollen keine manuelle Code-Eingabe. */
+    noCodeBox.style.display = 'block';
+    dlBtn.classList.add('is-disabled');
+    dlBtn.setAttribute('aria-disabled', 'true');
+    dlBtn.removeAttribute('href');
+    dlBtn.removeAttribute('download');
+    dlBtn.addEventListener('click', function (e) { e.preventDefault(); });
   }
-  /* Ohne Code: nichts tun – Default-Download bleibt aktiv,
-     EXE fragt dann selbst per InputBox nach dem Code. */
 })();
 </script>
 </body>
