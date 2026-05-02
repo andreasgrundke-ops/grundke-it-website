@@ -60,7 +60,8 @@
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
-    "@type":"LocalBusiness",
+    "@type":["LocalBusiness","ProfessionalService"],
+    "@id":"https://www.grundke-it.de/#localbusiness",
     "additionalType":"http://www.productontology.org/id/Managed_services",
     "name":"Grundke IT-Service",
     "description":"IT-Betreuung für KMUs und Selbstständige im Raum München Ost",
@@ -109,7 +110,80 @@
       "https://www.facebook.com/andygmuc",
       "https://www.google.com/maps/place/IT-Service+-+Andreas+Grundke/@48.0944123,11.7656812,17z"
     ],
-    "founder":{"@type":"Person","name":"Andreas Grundke"}
+    "founder":{"@id":"https://www.grundke-it.de/#andreas"},
+    "aggregateRating":{
+      "@type":"AggregateRating",
+      "ratingValue":"5.0",
+      "reviewCount":"5",
+      "bestRating":"5",
+      "worstRating":"1"
+    },
+    "review":[
+      {
+        "@type":"Review",
+        "reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"},
+        "author":{"@type":"Person","name":"Christian Fleischmann"},
+        "reviewBody":"Schnell, zuverlässig und in sehr guter Qualität. Alle Anliegen wurden professionell gelöst. Klare Empfehlung!"
+      },
+      {
+        "@type":"Review",
+        "reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"},
+        "author":{"@type":"Person","name":"Sebastian Dietz"},
+        "reviewBody":"Sehr guter Service – perfekte Zusammenarbeit! Jederzeit wieder!"
+      },
+      {
+        "@type":"Review",
+        "reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"},
+        "author":{"@type":"Person","name":"Verena K."},
+        "reviewBody":"Sehr nette und kompetente Unterstützung! Empfehle ich uneingeschränkt."
+      }
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Person",
+    "@id":"https://www.grundke-it.de/#andreas",
+    "name":"Andreas Grundke",
+    "givenName":"Andreas",
+    "familyName":"Grundke",
+    "jobTitle":"Fachinformatiker für Systemintegration · Inhaber Grundke IT-Service",
+    "description":"Über 20 Jahre IT-Erfahrung. Inhaber von Grundke IT-Service in Grasbrunn (Raum München Ost). Schwerpunkte: KMU-IT-Betreuung als Single Point of Contact, Microsoft 365, Netzwerktechnik (UniFi), Backup-Strategien nach 3-2-1, Windows Server und Automatisierung. Parallel BI/Controlling-Entwickler im Bankenumfeld (SQL Server, ETL, Data Warehousing).",
+    "image":"https://www.grundke-it.de/assets/img/logo-grundke-it-badge.png",
+    "url":"https://www.grundke-it.de",
+    "telephone":"+49-178-2584438",
+    "email":"info@grundke-it.de",
+    "address":{
+      "@type":"PostalAddress",
+      "streetAddress":"Beethovenring 16",
+      "addressLocality":"Grasbrunn",
+      "postalCode":"85630",
+      "addressRegion":"Bayern",
+      "addressCountry":"DE"
+    },
+    "worksFor":{"@id":"https://www.grundke-it.de/#localbusiness"},
+    "sameAs":[
+      "https://www.linkedin.com/in/andreas-grundke-843355187",
+      "https://www.instagram.com/andy_g_muc/",
+      "https://www.facebook.com/andygmuc"
+    ],
+    "knowsAbout":[
+      "IT-Betreuung für kleine und mittlere Unternehmen",
+      "Managed Services",
+      "Microsoft 365",
+      "Windows Server",
+      "Microsoft SQL Server",
+      "Netzwerktechnik (Ubiquiti UniFi)",
+      "Backup-Strategien (3-2-1)",
+      "PowerShell",
+      "Proxmox Virtualisierung",
+      "Docker und LXC",
+      "Synology NAS",
+      "WireGuard VPN",
+      "ETL und Data Warehousing"
+    ]
   }
   </script>
 
