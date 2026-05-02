@@ -172,7 +172,7 @@
     border-radius: 10px;
     font-family: var(--fb);
     font-weight: 600;
-    transition: all .2s;
+    transition: background .2s, border-color .2s, color .2s, transform .2s, box-shadow .2s, opacity .2s;
     cursor: pointer;
     border: none;
     text-decoration: none;
@@ -276,7 +276,7 @@
   .hero-dot.on { background:var(--cyan); width:48px; }
   .hero-counter { position:absolute; bottom:1.8rem; right:clamp(1.2rem,4vw,3rem); font-family:var(--fm); font-size:.72rem; color:var(--text3); z-index:10; }
   .hero-counter em { color:var(--cyan); font-style:normal; }
-  .hero-arr { position:absolute; top:50%; transform:translateY(-50%); width:44px; height:44px; border-radius:50%; background:rgba(255,255,255,.05); border:1px solid var(--border); color:var(--text2); font-size:1.2rem; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all .2s; z-index:10; }
+  .hero-arr { position:absolute; top:50%; transform:translateY(-50%); width:44px; height:44px; border-radius:50%; background:rgba(255,255,255,.05); border:1px solid var(--border); color:var(--text2); font-size:1.2rem; display:flex; align-items:center; justify-content:center; cursor:pointer; transition: background .2s, border-color .2s, color .2s, transform .2s, box-shadow .2s, opacity .2s; z-index:10; }
   .hero-arr:hover { background:var(--cyan-dim); border-color:var(--cyan); color:var(--cyan); }
   .hero-arr.prev { left:1rem; } .hero-arr.next { right:1rem; }
 
@@ -436,7 +436,7 @@
     background:rgba(0,0,254,.1); border:1px solid rgba(0,0,254,.25);
     color:var(--cyan); cursor:pointer; flex-shrink:0;
     display:flex; align-items:center; justify-content:center;
-    transition:all .15s;
+    transition: background .15s, border-color .15s, color .15s, transform .15s, box-shadow .15s, opacity .15s;
   }
   .info-btn svg { width:14px; height:14px; }
   .info-btn:hover { background:var(--blue-vi); color:#fff; border-color:var(--blue-vi); }
@@ -458,7 +458,7 @@
     padding:.75rem 1.3rem; border-radius:8px; border:1px solid var(--border);
     background:rgba(38,189,239,.08); color:var(--cyan);
     font-family:var(--fb); font-weight:700; font-size:.85rem;
-    cursor:pointer; transition:all .15s;
+    cursor:pointer; transition: background .15s, border-color .15s, color .15s, transform .15s, box-shadow .15s, opacity .15s;
   }
   .sc-preview-btn svg { width:16px; height:16px; }
   .sc-preview-btn:hover { border-color:var(--cyan); background:rgba(38,189,239,.15); transform:translateY(-1px); }
@@ -527,7 +527,7 @@
     background:rgba(255,255,255,.05); border:1px solid var(--border);
     color:var(--text2); cursor:pointer; flex-shrink:0;
     display:flex; align-items:center; justify-content:center;
-    transition:all .15s;
+    transition: background .15s, border-color .15s, color .15s, transform .15s, box-shadow .15s, opacity .15s;
   }
   .modal-close svg { width:18px; height:18px; }
   .modal-close:hover { background:rgba(239,68,68,.12); border-color:var(--danger); color:var(--danger); }
@@ -862,7 +862,7 @@
   .price-feats { list-style:none; display:flex; flex-direction:column; gap:.65rem; margin-bottom:1.8rem; }
   .price-feats li { display:flex; align-items:flex-start; gap:.55rem; font-size:.84rem; color:var(--text2); }
   .pfy { color:var(--success); flex-shrink:0; font-weight:700; } .pfn { color:var(--text3); flex-shrink:0; }
-  .price-btn { display:block; width:100%; padding:.85rem; border-radius:8px; font-family:var(--fb); font-weight:700; font-size:.88rem; text-align:center; transition:all .2s; cursor:pointer; }
+  .price-btn { display:block; width:100%; padding:.85rem; border-radius:8px; font-family:var(--fb); font-weight:700; font-size:.88rem; text-align:center; transition: background .2s, border-color .2s, color .2s, transform .2s, box-shadow .2s, opacity .2s; cursor:pointer; }
   .price-btn.solid { background:var(--cyan); color:#0f1117; border:none; }
   .price-btn.solid:hover { background:#3dd5ff; box-shadow:0 4px 16px rgba(38,189,239,.3); }
   .price-btn.out { background:transparent; color:var(--cyan); border:1px solid var(--border); }
@@ -941,11 +941,11 @@
   .cta-h em { font-style:normal; color:var(--cyan); }
   .cta-sub { font-size:clamp(.9rem,1.5vw,1.05rem); color:var(--text2); max-width:440px; margin:0 auto 2.5rem; line-height:1.7; position:relative; }
   .cta-btns { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; position:relative; }
-  .btn-tel { display:inline-flex; align-items:center; gap:.55rem; padding:1rem 2rem; border-radius:8px; background:var(--cyan); color:#0f1117; font-family:var(--fb); font-weight:700; font-size:.95rem; border:none; cursor:pointer; transition:all .2s; }
+  .btn-tel { display:inline-flex; align-items:center; gap:.55rem; padding:1rem 2rem; border-radius:8px; background:var(--cyan); color:#0f1117; font-family:var(--fb); font-weight:700; font-size:.95rem; border:none; cursor:pointer; transition: background .2s, border-color .2s, color .2s, transform .2s, box-shadow .2s, opacity .2s; }
   .btn-tel:hover { background:#3dd5ff; transform:translateY(-2px); box-shadow:0 8px 28px rgba(38,189,239,.35); }
-  .btn-mail { display:inline-flex; align-items:center; gap:.55rem; padding:1rem 2rem; border-radius:8px; background:transparent; color:var(--text); border:1px solid var(--border); font-family:var(--fb); font-weight:600; font-size:.95rem; cursor:pointer; transition:all .2s; }
+  .btn-mail { display:inline-flex; align-items:center; gap:.55rem; padding:1rem 2rem; border-radius:8px; background:transparent; color:var(--text); border:1px solid var(--border); font-family:var(--fb); font-weight:600; font-size:.95rem; cursor:pointer; transition: background .2s, border-color .2s, color .2s, transform .2s, box-shadow .2s, opacity .2s; }
   .btn-mail:hover { border-color:var(--cyan); color:var(--cyan); background:var(--cyan-dim); }
-  .btn-wa { display:inline-flex; align-items:center; gap:.55rem; padding:1rem 2rem; border-radius:8px; background:#25d366; color:#fff; font-family:var(--fb); font-weight:700; font-size:.95rem; border:none; cursor:pointer; transition:all .2s; }
+  .btn-wa { display:inline-flex; align-items:center; gap:.55rem; padding:1rem 2rem; border-radius:8px; background:#25d366; color:#fff; font-family:var(--fb); font-weight:700; font-size:.95rem; border:none; cursor:pointer; transition: background .2s, border-color .2s, color .2s, transform .2s, box-shadow .2s, opacity .2s; }
   .btn-wa:hover { background:#20c55a; transform:translateY(-2px); }
   .cta-region { margin-top:1.8rem; font-family:var(--fm); font-size:.7rem; color:var(--text3); letter-spacing:.05em; position:relative; }
 
@@ -1118,7 +1118,7 @@
     background:var(--accent); border:1px solid rgba(255,255,255,.15);
     color:#fff; font-size:1.2rem;
     display:flex; align-items:center; justify-content:center;
-    cursor:pointer; transition:all .3s;
+    cursor:pointer; transition: background .3s, border-color .3s, color .3s, transform .3s, box-shadow .3s, opacity .3s;
     opacity:0; pointer-events:none; transform:translateY(12px);
     box-shadow:0 4px 16px rgba(12,77,162,.3);
   }
@@ -2143,18 +2143,18 @@
     <div class="testi-grid">
       <div class="testi-card">
         <div class="stars"><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg></div>
-        <p class="testi-txt">„Früher haben wir tagelang gewartet. Bei Andreas ist das noch am selben Tag erledigt.“</p>
-        <div class="testi-who placeholder-marker">⚠ [Vorname Nachname]</div><div class="testi-role placeholder-marker">⚠ [Branche] · [Ort]</div>
+        <p class="testi-txt">„Schnell, zuverlässig und in sehr guter Qualität. Alle Anliegen wurden professionell gelöst. Klare Empfehlung!"</p>
+        <div class="testi-who">Christian Fleischmann</div><div class="testi-role">Google-Bewertung</div>
       </div>
       <div class="testi-card">
         <div class="stars"><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg></div>
-        <p class="testi-txt">„Ich ruf an, schildere das Problem – und eine Stunde später läuft's wieder. Das ist es, was wir als kleines Unternehmen brauchen.“</p>
-        <div class="testi-who placeholder-marker">⚠ [Vorname Nachname]</div><div class="testi-role placeholder-marker">⚠ [Branche] · [Ort]</div>
+        <p class="testi-txt">„Sehr guter Service – perfekte Zusammenarbeit! Jederzeit wieder!"</p>
+        <div class="testi-who">Sebastian Dietz</div><div class="testi-role">Google-Bewertung</div>
       </div>
       <div class="testi-card">
         <div class="stars"><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg></div>
-        <p class="testi-txt">„Endlich jemand, der einfach erklärt was er macht – und der auch mal Nein sagt wenn etwas keinen Sinn ergibt.“</p>
-        <div class="testi-who placeholder-marker">⚠ [Vorname Nachname]</div><div class="testi-role placeholder-marker">⚠ [Branche] · [Ort]</div>
+        <p class="testi-txt">„Sehr nette und kompetente Unterstützung! Empfehle ich uneingeschränkt."</p>
+        <div class="testi-who">Verena K.</div><div class="testi-role">Google-Bewertung</div>
       </div>
     </div>
   </div>
