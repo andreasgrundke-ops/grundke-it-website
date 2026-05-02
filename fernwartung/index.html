@@ -61,37 +61,6 @@
       line-height: var(--lh-body);
     }
 
-    /* Session-Code Box */
-    .fw-code-box {
-      background: rgba(38,189,239,.08);
-      border: 1px solid rgba(38,189,239,.3);
-      border-radius: var(--r);
-      padding: 1.25rem 1.5rem;
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-    .fw-code-label {
-      font-family: var(--fm);
-      font-size: .7rem;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      color: var(--text3);
-      margin: 0 0 .5rem;
-    }
-    .fw-code-value {
-      font-family: var(--fm);
-      font-size: clamp(1.6rem, 6vw, 2.2rem);
-      font-weight: 700;
-      color: var(--cyan);
-      letter-spacing: .2em;
-      margin: 0 0 .4rem;
-    }
-    .fw-code-hint {
-      font-size: .78rem;
-      color: var(--text3);
-      margin: 0;
-    }
-
     /* Schritte */
     .fw-steps { display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 2rem; }
     .fw-step {
@@ -264,14 +233,6 @@
       <p class="fw-subtitle">Ihr IT-Betreuer von Grundke IT-Service wird Ihren PC gleich aus der Ferne unterstützen.</p>
     </div>
 
-    <!-- Sitzungs-Info-Box (nur sichtbar wenn ?code= in URL vorhanden) -->
-    <div class="fw-code-box" id="fwCodeBox" style="display:none;" aria-live="polite">
-      <p class="fw-code-label">Ihre Sitzung</p>
-      <div class="fw-code-value" id="fwCodeValue">–</div>
-      <p class="fw-code-hint">Verbindung wird automatisch hergestellt – kein Eintippen nötig.</p>
-    </div>
-
-
     <!-- Schritt-für-Schritt -->
     <div class="fw-steps">
 
@@ -350,30 +311,5 @@
 </footer>
 
 <script src="../assets/js/main.js"></script>
-<script>
-/* Session-Code aus URL optional uebernehmen.
-   Mit Code: Code-Box anzeigen, Download-URL mit ?code= → Backend setzt
-   Filename via Content-Disposition → EXE liest Code aus Dateinamen.
-   Ohne Code: Standard-Download bleibt aktiv. */
-(function () {
-  var rawCode = (new URLSearchParams(window.location.search).get('code') || '').trim();
-
-  /* Permissive Pruefung: alphanumerisch + - + _, 4-64 Zeichen.
-     Kein striktes Hex-Format mehr - der Server validiert das echte Format,
-     wir pruefen hier nur grob auf "sieht wie ein Code aus" (Anti-XSS). */
-  if (!/^[a-zA-Z0-9_-]{4,64}$/.test(rawCode)) return;
-
-  var dlBtn     = document.getElementById('fwDownloadBtn');
-  var codeBox   = document.getElementById('fwCodeBox');
-  var codeValue = document.getElementById('fwCodeValue');
-
-  codeBox.style.display = 'block';
-  codeValue.textContent = rawCode.toUpperCase();
-  dlBtn.setAttribute(
-    'href',
-    'https://msp.grundke-it.de/dist/grundke-support.exe?code=' + encodeURIComponent(rawCode)
-  );
-})();
-</script>
 </body>
 </html>
