@@ -43,6 +43,8 @@ function initSlider() {
   const dots   = document.querySelectorAll('.hero-dot');
   const counter= document.getElementById('heroCounter');
   const total  = slides.length;
+  // #4: Auto-Advance bei reduced-motion-Praeferenz aussetzen
+  const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let cur = 0, timer;
 
   function goTo(n) {
@@ -56,6 +58,7 @@ function initSlider() {
   }
 
   function resetTimer() {
+    if (reducedMotion) return; // kein Auto-Advance bei reduced-motion
     clearInterval(timer);
     timer = setInterval(() => goTo(cur + 1), 13000);
   }
@@ -132,6 +135,8 @@ function initVCard() {
 /* ── Smooth Scroll (Lenis) ── */
 function initLenis() {
   if (typeof Lenis === 'undefined') return;
+  // #30: bei reduced-motion-Praeferenz auf natives scroll-behavior:smooth zurueckfallen
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   const lenis = new Lenis({
     duration: 1.1,

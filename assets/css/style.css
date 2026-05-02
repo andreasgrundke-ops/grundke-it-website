@@ -12,6 +12,7 @@
 
 /* ── CI 2026.01 Variablen ── */
 :root {
+  color-scheme: dark;
   --bg:        #0f1117;
   --bg2:       #1a1f2e;
   --bg3:       #1e2538;
@@ -531,3 +532,58 @@ nav {
 .nav-dropdown-item--highlight { color: var(--cyan); font-weight: 600; }
 .nav-dropdown-item--highlight:hover { background: var(--bg3); color: var(--cyan); }
 /* ──────────────────────────────────────────────────────────────── */
+
+
+/* ── Web-Review 2026-05-02: Globale Quick-Wins ────────────────────── */
+
+/* #5 Anker-Sprung-Korrektur: Sticky-Nav verdeckt Targets nicht mehr */
+section[id], h1, h2, h3 {
+  scroll-margin-top: calc(var(--nav-h) + 1rem);
+}
+
+/* #16 Touch-UX: kein 300ms-iOS-Delay, kein grauer Tap-Flash */
+a, button {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* #17 Modal: kein iOS-Bounce-Bleed in den Hintergrund-Scroll */
+.modal-body, .modal-dialog {
+  overscroll-behavior: contain;
+}
+
+/* #29 Preisspalten: keine Sprünge mehr durch proportionale Ziffern */
+.price-val, .hourly-val, .sch-price-val, .rp-head-r {
+  font-variant-numeric: tabular-nums;
+}
+
+/* #4 Hero-Slider Bildzoom respektiert reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .slide-bg { transition: none !important; transform: none !important; }
+  .slide.active .slide-bg { transform: none !important; }
+}
+
+/* #14 Schulungs-Cards: ehemalige Inline-onmouseover als CSS-Hover */
+.sch-card {
+  position: relative;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem;
+  transition: border-color .2s, transform .2s;
+}
+.sch-card:hover,
+.sch-card:focus-visible {
+  border-color: var(--accent);
+  transform: translateY(-4px);
+}
+.sch-card.is-featured {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent), 0 16px 48px rgba(12,77,162,.1);
+  transition: transform .2s;
+}
+.sch-card.is-featured:hover,
+.sch-card.is-featured:focus-visible {
+  transform: translateY(-4px);
+}
+/* ──────────────────────────────────────────────────────────────────── */
