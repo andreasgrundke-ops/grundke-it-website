@@ -1,0 +1,123 @@
+name: Backup Source to Wasabi
+
+# Generische Backup-Vorlage für ALLE Grundke-IT-Projekte.
+# Triggert bei Tags (v*) und manuell ("Run workflow"). Push auf main triggert NICHT
+# damit es bei jedem Commit kein Mail-Spam gibt. Project-Name wird automatisch
+# aus dem Repository-Namen abgeleitet — keine Änderung pro Repo nötig.
+#
+# Voraussetzung: Repo-Secrets WASABI_ACCESS_KEY / WASABI_SECRET_KEY / WASABI_BUCKET
+# Optional: BACKEND_NOTIFY_URL / BACKEND_NOTIFY_TOKEN für msp-manager Notify
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Wasabi secrets configured
+        env:
+          WASABI_KEY: ${{ secrets.WASABI_ACCESS_KEY }}
+        run: |
+          if [ -z "$WASABI_KEY" ]; then
+            echo "::warning::Wasabi-Secrets fehlen. Bitte WASABI_ACCESS_KEY/WASABI_SECRET_KEY/WASABI_BUCKET in Repo-Secrets eintragen."
+            exit 0
+          fi
+          echo "✓ Secrets OK"
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        env:
+          WASABI_KEY: ${{ secrets.WASABI_ACCESS_KEY }}
+        if: ${{ env.WASABI_KEY != '' }}
+        with:
+          fetch-depth: 0
+
+      - name: Set version variables
+        id: vars
+        env:
+          WASABI_KEY: ${{ secrets.WASABI_ACCESS_KEY }}
+        if: ${{ env.WASABI_KEY != '' }}
+        run: |
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            VERSION="${GITHUB_REF#refs/tags/}"
+            FOLDER="releases/${VERSION}"
+          else
+            VERSION="main-$(date -u +%Y-%m-%d_%H%M)"
+            FOLDER="snapshots/${VERSION}"
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "folder=$FOLDER"   >> $GITHUB_OUTPUT
+          echo "project=${GITHUB_REPOSITORY##*/}" >> $GITHUB_OUTPUT
+
+      - name: Create source archive
+        env:
+          WASABI_KEY: ${{ secrets.WASABI_ACCESS_KEY }}
+        if: ${{ env.WASABI_KEY != '' }}
+        run: |
+          tar --exclude='node_modules' \
+              --exclude='dist' \
+              --exclude='build' \
+              --exclude='.next' \
+              --exclude='*.exe' \
+              --exclude='**/embedded/rustdesk.exe' \
+              -czf source.tar.gz .
+          ls -lh source.tar.gz
+
+      - name: Generate metadata
+        env:
+          WASABI_KEY: ${{ secrets.WASABI_ACCESS_KEY }}
+        if: ${{ env.WASABI_KEY != '' }}
+        run: |
+          cat > metadata.json <<EOF
+          {
+            "project": "${{ steps.vars.outputs.project }}",
+            "version": "${{ steps.vars.outputs.version }}",
+            "commit": "${GITHUB_SHA}",
+            "branch": "${GITHUB_REF_NAME}",
+            "actor": "${GITHUB_ACTOR}",
+            "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "github_run_id": "${GITHUB_RUN_ID}"
+          }
+          EOF
+
+      - name: Install s5cmd
+        env:
+          WASABI_KEY: ${{ secrets.WASABI_ACCESS_KEY }}
+        if: ${{ env.WASABI_KEY != '' }}
+        run: |
+          wget -q "https://github.com/peak/s5cmd/releases/download/v2.2.2/s5cmd_2.2.2_Linux-64bit.tar.gz" -O /tmp/s5cmd.tar.gz
+          tar -xzf /tmp/s5cmd.tar.gz -C /usr/local/bin/ s5cmd
+          chmod +x /usr/local/bin/s5cmd
+
+      - name: Upload to Wasabi
+        env:
+          AWS_ACCESS_KEY_ID:     ${{ secrets.WASABI_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.WASABI_SECRET_KEY }}
+          WASABI_KEY:            ${{ secrets.WASABI_ACCESS_KEY }}
+        if: ${{ env.WASABI_KEY != '' }}
+        run: |
+          ENDPOINT="https://s3.eu-central-2.wasabisys.com"
+          BUCKET="${{ secrets.WASABI_BUCKET }}"
+          DEST="s3://${BUCKET}/projects/${{ steps.vars.outputs.project }}/${{ steps.vars.outputs.folder }}/"
+          s5cmd --endpoint-url "$ENDPOINT" cp source.tar.gz "${DEST}source.tar.gz"
+          s5cmd --endpoint-url "$ENDPOINT" cp metadata.json "${DEST}metadata.json"
+          echo "✅ Uploaded to: $DEST"
+
+      - name: Notify backend
+        env:
+          STATUS:        ${{ job.status }}
+          PROJECT:       ${{ steps.vars.outputs.project }}
+          VERSION:       ${{ steps.vars.outputs.version }}
+          FOLDER:        ${{ steps.vars.outputs.folder }}
+          NOTIFY_URL:    ${{ secrets.BACKEND_NOTIFY_URL }}
+          NOTIFY_TOKEN:  ${{ secrets.BACKEND_NOTIFY_TOKEN }}
+          WASABI_KEY:    ${{ secrets.WASABI_ACCESS_KEY }}
+        if: ${{ env.WASABI_KEY != '' && env.NOTIFY_URL != '' }}
+        run: |
+          curl -s -X POST "$NOTIFY_URL/api/backups/projects/notify" \
+            -H "Content-Type: application/json" \
+            -H "X-Notify-Token: $NOTIFY_TOKEN" \
+            -d "{\"project\":\"$PROJECT\",\"version\":\"$VERSION\",\"folder\":\"$FOLDER\",\"status\":\"$STATUS\",\"commit\":\"$GITHUB_SHA\"}" || true
