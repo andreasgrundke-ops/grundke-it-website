@@ -3,6 +3,14 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+
+  <!-- Performance: Resource Hints + kritische Assets vorladen (Core Web Vitals: LCP/FCP) -->
+  <link rel="preconnect" href="https://www.googletagmanager.com"/>
+  <link rel="dns-prefetch" href="https://www.google-analytics.com"/>
+  <link rel="preload" as="image" fetchpriority="high" href="assets/img/hero-01-office.jpg"/>
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/Manrope-latin.woff2"/>
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/SpaceGrotesk-latin.woff2"/>
+
   <title>Grundke IT-Service – IT-Betreuung München Ost | Grasbrunn · Ottobrunn · Vaterstetten</title>
   <meta name="description" content="Deine IT ist zu groß geworden – und die Zeit zu knapp? Gib deine IT ab. Andreas Grundke löst das für dich. Persönlich, Festpreis, erreichbar wann du es brauchst. Raum München Ost."/>
   <meta name="author" content="Andreas Grundke"/>
@@ -42,7 +50,7 @@
   <meta name="msapplication-TileImage" content="/android-chrome-192x192.png"/>
   <meta name="format-detection" content="telephone=no"/>
 
-  <!-- OG Image (TODO: eigenes OG-Image 1200x630 erstellen) -->
+  <!-- OG Image: 1200x630 (assets/img/og-image.png) -->
   <meta property="og:image" content="https://www.grundke-it.de/assets/img/og-image.png"/>
   <meta property="og:image:width" content="1200"/>
   <meta property="og:image:height" content="630"/>
@@ -116,7 +124,7 @@
         "aggregateRating":{
           "@type":"AggregateRating",
           "ratingValue":"5.0",
-          "reviewCount":"5",
+          "reviewCount":"3",
           "bestRating":"5",
           "worstRating":"1"
         },
@@ -182,6 +190,15 @@
           "WireGuard VPN",
           "ETL und Data Warehousing"
         ]
+      },
+      {
+        "@type":"WebSite",
+        "@id":"https://www.grundke-it.de/#website",
+        "url":"https://www.grundke-it.de/",
+        "name":"Grundke IT-Service",
+        "description":"IT-Betreuung für KMUs und Selbstständige im Raum München Ost",
+        "publisher":{"@id":"https://www.grundke-it.de/#localbusiness"},
+        "inLanguage":"de-DE"
       }
     ]
   }
@@ -346,7 +363,9 @@
   }
   .btn-ghost:hover { border-color:rgba(255,255,255,.4); color:#fff; background:rgba(255,255,255,.12); }
   .hero-dots { position:absolute; bottom:1.8rem; left:clamp(1.2rem,7vw,8%); display:flex; gap:.5rem; z-index:10; }
-  .hero-dot { height:3px; width:28px; border-radius:2px; background:var(--border); border:none; cursor:pointer; transition:background .3s,width .35s; }
+  .hero-dot { position:relative; height:3px; width:28px; border-radius:2px; background:var(--border); border:none; cursor:pointer; transition:background .3s,width .35s; }
+  /* A11y: Touch-Target >=24px (WCAG 2.5.8) ueber transparente Hit-Area, Optik unveraendert */
+  .hero-dot::before { content:''; position:absolute; inset:-11px -4px; }
   .hero-dot.on { background:var(--cyan); width:48px; }
   .hero-counter { position:absolute; bottom:1.8rem; right:clamp(1.2rem,4vw,3rem); font-family:var(--fm); font-size:.72rem; color:var(--text3); z-index:10; }
   .hero-counter em { color:var(--cyan); font-style:normal; }
@@ -1306,7 +1325,7 @@
       <li><a href="#faq">FAQ</a></li>
       <li><a href="tel:+491782584438" class="nav-cta"><svg width="16" height="16" aria-hidden="true"><use href="#ico-phone"/></svg><span>Jetzt anrufen</span></a></li>
     </ul>
-    <button class="hamburger" id="ham" aria-label="Menü öffnen">
+    <button class="hamburger" id="ham" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobileMenu">
       <span></span><span></span><span></span>
     </button>
   </div>
@@ -1437,11 +1456,11 @@
   <button class="hero-arr prev" id="sliderPrev" aria-label="Zurück">&#8249;</button>
   <button class="hero-arr next" id="sliderNext" aria-label="Weiter">&#8250;</button>
   <div class="hero-dots" role="tablist" aria-label="Hero-Slide auswählen">
-    <button class="hero-dot on" data-i="0" aria-label="Slide 1"></button>
-    <button class="hero-dot"    data-i="1" aria-label="Slide 2"></button>
-    <button class="hero-dot"    data-i="2" aria-label="Slide 3"></button>
-    <button class="hero-dot"    data-i="3" aria-label="Slide 4"></button>
-    <button class="hero-dot"    data-i="4" aria-label="Slide 5"></button>
+    <button class="hero-dot on" data-i="0" role="tab" aria-selected="true"  aria-label="Slide 1"></button>
+    <button class="hero-dot"    data-i="1" role="tab" aria-selected="false" aria-label="Slide 2"></button>
+    <button class="hero-dot"    data-i="2" role="tab" aria-selected="false" aria-label="Slide 3"></button>
+    <button class="hero-dot"    data-i="3" role="tab" aria-selected="false" aria-label="Slide 4"></button>
+    <button class="hero-dot"    data-i="4" role="tab" aria-selected="false" aria-label="Slide 5"></button>
   </div>
 </section>
 
@@ -1744,12 +1763,12 @@
 
           <h4 class="rp-section-title">Ampel-Übersicht</h4>
           <div class="rp-ampel">
-            <div class="rp-ampel-row"><span class="rp-dot rp-dot-g"></span><b>Netzwerk:</b> Stabil, gut ausgelastet</div>
-            <div class="rp-ampel-row"><span class="rp-dot rp-dot-r"></span><b>Backup:</b> Kein externes Backup</div>
-            <div class="rp-ampel-row"><span class="rp-dot rp-dot-y"></span><b>Windows-Stand:</b> 2× Windows 10 (EOL)</div>
-            <div class="rp-ampel-row"><span class="rp-dot rp-dot-g"></span><b>Virenschutz:</b> ESET aktiv</div>
-            <div class="rp-ampel-row"><span class="rp-dot rp-dot-y"></span><b>Router:</b> FritzBox 7490 ohne Updates</div>
-            <div class="rp-ampel-row"><span class="rp-dot rp-dot-g"></span><b>M365:</b> Business Standard, sauber</div>
+            <div class="rp-ampel-row"><span class="rp-dot rp-dot-g" role="img" aria-label="Status: OK"></span><b>Netzwerk:</b> Stabil, gut ausgelastet</div>
+            <div class="rp-ampel-row"><span class="rp-dot rp-dot-r" role="img" aria-label="Status: Kritisch"></span><b>Backup:</b> Kein externes Backup</div>
+            <div class="rp-ampel-row"><span class="rp-dot rp-dot-y" role="img" aria-label="Status: Warnung"></span><b>Windows-Stand:</b> 2× Windows 10 (EOL)</div>
+            <div class="rp-ampel-row"><span class="rp-dot rp-dot-g" role="img" aria-label="Status: OK"></span><b>Virenschutz:</b> ESET aktiv</div>
+            <div class="rp-ampel-row"><span class="rp-dot rp-dot-y" role="img" aria-label="Status: Warnung"></span><b>Router:</b> FritzBox 7490 ohne Updates</div>
+            <div class="rp-ampel-row"><span class="rp-dot rp-dot-g" role="img" aria-label="Status: OK"></span><b>M365:</b> Business Standard, sauber</div>
           </div>
 
           <h4 class="rp-section-title">Top-3-Handlungsempfehlungen</h4>
@@ -2240,18 +2259,18 @@
     <div class="s-label">Häufige Fragen</div>
     <h2 class="s-title">FAQ</h2>
     <div class="faq-wrap">
-      <details class="faq-item"><summary>Welche IT-Services gibt es in Grasbrunn und Ottobrunn? <span class="faq-ico">+</span></summary><div class="faq-a">Ich biete das komplette Spektrum der IT-Betreuung für kleine Unternehmen: Netzwerk, WLAN, PC, Microsoft 365, IT-Sicherheit, Backup, Kassenanlagen, Kameras und mehr – vor Ort in Grasbrunn, Ottobrunn, Vaterstetten, Haar, Neubiberg und Umgebung.</div></details>
-      <details class="faq-item"><summary>Was kostet eine IT-Betreuung für meinen Betrieb? <span class="faq-ico">+</span></summary><div class="faq-a">Ohne Vertrag: €110/h netto im 15-Minuten-Takt, kein Wochenendzuschlag. Mit Betreuungsvertrag ab €149/Monat – inklusive IT-Assessment, Remote-Zugriff und bevorzugtem Support.</div></details>
-      <details class="faq-item"><summary>Wie schnell bist du bei einem IT-Notfall erreichbar? <span class="faq-ico">+</span></summary><div class="faq-a">Managed-Kunden haben Priorität und werden bevorzugt behandelt. Für alle anderen: Ich melde mich so schnell wie möglich – in der Regel noch am selben Tag.</div></details>
-      <details class="faq-item"><summary>Was unterscheidet dich von einem großen IT-Systemhaus? <span class="faq-ico">+</span></summary><div class="faq-a">Kein Ticketsystem, kein anonymes Team, kein Rückruf nächste Woche. Du hast einen festen Ansprechpartner – mich. Ich lerne dein System, denke mit und handle proaktiv.</div></details>
-      <details class="faq-item"><summary>Was passiert wenn du im Urlaub oder krank bist? <span class="faq-ico">+</span></summary><div class="faq-a">Ich habe ein Netzwerk aus vertrauenswürdigen Kollegen, die im Notfall einspringen. Du wirst rechtzeitig informiert und bist nie ohne Ansprechpartner.</div></details>
-      <details class="faq-item"><summary>Kannst du auch bei KI und Automatisierung helfen? <span class="faq-ico">+</span></summary><div class="faq-a">Ja – ich helfe dir dabei, wiederkehrende Aufgaben zu automatisieren, KI-Tools sinnvoll einzuführen und Zeit im Büroalltag zu sparen. Als Gen-X-IT-Profi bin ich selbst täglich mit KI-Werkzeugen unterwegs.</div></details>
-      <details class="faq-item"><summary>Welche Region betreust du? <span class="faq-ico">+</span></summary><div class="faq-a">Vor Ort bin ich schnell erreichbar in Grasbrunn, Ottobrunn, Vaterstetten, Haar, Neubiberg, Putzbrunn und Hohenbrunn – ca. 25 km Radius. Per Remote-Support helfe ich deutschlandweit. Für Vor-Ort-Einsätze bleibe ich bewusst im Münchner Osten: auf der anderen Seite Münchens steh ich im Stau – und das hilft dir nicht.</div></details>
-      <details class="faq-item"><summary>Mein WLAN funktioniert nicht mehr – was kann ich tun? <span class="faq-ico">+</span></summary><div class="faq-a">Ruf mich an oder schreib auf WhatsApp. Die meisten WLAN-Probleme lassen sich remote lösen – in unter einer Stunde. Ich greife mich per TeamViewer auf deinen Router oder Rechner auf und behebe den Fehler, ohne dass ich vor Ort kommen muss. Wenn Hardware kaputt ist, bin ich schnell bei dir. Einsatzgebiet: Grasbrunn, Ottobrunn, Vaterstetten, Haar, Neubiberg und Umgebung München Ost.</div></details>
-      <details class="faq-item"><summary>Mein IT-Betreuer ist nicht mehr erreichbar – wer hilft mir kurzfristig? <span class="faq-ico">+</span></summary><div class="faq-a">Das ist einer der häufigsten Gründe warum Leute bei mir anrufen. Ich übernehme auch kurzfristig – ohne langen Onboarding-Prozess. Ein kurzes Erstgespräch, Zugang zu deinen Systemen, und ich kann sofort loslegen. Ruf einfach an: 0178 258 44 38.</div></details>
-      <details class="faq-item"><summary>Gibt es IT-Support auch abends, am Wochenende oder an Feiertagen? <span class="faq-ico">+</span></summary><div class="faq-a">Ja – ich habe keine klassischen Öffnungszeiten. Schreib mir auf WhatsApp oder ruf an, wann das Problem auftritt. Managed-Kunden werden bevorzugt behandelt. Für alle anderen melde ich mich so schnell wie möglich – auch außerhalb der üblichen Bürozeiten.</div></details>
-      <details class="faq-item"><summary>Kann ich IT-Support auch remote bekommen ohne dass jemand vorbeikommt? <span class="faq-ico">+</span></summary><div class="faq-a">Ja, das ist mein Alltag. Mit TeamViewer oder ähnlichen Tools greife ich auf deinen Rechner, dein Netzwerk oder deine Server zu und löse das Problem live – du siehst dabei zu oder machst einfach weiter. Die meisten Probleme löse ich so in unter einer Stunde. Für Remote-Support bin ich deutschlandweit erreichbar.</div></details>
-      <details class="faq-item"><summary>Was kostet ein einmaliger IT-Notfall-Einsatz? <span class="faq-ico">+</span></summary><div class="faq-a">€110,– netto pro Stunde, Abrechnung im 15-Minuten-Takt. Kein Mindestbetrag, kein Wochenendzuschlag, keine versteckten Kosten. Du bekommst nach dem Einsatz eine transparente Rechnung mit genauen Zeiten.</div></details>
+      <details class="faq-item"><summary>Welche IT-Services gibt es in Grasbrunn und Ottobrunn? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Ich biete das komplette Spektrum der IT-Betreuung für kleine Unternehmen: Netzwerk, WLAN, PC, Microsoft 365, IT-Sicherheit, Backup, Kassenanlagen, Kameras und mehr – vor Ort in Grasbrunn, Ottobrunn, Vaterstetten, Haar, Neubiberg und Umgebung.</div></details>
+      <details class="faq-item"><summary>Was kostet eine IT-Betreuung für meinen Betrieb? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Ohne Vertrag: €110/h netto im 15-Minuten-Takt, kein Wochenendzuschlag. Mit Betreuungsvertrag ab €149/Monat – inklusive IT-Assessment, Remote-Zugriff und bevorzugtem Support.</div></details>
+      <details class="faq-item"><summary>Wie schnell bist du bei einem IT-Notfall erreichbar? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Managed-Kunden haben Priorität und werden bevorzugt behandelt. Für alle anderen: Ich melde mich so schnell wie möglich – in der Regel noch am selben Tag.</div></details>
+      <details class="faq-item"><summary>Was unterscheidet dich von einem großen IT-Systemhaus? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Kein Ticketsystem, kein anonymes Team, kein Rückruf nächste Woche. Du hast einen festen Ansprechpartner – mich. Ich lerne dein System, denke mit und handle proaktiv.</div></details>
+      <details class="faq-item"><summary>Was passiert wenn du im Urlaub oder krank bist? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Ich habe ein Netzwerk aus vertrauenswürdigen Kollegen, die im Notfall einspringen. Du wirst rechtzeitig informiert und bist nie ohne Ansprechpartner.</div></details>
+      <details class="faq-item"><summary>Kannst du auch bei KI und Automatisierung helfen? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Ja – ich helfe dir dabei, wiederkehrende Aufgaben zu automatisieren, KI-Tools sinnvoll einzuführen und Zeit im Büroalltag zu sparen. Als Gen-X-IT-Profi bin ich selbst täglich mit KI-Werkzeugen unterwegs.</div></details>
+      <details class="faq-item"><summary>Welche Region betreust du? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Vor Ort bin ich schnell erreichbar in Grasbrunn, Ottobrunn, Vaterstetten, Haar, Neubiberg, Putzbrunn und Hohenbrunn – ca. 25 km Radius. Per Remote-Support helfe ich deutschlandweit. Für Vor-Ort-Einsätze bleibe ich bewusst im Münchner Osten: auf der anderen Seite Münchens steh ich im Stau – und das hilft dir nicht.</div></details>
+      <details class="faq-item"><summary>Mein WLAN funktioniert nicht mehr – was kann ich tun? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Ruf mich an oder schreib auf WhatsApp. Die meisten WLAN-Probleme lassen sich remote lösen – in unter einer Stunde. Ich greife mich per TeamViewer auf deinen Router oder Rechner auf und behebe den Fehler, ohne dass ich vor Ort kommen muss. Wenn Hardware kaputt ist, bin ich schnell bei dir. Einsatzgebiet: Grasbrunn, Ottobrunn, Vaterstetten, Haar, Neubiberg und Umgebung München Ost.</div></details>
+      <details class="faq-item"><summary>Mein IT-Betreuer ist nicht mehr erreichbar – wer hilft mir kurzfristig? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Das ist einer der häufigsten Gründe warum Leute bei mir anrufen. Ich übernehme auch kurzfristig – ohne langen Onboarding-Prozess. Ein kurzes Erstgespräch, Zugang zu deinen Systemen, und ich kann sofort loslegen. Ruf einfach an: 0178 258 44 38.</div></details>
+      <details class="faq-item"><summary>Gibt es IT-Support auch abends, am Wochenende oder an Feiertagen? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Ja – ich habe keine klassischen Öffnungszeiten. Schreib mir auf WhatsApp oder ruf an, wann das Problem auftritt. Managed-Kunden werden bevorzugt behandelt. Für alle anderen melde ich mich so schnell wie möglich – auch außerhalb der üblichen Bürozeiten.</div></details>
+      <details class="faq-item"><summary>Kann ich IT-Support auch remote bekommen ohne dass jemand vorbeikommt? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Ja, das ist mein Alltag. Mit TeamViewer oder ähnlichen Tools greife ich auf deinen Rechner, dein Netzwerk oder deine Server zu und löse das Problem live – du siehst dabei zu oder machst einfach weiter. Die meisten Probleme löse ich so in unter einer Stunde. Für Remote-Support bin ich deutschlandweit erreichbar.</div></details>
+      <details class="faq-item"><summary>Was kostet ein einmaliger IT-Notfall-Einsatz? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">€110,– netto pro Stunde, Abrechnung im 15-Minuten-Takt. Kein Mindestbetrag, kein Wochenendzuschlag, keine versteckten Kosten. Du bekommst nach dem Einsatz eine transparente Rechnung mit genauen Zeiten.</div></details>
     </div>
     <div style="margin-top:2rem;padding:1.3rem 1.5rem;background:var(--bg3);border:1px solid var(--border);border-left:3px solid var(--cyan);border-radius:10px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
       <div>
@@ -2368,6 +2387,9 @@
   {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    "@id": "https://www.grundke-it.de/#faqpage",
+    "inLanguage": "de-DE",
+    "isPartOf": {"@id": "https://www.grundke-it.de/#website"},
     "mainEntity": [
       {
         "@type": "Question",
@@ -2437,6 +2459,18 @@
     "@context": "https://schema.org",
     "@type": "Service",
     "serviceType": "IT-Betreuung und IT-Support",
+    "offers": {
+      "@type": "Offer",
+      "priceCurrency": "EUR",
+      "price": "110.00",
+      "priceSpecification": {
+        "@type": "UnitPriceSpecification",
+        "price": "110.00",
+        "priceCurrency": "EUR",
+        "unitText": "Stunde",
+        "billingIncrement": "PT15M"
+      }
+    },
     "provider": {
       "@type": "LocalBusiness",
       "name": "Grundke IT-Service",
@@ -2467,8 +2501,8 @@
     }
   }
   </script>
-<script src="assets/js/lenis.min.js"></script>
-<script src="assets/js/main.js"></script>
+<script src="assets/js/lenis.min.js" defer></script>
+<script src="assets/js/main.js" defer></script>
 
 <!-- Sticky Contact Bar — Mobile: Bottom-Leiste · Desktop: Sidebar rechts -->
 <div class="sticky-contact" id="stickyContact" role="navigation" aria-label="Kontakt-Optionen">

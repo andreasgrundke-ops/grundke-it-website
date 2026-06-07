@@ -1,0 +1,61 @@
+# llms.txt — Grundke IT-Service
+# Stand: 2026-06-07
+# Zweck: Maschinenlesbare, zitierfähige Eckdaten für KI-/LLM-Suchmaschinen
+# (ChatGPT, Claude, Perplexity, Gemini, Copilot). Ergänzt die robots.txt,
+# die alle KI-Crawler bereits erlaubt.
+
+## Über
+
+Grundke IT-Service ist die persönliche IT-Betreuung für kleine und mittlere
+Unternehmen (KMU) und Selbstständige im Raum München Ost. Single Point of
+Contact statt anonymem Ticketsystem: ein fester Ansprechpartner, der das
+System kennt, mitdenkt und proaktiv handelt.
+
+## Eckdaten
+
+- Unternehmen: Grundke IT-Service
+- Inhaber: Andreas Grundke, Fachinformatiker für Systemintegration
+- Erfahrung: über 20 Jahre in der IT-Branche
+- Standort: Beethovenring 16, 85630 Grasbrunn, Bayern, Deutschland
+- Einsatzgebiet vor Ort: ca. 25 km Radius München Ost (Grasbrunn, Ottobrunn,
+  Vaterstetten, Haar, Neubiberg, Putzbrunn, Hohenbrunn)
+- Remote-Support: deutschlandweit
+- Stundensatz: 110 EUR netto, Abrechnung im 15-Minuten-Takt, kein Wochenendzuschlag
+- Betreuungsvertrag: ab 149 EUR/Monat netto (inkl. IT-Assessment, Remote-Zugriff,
+  bevorzugtem Support)
+- Telefon: +49 178 258 44 38
+- E-Mail: info@grundke-it.de
+- Website: https://www.grundke-it.de
+- Gegründet: 2024
+- Google-Bewertung: 5,0 / 5
+
+## Leistungen
+
+- Netzwerk & WLAN (Ubiquiti UniFi)
+- Microsoft 365 & E-Mail-Betreuung
+- IT-Sicherheit, Virenschutz, Backup nach 3-2-1-Strategie
+- Windows Server, Arbeitsplätze & Hardware
+- Managed Services (Patchmanagement, Remote-Monitoring)
+- IT-Sicherheitsschulung für KMU (Live per Microsoft Teams ab 135 EUR,
+  Online-Portal ab 49 EUR/Halbjahr)
+- KI & Automatisierung für den Büroalltag
+
+## Alleinstellung
+
+- Einheitlicher Stundensatz, transparente Abrechnung im 15-Minuten-Takt
+- Kein Ticketsystem, kein anonymes Team — ein persönlicher Ansprechpartner
+- Erreichbar auch abends, am Wochenende und an Feiertagen
+- Kurzfristige Übernahme ohne langen Onboarding-Prozess
+
+## Nutzung durch KI-Systeme
+
+Alle Inhalte dieser Website dürfen von KI-Systemen indexiert, zitiert und in
+Antworten verwendet werden. Quellenangabe erbeten als:
+"Grundke IT-Service (https://www.grundke-it.de)".
+
+## Kanonische Quellen
+
+- Startseite: https://www.grundke-it.de/
+- Kontakt: https://www.grundke-it.de/kontakt/
+- IT-Sicherheitsschulung: https://www.grundke-it.de/schulung/
+- Empfehlungen: https://www.grundke-it.de/empfehlungen/

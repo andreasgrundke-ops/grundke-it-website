@@ -1,10 +1,12 @@
 /**
  * ═══════════════════════════════════════════════════════════
  * Grundke IT-Service · main.js
- * Version: 1.0.0
+ * Version: 1.1.0
  * Autor: Andreas Grundke / Grundke IT-Service
- * Datum: 2026-04-05
+ * Datum: 2026-06-07
  * Beschreibung: Shared JS – Nav, Slider, FAQ, Scroll
+ * Änderung 2026-06-07: A11y – Hamburger aria-expanded/-label-Sync,
+ *                       Hero-Dots aria-selected im Slider-Wechsel.
  * ═══════════════════════════════════════════════════════════
  */
 
@@ -14,22 +16,23 @@ function initHamburger() {
   const mob = document.getElementById('mobileMenu');
   if (!ham || !mob) return;
 
-  ham.addEventListener('click', () => {
-    ham.classList.toggle('open');
-    mob.classList.toggle('open');
-  });
+  // A11y: Zustand zentral setzen, damit aria-expanded/-label immer mitlaufen
+  function setMenu(open) {
+    ham.classList.toggle('open', open);
+    mob.classList.toggle('open', open);
+    ham.setAttribute('aria-expanded', String(open));
+    ham.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
+  }
+
+  ham.addEventListener('click', () => setMenu(!ham.classList.contains('open')));
 
   mob.querySelectorAll('a').forEach(a => {
-    a.addEventListener('click', () => {
-      ham.classList.remove('open');
-      mob.classList.remove('open');
-    });
+    a.addEventListener('click', () => setMenu(false));
   });
 
   document.addEventListener('click', e => {
     if (!ham.contains(e.target) && !mob.contains(e.target)) {
-      ham.classList.remove('open');
-      mob.classList.remove('open');
+      setMenu(false);
     }
   });
 }
@@ -49,10 +52,10 @@ function initSlider() {
 
   function goTo(n) {
     slides[cur].classList.remove('active');
-    if (dots[cur]) dots[cur].classList.remove('on');
+    if (dots[cur]) { dots[cur].classList.remove('on'); dots[cur].setAttribute('aria-selected', 'false'); }
     cur = ((n % total) + total) % total;
     slides[cur].classList.add('active');
-    if (dots[cur]) dots[cur].classList.add('on');
+    if (dots[cur]) { dots[cur].classList.add('on'); dots[cur].setAttribute('aria-selected', 'true'); }
     wrap.style.transform = `translateX(-${cur * 100}%)`;
     if (counter) counter.innerHTML = `<em>${String(cur+1).padStart(2,'0')}</em> / ${String(total).padStart(2,'0')}`;
   }
