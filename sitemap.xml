@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <!--
   Sitemap · Grundke IT-Service · www.grundke-it.de
-  Stand: 2026-05-01
+  Stand: 2026-06-15
   Enthalten sind ausschliesslich Seiten mit <meta name="robots" content="index, follow">.
   /agb/, /impressum/, /datenschutz/ sind bewusst noindex und daher NICHT gelistet.
   /tree/ ist QR-Landing (noindex) und via robots.txt Disallow.
@@ -30,5 +30,17 @@
     <lastmod>2026-05-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.grundke-it.de/managed-it-service/</loc>
+    <lastmod>2026-06-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.grundke-it.de/it-service-grasbrunn/</loc>
+    <lastmod>2026-06-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
 </urlset>
