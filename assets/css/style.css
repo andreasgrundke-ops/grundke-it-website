@@ -405,7 +405,7 @@ nav {
   :root { --nav-h:70px; }
   .nav-links { display:flex; }
   .hamburger { display:none; }
-  .foot-grid { grid-template-columns:2fr 1fr 1fr; }
+  .foot-grid { grid-template-columns:2fr 1fr 1fr 1fr; }
   .foot-grid > div:first-child { grid-column:auto; }
 }
 @media (min-width: 1920px) {
