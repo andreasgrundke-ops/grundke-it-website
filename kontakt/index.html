@@ -69,6 +69,10 @@
     .info-row svg { width:16px; height:16px; flex-shrink:0; color:var(--cyan); margin-top:2px; }
 
     @media (max-width:767px) { .kontakt-grid { grid-template-columns:1fr; } }
+    .kontakt-faq { max-width:780px; margin:3rem auto 0; }
+    .kontakt-faq h2 { font-family:var(--fh); font-size:1.3rem; font-weight:700; color:var(--text); margin-bottom:1.2rem; }
+    .kontakt-faq h3 { font-family:var(--fh); font-size:1rem; font-weight:700; color:var(--text); margin:1.5rem 0 .4rem; }
+    .kontakt-faq p { font-size:.88rem; color:var(--text2); line-height:1.7; margin:0; padding-bottom:1.1rem; border-bottom:1px solid var(--border); }
   </style>
   <script type="application/ld+json">
 {
@@ -113,6 +117,19 @@
       "addressCountry": "DE"
     }
   }
+}
+</script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "Wie schnell antwortest du auf eine Anfrage?", "acceptedAnswer": {"@type": "Answer", "text": "Das hängt von deinem Betreuungspaket ab: Premium-Kunden erhalten eine Reaktion in unter 1 Stunde, Business-Kunden in unter 2 Stunden, Basis-Kunden in unter 4 Stunden. Ad-hoc-Anfragen löse ich nach Verfügbarkeit – ohne Ticketsystem und ohne Warteschleife, du erreichst direkt mich."}},
+    {"@type": "Question", "name": "Welches Gebiet deckst du ab?", "acceptedAnswer": {"@type": "Answer", "text": "Vor Ort bin ich im Raum München Ost in einem Umkreis von rund 25 km im Einsatz – darunter Grasbrunn, Ottobrunn, Vaterstetten, Haar und Neubiberg. Per Fernwartung helfe ich deutschlandweit."}},
+    {"@type": "Question", "name": "Was kostet ein IT-Einsatz?", "acceptedAnswer": {"@type": "Answer", "text": "Einzeleinsätze rechne ich zu einem einheitlichen Stundensatz von 110 € netto im 15-Minuten-Takt ab – du zahlst nur die tatsächlich benötigte Zeit. Für laufende Betreuung gibt es feste Monatspakete mit garantierten Reaktionszeiten."}},
+    {"@type": "Question", "name": "Bietest du Fernwartung an?", "acceptedAnswer": {"@type": "Answer", "text": "Ja. Über TeamViewer verbinde ich mich nach kurzer Absprache direkt auf deinen Bildschirm und löse viele Störungen sofort – DSGVO-konform, und du kannst die Sitzung jederzeit beenden."}},
+    {"@type": "Question", "name": "Hast du feste Öffnungszeiten?", "acceptedAnswer": {"@type": "Answer", "text": "Nein, klassische Öffnungszeiten gibt es nicht. Ich bin erreichbar, wenn du mich brauchst – auch abends, am Wochenende und an Feiertagen. Vor-Ort-Termine nach Absprache, es gibt keinen Publikumsverkehr."}}
+  ]
 }
 </script>
 </head>
@@ -224,12 +241,32 @@
         </div>
       </div>
     </div>
+
+    <section class="kontakt-faq" aria-label="Häufige Fragen zum Kontakt">
+      <h2>Häufige Fragen</h2>
+      <h3>Wie schnell antwortest du auf eine Anfrage?</h3>
+      <p>Das hängt von deinem Betreuungspaket ab: Premium-Kunden erhalten eine Reaktion in unter 1 Stunde, Business-Kunden in unter 2 Stunden, Basis-Kunden in unter 4 Stunden. Ad-hoc-Anfragen löse ich nach Verfügbarkeit – ohne Ticketsystem und ohne Warteschleife, du erreichst direkt mich.</p>
+      <h3>Welches Gebiet deckst du ab?</h3>
+      <p>Vor Ort bin ich im Raum München Ost in einem Umkreis von rund 25 km im Einsatz – darunter Grasbrunn, Ottobrunn, Vaterstetten, Haar und Neubiberg. Per Fernwartung helfe ich deutschlandweit.</p>
+      <h3>Was kostet ein IT-Einsatz?</h3>
+      <p>Einzeleinsätze rechne ich zu einem einheitlichen Stundensatz von 110 € netto im 15-Minuten-Takt ab – du zahlst nur die tatsächlich benötigte Zeit. Für laufende Betreuung gibt es feste Monatspakete mit garantierten Reaktionszeiten.</p>
+      <h3>Bietest du Fernwartung an?</h3>
+      <p>Ja. Über TeamViewer verbinde ich mich nach kurzer Absprache direkt auf deinen Bildschirm und löse viele Störungen sofort – DSGVO-konform, und du kannst die Sitzung jederzeit beenden.</p>
+      <h3>Hast du feste Öffnungszeiten?</h3>
+      <p>Nein, klassische Öffnungszeiten gibt es nicht. Ich bin erreichbar, wenn du mich brauchst – auch abends, am Wochenende und an Feiertagen. Vor-Ort-Termine nach Absprache, es gibt keinen Publikumsverkehr.</p>
+    </section>
   </div>
 </article>
 </main>
 
 <footer class="site-footer">
   <div class="inner">
+    <nav class="foot-legal" aria-label="Rechtliche Hinweise">
+      <a href="/impressum/">Impressum</a>
+      <a href="/datenschutz/">Datenschutz</a>
+      <a href="/agb/">AGB</a>
+      <a href="/barrierefreiheit/">Barrierefreiheit</a>
+    </nav>
     <div class="foot-bottom">
       <span>© 2026 Grundke IT-Service · Andreas Grundke · Beethovenring 16 · 85630 Grasbrunn</span>
       <span class="foot-ci">CI 2026.01 · grundke-it.de</span>

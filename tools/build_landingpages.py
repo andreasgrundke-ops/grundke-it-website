@@ -27,7 +27,12 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DOMAIN = "https://www.grundke-it.de"
 PHONE = "+491782584438"
 PHONE_DISP = "0178 258 44 38"
-TODAY = "2026-06-15"
+TODAY = "2026-06-18"          # dateModified (Stand der letzten Aktualisierung)
+TODAY_DISP = "18. Juni 2026"  # sichtbares Datum fuer Leser (E-E-A-T-Freshness-Signal)
+PUB_DATE = "2026-06-15"       # datePublished (Ersterstellung der Landingpages)
+PERSON_ID = DOMAIN + "/#andreas"          # @id der Person Andreas Grundke (Startseite)
+BUSINESS_ID = DOMAIN + "/#localbusiness"  # @id des Unternehmens (Startseite)
+WEBSITE_ID = DOMAIN + "/#website"         # @id der Website (Startseite)
 
 # --------------------------------------------------------------------------- #
 #  Gemeinsame Bausteine                                                        #
@@ -68,6 +73,13 @@ STYLE = """  <style>
     .foot-links h4 { font-family:var(--fh); font-size:.8rem; font-weight:700; color:var(--text); margin-bottom:.7rem; letter-spacing:.04em; }
     .foot-links a { display:block; font-size:.85rem; color:var(--text2); text-decoration:none; padding:.2rem 0; }
     .foot-links a:hover { color:var(--cyan); }
+    .lp-author { display:flex; gap:1.1rem; align-items:flex-start; background:var(--bg2); border:1px solid var(--border); border-left:3px solid var(--accent); border-radius:14px; padding:1.4rem 1.5rem; margin:2.5rem 0 1rem; }
+    .lp-author img { width:56px; height:56px; border-radius:50%; flex-shrink:0; background:var(--bg); object-fit:contain; border:1px solid var(--border); }
+    .lp-author-body { font-size:.88rem; color:var(--text2); line-height:1.7; }
+    .lp-author-name { font-family:var(--fh); font-weight:800; color:var(--text); font-size:1rem; }
+    .lp-author-role { display:block; font-size:.8rem; color:var(--text3); margin:.1rem 0 .6rem; }
+    .lp-author-meta { margin-top:.7rem; font-size:.78rem; color:var(--text3); }
+    .lp-author-meta a { color:var(--cyan); text-decoration:none; }
   </style>"""
 
 NAV = """<header class="site-header">
@@ -187,6 +199,12 @@ def footer(places, services):
         <a href="/fernwartung/">Fernwartung starten</a>
       </div>
     </div>
+    <nav class="foot-legal" aria-label="Rechtliche Hinweise">
+      <a href="/impressum/">Impressum</a>
+      <a href="/datenschutz/">Datenschutz</a>
+      <a href="/agb/">AGB</a>
+      <a href="/barrierefreiheit/">Barrierefreiheit</a>
+    </nav>
     <div class="foot-bottom">
       <span>© 2026 Grundke IT-Service · Andreas Grundke · Beethovenring 16 · 85630 Grasbrunn</span>
       <span class="foot-ci">CI 2026.01 · grundke-it.de</span>
@@ -216,6 +234,43 @@ def faq_schema(faqs):
             for q, a in faqs
         ],
     }
+
+
+def webpage_schema(title, desc, slug):
+    """WebPage-Knoten: verknuepft Autor (Andreas Grundke, @id von Startseite),
+    Herausgeber und Datumsangaben (datePublished/dateModified) -> E-E-A-T + Freshness."""
+    url = DOMAIN + "/" + slug + "/"
+    return {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "@id": url + "#webpage",
+        "url": url,
+        "name": title,
+        "description": desc,
+        "inLanguage": "de-DE",
+        "isPartOf": {"@id": WEBSITE_ID},
+        "datePublished": PUB_DATE,
+        "dateModified": TODAY,
+        "author": {"@type": "Person", "@id": PERSON_ID, "name": "Andreas Grundke",
+                   "url": DOMAIN + "/"},
+        "publisher": {"@type": "Organization", "@id": BUSINESS_ID,
+                      "name": "Andreas Grundke IT-Service"},
+    }
+
+
+def author_box():
+    """Sichtbare Inhaber-/Autorenangabe (E-E-A-T) inkl. 'Zuletzt aktualisiert'-Datum.
+    Deckungsgleich mit dem Person-Schema (#andreas) und der WebPage-dateModified."""
+    return (
+        '\n      <div class="lp-author">\n'
+        '        <img src="/assets/img/logo-grundke-it-badge.png" alt="Logo Andreas Grundke IT-Service" width="56" height="56" loading="lazy"/>\n'
+        '        <div class="lp-author-body">\n'
+        '          <span class="lp-author-name">Andreas Grundke</span>\n'
+        '          <span class="lp-author-role">Inhaber · Fachinformatiker für Systemintegration</span>\n'
+        '          Persönlicher IT-Betreuer mit über 20 Jahren Erfahrung in der IT-Branche. Single Point of Contact für KMU, Handwerk und Büros im Raum München Ost – von Microsoft 365 über Netzwerktechnik (Ubiquiti UniFi) bis zur Datensicherung nach der 3-2-1-Strategie.\n'
+        '          <div class="lp-author-meta">Zuletzt aktualisiert: ' + TODAY_DISP + ' · <a href="/kontakt/">Kontakt aufnehmen</a></div>\n'
+        '        </div>\n'
+        '      </div>')
 
 
 def faq_html(faqs):
@@ -381,8 +436,10 @@ def render_place(p, places, services):
         "areaServed": [{"@type": "City", "name": a} for a in p["area"]],
         "geo": {"@type": "GeoCoordinates", "latitude": 48.0944, "longitude": 11.7657},
         "priceRange": "€€",
+        "founder": {"@id": PERSON_ID},
     }
-    schema = [breadcrumb("IT-Service " + p["name"], slug), lb, faq_schema(faqs)]
+    schema = [breadcrumb("IT-Service " + p["name"], slug), lb, faq_schema(faqs),
+              webpage_schema(title, desc, slug)]
 
     # Nachbarorte-Chips (verlinken zu den anderen Ortsseiten)
     chips = ['<a class="lp-place here">{n}</a>'.format(n=esc(p["title_name"]))]
@@ -420,7 +477,7 @@ def render_place(p, places, services):
       </div>
 
       <h2>Häufige Fragen zum IT-Service in {name}</h2>{faqs}
-
+{author}
       <div class="lp-cta-row" style="margin-top:2.5rem;">
         <a href="tel:+491782584438" class="lp-btn primary">IT-Problem? Jetzt anrufen</a>
         <a href="/managed-it-service/" class="lp-btn ghost">Mehr zur laufenden IT-Betreuung</a>
@@ -428,7 +485,8 @@ def render_place(p, places, services):
     </div>
   </div>
 </article>""".format(tn=esc(p["title_name"]), name=esc(p["name"]), intro=esc(p["intro"]),
-                     cards=cards_html(PLACE_CARDS), chips=chips_html, faqs=faq_html(faqs))
+                     cards=cards_html(PLACE_CARDS), chips=chips_html, faqs=faq_html(faqs),
+                     author=author_box())
 
     return slug, page(h, schema, main, places, services)
 
@@ -668,7 +726,8 @@ def render_service(s, places, services):
         service_schema["offers"] = [
             {"@type": "Offer", "name": n, "price": pr, "priceCurrency": "EUR", "description": d}
             for n, pr, d in s["offers"]]
-    schema = [breadcrumb(s["nav"], slug), service_schema, faq_schema(s["faqs"])]
+    schema = [breadcrumb(s["nav"], slug), service_schema, faq_schema(s["faqs"]),
+              webpage_schema(s["title"], s["desc"], slug)]
 
     price_html = ""
     if s.get("prices"):
@@ -708,7 +767,7 @@ def render_service(s, places, services):
       </div>
 
       <h2>Häufige Fragen</h2>{faqs}
-
+{author}
       <div class="lp-cta-row" style="margin-top:2.5rem;">
         <a href="tel:+491782584438" class="lp-btn primary">Jetzt anrufen · 0178 258 44 38</a>
         <a href="/it-service-grasbrunn/" class="lp-btn ghost">IT-Service in deiner Region</a>
@@ -716,7 +775,8 @@ def render_service(s, places, services):
     </div>
   </div>
 </article>""".format(label=esc(s["label"]), h1=s["h1"], sub=esc(s["sub"]), intro=intro,
-                     cards=cards_html(s["cards"]), prices=price_html, faqs=faq_html(s["faqs"]))
+                     cards=cards_html(s["cards"]), prices=price_html, faqs=faq_html(s["faqs"]),
+                     author=author_box())
 
     return slug, page(h, schema, main, places, services)
 
@@ -737,6 +797,7 @@ def write_sitemap(places, services):
     urls = []
     for loc, prio in STATIC_URLS:
         urls.append((loc, "2026-05-01", prio))
+    urls.append(("/barrierefreiheit/", TODAY, "0.3"))
     for s in services:
         urls.append(("/" + s["slug"] + "/", TODAY, "0.8"))
     for p in places:

@@ -1,5 +1,5 @@
 # llms.txt — Grundke IT-Service
-# Stand: 2026-06-07
+# Stand: 2026-06-18
 # Zweck: Maschinenlesbare, zitierfähige Eckdaten für KI-/LLM-Suchmaschinen
 # (ChatGPT, Claude, Perplexity, Gemini, Copilot). Ergänzt die robots.txt,
 # die alle KI-Crawler bereits erlaubt.
@@ -59,3 +59,21 @@ Antworten verwendet werden. Quellenangabe erbeten als:
 - Kontakt: https://www.grundke-it.de/kontakt/
 - IT-Sicherheitsschulung: https://www.grundke-it.de/schulung/
 - Empfehlungen: https://www.grundke-it.de/empfehlungen/
+- Barrierefreiheit: https://www.grundke-it.de/barrierefreiheit/
+
+## Leistungsseiten
+
+- Managed IT-Service: https://www.grundke-it.de/managed-it-service/
+- Microsoft 365 Betreuung: https://www.grundke-it.de/microsoft-365-betreuung/
+- IT-Sicherheit & Backup: https://www.grundke-it.de/it-sicherheit-backup/
+- Netzwerk, WLAN & Firewall: https://www.grundke-it.de/netzwerk-wlan-firewall/
+- IT-Notdienst: https://www.grundke-it.de/it-notdienst/
+
+## Standortseiten (IT-Service vor Ort, Raum München Ost)
+
+- Grasbrunn & Neukeferloh: https://www.grundke-it.de/it-service-grasbrunn/
+- Vaterstetten: https://www.grundke-it.de/it-service-vaterstetten/
+- Baldham: https://www.grundke-it.de/it-service-baldham/
+- Zorneding: https://www.grundke-it.de/it-service-zorneding/
+- Haar: https://www.grundke-it.de/it-service-haar/
+- Putzbrunn: https://www.grundke-it.de/it-service-putzbrunn/

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   Sitemap · Grundke IT-Service · www.grundke-it.de
-  Stand: 2026-06-15 (generiert via tools/build_landingpages.py)
+  Stand: 2026-06-18 (generiert via tools/build_landingpages.py)
   Enthalten sind ausschliesslich Seiten mit robots index, follow.
   /agb/, /impressum/, /datenschutz/ sind bewusst noindex und NICHT gelistet.
 -->
@@ -31,68 +31,74 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.grundke-it.de/barrierefreiheit/</loc>
+    <lastmod>2026-06-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
     <loc>https://www.grundke-it.de/managed-it-service/</loc>
-    <lastmod>2026-06-15</lastmod>
+    <lastmod>2026-06-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.grundke-it.de/microsoft-365-betreuung/</loc>
-    <lastmod>2026-06-15</lastmod>
+    <lastmod>2026-06-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.grundke-it.de/it-sicherheit-backup/</loc>
-    <lastmod>2026-06-15</lastmod>
+    <lastmod>2026-06-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.grundke-it.de/netzwerk-wlan-firewall/</loc>
-    <lastmod>2026-06-15</lastmod>
+    <lastmod>2026-06-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.grundke-it.de/it-notdienst/</loc>
-    <lastmod>2026-06-15</lastmod>
+    <lastmod>2026-06-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.grundke-it.de/it-service-grasbrunn/</loc>
-    <lastmod>2026-06-15</lastmod>
+    <lastmod>2026-06-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.grundke-it.de/it-service-vaterstetten/</loc>
-    <lastmod>2026-06-15</lastmod>
+    <lastmod>2026-06-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.grundke-it.de/it-service-baldham/</loc>
-    <lastmod>2026-06-15</lastmod>
+    <lastmod>2026-06-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.grundke-it.de/it-service-zorneding/</loc>
-    <lastmod>2026-06-15</lastmod>
+    <lastmod>2026-06-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.grundke-it.de/it-service-haar/</loc>
-    <lastmod>2026-06-15</lastmod>
+    <lastmod>2026-06-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.grundke-it.de/it-service-putzbrunn/</loc>
-    <lastmod>2026-06-15</lastmod>
+    <lastmod>2026-06-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

@@ -31,6 +31,10 @@ User-agent: Claude-Web
 Allow: /
 Disallow: /tree/
 
+User-agent: Claude-User
+Allow: /
+Disallow: /tree/
+
 User-agent: anthropic-ai
 Allow: /
 Disallow: /tree/

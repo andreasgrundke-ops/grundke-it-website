@@ -384,6 +384,13 @@ nav {
 .foot-links a:hover { color:var(--cyan); }
 .foot-bottom { border-top:1px solid var(--border); padding-top:1.2rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:.5rem; font-size:.76rem; color:var(--text3); }
 .foot-ci { font-family:var(--fm); font-size:.67rem; color:#2d3748; }
+/* Rechtliche Footer-Navigation (Impressum/Datenschutz/AGB/Barrierefreiheit) */
+.foot-legal { display:flex; flex-wrap:wrap; justify-content:center; gap:.25rem 1.4rem; padding:1.2rem 0; margin-top:1.5rem; border-top:1px solid var(--border); }
+.foot-legal a { font-size:.8rem; color:var(--text2); text-decoration:none; transition:color .2s; }
+.foot-legal a:hover, .foot-legal a:focus-visible { color:var(--cyan); }
+.foot-legal a[aria-current="page"] { color:var(--cyan); font-weight:700; }
+/* Doppellinie vermeiden, wenn die Legal-Nav direkt vor der Fusszeile steht */
+.foot-legal + .foot-bottom { border-top:none; padding-top:0; margin-top:0; }
 
 /* ── Responsive (Release-2 Schritt 7: Mobile-First, min-width-Skalierung) ──
    Default ist Mobile, alle Aenderungen nach oben skaliert.
