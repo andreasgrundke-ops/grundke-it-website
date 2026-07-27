@@ -24,7 +24,7 @@ import os
 import json
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DOMAIN = "https://www.grundke-it.de"
+DOMAIN = "https://grundke-it.de"
 PHONE = "+491782584438"
 PHONE_DISP = "0178 258 44 38"
 TODAY = "2026-06-18"          # dateModified (Stand der letzten Aktualisierung)
@@ -85,7 +85,7 @@ STYLE = """  <style>
 NAV = """<header class="site-header">
 <nav aria-label="Hauptnavigation">
   <div class="nav-inner inner">
-    <a href="/" class="logo" title="Grundke IT-Service – München Ost"><img class="logo-img" src="../assets/img/logo-grundke-it-white.png" alt="Grundke IT-Service" width="180" height="60" /></a>
+    <a href="/" class="logo" title="Grundke IT-Service – München Ost"><picture><source srcset="../assets/img/logo-grundke-it-white-480.webp" type="image/webp"><img class="logo-img" src="../assets/img/logo-grundke-it-white-480.png" alt="Grundke IT-Service" width="180" height="60" /></picture></a>
     <a class="nav-loc" href="https://www.google.com/maps/place/IT-Service+-+Andreas+Grundke/@48.0944159,11.7631063,17z/data=!3m1!4b1!4m6!3m5!1s0x479de3eede6923f3:0x1ad9e3b1fcbd1081!8m2!3d48.0944123!4d11.7656812!16s%2Fg%2F11j7r45y6q" target="_blank" rel="noopener" aria-label="Standort auf Google Maps anzeigen"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>München Ost</a>
     <ul class="nav-links">
       <li><a href="/">Startseite</a></li>

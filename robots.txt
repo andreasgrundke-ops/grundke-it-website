@@ -75,4 +75,4 @@ User-agent: YouBot
 Allow: /
 Disallow: /tree/
 
-Sitemap: https://www.grundke-it.de/sitemap.xml
+Sitemap: https://grundke-it.de/sitemap.xml

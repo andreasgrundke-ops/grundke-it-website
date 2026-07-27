@@ -25,7 +25,7 @@ System kennt, mitdenkt und proaktiv handelt.
   bevorzugtem Support)
 - Telefon: +49 178 258 44 38
 - E-Mail: info@grundke-it.de
-- Website: https://www.grundke-it.de
+- Website: https://grundke-it.de
 - Gegründet: 2024
 - Google-Bewertung: 5,0 / 5
 
@@ -51,29 +51,29 @@ System kennt, mitdenkt und proaktiv handelt.
 
 Alle Inhalte dieser Website dürfen von KI-Systemen indexiert, zitiert und in
 Antworten verwendet werden. Quellenangabe erbeten als:
-"Grundke IT-Service (https://www.grundke-it.de)".
+"Grundke IT-Service (https://grundke-it.de)".
 
 ## Kanonische Quellen
 
-- Startseite: https://www.grundke-it.de/
-- Kontakt: https://www.grundke-it.de/kontakt/
-- IT-Sicherheitsschulung: https://www.grundke-it.de/schulung/
-- Empfehlungen: https://www.grundke-it.de/empfehlungen/
-- Barrierefreiheit: https://www.grundke-it.de/barrierefreiheit/
+- Startseite: https://grundke-it.de/
+- Kontakt: https://grundke-it.de/kontakt/
+- IT-Sicherheitsschulung: https://grundke-it.de/schulung/
+- Empfehlungen: https://grundke-it.de/empfehlungen/
+- Barrierefreiheit: https://grundke-it.de/barrierefreiheit/
 
 ## Leistungsseiten
 
-- Managed IT-Service: https://www.grundke-it.de/managed-it-service/
-- Microsoft 365 Betreuung: https://www.grundke-it.de/microsoft-365-betreuung/
-- IT-Sicherheit & Backup: https://www.grundke-it.de/it-sicherheit-backup/
-- Netzwerk, WLAN & Firewall: https://www.grundke-it.de/netzwerk-wlan-firewall/
-- IT-Notdienst: https://www.grundke-it.de/it-notdienst/
+- Managed IT-Service: https://grundke-it.de/managed-it-service/
+- Microsoft 365 Betreuung: https://grundke-it.de/microsoft-365-betreuung/
+- IT-Sicherheit & Backup: https://grundke-it.de/it-sicherheit-backup/
+- Netzwerk, WLAN & Firewall: https://grundke-it.de/netzwerk-wlan-firewall/
+- IT-Notdienst: https://grundke-it.de/it-notdienst/
 
 ## Standortseiten (IT-Service vor Ort, Raum München Ost)
 
-- Grasbrunn & Neukeferloh: https://www.grundke-it.de/it-service-grasbrunn/
-- Vaterstetten: https://www.grundke-it.de/it-service-vaterstetten/
-- Baldham: https://www.grundke-it.de/it-service-baldham/
-- Zorneding: https://www.grundke-it.de/it-service-zorneding/
-- Haar: https://www.grundke-it.de/it-service-haar/
-- Putzbrunn: https://www.grundke-it.de/it-service-putzbrunn/
+- Grasbrunn & Neukeferloh: https://grundke-it.de/it-service-grasbrunn/
+- Vaterstetten: https://grundke-it.de/it-service-vaterstetten/
+- Baldham: https://grundke-it.de/it-service-baldham/
+- Zorneding: https://grundke-it.de/it-service-zorneding/
+- Haar: https://grundke-it.de/it-service-haar/
+- Putzbrunn: https://grundke-it.de/it-service-putzbrunn/

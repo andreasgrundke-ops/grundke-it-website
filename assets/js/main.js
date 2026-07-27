@@ -50,10 +50,22 @@ function initSlider() {
   const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let cur = 0, timer;
 
+  /* Hintergrundbild eines Slides erst laden, wenn es gebraucht wird.
+     Slide 1 steht inline im HTML (+ <link rel=preload>), Slides 2-5 tragen data-bg.
+     Spart beim ersten Seitenaufruf rund 500 KB auf dem Handy. */
+  function loadBg(i) {
+    const el = slides[i] && slides[i].querySelector('.slide-bg[data-bg]');
+    if (!el) return;
+    el.style.backgroundImage = "url('" + el.dataset.bg + "')";
+    el.removeAttribute('data-bg');
+  }
+
   function goTo(n) {
     slides[cur].classList.remove('active');
     if (dots[cur]) { dots[cur].classList.remove('on'); dots[cur].setAttribute('aria-selected', 'false'); }
     cur = ((n % total) + total) % total;
+    loadBg(cur);                 // aktueller Slide
+    loadBg((cur + 1) % total);   // naechster Slide im Voraus
     slides[cur].classList.add('active');
     if (dots[cur]) { dots[cur].classList.add('on'); dots[cur].setAttribute('aria-selected', 'true'); }
     wrap.style.transform = `translateX(-${cur * 100}%)`;
@@ -80,6 +92,11 @@ function initSlider() {
     const dx = e.changedTouches[0].clientX - tx;
     if (Math.abs(dx) > 50) { goTo(dx < 0 ? cur+1 : cur-1); resetTimer(); }
   }, { passive:true });
+
+  // Slide 2 im Leerlauf nach dem Seitenladen vorbereiten, damit der erste
+  // Wechsel ohne sichtbaren Ladeblitz kommt - aber erst nach dem kritischen Pfad.
+  const idle = window.requestIdleCallback || function (cb) { return setTimeout(cb, 1500); };
+  window.addEventListener('load', function () { idle(function () { loadBg(1); }); });
 
   resetTimer();
 }
@@ -122,7 +139,7 @@ function initVCard() {
       'TITLE:IT-Service · Fachinformatiker Systemintegration',
       'TEL;TYPE=CELL,VOICE:+491782584438',
       'EMAIL;TYPE=WORK:info@grundke-it.de',
-      'URL:https://www.grundke-it.de',
+      'URL:https://grundke-it.de',
       'ADR;TYPE=WORK:;;Beethovenring 16;Grasbrunn;;85630;Deutschland',
       'NOTE:IT-Betreuung für KMUs im Raum München Ost.',
       'END:VCARD'

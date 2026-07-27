@@ -3,6 +3,10 @@ Thumbs.db
 *.log
 node_modules/
 
+# Artefakte aus Browser-/Test-Sessions (Repo wird mit path:'.' deployt)
+.playwright-mcp/
+*-atf.jpeg
+
 # Claude Code interne Memory-Dateien (nicht ins Public-Repo)
 .claude/
 
@@ -16,3 +20,6 @@ NEUKUNDEN-*.md
 OFFENE-PUNKTE-*.md
 WEB-REVIEW-*.md
 CLAUDE-CODE-*.md
+
+# Claude Code - lokale Einstellungen (nicht teilen)
+.claude/settings.local.json
