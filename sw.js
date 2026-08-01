@@ -19,10 +19,17 @@
  *
  * Aenderungshistorie:
  *   1.0.0 / 2026-04-11 — Initial Release-2 PWA-Setup
+ *   1.1.0 / 2026-08-01 — Cache-Versionen erhoeht. Ohne das behielt jeder
+ *                        wiederkehrende Besucher das alte style.css: statische
+ *                        Dateien laufen Cache-First, und die Cache-Namen waren
+ *                        seit April unveraendert. Der Kopfzeilen-Fix vom
+ *                        01.08.2026 lag deshalb zwar auf dem Server, kam aber
+ *                        nicht an. Regel steht oben — bei JEDEM Release beide
+ *                        Namen erhoehen.
  */
 
-const CACHE_NAME    = 'grundke-it-v1.8.0';
-const RUNTIME_CACHE = 'grundke-it-runtime-v7';
+const CACHE_NAME    = 'grundke-it-v1.9.0';
+const RUNTIME_CACHE = 'grundke-it-runtime-v8';
 
 /* Pre-Cache: minimaler Kern fuer Offline-First-Boot */
 const PRECACHE_URLS = [
