@@ -252,8 +252,12 @@ button { font-family: var(--fb); cursor: pointer; }
 
 .s-sub { font-size: clamp(.9rem,1.5vw,1.05rem); color: var(--text2); max-width: 560px; line-height: 1.7; }
 
-/* ── Navigation ── */
-nav {
+/* ── Navigation ──
+   Bewusst auf den Seitenkopf eingegrenzt: als blosses `nav {}` traf die Regel
+   JEDES nav-Element — auch die Rechtsspalte im Fuss (`<nav class="foot-legal">`)
+   und die Linkliste auf /tree/. Beide wurden dadurch oben festgepinnt und haben
+   Logo und Hauptmenue verdeckt. */
+.site-header nav {
   position: fixed; top:0; left:0; right:0;
   z-index: 300; height: var(--nav-h);
   background: rgba(15,17,23,.93);
