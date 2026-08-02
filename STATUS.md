@@ -23,7 +23,14 @@ Live. Letzter Arbeitsblock (01.08.2026):
   Zugriff" stimmen nicht mehr – der Helper installiert RustDesk seit v3.24 als Dienst, der
   Zugang bleibt bestehen. Ersetzt durch „Du siehst die ganze Sitzung mit" und „Zugang wird auf
   Zuruf wieder entfernt".
-- Geprueft bei 390 und 1440: kein horizontaler Scroll, Download-Knopf 293x56 px auf Mobil.
+- **Ortspille „Muenchen Ost"** steht jetzt auf allen Seiten gleich weit hinter dem Logo.
+  `justify-content:space-between` haengt am Menue: Startseite sieben Eintraege, Unterseiten
+  vier – die Pille stand dadurch 75 px bzw. 227 px hinter dem Logo. `.nav-loc` bekommt
+  `margin-right:auto` + festen Abstand; Startseite bleibt unveraendert.
+- **Service-Worker-Cache:** `CACHE_NAME`/`RUNTIME_CACHE` standen seit April still, deshalb kam
+  der Kopfzeilen-Fix trotz Deploy nicht beim Besucher an. Jetzt v1.10.0/v9.
+  **Regel: bei JEDEM Release beide Namen erhoehen** – steht im Kopf von `sw.js`.
+- Geprueft bei 390, 768 und 1440: kein horizontaler Scroll, Download-Knopf 293x56 px auf Mobil.
 
 Davor (27.07.2026, Commit f331e57):
 
