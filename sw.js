@@ -26,10 +26,12 @@
  *                        01.08.2026 lag deshalb zwar auf dem Server, kam aber
  *                        nicht an. Regel steht oben — bei JEDEM Release beide
  *                        Namen erhoehen.
+ *   1.1.1 / 2026-08-02 — Position der Ortspille in der Kopfzeile vereinheitlicht
+ *                        (style.css), deshalb erneut erhoeht.
  */
 
-const CACHE_NAME    = 'grundke-it-v1.9.0';
-const RUNTIME_CACHE = 'grundke-it-runtime-v8';
+const CACHE_NAME    = 'grundke-it-v1.10.0';
+const RUNTIME_CACHE = 'grundke-it-runtime-v9';
 
 /* Pre-Cache: minimaler Kern fuer Offline-First-Boot */
 const PRECACHE_URLS = [

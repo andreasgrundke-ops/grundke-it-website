@@ -324,7 +324,17 @@ button { font-family: var(--fb); cursor: pointer; }
   transform: translateY(-1px);
 }
 .nav-loc svg { width: 11px; height: 11px; stroke: currentColor; fill: none; flex-shrink: 0; }
-@media (min-width: 768px) { .nav-loc { display: inline-flex; } }
+@media (min-width: 768px) {
+  .nav-loc { display: inline-flex; }
+  /* Die Pille gehoert zum Logo und soll auf JEDER Seite gleich weit davon
+     stehen. Ohne diese Regel verteilt `justify-content:space-between` in
+     .nav-inner den freien Platz — und der haengt an der Breite des Menues:
+     die Startseite hat sieben Eintraege, die Unterseiten vier. Gemessen bei
+     1440 px stand die Pille auf der Startseite 75 px hinter dem Logo, auf den
+     Unterseiten 227 px. `margin-right:auto` schiebt stattdessen den freien
+     Platz nach rechts, das Menue bleibt rechtsbuendig wie bisher. */
+  .nav-loc { margin-left: clamp(1rem, 5.2vw, 75px); margin-right: auto; }
+}
 
 .nav-links { display:none; align-items:center; gap:clamp(1rem,2vw,2rem); list-style:none; }
 .nav-links a { font-size:.875rem; font-weight:500; color:var(--text2); transition:color .2s; white-space:nowrap; }
