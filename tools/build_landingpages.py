@@ -507,6 +507,26 @@ def render_place(p, places, services):
 #  Daten: Leistungen                                                           #
 # --------------------------------------------------------------------------- #
 
+# Der kostenlose KI-Potenzialcheck als eigener Service-Knoten. Steht auf dem Hub und
+# macht das Einstiegsangebot fuer Suchmaschinen und KI-Antworten sichtbar (price 0).
+POTENZIALCHECK_SCHEMA = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": DOMAIN + "/ki-fuer-kmu/#potenzialcheck",
+    "name": "KI-Potenzialcheck",
+    "serviceType": "Kostenlose Erstanalyse zum KI-Einsatz im Unternehmen",
+    "description": ("60 bis 90 Minuten im Betrieb oder per Videogespraech: Die Ablaeufe werden "
+                    "durchgegangen und schriftlich ausgewertet - was sich automatisieren laesst, "
+                    "welcher Aufwand dahintersteckt, was es einspart und was rechtlich zu "
+                    "beachten ist. Kostenlos und unverbindlich."),
+    "provider": {"@id": BUSINESS_ID},
+    "areaServed": [{"@type": "City", "name": n} for n in
+                   ["Grasbrunn", "Vaterstetten", "Haar", "Ottobrunn", "Muenchen"]],
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR",
+               "availability": "https://schema.org/InStock",
+               "description": "Kostenlos und unverbindlich, das schriftliche Ergebnis bleibt beim Kunden."},
+}
+
 # Zusatz-CSS ausschliesslich fuer die KI-Seiten. Wird ueber das Feld "extra_style"
 # eingehaengt, damit Orts- und uebrige Leistungsseiten unveraendert bleiben.
 KI_STYLE = '''  <style>
@@ -759,6 +779,7 @@ SERVICES = [
         "published": KI_PUB_DATE, "modified": KI_DATE, "modified_disp": KI_DATE_DISP,
         "extra_style": KI_STYLE,
         "cta2_href": "/ki-automatisierung/", "cta2_text": "Abläufe automatisieren",
+        "extra_schema": [POTENZIALCHECK_SCHEMA],
         "desc": ("KI im Betrieb: Abläufe automatisieren, Auswertungen aus vorhandenen Daten, "
                  "DSGVO-konform umgesetzt. Kostenloser Potenzialcheck im Raum München Ost."),
         "sub": "Keine Folien über Künstliche Intelligenz, sondern Anwendungen, die bei dir laufen. Gebaut von jemandem, der deine IT ohnehin betreut.",
@@ -1179,6 +1200,8 @@ def render_service(s, places, services):
     schema = [breadcrumb(s["nav"], slug), service_schema, faq_schema(s["faqs"]),
               webpage_schema(s["title"], s["desc"], slug,
                              s.get("published"), s.get("modified"))]
+    # Optionale Zusatzknoten (z. B. der kostenlose KI-Potenzialcheck als eigener Service)
+    schema.extend(s.get("extra_schema", []))
 
     price_html = ""
     if s.get("prices"):

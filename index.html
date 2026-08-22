@@ -788,6 +788,10 @@
     transition:border-color .2s,transform .2s,box-shadow .2s;
   }
   .srv-card:hover { border-color:var(--cyan); transform:translateY(-3px); box-shadow:0 8px 28px rgba(38,189,239,.07); }
+  /* Kachel als Link (KI & Automatisierung): Grid-Verhalten erhalten, Klickbarkeit zeigen */
+  a.srv-card { display:block; text-decoration:none; color:inherit; }
+  a.srv-card .srv-name::after { content:" 92"; color:var(--cyan); }
+  a.srv-card:hover .srv-name { color:var(--cyan); }
   .srv-ico {
     width:clamp(2.25rem,6vw,2.85rem); height:clamp(2.25rem,6vw,2.85rem);
     background:rgba(12,77,162,.18); border:1px solid rgba(12,77,162,.3); border-radius:10px;
@@ -1276,6 +1280,18 @@
   @media (max-width:1024px) {
     .hero-qr { display:none; }
   }
+
+    /* ── KI im Betrieb (Sektion #ki) ─────────────────────────────────────── */
+    .kih-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(270px,1fr)); gap:1.2rem; margin:2.2rem 0 0; }
+    .kih-card { background:var(--bg2); border:1px solid var(--border); border-left:3px solid var(--cyan); border-radius:14px; padding:1.5rem 1.6rem; }
+    .kih-tag { font-family:var(--fm); font-size:.7rem; letter-spacing:.08em; text-transform:uppercase; color:var(--cyan); display:block; margin-bottom:.6rem; }
+    .kih-card h3 { font-family:var(--fh); font-size:1.05rem; font-weight:800; color:var(--text); margin:0 0 .6rem; letter-spacing:-.01em; line-height:1.3; }
+    .kih-card p { font-size:.9rem; color:var(--text2); line-height:1.7; margin:0; }
+    .kih-box { background:var(--bg2); border:1px solid var(--cyan); border-radius:16px; padding:1.8rem; margin-top:1.6rem; box-shadow:0 8px 28px rgba(38,189,239,.10); }
+    .kih-box h3 { font-family:var(--fh); font-size:1.15rem; font-weight:800; color:var(--text); margin:0 0 .6rem; }
+    .kih-box p { font-size:.92rem; color:var(--text2); line-height:1.75; margin:0 0 1.2rem; max-width:64ch; }
+    .kih-cta { display:flex; flex-wrap:wrap; gap:.9rem; }
+    @media (max-width:560px) { .kih-cta .btn-p, .kih-cta .btn-g { width:100%; justify-content:center; } }
   </style>
 </head>
 <body class="has-sticky-call">
@@ -1337,11 +1353,11 @@
     <ul class="nav-links">
       <li><a href="#schnellcheck">IT-Schnellcheck</a></li>
       <li><a href="#leistungen">IT-Service</a></li>
+      <li><a href="/ki-fuer-kmu/">KI im Betrieb</a></li>
       <li><a href="#schulung">Schulungen</a></li>
       <li><a href="#preise">Preise</a></li>
       <li class="nav-dropdown" id="fernwartungDropdown"><button class="nav-dropdown-toggle" onclick="toggleFernwartungDropdown(event)" aria-haspopup="true" aria-expanded="false">Fernwartung<svg class="nav-dropdown-arrow" xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul class="nav-dropdown-menu" role="menu"><li><a href="https://www.teamviewer.com/de/download/portal/windows/" target="_blank" rel="noopener" class="nav-dropdown-item"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>TeamViewer</a></li><li><a href="/fernwartung/" class="nav-dropdown-item nav-dropdown-item--highlight"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>Fernwartung starten</a></li></ul></li>
       <li><a href="empfehlungen/">Empfehlungen</a></li>
-      <li><a href="#faq">FAQ</a></li>
       <li><a href="tel:+491782584438" class="nav-cta"><svg width="16" height="16" aria-hidden="true"><use href="#ico-phone"/></svg><span>Jetzt anrufen</span></a></li>
     </ul>
     <button class="hamburger" id="ham" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobileMenu">
@@ -1352,12 +1368,12 @@
 <div class="mobile-menu" id="mobileMenu">
   <a href="#schnellcheck">IT-Schnellcheck</a>
   <a href="#leistungen">IT-Service</a>
+  <a href="/ki-fuer-kmu/">KI im Betrieb</a>
   <a href="#schulung">Schulungen</a>
   <a href="#preise">Preise</a>
   <a href="https://www.teamviewer.com/de/download/portal/windows/" target="_blank" rel="noopener">Fernwartung (TeamViewer)</a>
   <a href="/fernwartung/" style="color:var(--cyan);font-weight:700;">&#9889; Fernwartung starten</a>
   <a href="empfehlungen/">Empfehlungen</a>
-  <a href="#faq">FAQ</a>
 </div>
 </header>
 
@@ -1519,7 +1535,7 @@
     <div class="ticker-item"><span class="tdot"></span>Kein Ticketsystem – immer persönlich</div>
     <div class="ticker-item"><span class="tdot"></span>€110/h · 15-Min-Takt · kein Wochenendzuschlag</div>
     <div class="ticker-item"><span class="tdot"></span>Flatrate-Betreuung ab €149/Monat</div>
-    <div class="ticker-item"><span class="tdot"></span>KI &amp; Automatisierung für KMUs</div>
+    <div class="ticker-item"><span class="tdot"></span>KI-Anwendungen für KMU · DSGVO-konform</div>
     <div class="ticker-item"><span class="tdot"></span>Deine IT ist zu groß – gib sie ab</div>
     <div class="ticker-item"><span class="tdot"></span>Gerne per Du · schreib wann du willst</div>
     <div class="ticker-item"><span class="tdot"></span>Keine klassischen Öffnungszeiten</div>
@@ -1651,6 +1667,42 @@
   </div>
 </section>
 
+<!-- KI IM BETRIEB (Schwerpunkt seit 2026) -->
+<section class="section-pad" id="ki" style="background:var(--bg);">
+  <div class="inner">
+    <div class="s-label">Mein Schwerpunkt</div>
+    <h2 class="s-title">KI, die im Betrieb<br>wirklich etwas tut.</h2>
+    <p class="s-sub">Nicht das nächste Werkzeug, das nach zwei Wochen niemand mehr benutzt. Anwendungen für die Stellen, an denen bei dir jeden Monat Zeit verloren geht, gebaut und betreut von dem, der deine IT ohnehin kennt.</p>
+
+    <div class="kih-grid">
+      <div class="kih-card">
+        <span class="kih-tag">Aus einem Kundenprojekt</span>
+        <h3>Die Kamera zählt selbst</h3>
+        <p>Auf eine vorhandene UniFi-Protect-Anlage habe ich eine Objekterkennung gesetzt. Fahrzeuge und Objekte werden erkannt, jedes Ereignis landet mit Zeitstempel in einer Datenbank, die Auswertung steht als Zahl auf dem Bildschirm. Niemand sichtet mehr Videomaterial.</p>
+      </div>
+      <div class="kih-card">
+        <span class="kih-tag">Aus einem Kundenprojekt</span>
+        <h3>Rechnungen ohne Abtippen</h3>
+        <p>Aus einem CSV-Export entstehen automatisch normgerechte E-Rechnungen als XRechnung oder ZUGFeRD, geprüft gegen die Ausgangsdaten. Aus einem halben Arbeitstag im Monat sind ein paar Minuten geworden, und die kommende E-Rechnungspflicht ist nebenbei erledigt.</p>
+      </div>
+      <div class="kih-card">
+        <span class="kih-tag">Und rechtlich?</span>
+        <h3>Erst klären, dann bauen</h3>
+        <p>Wo das Modell läuft, entscheidet sich vor der Umsetzung: auf eigener Hardware im Haus, in einem EU-Rechenzentrum oder bei einem Anbieter mit Auftragsverarbeitungsvertrag. Dazu eine Nutzungsrichtlinie, damit im Betrieb klar ist, was ins Chatfenster darf und was nicht.</p>
+      </div>
+    </div>
+
+    <div class="kih-box">
+      <h3>Kostenloser KI-Potenzialcheck</h3>
+      <p>60 bis 90 Minuten, bei dir im Betrieb oder per Videogespräch. Wir gehen durch, was regelmäßig Zeit kostet. Danach bekommst du schriftlich, was sich automatisieren lässt, was es bringt und was rechtlich zu beachten ist. Das Papier gehört dir, auch wenn wir nicht weiterarbeiten.</p>
+      <div class="kih-cta">
+        <a href="tel:+491782584438" class="btn-p"><svg width="16" height="16" aria-hidden="true"><use href="#ico-phone"/></svg>Potenzialcheck vereinbaren</a>
+        <a href="/ki-fuer-kmu/" class="btn-g">Was damit möglich ist</a>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- USP -->
 <section class="usp section-pad" id="usp">
   <div class="inner">
@@ -1664,7 +1716,7 @@
           <li><span class="u-chk">✓</span>Remote-Zugriff vorbereitet – Probleme lösen ohne Anfahrt</li>
           <li><span class="u-chk">✓</span>Ich lerne dein System – kein jedes-Mal-neu-Erklären</li>
           <li><span class="u-chk">✓</span>Proaktiv statt reaktiv – ich melde mich bevor es brennt</li>
-          <li><span class="u-chk">✓</span>KI &amp; Automatisierung – ich spare dir Zeit im Alltag</li>
+          <li><span class="u-chk">✓</span>KI &amp; Automatisierung – ich baue dir Anwendungen, die Arbeit abnehmen</li>
           <li><span class="u-chk">✓</span>Vertretung bei Urlaub/Krankheit durch Kollegen-Netzwerk</li>
         </ul>
       </div>
@@ -1829,7 +1881,7 @@
       <div class="srv-card"><div class="srv-ico"><svg><use href="#ico-camera"/></svg></div><div class="srv-name">Kamera &amp; Zugang</div><p class="srv-desc">Videoüberwachung, Türzugangssysteme, Netzwerk-Integration.</p></div>
       <div class="srv-card"><div class="srv-ico"><svg><use href="#ico-printer"/></svg></div><div class="srv-name">Drucker &amp; Peripherie</div><p class="srv-desc">Einrichtung, Treiber, Netzwerkdrucker, Kassensysteme – läuft oder wird gelöst.</p></div>
       <div class="srv-card"><div class="srv-ico"><svg><use href="#ico-cloud"/></svg></div><div class="srv-name">Cloud &amp; Hosting</div><p class="srv-desc">Website, E-Mail-Hosting, Cloud-Backup, M365 – DSGVO-konform betrieben.</p></div>
-      <div class="srv-card"><div class="srv-ico"><svg><use href="#ico-cpu"/></svg></div><div class="srv-name">KI &amp; Automatisierung</div><p class="srv-desc">Wiederkehrende Aufgaben automatisieren, KI-Tools einführen – Zeit sparen.</p></div>
+      <a class="srv-card" href="/ki-fuer-kmu/"><div class="srv-ico"><svg><use href="#ico-cpu"/></svg></div><div class="srv-name">KI &amp; Automatisierung</div><p class="srv-desc">Abläufe automatisieren, Auswertungen aus vorhandenen Daten, E-Rechnungen ohne Abtippen. DSGVO-konform umgesetzt und danach weiter betreut.</p></a>
 
       <!-- Kachel 9 (neu): Firewall, VPN & Netzwerkschutz (Task 4 Release 1) -->
       <div class="srv-card">
@@ -2283,7 +2335,7 @@
       <details class="faq-item"><summary>Wie schnell bist du bei einem IT-Notfall erreichbar? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Managed-Kunden haben Priorität und werden bevorzugt behandelt. Für alle anderen: Ich melde mich so schnell wie möglich – in der Regel noch am selben Tag.</div></details>
       <details class="faq-item"><summary>Was unterscheidet dich von einem großen IT-Systemhaus? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Kein Ticketsystem, kein anonymes Team, kein Rückruf nächste Woche. Du hast einen festen Ansprechpartner – mich. Ich lerne dein System, denke mit und handle proaktiv.</div></details>
       <details class="faq-item"><summary>Was passiert wenn du im Urlaub oder krank bist? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Ich habe ein Netzwerk aus vertrauenswürdigen Kollegen, die im Notfall einspringen. Du wirst rechtzeitig informiert und bist nie ohne Ansprechpartner.</div></details>
-      <details class="faq-item"><summary>Kannst du auch bei KI und Automatisierung helfen? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Ja – ich helfe dir dabei, wiederkehrende Aufgaben zu automatisieren, KI-Tools sinnvoll einzuführen und Zeit im Büroalltag zu sparen. Als Gen-X-IT-Profi bin ich selbst täglich mit KI-Werkzeugen unterwegs.</div></details>
+      <details class="faq-item"><summary>Kannst du auch bei KI und Automatisierung helfen? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Ja, das ist inzwischen einer meiner Schwerpunkte. Ich baue Anwendungen, die wiederkehrende Arbeit übernehmen: E-Rechnungen aus vorhandenen Daten, Schnittstellen zwischen Programmen, Auswertungen von Kameraaufnahmen. Dazu kommt die Frage, welche KI-Werkzeuge im Betrieb überhaupt benutzt werden dürfen und wo die Daten dabei landen. In der eigenen Firma setze ich das seit über einem halben Jahr täglich ein, die ersten Kundenanwendungen laufen. <a href="/ki-fuer-kmu/">KI im Betrieb ansehen</a></div></details>
       <details class="faq-item"><summary>Welche Region betreust du? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Vor Ort bin ich schnell erreichbar in Grasbrunn, Ottobrunn, Vaterstetten, Haar, Neubiberg, Putzbrunn und Hohenbrunn – ca. 25 km Radius. Per Remote-Support helfe ich deutschlandweit. Für Vor-Ort-Einsätze bleibe ich bewusst im Münchner Osten: auf der anderen Seite Münchens steh ich im Stau – und das hilft dir nicht.</div></details>
       <details class="faq-item"><summary>Mein WLAN funktioniert nicht mehr – was kann ich tun? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Ruf mich an oder schreib auf WhatsApp. Die meisten WLAN-Probleme lassen sich remote lösen – in unter einer Stunde. Ich greife per TeamViewer auf deinen Router oder Rechner zu und behebe den Fehler, ohne dass ich vor Ort kommen muss. Wenn Hardware kaputt ist, bin ich schnell bei dir. Einsatzgebiet: Grasbrunn, Ottobrunn, Vaterstetten, Haar, Neubiberg und Umgebung München Ost.</div></details>
       <details class="faq-item"><summary>Mein IT-Betreuer ist nicht mehr erreichbar – wer hilft mir kurzfristig? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Das ist einer der häufigsten Gründe warum Leute bei mir anrufen. Ich übernehme auch kurzfristig – ohne langen Onboarding-Prozess. Ein kurzes Erstgespräch, Zugang zu deinen Systemen, und ich kann sofort loslegen. Ruf einfach an: 0178 258 44 38.</div></details>
@@ -2380,6 +2432,10 @@
           <li><a href="it-sicherheit-backup/">IT-Sicherheit &amp; Backup</a></li>
           <li><a href="netzwerk-wlan-firewall/">Netzwerk, WLAN &amp; Firewall</a></li>
           <li><a href="it-notdienst/">IT-Notdienst</a></li>
+          <li><a href="ki-fuer-kmu/">KI im Betrieb</a></li>
+          <li><a href="ki-automatisierung/">Abläufe automatisieren</a></li>
+          <li><a href="ki-videoanalyse/">Videoanalyse &amp; Auswertung</a></li>
+          <li><a href="ki-dsgvo/">KI rechtssicher betreiben</a></li>
           <li><a href="empfehlungen/">Produktempfehlungen</a></li>
         </ul>
       </div>
@@ -2451,7 +2507,7 @@
       {
         "@type": "Question",
         "name": "Kannst du auch bei KI und Automatisierung helfen?",
-        "acceptedAnswer": {"@type": "Answer", "text": "Ja – ich helfe dir dabei, wiederkehrende Aufgaben zu automatisieren, KI-Tools sinnvoll einzuführen und Zeit im Büroalltag zu sparen. Als Gen-X-IT-Profi bin ich selbst täglich mit KI-Werkzeugen unterwegs."}
+        "acceptedAnswer": {"@type": "Answer", "text": "Ja, das ist inzwischen einer meiner Schwerpunkte. Ich baue Anwendungen, die wiederkehrende Arbeit übernehmen: E-Rechnungen aus vorhandenen Daten, Schnittstellen zwischen Programmen, Auswertungen von Kameraaufnahmen. Dazu kommt die Frage, welche KI-Werkzeuge im Betrieb überhaupt benutzt werden dürfen und wo die Daten dabei landen. In der eigenen Firma setze ich das seit über einem halben Jahr täglich ein, die ersten Kundenanwendungen laufen."}
       },
       {
         "@type": "Question",
@@ -2529,7 +2585,7 @@
         {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Netzwerk und WLAN Installation"}},
         {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Microsoft 365 Betreuung"}},
         {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "IT-Sicherheit und Backup"}},
-        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "KI und Automatisierung für KMUs"}}
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "KI-Anwendungen und Prozessautomatisierung für KMU", "description": "Abläufe automatisieren, Auswertungen aus vorhandenen Daten, E-Rechnungen, KI-Videoanalyse und der datenschutzkonforme Betrieb von KI im Unternehmen.", "url": "https://grundke-it.de/ki-fuer-kmu/"}}
       ]
     }
   }

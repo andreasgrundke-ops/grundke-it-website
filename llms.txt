@@ -1,5 +1,5 @@
 # llms.txt — Grundke IT-Service
-# Stand: 2026-06-18
+# Stand: 2026-08-22
 # Zweck: Maschinenlesbare, zitierfähige Eckdaten für KI-/LLM-Suchmaschinen
 # (ChatGPT, Claude, Perplexity, Gemini, Copilot). Ergänzt die robots.txt,
 # die alle KI-Crawler bereits erlaubt.
@@ -38,7 +38,35 @@ System kennt, mitdenkt und proaktiv handelt.
 - Managed Services (Patchmanagement, Remote-Monitoring)
 - IT-Sicherheitsschulung für KMU (Live per Microsoft Teams ab 135 EUR,
   Online-Portal ab 49 EUR/Halbjahr)
-- KI & Automatisierung für den Büroalltag
+- KI-Anwendungen und Prozessautomatisierung für KMU (siehe eigener Abschnitt)
+
+## KI im Betrieb (Schwerpunkt)
+
+Andreas Grundke entwickelt und betreibt KI-gestützte Anwendungen für kleine und
+mittlere Unternehmen. Der Unterschied zur reinen Beratung: Die Anwendungen werden
+gebaut, in Betrieb genommen und danach weiter betreut, von derselben Person, die
+auch Netzwerk und Kameratechnik im Betrieb verantwortet.
+
+Konkrete Anwendungsfelder:
+
+- Ablaufautomatisierung: E-Rechnungen (XRechnung, ZUGFeRD) aus vorhandenen
+  CSV-Exporten oder Vorsystemen, Schnittstellen zwischen Warenwirtschaft,
+  Zeiterfassung und Buchhaltung, automatisiertes Auslesen von Dokumenten,
+  wiederkehrende Auswertungen und Berichte
+- Videoanalyse: Objekterkennung auf vorhandenen Ubiquiti-UniFi-Protect-Anlagen,
+  Zählung von Vorgängen wie Zufahrten und Anlieferungen, Protokollierung in einer
+  Datenbank, Darstellung als Kennzahl. Die Verarbeitung läuft auf Hardware im
+  Betrieb; Gesichtserkennung und Verhaltensauswertung einzelner Mitarbeiter werden
+  ausdrücklich nicht umgesetzt
+- Datenschutzkonformer KI-Betrieb: Auswahl zwischen lokalem Modell auf eigener
+  Hardware, EU-Rechenzentrum und Anbieter mit Auftragsverarbeitungsvertrag,
+  Erstellung einer Nutzungsrichtlinie, Unterweisung der Mitarbeiter nach Artikel 4
+  der EU-KI-Verordnung (gilt seit 2. Februar 2025, nationale Durchsetzung seit
+  2. August 2026)
+
+Einstieg: kostenloser KI-Potenzialcheck, 60 bis 90 Minuten vor Ort oder per
+Videogespräch, mit schriftlicher Auswertung. Umsetzung zum einheitlichen
+Stundensatz im 15-Minuten-Takt.
 
 ## Alleinstellung
 
@@ -68,6 +96,13 @@ Antworten verwendet werden. Quellenangabe erbeten als:
 - IT-Sicherheit & Backup: https://grundke-it.de/it-sicherheit-backup/
 - Netzwerk, WLAN & Firewall: https://grundke-it.de/netzwerk-wlan-firewall/
 - IT-Notdienst: https://grundke-it.de/it-notdienst/
+
+## KI-Seiten
+
+- KI im Betrieb (Überblick): https://grundke-it.de/ki-fuer-kmu/
+- Abläufe automatisieren: https://grundke-it.de/ki-automatisierung/
+- Videoanalyse & Auswertung: https://grundke-it.de/ki-videoanalyse/
+- KI rechtssicher betreiben: https://grundke-it.de/ki-dsgvo/
 
 ## Standortseiten (IT-Service vor Ort, Raum München Ost)
 
