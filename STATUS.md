@@ -88,9 +88,10 @@ Davor (27.07.2026, Commit f331e57):
 - Search Console + Bing: non-www-Property prüfen; GBP/Verzeichnisse auf non-www ziehen
   (Cowork/Browser-Arbeit).
 - Offen zur Entscheidung: Hero-Karussell → statisches Hero, Cyan-Kontrast, DSGVO-Statistik.
-- Aufgefallen, nicht geändert: Stundensatz steht auf der Website und in llms.txt bei 110 EUR,
-  im Workspace-CLAUDE.md bei 90 EUR. Die KI-Texte nennen deshalb bewusst keine Zahl, sondern
-  nur „einheitlicher Stundensatz im 15-Minuten-Takt". Eine der beiden Quellen ist veraltet.
+- Geklaert (Andreas, 22.08.2026): **110 EUR netto ist der gewollte Website-Preis.** Wer sich
+  ueber die Website meldet, wird mit 110 EUR abgerechnet; die 90 EUR im Workspace-CLAUDE.md
+  sind der Bestandskundensatz. Beide Zahlen sind richtig, die Abweichung ist Absicht. Die
+  KI-Seiten nennen daher jetzt ebenfalls 110 EUR netto im 15-Minuten-Takt.
 - Vorschlag für später: auf `/schulung/` einen Absatz zur KI-Kompetenzpflicht nach Artikel 4
   ergänzen. `/ki-dsgvo/` verlinkt bereits dorthin, ein Rückverweis fehlt noch.
 

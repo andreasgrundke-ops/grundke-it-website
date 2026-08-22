@@ -861,7 +861,7 @@ SERVICES = [
              "niemand durchsieht, weil es zu lange dauert. Das sind Stunden, die jeden Monat anfallen "
              "und sich ohne zusätzliches Personal zurückholen lassen."),
             ("Ist das für einen kleinen Betrieb nicht viel zu teuer?",
-             "Abgerechnet wird nach Aufwand, zum einheitlichen Stundensatz im 15-Minuten-Takt wie bei "
+             "Abgerechnet wird nach Aufwand, zu 110 Euro netto je Stunde im 15-Minuten-Takt wie bei "
              "jeder anderen Leistung auch. Eine überschaubare Automatisierung ist oft an einem Tag "
              "fertig. Ob sie sich rechnet, lässt sich vorher ausrechnen: Wenn eine Aufgabe monatlich "
              "vier Stunden kostet, ist die einzige Frage, nach wie vielen Monaten die Umsetzung "
@@ -971,7 +971,7 @@ SERVICES = [
              "treffen muss, die auf Erfahrung beruht. Dann automatisiert man die Vorarbeit und lässt "
              "die Entscheidung beim Menschen."),
             ("Was kostet eine Automatisierung?",
-             "Sie wird nach Aufwand abgerechnet, zum einheitlichen Stundensatz im 15-Minuten-Takt. "
+             "Sie wird nach Aufwand abgerechnet, zu 110 Euro netto je Stunde im 15-Minuten-Takt. "
              "Kleinere Strecken sind oft an einem Tag fertig, größere brauchen mehrere. Nach dem "
              "ersten Blick auf den Ablauf bekommst du eine Schätzung, mit der du rechnen kannst, "
              "bevor irgendetwas gebaut wird."),
@@ -1069,7 +1069,7 @@ SERVICES = [
              "Wirklichkeit abgeglichen und nachjustiert, bevor sie in den Betrieb geht. Wer behauptet, "
              "so etwas laufe von Anfang an fehlerfrei, hat es nicht gemacht."),
             ("Was kostet eine solche Auswertung?",
-             "Abgerechnet wird nach Aufwand zum einheitlichen Stundensatz im 15-Minuten-Takt. Der "
+             "Abgerechnet wird nach Aufwand zu 110 Euro netto je Stunde im 15-Minuten-Takt. Der "
              "Aufwand hängt daran, wie viele Kameras beteiligt sind, wie klar die Fragestellung ist "
              "und ob passende Hardware für die Erkennung schon vorhanden ist. Nach dem Blick auf die "
              "Anlage bekommst du eine Schätzung, mit der du rechnen kannst."),
@@ -1166,7 +1166,7 @@ SERVICES = [
              "rechtliche Frage, die ich nicht beantworte. Ich sage dir, welche Verarbeitungen bei dir "
              "tatsächlich stattfinden, damit die Frage überhaupt beurteilt werden kann."),
             ("Was kostet die Einführung?",
-             "Sie wird nach Aufwand abgerechnet, zum einheitlichen Stundensatz im 15-Minuten-Takt. "
+             "Sie wird nach Aufwand abgerechnet, zu 110 Euro netto je Stunde im 15-Minuten-Takt. "
              "Bestandsaufnahme und eine brauchbare Nutzungsrichtlinie sind für einen kleinen Betrieb "
              "meist an einem Tag zu schaffen. Ein lokales Modell einzurichten dauert länger und hängt "
              "an der Hardware. Was in deinem Fall nötig ist, klären wir im kostenlosen Erstgespräch."),
