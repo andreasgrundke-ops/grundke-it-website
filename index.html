@@ -1292,6 +1292,18 @@
     .kih-box p { font-size:.92rem; color:var(--text2); line-height:1.75; margin:0 0 1.2rem; max-width:64ch; }
     .kih-cta { display:flex; flex-wrap:wrap; gap:.9rem; }
     @media (max-width:560px) { .kih-cta .btn-p, .kih-cta .btn-g { width:100%; justify-content:center; } }
+
+    /* ── Kopfzeile: Umschaltpunkt zum Hamburger ──────────────────────────────
+       Das Hauptmenue der Startseite traegt acht Punkte plus Anruf-Knopf und
+       braucht neben Logo und Ortspille rund 1240 px. Der globale Breakpoint in
+       style.css liegt bei 1024 px. Dazwischen klebte der erste Menuepunkt an der
+       Ortspille (gemessen 0 px Abstand bei 1100 px) und der Anruf-Knopf lief
+       rechts aus dem Bild (bei 1024 px um 114 px). Unterseiten haben nur fuenf
+       Punkte und behalten deshalb den globalen Umschaltpunkt. */
+    @media (max-width: 1239px) {
+      .site-header .nav-links { display: none; }
+      .site-header .hamburger { display: flex; }
+    }
   </style>
 </head>
 <body class="has-sticky-call">

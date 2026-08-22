@@ -44,6 +44,18 @@ Kundenprojekte laufen).
 - Geprueft: 74 JSON-LD-Bloecke valide, je eine H1, Sitemap 20 URLs non-www, Darstellung bei
   1440/1280/390 px.
 
+- **Kopfzeile der Startseite: Umschaltpunkt korrigiert.** Andreas' Screenshot zeigte den ersten
+  Menuepunkt direkt an der Ortspille klebend. Gemessen: Das Hauptmenue der Startseite ist mit
+  acht Punkten 816-852 px breit und passt neben Logo und Ortspille erst ab rund 1240 px, der
+  globale Umschaltpunkt lag aber bei 1024 px. Bei 1100 px betrug der Abstand 0 px, bei 1024 px
+  lief der Anruf-Knopf 114 px aus dem Bild. **Der Fehler bestand schon vor dem KI-Punkt**
+  (gegengemessen: 3 px Abstand ohne ihn), der neue Eintrag hat ihn nur sichtbar gemacht.
+  Fix: Vollmenue auf der Startseite erst ab 1240 px (seitenspezifisch, damit die Unterseiten
+  ihren 1024er-Punkt behalten - dort sind es nur fuenf Punkte und 125 px Luft), dazu
+  `margin-left:1.5rem` auf `.nav-links` als Mindestabstand zur Ortspille. Nachgemessen bei
+  1239/1280/1366/1400/1440/1512/1600/1920: Abstand ueberall 22 px oder mehr, Anruf-Knopf
+  immer im Bild. sw.js auf v1.12.0/runtime-v11, weil style.css sich geaendert hat.
+
 Davor (01.08.2026):
 
 - **Seitenkopf war auf JEDER Seite kaputt** – aufgefallen an /fernwartung, betraf aber alle

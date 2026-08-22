@@ -336,7 +336,10 @@ button { font-family: var(--fb); cursor: pointer; }
   .nav-loc { margin-left: clamp(1rem, 5.2vw, 75px); margin-right: auto; }
 }
 
-.nav-links { display:none; align-items:center; gap:clamp(1rem,2vw,2rem); list-style:none; }
+/* margin-left ist der Sicherheitsabstand zur Ortspille: die Pille traegt margin-right:auto
+   und frisst den freien Platz, im Normalfall verschiebt sich dadurch nichts. Wird es eng,
+   verhindert der Abstand, dass der erste Menuepunkt an der Pille klebt. */
+.nav-links { display:none; align-items:center; gap:clamp(1rem,2vw,2rem); list-style:none; margin-left:1.5rem; }
 .nav-links a { font-size:.875rem; font-weight:500; color:var(--text2); transition:color .2s; white-space:nowrap; }
 .nav-links a:hover { color:var(--cyan); }
 .nav-cta {

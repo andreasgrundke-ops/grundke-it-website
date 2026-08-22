@@ -32,10 +32,12 @@
  *                        geaenderte Startseite). Cache-Versionen erhoeht, sonst
  *                        sieht ein wiederkehrender Besucher die alte Navigation
  *                        ohne den Punkt "KI im Betrieb".
+ *   1.2.1 / 2026-08-22 — Umschaltpunkt der Kopfzeile korrigiert (style.css +
+ *                        index.html), deshalb erneut erhoeht.
  */
 
-const CACHE_NAME    = 'grundke-it-v1.11.0';
-const RUNTIME_CACHE = 'grundke-it-runtime-v10';
+const CACHE_NAME    = 'grundke-it-v1.12.0';
+const RUNTIME_CACHE = 'grundke-it-runtime-v11';
 
 /* Pre-Cache: minimaler Kern fuer Offline-First-Boot */
 const PRECACHE_URLS = [
