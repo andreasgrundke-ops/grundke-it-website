@@ -3,24 +3,24 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Netzwerk, WLAN &amp; Firewall für KMU | München Ost – Andreas Grundke IT-Service</title>
-  <meta name="description" content="Netzwerk, WLAN &amp; Firewall für KMU im Raum München Ost: stabiles WLAN, sichere Netzwerke und VPN mit professioneller UniFi-Technik – geplant, eingerichtet und betreut."/>
+  <title>KI-Videoanalyse für Betriebe – Objekterkennung | Grundke IT-Service</title>
+  <meta name="description" content="Aus Kameraaufnahmen werden Zahlen: Objekte erkennen, Vorgänge zählen, Kennzahlen darstellen. Auf Basis vorhandener UniFi-Anlagen, Verarbeitung im Haus."/>
   <meta name="author" content="Andreas Grundke"/>
   <meta name="robots" content="index, follow, max-image-preview:large"/>
-  <link rel="canonical" href="https://grundke-it.de/netzwerk-wlan-firewall/"/>
-  <meta property="og:title" content="Netzwerk, WLAN &amp; Firewall für Unternehmen – Andreas Grundke IT-Service"/>
-  <meta property="og:description" content="Netzwerk, WLAN &amp; Firewall für KMU im Raum München Ost: stabiles WLAN, sichere Netzwerke und VPN mit professioneller UniFi-Technik – geplant, eingerichtet und betreut."/>
-  <meta property="og:url" content="https://grundke-it.de/netzwerk-wlan-firewall/"/>
+  <link rel="canonical" href="https://grundke-it.de/ki-videoanalyse/"/>
+  <meta property="og:title" content="Videoanalyse und Auswertung – Kameradaten nutzbar machen – Andreas Grundke IT-Service"/>
+  <meta property="og:description" content="Aus Kameraaufnahmen werden Zahlen: Objekte erkennen, Vorgänge zählen, Kennzahlen darstellen. Auf Basis vorhandener UniFi-Anlagen, Verarbeitung im Haus."/>
+  <meta property="og:url" content="https://grundke-it.de/ki-videoanalyse/"/>
   <meta property="og:type" content="website"/>
   <meta property="og:locale" content="de_DE"/>
   <meta property="og:site_name" content="Grundke IT-Service"/>
   <meta property="og:image" content="https://grundke-it.de/assets/img/og-image.png"/>
   <meta property="og:image:width" content="1200"/>
   <meta property="og:image:height" content="630"/>
-  <meta property="og:image:alt" content="Netzwerk, WLAN &amp; Firewall für Unternehmen – Andreas Grundke IT-Service"/>
+  <meta property="og:image:alt" content="Videoanalyse und Auswertung – Kameradaten nutzbar machen – Andreas Grundke IT-Service"/>
   <meta name="twitter:card" content="summary_large_image"/>
-  <meta name="twitter:title" content="Netzwerk, WLAN &amp; Firewall für Unternehmen – Andreas Grundke IT-Service"/>
-  <meta name="twitter:description" content="Netzwerk, WLAN &amp; Firewall für KMU im Raum München Ost: stabiles WLAN, sichere Netzwerke und VPN mit professioneller UniFi-Technik – geplant, eingerichtet und betreut."/>
+  <meta name="twitter:title" content="Videoanalyse und Auswertung – Kameradaten nutzbar machen – Andreas Grundke IT-Service"/>
+  <meta name="twitter:description" content="Aus Kameraaufnahmen werden Zahlen: Objekte erkennen, Vorgänge zählen, Kennzahlen darstellen. Auf Basis vorhandener UniFi-Anlagen, Verarbeitung im Haus."/>
   <meta name="twitter:image" content="https://grundke-it.de/assets/img/og-image.png"/>
   <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
@@ -77,6 +77,36 @@
     .lp-author-meta { margin-top:.7rem; font-size:.78rem; color:var(--text3); }
     .lp-author-meta a { color:var(--cyan); text-decoration:none; }
   </style>
+  <style>
+    /* Bausteine nur fuer den KI-Bereich (via extra_style, damit die uebrigen Seiten unveraendert bleiben) */
+    .ki-case { background:var(--bg2); border:1px solid var(--border); border-left:3px solid var(--cyan); border-radius:14px; padding:1.5rem 1.6rem; margin:1.1rem 0; }
+    .ki-case-tag { font-family:var(--fm); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--cyan); display:block; margin-bottom:.5rem; }
+    .ki-case h3 { font-family:var(--fh); font-size:1.05rem; font-weight:800; color:var(--text); margin:0 0 .6rem; letter-spacing:-.01em; }
+    .ki-case p { font-size:.9rem; color:var(--text2); line-height:1.75; margin:0 0 .7rem; }
+    .ki-case p:last-child { margin-bottom:0; }
+    .ki-case .ki-result { font-size:.86rem; color:var(--text); background:rgba(38,189,239,.07); border-radius:8px; padding:.7rem .9rem; }
+    .ki-check { background:var(--bg2); border:1px solid var(--cyan); border-radius:16px; padding:1.8rem; margin:2.2rem 0; box-shadow:0 8px 28px rgba(38,189,239,.10); }
+    .ki-check h3 { font-family:var(--fh); font-size:1.2rem; font-weight:800; color:var(--text); margin:0 0 .7rem; }
+    .ki-check p { font-size:.92rem; color:var(--text2); line-height:1.75; margin:0 0 1rem; }
+    .ki-check ul { list-style:none; margin:0 0 1.2rem; padding:0; }
+    .ki-check li { font-size:.9rem; color:var(--text2); line-height:1.6; padding:.35rem 0 .35rem 1.5rem; position:relative; }
+    .ki-check li::before { content:""; position:absolute; left:0; top:.85rem; width:7px; height:7px; border-radius:50%; background:var(--cyan); }
+    .ki-note { background:var(--bg2); border:1px solid var(--border); border-left:3px solid var(--accent); border-radius:12px; padding:1.3rem 1.5rem; margin:1.8rem 0; }
+    .ki-note strong { color:var(--text); }
+    .ki-note p { font-size:.88rem; color:var(--text2); line-height:1.75; margin:0 0 .7rem; }
+    .ki-note p:last-child { margin-bottom:0; }
+    .ki-tbl-wrap { overflow-x:auto; margin:1.4rem 0; }
+    .ki-tbl { width:100%; border-collapse:collapse; font-size:.86rem; min-width:520px; }
+    .ki-tbl th { font-family:var(--fh); font-size:.78rem; letter-spacing:.03em; text-transform:uppercase; color:var(--text3); text-align:left; padding:.7rem .9rem; border-bottom:1px solid var(--border); }
+    .ki-tbl td { padding:.85rem .9rem; border-bottom:1px solid var(--border); color:var(--text2); line-height:1.65; vertical-align:top; }
+    .ki-tbl td:first-child { color:var(--text); font-weight:600; white-space:nowrap; }
+    .ki-tbl tr:last-child td { border-bottom:none; }
+    .ki-link { display:block; text-decoration:none; transition:border-color .2s,transform .2s; }
+    .ki-link:hover { border-color:var(--cyan); transform:translateY(-2px); }
+    .ki-link h3 { color:var(--text); }
+    .ki-link .ki-more { display:inline-block; margin-top:.7rem; font-family:var(--fh); font-size:.82rem; font-weight:700; color:var(--cyan); }
+    .ki-link .ki-more::after { content:" 92"; }
+  </style>
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -91,8 +121,8 @@
     {
       "@type": "ListItem",
       "position": 2,
-      "name": "Netzwerk, WLAN & Firewall",
-      "item": "https://grundke-it.de/netzwerk-wlan-firewall/"
+      "name": "Videoanalyse & Auswertung",
+      "item": "https://grundke-it.de/ki-videoanalyse/"
     }
   ]
 }
@@ -101,9 +131,9 @@
 {
   "@context": "https://schema.org",
   "@type": "Service",
-  "serviceType": "Netzwerk, WLAN und Firewall",
-  "name": "Netzwerk, WLAN & Firewall für Unternehmen",
-  "description": "Netzwerk, WLAN & Firewall für KMU im Raum München Ost: stabiles WLAN, sichere Netzwerke und VPN mit professioneller UniFi-Technik – geplant, eingerichtet und betreut.",
+  "serviceType": "KI-gestützte Videoanalyse und Auswertung für Unternehmen",
+  "name": "Videoanalyse und Auswertung – Kameradaten nutzbar machen",
+  "description": "Aus Kameraaufnahmen werden Zahlen: Objekte erkennen, Vorgänge zählen, Kennzahlen darstellen. Auf Basis vorhandener UniFi-Anlagen, Verarbeitung im Haus.",
   "provider": {
     "@type": "LocalBusiness",
     "name": "Andreas Grundke IT-Service",
@@ -142,34 +172,42 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Warum UniFi und nicht der Router vom Provider?",
+      "name": "Funktioniert das mit unseren vorhandenen Kameras?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Provider-Router sind für den Hausgebrauch gedacht. Mit professioneller UniFi-Technik bekommst du stabiles WLAN auf der ganzen Fläche, getrennte Netze für Gäste und Betrieb sowie zentrale Verwaltung und Überwachung."
+        "text": "In der Regel ja, wenn die Kameras einen brauchbaren Bildausschnitt und eine vernünftige Auflösung liefern. Ich arbeite überwiegend mit Anlagen von Ubiquiti UniFi Protect, weil ich diese Technik ohnehin plane und betreue. Andere Systeme gehen auch, solange sie einen Videostream im Netzwerk bereitstellen. Was nicht geht, sage ich, bevor etwas gekauft wird."
       }
     },
     {
       "@type": "Question",
-      "name": "Bekomme ich WLAN im ganzen Gebäude?",
+      "name": "Werden die Aufnahmen in die Cloud geschickt?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Ja. Ich plane die Zahl und Platzierung der Access Points so, dass du auf jeder Etage und auf Wunsch auch im Außenbereich stabiles WLAN hast – ohne Funklöcher."
+        "text": "Nein. Erkennung und Auswertung laufen auf Hardware bei dir im Netzwerk. Was das Haus verlässt, ist höchstens eine Meldung, dass etwas passiert ist, und auch nur, wenn du das so willst. Genau das ist der Grund, warum ich diesen Weg baue und keinen Clouddienst dazwischenschalte."
       }
     },
     {
       "@type": "Question",
-      "name": "Können meine Mitarbeiter sicher von zu Hause arbeiten?",
+      "name": "Dürfen wir das überhaupt?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Ja, über ein verschlüsseltes VPN (z. B. WireGuard). Der Zugriff aufs Firmennetz ist damit genauso sicher wie im Büro."
+        "text": "Videoüberwachung im Betrieb ist zulässig, wenn es einen berechtigten Grund gibt, die Aufnahme verhältnismäßig bleibt, Hinweisschilder vorhanden sind, Löschfristen festgelegt sind und die Verarbeitung dokumentiert ist. Sind Beschäftigte betroffen, müssen sie beteiligt werden. Die Auswertung von Objekten und Vorgängen ist dabei deutlich weniger kritisch als das Wiedererkennen von Personen, das ich bewusst nicht baue. Die rechtliche Prüfung im Einzelfall gehört zu deinem Datenschutzbeauftragten."
       }
     },
     {
       "@type": "Question",
-      "name": "Was kostet die Einrichtung eines Firmennetzwerks?",
+      "name": "Wie zuverlässig erkennt so ein System?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Das hängt von Größe und Anforderungen ab. Ich erstelle dir nach einem kurzen Termin ein transparentes Angebot; abgerechnet wird zum einheitlichen Stundensatz im 15-Minuten-Takt, Hardware zum fairen Einkaufspreis."
+        "text": "Bei klar unterscheidbaren Objekten wie Fahrzeugen ist die Erkennung gut genug, um belastbare Zahlen zu liefern. Fehler gibt es trotzdem, vor allem bei schlechtem Licht, Regen oder ungünstigem Kamerawinkel. Deshalb wird jede Auswertung anfangs mit der Wirklichkeit abgeglichen und nachjustiert, bevor sie in den Betrieb geht. Wer behauptet, so etwas laufe von Anfang an fehlerfrei, hat es nicht gemacht."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Was kostet eine solche Auswertung?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Abgerechnet wird nach Aufwand zum einheitlichen Stundensatz im 15-Minuten-Takt. Der Aufwand hängt daran, wie viele Kameras beteiligt sind, wie klar die Fragestellung ist und ob passende Hardware für die Erkennung schon vorhanden ist. Nach dem Blick auf die Anlage bekommst du eine Schätzung, mit der du rechnen kannst."
       }
     }
   ]
@@ -179,16 +217,16 @@
 {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  "@id": "https://grundke-it.de/netzwerk-wlan-firewall/#webpage",
-  "url": "https://grundke-it.de/netzwerk-wlan-firewall/",
-  "name": "Netzwerk, WLAN & Firewall für KMU | München Ost – Andreas Grundke IT-Service",
-  "description": "Netzwerk, WLAN & Firewall für KMU im Raum München Ost: stabiles WLAN, sichere Netzwerke und VPN mit professioneller UniFi-Technik – geplant, eingerichtet und betreut.",
+  "@id": "https://grundke-it.de/ki-videoanalyse/#webpage",
+  "url": "https://grundke-it.de/ki-videoanalyse/",
+  "name": "KI-Videoanalyse für Betriebe – Objekterkennung | Grundke IT-Service",
+  "description": "Aus Kameraaufnahmen werden Zahlen: Objekte erkennen, Vorgänge zählen, Kennzahlen darstellen. Auf Basis vorhandener UniFi-Anlagen, Verarbeitung im Haus.",
   "inLanguage": "de-DE",
   "isPartOf": {
     "@id": "https://grundke-it.de/#website"
   },
-  "datePublished": "2026-06-15",
-  "dateModified": "2026-06-18",
+  "datePublished": "2026-08-22",
+  "dateModified": "2026-08-22",
   "author": {
     "@type": "Person",
     "@id": "https://grundke-it.de/#andreas",
@@ -235,23 +273,50 @@
 <article class="lp-wrap">
   <div class="inner">
     <div class="lp-content">
-      <div class="s-label">Netzwerktechnik</div>
-      <h1 class="s-title">Netzwerk, WLAN &amp; Firewall für Unternehmen</h1>
-      <p class="s-sub">Stabiles WLAN im ganzen Gebäude, sichere Netze und verschlüsselter Zugriff fürs Home-Office.</p>
+      <div class="s-label">Kamera plus Auswertung</div>
+      <h1 class="s-title">Videoanalyse und Auswertung – Kameradaten nutzbar machen</h1>
+      <p class="s-sub">Eine Kamera zeichnet auf. Ausgewertet wird sie selten, weil niemand die Zeit hat, Aufnahmen durchzusehen.</p>
 
       <div class="lp-cta-row">
         <a href="tel:+491782584438" class="lp-btn primary">Kostenloses Erstgespräch</a>
         <a href="/kontakt/" class="lp-btn ghost">Anfrage senden</a>
       </div>
 
-      <p>Langsames WLAN, ständige Abbrüche oder ein Netzwerk, das mit dem Betrieb gewachsen und unübersichtlich geworden ist – das kostet täglich Zeit und Nerven. Ich plane, richte ein und betreue Netzwerke mit professioneller UniFi-Technik: stabiles WLAN auf jeder Fläche, sauber getrennte Netze (VLAN) für Gäste und Betrieb sowie sichere Zugänge per Firewall und VPN.</p>
+      <p>Die meisten Betriebe haben Kameras, und fast alle benutzen sie erst, wenn etwas passiert ist. Dann sitzt jemand eine Stunde vor der Zeitleiste und sucht. <strong>Dabei steckt in diesen Aufnahmen eine Information, die sich automatisch herausziehen lässt:</strong> was sich bewegt hat, wann, wie oft und in welche Richtung. Auf vorhandene UniFi-Protect-Anlagen setze ich eine Auswertung auf. Die Erkennung läuft auf Hardware im Betrieb, die Ergebnisse landen in einer Datenbank, und daraus entsteht eine Oberfläche mit Zahlen. Die Aufnahmen selbst verlassen das Haus dabei nicht.</p>
 
       <h2>Das steckt drin</h2>
       <div class="lp-grid">
-        <div class="lp-card"><h3>Netzwerk &amp; VLAN</h3><p>Strukturierte, sicher getrennte Netze für Betrieb, Gäste und Kasse.</p></div>
-        <div class="lp-card"><h3>WLAN (UniFi)</h3><p>Lückenloses, schnelles WLAN auf jeder Etage und im Außenbereich.</p></div>
-        <div class="lp-card"><h3>Firewall &amp; VPN</h3><p>Abgesicherter Internetzugang und verschlüsselter Zugriff von unterwegs.</p></div>
-        <div class="lp-card"><h3>Monitoring</h3><p>Ich sehe Störungen oft, bevor du sie bemerkst – und reagiere proaktiv.</p></div>
+        <div class="lp-card"><h3>Objekte erkennen</h3><p>Fahrzeuge, Container, Maschinen, Paletten. Was regelmäßig vorkommt, lässt sich zuverlässig unterscheiden.</p></div>
+        <div class="lp-card"><h3>Vorgänge zählen</h3><p>Zufahrten, Anlieferungen, Durchgänge, Standzeiten. Mit Zeitstempel und ohne dass jemand mitschreibt.</p></div>
+        <div class="lp-card"><h3>Protokoll in der Datenbank</h3><p>Jedes Ereignis wird gespeichert und bleibt auswertbar, auch wenn die Aufnahme längst gelöscht ist.</p></div>
+        <div class="lp-card"><h3>Kennzahlen auf einen Blick</h3><p>Eine Oberfläche zeigt Verläufe, Summen und Auffälligkeiten. Im Browser, auch vom Handy aus.</p></div>
+        <div class="lp-card"><h3>Meldung bei Auffälligkeiten</h3><p>Bewegung außerhalb der Betriebszeit oder ungewöhnliche Häufungen melden sich von selbst.</p></div>
+        <div class="lp-card"><h3>Verarbeitung im Haus</h3><p>Erkennung und Speicherung laufen auf eigener Hardware im Netzwerk, nicht bei einem Clouddienst.</p></div>
+      </div>
+
+      <h2>Was dabei erlaubt ist und was nicht</h2>
+      <p>Videoauswertung im Betrieb ist kein Selbstläufer. Für die Aufnahme selbst braucht es einen Grund, der sich benennen lässt, meist der Schutz von Eigentum oder die Kontrolle betrieblicher Abläufe, und dieser Grund muss schwerer wiegen als das Interesse der Aufgenommenen. Dazu kommen Hinweisschilder, festgelegte Löschfristen, ein Eintrag im Verzeichnis der Verarbeitungstätigkeiten und, sobald Beschäftigte betroffen sind, deren Beteiligung.</p>
+      <p>Die Auswertung ändert an diesen Regeln nichts, sie verschiebt aber die Bewertung. Wer Fahrzeuge und Objekte zählt, verarbeitet etwas anderes als jemand, der Personen wiedererkennt.</p>
+      <div class="ki-note">
+        <p><strong>Gesichtserkennung und die Auswertung des Verhaltens einzelner Mitarbeiter baue ich nicht.</strong> Das ist rechtlich heikel bis unzulässig, und in einem normalen Betrieb ist es auch gar nicht nötig: Für die Fragen, um die es tatsächlich geht, reicht es, Objekte zu unterscheiden und Vorgänge zu zählen.</p>
+        <p>Wo eine Datenschutz-Folgenabschätzung fällig wird, sage ich das vor der Umsetzung, statt es später zu entdecken. Die rechtliche Prüfung im Einzelfall bleibt Sache deines Datenschutzbeauftragten oder deines Anwalts. Ich sorge dafür, dass die Technik zu dieser Prüfung passt.</p>
+      </div>
+
+      <h2>Typische Fragen, die sich damit beantworten lassen</h2>
+      <div class="lp-grid">
+        <div class="lp-card"><h3>Wie viel ist wirklich los?</h3><p>Zufahrten, Anlieferungen und Abholungen pro Tag, Woche und Monat. Mit Tagesverlauf statt Bauchgefühl.</p></div>
+        <div class="lp-card"><h3>Wie lange steht etwas?</h3><p>Standzeiten von Fahrzeugen oder Containern, inklusive Auffälligkeiten nach oben.</p></div>
+        <div class="lp-card"><h3>War nachts jemand da?</h3><p>Bewegung außerhalb der Betriebszeiten wird erkannt und gemeldet, ohne dass jemand aufbleibt.</p></div>
+        <div class="lp-card"><h3>Stimmt die Dokumentation?</h3><p>Erfasste Vorgänge lassen sich gegen Lieferscheine oder Aufträge halten, wenn etwas unklar ist.</p></div>
+      </div>
+
+      <div class="ki-check">
+        <h3>Erst ansehen, dann entscheiden</h3>
+        <p>Ob sich eine Auswertung lohnt, hängt an der Anlage und an der Frage, die du beantwortet haben willst. Beim kostenlosen Potenzialcheck sehe ich mir die vorhandenen Kameras an und sage dir, was damit geht und was nicht. Ist die Anlage dafür nicht geeignet, erfährst du das an dem Tag und nicht nach dem ersten Rechnungsposten.</p>
+        <div class="lp-cta-row" style="margin:0;">
+          <a href="tel:+491782584438" class="lp-btn primary">Anlage ansehen lassen</a>
+          <a href="/kontakt/" class="lp-btn ghost">Lieber schreiben</a>
+        </div>
       </div>
 
       <div class="lp-trust">
@@ -260,20 +325,24 @@
 
       <h2>Häufige Fragen</h2>
       <div class="faq-item">
-        <h3>Warum UniFi und nicht der Router vom Provider?</h3>
-        <p>Provider-Router sind für den Hausgebrauch gedacht. Mit professioneller UniFi-Technik bekommst du stabiles WLAN auf der ganzen Fläche, getrennte Netze für Gäste und Betrieb sowie zentrale Verwaltung und Überwachung.</p>
+        <h3>Funktioniert das mit unseren vorhandenen Kameras?</h3>
+        <p>In der Regel ja, wenn die Kameras einen brauchbaren Bildausschnitt und eine vernünftige Auflösung liefern. Ich arbeite überwiegend mit Anlagen von Ubiquiti UniFi Protect, weil ich diese Technik ohnehin plane und betreue. Andere Systeme gehen auch, solange sie einen Videostream im Netzwerk bereitstellen. Was nicht geht, sage ich, bevor etwas gekauft wird.</p>
       </div>
       <div class="faq-item">
-        <h3>Bekomme ich WLAN im ganzen Gebäude?</h3>
-        <p>Ja. Ich plane die Zahl und Platzierung der Access Points so, dass du auf jeder Etage und auf Wunsch auch im Außenbereich stabiles WLAN hast – ohne Funklöcher.</p>
+        <h3>Werden die Aufnahmen in die Cloud geschickt?</h3>
+        <p>Nein. Erkennung und Auswertung laufen auf Hardware bei dir im Netzwerk. Was das Haus verlässt, ist höchstens eine Meldung, dass etwas passiert ist, und auch nur, wenn du das so willst. Genau das ist der Grund, warum ich diesen Weg baue und keinen Clouddienst dazwischenschalte.</p>
       </div>
       <div class="faq-item">
-        <h3>Können meine Mitarbeiter sicher von zu Hause arbeiten?</h3>
-        <p>Ja, über ein verschlüsseltes VPN (z. B. WireGuard). Der Zugriff aufs Firmennetz ist damit genauso sicher wie im Büro.</p>
+        <h3>Dürfen wir das überhaupt?</h3>
+        <p>Videoüberwachung im Betrieb ist zulässig, wenn es einen berechtigten Grund gibt, die Aufnahme verhältnismäßig bleibt, Hinweisschilder vorhanden sind, Löschfristen festgelegt sind und die Verarbeitung dokumentiert ist. Sind Beschäftigte betroffen, müssen sie beteiligt werden. Die Auswertung von Objekten und Vorgängen ist dabei deutlich weniger kritisch als das Wiedererkennen von Personen, das ich bewusst nicht baue. Die rechtliche Prüfung im Einzelfall gehört zu deinem Datenschutzbeauftragten.</p>
       </div>
       <div class="faq-item">
-        <h3>Was kostet die Einrichtung eines Firmennetzwerks?</h3>
-        <p>Das hängt von Größe und Anforderungen ab. Ich erstelle dir nach einem kurzen Termin ein transparentes Angebot; abgerechnet wird zum einheitlichen Stundensatz im 15-Minuten-Takt, Hardware zum fairen Einkaufspreis.</p>
+        <h3>Wie zuverlässig erkennt so ein System?</h3>
+        <p>Bei klar unterscheidbaren Objekten wie Fahrzeugen ist die Erkennung gut genug, um belastbare Zahlen zu liefern. Fehler gibt es trotzdem, vor allem bei schlechtem Licht, Regen oder ungünstigem Kamerawinkel. Deshalb wird jede Auswertung anfangs mit der Wirklichkeit abgeglichen und nachjustiert, bevor sie in den Betrieb geht. Wer behauptet, so etwas laufe von Anfang an fehlerfrei, hat es nicht gemacht.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Was kostet eine solche Auswertung?</h3>
+        <p>Abgerechnet wird nach Aufwand zum einheitlichen Stundensatz im 15-Minuten-Takt. Der Aufwand hängt daran, wie viele Kameras beteiligt sind, wie klar die Fragestellung ist und ob passende Hardware für die Erkennung schon vorhanden ist. Nach dem Blick auf die Anlage bekommst du eine Schätzung, mit der du rechnen kannst.</p>
       </div>
 
       <div class="lp-author">
@@ -282,12 +351,12 @@
           <span class="lp-author-name">Andreas Grundke</span>
           <span class="lp-author-role">Inhaber · Fachinformatiker für Systemintegration</span>
           Persönlicher IT-Betreuer mit über 20 Jahren Erfahrung in der IT-Branche. Single Point of Contact für KMU, Handwerk und Büros im Raum München Ost – von Microsoft 365 über Netzwerktechnik (Ubiquiti UniFi) bis zur Datensicherung nach der 3-2-1-Strategie.
-          <div class="lp-author-meta">Zuletzt aktualisiert: 18. Juni 2026 · <a href="/kontakt/">Kontakt aufnehmen</a></div>
+          <div class="lp-author-meta">Zuletzt aktualisiert: 22. August 2026 · <a href="/kontakt/">Kontakt aufnehmen</a></div>
         </div>
       </div>
       <div class="lp-cta-row" style="margin-top:2.5rem;">
         <a href="tel:+491782584438" class="lp-btn primary">Jetzt anrufen · 0178 258 44 38</a>
-        <a href="/it-service-grasbrunn/" class="lp-btn ghost">IT-Service in deiner Region</a>
+        <a href="/netzwerk-wlan-firewall/" class="lp-btn ghost">Netzwerk &amp; Kameratechnik</a>
       </div>
     </div>
   </div>

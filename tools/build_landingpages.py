@@ -33,6 +33,12 @@ PUB_DATE = "2026-06-15"       # datePublished (Ersterstellung der Landingpages)
 PERSON_ID = DOMAIN + "/#andreas"          # @id der Person Andreas Grundke (Startseite)
 BUSINESS_ID = DOMAIN + "/#localbusiness"  # @id des Unternehmens (Startseite)
 WEBSITE_ID = DOMAIN + "/#website"         # @id der Website (Startseite)
+# Der KI-Bereich ist juenger als die uebrigen Landingpages und fuehrt deshalb eigene
+# Datumsangaben. So bleibt dateModified der Orts-/Leistungsseiten ehrlich (kein
+# kuenstliches Hochsetzen der Freshness-Signale nur wegen eines neuen Footer-Links).
+KI_DATE = "2026-08-22"          # dateModified der KI-Seiten
+KI_DATE_DISP = "22. August 2026"
+KI_PUB_DATE = "2026-08-22"      # datePublished der KI-Seiten
 
 # --------------------------------------------------------------------------- #
 #  Gemeinsame Bausteine                                                        #
@@ -90,6 +96,7 @@ NAV = """<header class="site-header">
     <ul class="nav-links">
       <li><a href="/">Startseite</a></li>
       <li><a href="/#leistungen">Leistungen</a></li>
+      <li><a href="/ki-fuer-kmu/">KI im Betrieb</a></li>
       <li><a href="/#preise">Preise</a></li>
       <li><a href="/kontakt/">Kontakt</a></li>
       <li><a href="tel:+491782584438" class="nav-cta"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.8a16 16 0 0 0 6 6l.94-.94a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>Jetzt anrufen</span></a></li>
@@ -100,6 +107,7 @@ NAV = """<header class="site-header">
 <div class="mobile-menu" id="mobileMenu">
   <a href="/">Startseite</a>
   <a href="/#leistungen">Leistungen</a>
+  <a href="/ki-fuer-kmu/">KI im Betrieb</a>
   <a href="/kontakt/">Kontakt</a>
   <a href="/fernwartung/" style="color:var(--cyan);font-weight:700;">&#9889; Fernwartung starten</a>
   <a href="tel:+491782584438" class="m-cta">Jetzt anrufen · 0178 258 44 38</a>
@@ -236,7 +244,7 @@ def faq_schema(faqs):
     }
 
 
-def webpage_schema(title, desc, slug):
+def webpage_schema(title, desc, slug, pub=None, mod=None):
     """WebPage-Knoten: verknuepft Autor (Andreas Grundke, @id von Startseite),
     Herausgeber und Datumsangaben (datePublished/dateModified) -> E-E-A-T + Freshness."""
     url = DOMAIN + "/" + slug + "/"
@@ -249,8 +257,8 @@ def webpage_schema(title, desc, slug):
         "description": desc,
         "inLanguage": "de-DE",
         "isPartOf": {"@id": WEBSITE_ID},
-        "datePublished": PUB_DATE,
-        "dateModified": TODAY,
+        "datePublished": pub or PUB_DATE,
+        "dateModified": mod or TODAY,
         "author": {"@type": "Person", "@id": PERSON_ID, "name": "Andreas Grundke",
                    "url": DOMAIN + "/"},
         "publisher": {"@type": "Organization", "@id": BUSINESS_ID,
@@ -258,7 +266,7 @@ def webpage_schema(title, desc, slug):
     }
 
 
-def author_box():
+def author_box(mod_disp=None):
     """Sichtbare Inhaber-/Autorenangabe (E-E-A-T) inkl. 'Zuletzt aktualisiert'-Datum.
     Deckungsgleich mit dem Person-Schema (#andreas) und der WebPage-dateModified."""
     return (
@@ -268,7 +276,7 @@ def author_box():
         '          <span class="lp-author-name">Andreas Grundke</span>\n'
         '          <span class="lp-author-role">Inhaber · Fachinformatiker für Systemintegration</span>\n'
         '          Persönlicher IT-Betreuer mit über 20 Jahren Erfahrung in der IT-Branche. Single Point of Contact für KMU, Handwerk und Büros im Raum München Ost – von Microsoft 365 über Netzwerktechnik (Ubiquiti UniFi) bis zur Datensicherung nach der 3-2-1-Strategie.\n'
-        '          <div class="lp-author-meta">Zuletzt aktualisiert: ' + TODAY_DISP + ' · <a href="/kontakt/">Kontakt aufnehmen</a></div>\n'
+        '          <div class="lp-author-meta">Zuletzt aktualisiert: ' + (mod_disp or TODAY_DISP) + ' · <a href="/kontakt/">Kontakt aufnehmen</a></div>\n'
         '        </div>\n'
         '      </div>')
 
@@ -286,8 +294,12 @@ def cards_html(cards):
         for h, t in cards)
 
 
-def page(head_html, schema_blocks, main_html, places, services):
+def page(head_html, schema_blocks, main_html, places, services, extra_style=""):
+    """extra_style wird nur von Seiten genutzt, die eigene Bausteine mitbringen
+    (KI-Bereich). Alle uebrigen Seiten bleiben dadurch unveraendert."""
     parts = [head_html, STYLE]
+    if extra_style:
+        parts.append(extra_style)
     for s in schema_blocks:
         parts.append(schema_script(s))
     parts.append("</head>")
@@ -495,6 +507,40 @@ def render_place(p, places, services):
 #  Daten: Leistungen                                                           #
 # --------------------------------------------------------------------------- #
 
+# Zusatz-CSS ausschliesslich fuer die KI-Seiten. Wird ueber das Feld "extra_style"
+# eingehaengt, damit Orts- und uebrige Leistungsseiten unveraendert bleiben.
+KI_STYLE = '''  <style>
+    /* Bausteine nur fuer den KI-Bereich (via extra_style, damit die uebrigen Seiten unveraendert bleiben) */
+    .ki-case { background:var(--bg2); border:1px solid var(--border); border-left:3px solid var(--cyan); border-radius:14px; padding:1.5rem 1.6rem; margin:1.1rem 0; }
+    .ki-case-tag { font-family:var(--fm); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--cyan); display:block; margin-bottom:.5rem; }
+    .ki-case h3 { font-family:var(--fh); font-size:1.05rem; font-weight:800; color:var(--text); margin:0 0 .6rem; letter-spacing:-.01em; }
+    .ki-case p { font-size:.9rem; color:var(--text2); line-height:1.75; margin:0 0 .7rem; }
+    .ki-case p:last-child { margin-bottom:0; }
+    .ki-case .ki-result { font-size:.86rem; color:var(--text); background:rgba(38,189,239,.07); border-radius:8px; padding:.7rem .9rem; }
+    .ki-check { background:var(--bg2); border:1px solid var(--cyan); border-radius:16px; padding:1.8rem; margin:2.2rem 0; box-shadow:0 8px 28px rgba(38,189,239,.10); }
+    .ki-check h3 { font-family:var(--fh); font-size:1.2rem; font-weight:800; color:var(--text); margin:0 0 .7rem; }
+    .ki-check p { font-size:.92rem; color:var(--text2); line-height:1.75; margin:0 0 1rem; }
+    .ki-check ul { list-style:none; margin:0 0 1.2rem; padding:0; }
+    .ki-check li { font-size:.9rem; color:var(--text2); line-height:1.6; padding:.35rem 0 .35rem 1.5rem; position:relative; }
+    .ki-check li::before { content:""; position:absolute; left:0; top:.85rem; width:7px; height:7px; border-radius:50%; background:var(--cyan); }
+    .ki-note { background:var(--bg2); border:1px solid var(--border); border-left:3px solid var(--accent); border-radius:12px; padding:1.3rem 1.5rem; margin:1.8rem 0; }
+    .ki-note strong { color:var(--text); }
+    .ki-note p { font-size:.88rem; color:var(--text2); line-height:1.75; margin:0 0 .7rem; }
+    .ki-note p:last-child { margin-bottom:0; }
+    .ki-tbl-wrap { overflow-x:auto; margin:1.4rem 0; }
+    .ki-tbl { width:100%; border-collapse:collapse; font-size:.86rem; min-width:520px; }
+    .ki-tbl th { font-family:var(--fh); font-size:.78rem; letter-spacing:.03em; text-transform:uppercase; color:var(--text3); text-align:left; padding:.7rem .9rem; border-bottom:1px solid var(--border); }
+    .ki-tbl td { padding:.85rem .9rem; border-bottom:1px solid var(--border); color:var(--text2); line-height:1.65; vertical-align:top; }
+    .ki-tbl td:first-child { color:var(--text); font-weight:600; white-space:nowrap; }
+    .ki-tbl tr:last-child td { border-bottom:none; }
+    .ki-link { display:block; text-decoration:none; transition:border-color .2s,transform .2s; }
+    .ki-link:hover { border-color:var(--cyan); transform:translateY(-2px); }
+    .ki-link h3 { color:var(--text); }
+    .ki-link .ki-more { display:inline-block; margin-top:.7rem; font-family:var(--fh); font-size:.82rem; font-weight:700; color:var(--cyan); }
+    .ki-link .ki-more::after { content:" 92"; }
+  </style>'''
+
+
 SERVICES = [
     {
         "slug": "managed-it-service", "nav": "Managed IT-Service",
@@ -701,6 +747,410 @@ SERVICES = [
              "– vom langsamen PC bis zum Virenbefall."),
         ],
     },
+    # ----------------------------------------------------------------------- #
+    #  KI-Bereich (seit 2026-08-22): Hub + drei Vertiefungen.                  #
+    #  Zweite Saeule neben dem klassischen IT-Service, eigene Datumsangaben.   #
+    # ----------------------------------------------------------------------- #
+    {
+        "slug": "ki-fuer-kmu", "nav": "KI im Betrieb",
+        "title": "KI für KMU – Anwendungen im Betrieb | Grundke IT-Service München Ost",
+        "h1": "KI im Betrieb – für kleine &amp; mittlere Unternehmen",
+        "label": "KI in der Praxis", "service_type": "KI-Beratung und Anwendungsentwicklung für KMU",
+        "published": KI_PUB_DATE, "modified": KI_DATE, "modified_disp": KI_DATE_DISP,
+        "extra_style": KI_STYLE,
+        "cta2_href": "/ki-automatisierung/", "cta2_text": "Abläufe automatisieren",
+        "desc": ("KI im Betrieb: Abläufe automatisieren, Auswertungen aus vorhandenen Daten, "
+                 "DSGVO-konform umgesetzt. Kostenloser Potenzialcheck im Raum München Ost."),
+        "sub": "Keine Folien über Künstliche Intelligenz, sondern Anwendungen, die bei dir laufen. Gebaut von jemandem, der deine IT ohnehin betreut.",
+        "intro": ("Wenn ein Betrieb heute über KI spricht, geht es meist um zwei Dinge: dass sich "
+                  "alles ändern wird und dass man vorsichtig sein muss. Beides hilft nicht weiter, "
+                  "solange am Montag wieder jemand Rechnungsdaten abtippt oder Kameraaufnahmen "
+                  "durchklickt. <strong>Ich baue Anwendungen für genau diese Stellen</strong> und "
+                  "betreue sie danach weiter. In meiner eigenen Firma läuft das seit über einem "
+                  "halben Jahr täglich: Kundenverwaltung, Monitoring, Auswertungen, Rechnungsläufe. "
+                  "Seit einigen Monaten entstehen die ersten Anwendungen bei Kunden. Was ich "
+                  "anbiete, benutze ich selbst."),
+        "raw_intro": True,
+        "cards": [
+            ("Abläufe automatisieren", "Wiederkehrende Handarbeit am Rechner: Daten übertragen, Listen erzeugen, Rechnungen bauen, Berichte zusammenstellen."),
+            ("Auswertungen aus vorhandenen Daten", "Was in Kamera, Kasse, Zeiterfassung oder Warenwirtschaft schon steckt, wird sichtbar gemacht."),
+            ("Systeme verbinden", "Zwei Programme, die nicht miteinander reden, koppele ich über ihre Dateiformate oder ihre Schnittstelle."),
+            ("KI-Werkzeuge einführen", "Welches Werkzeug für welche Aufgabe taugt, wie es eingerichtet wird und was die Mitarbeiter darüber wissen müssen."),
+            ("Datenschutz vorher klären", "Lokales Modell, EU-Rechenzentrum oder Anbieter mit Auftragsverarbeitungsvertrag. Die Entscheidung fällt vor der Umsetzung."),
+            ("Betrieb und Pflege", "Eine gebaute Anwendung braucht jemanden, der sie weiter betreut. Ich bleibe der Ansprechpartner."),
+        ],
+        "extra": """
+      <h2>Drei Anwendungen aus der Praxis</h2>
+      <p>Alle drei laufen. Die Kundenfälle sind anonymisiert, weil Betriebsabläufe niemanden etwas angehen außer dem Betrieb selbst.</p>
+
+      <div class="ki-case">
+        <span class="ki-case-tag">Kundenprojekt · Videoauswertung</span>
+        <h3>Eine Hofzufahrt, die sich selbst protokolliert</h3>
+        <p>Ein Betrieb im Landkreis München hatte eine vollständig aufgebaute UniFi-Protect-Anlage und trotzdem keine Antwort auf einfache Fragen: Wie viele Fahrzeuge kommen pro Woche? Wann ist am meisten los? Die Aufnahmen lagen vor, sie hätte nur jemand ansehen müssen.</p>
+        <p>Auf die vorhandenen Kameras habe ich eine Objekterkennung aufgesetzt. Fahrzeuge und Objekte werden automatisch erkannt, jedes Ereignis landet mit Zeitstempel in einer Datenbank, und eine Oberfläche zeigt daraus Verläufe und Summen. Die Erkennung läuft auf Hardware im Betrieb, die Aufnahmen verlassen das Haus nicht.</p>
+        <p class="ki-result">Statt Videomaterial zu sichten, gibt es jetzt Zahlen. Die Auswertung, für die vorher niemand Zeit hatte, steht beim Öffnen der Seite da.</p>
+      </div>
+
+      <div class="ki-case">
+        <span class="ki-case-tag">Kundenprojekt · Rechnungsstellung</span>
+        <h3>E-Rechnungen ohne Abtippen</h3>
+        <p>Die Leistungsdaten lagen als CSV-Export aus einem Vorsystem vor, die Rechnungen entstanden daraus von Hand. Jeden Monat dieselbe Strecke, jedes Mal einige Stunden, und gelegentlich ein Zahlendreher, den erst der Kunde bemerkt.</p>
+        <p>Heute liest ein Programm den Export ein, ordnet die Positionen zu und erzeugt daraus normgerechte E-Rechnungen im Format XRechnung beziehungsweise ZUGFeRD. Gerechnet wird gegen die Ausgangsdaten gegengeprüft, damit nichts ungesehen durchläuft.</p>
+        <p class="ki-result">Aus einem halben Arbeitstag im Monat sind ein paar Minuten geworden. Die Umstellung auf die kommende E-Rechnungspflicht ist damit nebenbei erledigt, statt kurz vor der Frist anzustehen.</p>
+      </div>
+
+      <div class="ki-case">
+        <span class="ki-case-tag">Eigenbetrieb · seit über einem halben Jahr</span>
+        <h3>Was ich selbst benutze</h3>
+        <p>Meine Kundenverwaltung, mein Monitoring, meine Auswertungen und meine Rechnungsläufe laufen über Anwendungen, die ich selbst gebaut habe und täglich benutze. Dazu kommen Werkzeuge, die aus einer konkreten Not entstanden sind: eine Prüfung von Websites auf technische und rechtliche Mängel, ein Scanner für Netzwerkumgebungen, ein Auswertungswerkzeug für die Sichtbarkeit in Suchmaschinen.</p>
+        <p class="ki-result">Der Punkt daran ist nicht die Liste. Der Punkt ist, dass ich im Erstgespräch aus eigener Erfahrung sagen kann, was funktioniert, was Zeit frisst und was sich nicht lohnt.</p>
+      </div>
+
+      <div class="ki-check">
+        <h3>Kostenloser KI-Potenzialcheck</h3>
+        <p>Der einfachste Einstieg. 60 bis 90 Minuten, bei dir im Betrieb oder per Videogespräch. Wir gehen durch, was bei euch regelmäßig Zeit kostet, und schauen, was davon eine Maschine übernehmen kann.</p>
+        <ul>
+          <li>Wir sehen uns die Abläufe an, die jeden Monat gleich laufen</li>
+          <li>Ich sage dir, was sich automatisieren lässt und was nicht</li>
+          <li>Du bekommst es schriftlich, mit Aufwand, Nutzen und den rechtlichen Punkten</li>
+          <li>Das Papier gehört dir, auch wenn wir nicht weiterarbeiten</li>
+        </ul>
+        <div class="lp-cta-row" style="margin:0;">
+          <a href="tel:+491782584438" class="lp-btn primary">Potenzialcheck vereinbaren</a>
+          <a href="/kontakt/" class="lp-btn ghost">Lieber schreiben</a>
+        </div>
+      </div>
+
+      <h2>Wann sich das nicht lohnt</h2>
+      <p>Nicht jede Aufgabe verdient eine eigene Anwendung. Was dreimal im Jahr vorkommt, ist von Hand billiger als jede Automatisierung, und wenn ein Ablauf sich alle paar Monate ändert, wird die Pflege teurer als der Nutzen. Auch dort, wo es am Ende auf ein Urteil ankommt und nicht auf eine Regel, hat eine Maschine wenig verloren.</p>
+      <p>Das sage ich im Erstgespräch, bevor daraus ein Projekt wird. Mir ist ein Kunde lieber, der einmal etwas Sinnvolles bekommt, als einer, der ein halbes Jahr später merkt, dass er es nie gebraucht hat.</p>
+
+      <h2>Die drei Bereiche im Einzelnen</h2>
+      <div class="lp-grid">
+        <a class="lp-card ki-link" href="/ki-automatisierung/"><h3>Abläufe automatisieren</h3><p>E-Rechnungen aus vorhandenen Daten, Schnittstellen zwischen Programmen, Dokumente auslesen, Berichte ohne Excel-Bastelei.</p><span class="ki-more">Ansehen</span></a>
+        <a class="lp-card ki-link" href="/ki-videoanalyse/"><h3>Videoanalyse und Auswertung</h3><p>Objekte erkennen, Vorgänge zählen, Ereignisse protokollieren, Kennzahlen darstellen. Auf Basis der vorhandenen Kameras.</p><span class="ki-more">Ansehen</span></a>
+        <a class="lp-card ki-link" href="/ki-dsgvo/"><h3>KI rechtssicher betreiben</h3><p>Wo das Modell läuft, welcher Anbieter einen Auftragsverarbeitungsvertrag bietet, was in eine Nutzungsrichtlinie gehört.</p><span class="ki-more">Ansehen</span></a>
+      </div>
+""",
+        "faqs": [
+            ("Was bringt KI einem Betrieb mit 15 Mitarbeitern konkret?",
+             "Meistens Zeit an einer Stelle, die niemand gern macht. Typisch sind drei Fälle: Daten, "
+             "die aus einem Export von Hand in ein anderes Programm übertragen werden. Auswertungen, "
+             "die jemand am Monatsende in Excel zusammenbaut. Und Aufnahmen oder Protokolle, die "
+             "niemand durchsieht, weil es zu lange dauert. Das sind Stunden, die jeden Monat anfallen "
+             "und sich ohne zusätzliches Personal zurückholen lassen."),
+            ("Ist das für einen kleinen Betrieb nicht viel zu teuer?",
+             "Abgerechnet wird nach Aufwand, zum einheitlichen Stundensatz im 15-Minuten-Takt wie bei "
+             "jeder anderen Leistung auch. Eine überschaubare Automatisierung ist oft an einem Tag "
+             "fertig. Ob sie sich rechnet, lässt sich vorher ausrechnen: Wenn eine Aufgabe monatlich "
+             "vier Stunden kostet, ist die einzige Frage, nach wie vielen Monaten die Umsetzung "
+             "bezahlt ist. Rechnet es sich nicht, sage ich das im Erstgespräch."),
+            ("Was passiert mit unseren Daten?",
+             "Das wird vor der Umsetzung entschieden, nicht danach. Drei Wege sind üblich: Das Modell "
+             "läuft auf eigener Hardware im Betrieb, dann verlassen die Daten das Haus nicht. Es läuft "
+             "in einem Rechenzentrum innerhalb der EU. Oder es läuft bei einem Anbieter, mit dem ein "
+             "Auftragsverarbeitungsvertrag besteht und der die Daten nicht zum Training seiner Modelle "
+             "verwendet. Welcher Weg passt, hängt davon ab, wie sensibel die Daten sind."),
+            ("Brauchen wir dafür neue Hardware?",
+             "Meistens nicht. Vieles läuft auf einem vorhandenen Server oder einem kleinen Rechner im "
+             "Netzwerk. Erst wenn ein Sprachmodell wirklich lokal arbeiten soll, kommt Hardware mit "
+             "Grafikkarte ins Spiel. Das ist eine überschaubare Investition, sie muss aber begründet "
+             "sein, und ich sage dir vorher, ob sie sich in deinem Fall lohnt."),
+            ("Wir nutzen schon ChatGPT. Reicht das nicht?",
+             "Für Texte oft ja. Der Unterschied beginnt dort, wo etwas regelmäßig und ohne einen "
+             "Menschen davor passieren soll: Daten aus einem System holen, verarbeiten, in ein anderes "
+             "schreiben, und das jede Nacht. Dafür braucht es eine gebaute Anwendung. Dazu kommt die "
+             "Frage, was Mitarbeiter überhaupt in ein Chatfenster eingeben dürfen. Seit dem 2. Februar "
+             "2025 verlangt Artikel 4 der europäischen KI-Verordnung von jedem Unternehmen, das KI "
+             "einsetzt, ausreichende KI-Kompetenz bei den Beschäftigten."),
+            ("Wie fange ich an?",
+             "Mit dem kostenlosen KI-Potenzialcheck. Wir gehen 60 bis 90 Minuten durch deine Abläufe "
+             "und schauen, wo Zeit verloren geht. Danach bekommst du schriftlich, was sich "
+             "automatisieren lässt, was es ungefähr kostet und was rechtlich zu beachten ist. Ob du "
+             "damit weiterarbeitest, entscheidest du in Ruhe."),
+        ],
+    },
+    {
+        "slug": "ki-automatisierung", "nav": "Abläufe automatisieren",
+        "title": "Abläufe automatisieren: E-Rechnung & Schnittstellen | Grundke IT-Service",
+        "h1": "Abläufe automatisieren – von der E-Rechnung bis zur Schnittstelle",
+        "label": "Weniger Handarbeit", "service_type": "Prozessautomatisierung und Anwendungsentwicklung für KMU",
+        "published": KI_PUB_DATE, "modified": KI_DATE, "modified_disp": KI_DATE_DISP,
+        "extra_style": KI_STYLE,
+        "cta2_href": "/ki-fuer-kmu/", "cta2_text": "Überblick KI im Betrieb",
+        "desc": ("E-Rechnungen aus vorhandenen Daten, Schnittstellen zwischen Programmen, Berichte "
+                 "ohne Excel-Bastelei. Automatisierung für KMU im Raum München Ost."),
+        "sub": "Alles, was jeden Monat gleich abläuft und trotzdem jemand von Hand macht, lässt sich meistens automatisieren.",
+        "intro": ("In fast jedem Betrieb gibt es eine Stelle, an der Daten von Hand von einem System "
+                  "ins andere wandern. Jemand exportiert eine Liste, sortiert sie, tippt sie woanders "
+                  "wieder ein. Das dauert, dabei passieren Fehler, und im nächsten Monat geht es von "
+                  "vorn los. <strong>Genau solche Strecken automatisiere ich</strong>, mit einem "
+                  "Programm, das den Weg einmal richtig geht und danach von allein läuft. Wo KI dabei "
+                  "wirklich hilft, kommt sie zum Einsatz: beim Lesen unstrukturierter Dokumente etwa, "
+                  "oder beim Zuordnen von Positionen, die nie exakt gleich heißen. Wo eine feste Regel "
+                  "reicht, bleibt es bei der Regel. Das ist billiger und zuverlässiger."),
+        "raw_intro": True,
+        "cards": [
+            ("E-Rechnungen aus vorhandenen Daten", "Aus CSV-Exporten, Listen oder einem Vorsystem entstehen normgerechte Rechnungen als XRechnung oder ZUGFeRD."),
+            ("Schnittstellen zwischen Programmen", "Warenwirtschaft, Zeiterfassung, Buchhaltung, Kasse. Was Daten exportieren kann, lässt sich koppeln."),
+            ("Dokumente auslesen", "Lieferscheine, Eingangsrechnungen, Formulare: Inhalte werden erkannt und landen strukturiert in der Datenbank."),
+            ("Auswertungen und Berichte", "Zahlen, die heute jemand am Monatsende in Excel zusammensucht, entstehen automatisch und immer gleich."),
+            ("Wiederkehrende Läufe", "Nächtliche Abgleiche, Erinnerungen, Prüfungen, Datenübernahmen. Einmal eingerichtet, läuft es weiter."),
+            ("Meldung statt Nachsehen", "Wenn etwas schiefgeht, meldet sich die Anwendung von selbst. Per E-Mail oder Nachricht aufs Handy."),
+        ],
+        "extra": """
+      <h2>Der aktuelle Anlass: die E-Rechnung</h2>
+      <p>Die E-Rechnung ist gerade für viele Betriebe der konkrete Grund, sich mit Automatisierung zu beschäftigen, weil eine Frist im Raum steht. Der Stand der gesetzlichen Regelung in Deutschland:</p>
+      <div class="ki-tbl-wrap">
+        <table class="ki-tbl">
+          <thead><tr><th>Ab wann</th><th>Was gilt</th></tr></thead>
+          <tbody>
+            <tr><td>1. Januar 2025</td><td>Jedes inländische Unternehmen muss E-Rechnungen <strong>empfangen</strong> können. Das gilt bereits.</td></tr>
+            <tr><td>bis 31. Dezember 2026</td><td>Übergangsfrist beim Versand: Papier ist weiterhin zulässig, ein einfaches PDF nur mit Zustimmung des Empfängers.</td></tr>
+            <tr><td>1. Januar 2027</td><td>Unternehmen mit mehr als 800.000 Euro Vorjahresumsatz müssen im inländischen B2B-Geschäft E-Rechnungen <strong>ausstellen</strong>.</td></tr>
+            <tr><td>1. Januar 2028</td><td>Die Ausstellungspflicht gilt für alle übrigen inländischen B2B-Umsätze.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Für Betriebe über der Umsatzgrenze bleiben damit noch wenige Monate. Wer seine Rechnungen ohnehin aus einem Vorsystem oder einer Excel-Liste heraus erstellt, kann diesen Schritt gleich mit der Automatisierung verbinden, statt zweimal umzustellen.</p>
+      <div class="ki-note">
+        <p><strong>Zur Einordnung:</strong> Das ist die technische Seite. Ob und ab wann die Pflicht deinen Betrieb genau trifft, welche Umsätze darunterfallen und wie das steuerlich zu behandeln ist, gehört zu deinem Steuerberater. Ich baue die Umsetzung, nicht die steuerliche Bewertung.</p>
+      </div>
+
+      <h2>Wie so ein Projekt abläuft</h2>
+      <p>Am Anfang steht kein Angebot, sondern ein Blick auf den Ablauf, um den es geht. Meist zeigt sich schon dabei, ob die Sache klein oder groß ist.</p>
+      <div class="lp-grid">
+        <div class="lp-card"><h3>1. Ablauf ansehen</h3><p>Wir gehen den Weg der Daten einmal gemeinsam durch, so wie er heute läuft. Mit den echten Dateien, nicht mit einem Beispiel.</p></div>
+        <div class="lp-card"><h3>2. Aufwand schätzen</h3><p>Du bekommst eine Einschätzung, wie lange die Umsetzung dauert und wie viel Zeit sie im Monat spart. Beides schriftlich.</p></div>
+        <div class="lp-card"><h3>3. Klein anfangen</h3><p>Erst läuft ein Teilstück, das nachweisbar funktioniert. Danach wird erweitert. Kein Projekt, das ein halbes Jahr im Dunkeln läuft.</p></div>
+        <div class="lp-card"><h3>4. Übergabe und Betreuung</h3><p>Die Anwendung wird dokumentiert und läuft bei dir. Ich bleibe der Ansprechpartner, wenn sich etwas ändert.</p></div>
+      </div>
+
+      <div class="ki-check">
+        <h3>Kostenloser KI-Potenzialcheck</h3>
+        <p>Wenn du nicht sicher bist, ob sich bei dir etwas lohnt: 60 bis 90 Minuten, wir gehen deine Abläufe durch, danach bekommst du schriftlich, was sich automatisieren lässt, was es kostet und was es bringt. Kostenlos und ohne Verpflichtung.</p>
+        <div class="lp-cta-row" style="margin:0;">
+          <a href="tel:+491782584438" class="lp-btn primary">Potenzialcheck vereinbaren</a>
+          <a href="/kontakt/" class="lp-btn ghost">Lieber schreiben</a>
+        </div>
+      </div>
+""",
+        "faqs": [
+            ("Ab wann muss unser Betrieb E-Rechnungen verschicken können?",
+             "Empfangen muss sie seit dem 1. Januar 2025 jedes inländische Unternehmen. Beim Versand "
+             "gilt eine Staffel: Bis Ende 2026 darf noch auf Papier gestellt werden, ein einfaches PDF "
+             "nur mit Zustimmung des Empfängers. Ab dem 1. Januar 2027 müssen Unternehmen mit mehr als "
+             "800.000 Euro Vorjahresumsatz E-Rechnungen ausstellen, ab dem 1. Januar 2028 alle übrigen "
+             "im inländischen B2B-Geschäft. Das ist die allgemeine Rechtslage und keine "
+             "Steuerberatung. Für die Bewertung deines konkreten Falls ist dein Steuerberater da."),
+            ("Welche Abläufe eignen sich überhaupt?",
+             "Am besten alles, was regelmäßig vorkommt, immer gleich abläuft und heute an einer Datei "
+             "hängt: Exporte, Listen, Formulare, Berichte. Je klarer die Regel, desto einfacher die "
+             "Umsetzung. Schwieriger wird es, wenn bei jedem Durchgang jemand eine Entscheidung "
+             "treffen muss, die auf Erfahrung beruht. Dann automatisiert man die Vorarbeit und lässt "
+             "die Entscheidung beim Menschen."),
+            ("Was kostet eine Automatisierung?",
+             "Sie wird nach Aufwand abgerechnet, zum einheitlichen Stundensatz im 15-Minuten-Takt. "
+             "Kleinere Strecken sind oft an einem Tag fertig, größere brauchen mehrere. Nach dem "
+             "ersten Blick auf den Ablauf bekommst du eine Schätzung, mit der du rechnen kannst, "
+             "bevor irgendetwas gebaut wird."),
+            ("Was passiert, wenn sich unser Vorsystem ändert?",
+             "Dann muss die Anwendung angepasst werden, das gehört dazu. Deshalb baue ich die "
+             "Schnittstelle so, dass die Stelle, an der die Daten hereinkommen, sauber getrennt vom "
+             "Rest liegt. Ein Formatwechsel ist dann eine überschaubare Änderung und kein neues "
+             "Projekt. Und weil ich deine IT ohnehin betreue, erfahre ich von der Umstellung meist "
+             "vorher."),
+            ("Woher weiß ich, dass die Ergebnisse stimmen?",
+             "Weil nichts ungeprüft durchläuft. Bei allem, was mit Geld oder Rechtsfolgen zu tun hat, "
+             "arbeitet die Anwendung nach festen Regeln statt nach Wahrscheinlichkeiten, und die "
+             "Ergebnisse werden gegen die Ausgangsdaten gegengerechnet. Wo ein Sprachmodell beteiligt "
+             "ist, etwa beim Lesen eines Lieferscheins, gibt es eine Kontrollstufe: Unsichere Fälle "
+             "landen zur Sichtung auf dem Bildschirm statt still in der Datenbank."),
+        ],
+    },
+    {
+        "slug": "ki-videoanalyse", "nav": "Videoanalyse & Auswertung",
+        "title": "KI-Videoanalyse für Betriebe – Objekterkennung | Grundke IT-Service",
+        "h1": "Videoanalyse und Auswertung – Kameradaten nutzbar machen",
+        "label": "Kamera plus Auswertung", "service_type": "KI-gestützte Videoanalyse und Auswertung für Unternehmen",
+        "published": KI_PUB_DATE, "modified": KI_DATE, "modified_disp": KI_DATE_DISP,
+        "extra_style": KI_STYLE,
+        "cta2_href": "/netzwerk-wlan-firewall/", "cta2_text": "Netzwerk & Kameratechnik",
+        "desc": ("Aus Kameraaufnahmen werden Zahlen: Objekte erkennen, Vorgänge zählen, Kennzahlen "
+                 "darstellen. Auf Basis vorhandener UniFi-Anlagen, Verarbeitung im Haus."),
+        "sub": "Eine Kamera zeichnet auf. Ausgewertet wird sie selten, weil niemand die Zeit hat, Aufnahmen durchzusehen.",
+        "intro": ("Die meisten Betriebe haben Kameras, und fast alle benutzen sie erst, wenn etwas "
+                  "passiert ist. Dann sitzt jemand eine Stunde vor der Zeitleiste und sucht. "
+                  "<strong>Dabei steckt in diesen Aufnahmen eine Information, die sich automatisch "
+                  "herausziehen lässt:</strong> was sich bewegt hat, wann, wie oft und in welche "
+                  "Richtung. Auf vorhandene UniFi-Protect-Anlagen setze ich eine Auswertung auf. Die "
+                  "Erkennung läuft auf Hardware im Betrieb, die Ergebnisse landen in einer Datenbank, "
+                  "und daraus entsteht eine Oberfläche mit Zahlen. Die Aufnahmen selbst verlassen das "
+                  "Haus dabei nicht."),
+        "raw_intro": True,
+        "cards": [
+            ("Objekte erkennen", "Fahrzeuge, Container, Maschinen, Paletten. Was regelmäßig vorkommt, lässt sich zuverlässig unterscheiden."),
+            ("Vorgänge zählen", "Zufahrten, Anlieferungen, Durchgänge, Standzeiten. Mit Zeitstempel und ohne dass jemand mitschreibt."),
+            ("Protokoll in der Datenbank", "Jedes Ereignis wird gespeichert und bleibt auswertbar, auch wenn die Aufnahme längst gelöscht ist."),
+            ("Kennzahlen auf einen Blick", "Eine Oberfläche zeigt Verläufe, Summen und Auffälligkeiten. Im Browser, auch vom Handy aus."),
+            ("Meldung bei Auffälligkeiten", "Bewegung außerhalb der Betriebszeit oder ungewöhnliche Häufungen melden sich von selbst."),
+            ("Verarbeitung im Haus", "Erkennung und Speicherung laufen auf eigener Hardware im Netzwerk, nicht bei einem Clouddienst."),
+        ],
+        "extra": """
+      <h2>Was dabei erlaubt ist und was nicht</h2>
+      <p>Videoauswertung im Betrieb ist kein Selbstläufer. Für die Aufnahme selbst braucht es einen Grund, der sich benennen lässt, meist der Schutz von Eigentum oder die Kontrolle betrieblicher Abläufe, und dieser Grund muss schwerer wiegen als das Interesse der Aufgenommenen. Dazu kommen Hinweisschilder, festgelegte Löschfristen, ein Eintrag im Verzeichnis der Verarbeitungstätigkeiten und, sobald Beschäftigte betroffen sind, deren Beteiligung.</p>
+      <p>Die Auswertung ändert an diesen Regeln nichts, sie verschiebt aber die Bewertung. Wer Fahrzeuge und Objekte zählt, verarbeitet etwas anderes als jemand, der Personen wiedererkennt.</p>
+      <div class="ki-note">
+        <p><strong>Gesichtserkennung und die Auswertung des Verhaltens einzelner Mitarbeiter baue ich nicht.</strong> Das ist rechtlich heikel bis unzulässig, und in einem normalen Betrieb ist es auch gar nicht nötig: Für die Fragen, um die es tatsächlich geht, reicht es, Objekte zu unterscheiden und Vorgänge zu zählen.</p>
+        <p>Wo eine Datenschutz-Folgenabschätzung fällig wird, sage ich das vor der Umsetzung, statt es später zu entdecken. Die rechtliche Prüfung im Einzelfall bleibt Sache deines Datenschutzbeauftragten oder deines Anwalts. Ich sorge dafür, dass die Technik zu dieser Prüfung passt.</p>
+      </div>
+
+      <h2>Typische Fragen, die sich damit beantworten lassen</h2>
+      <div class="lp-grid">
+        <div class="lp-card"><h3>Wie viel ist wirklich los?</h3><p>Zufahrten, Anlieferungen und Abholungen pro Tag, Woche und Monat. Mit Tagesverlauf statt Bauchgefühl.</p></div>
+        <div class="lp-card"><h3>Wie lange steht etwas?</h3><p>Standzeiten von Fahrzeugen oder Containern, inklusive Auffälligkeiten nach oben.</p></div>
+        <div class="lp-card"><h3>War nachts jemand da?</h3><p>Bewegung außerhalb der Betriebszeiten wird erkannt und gemeldet, ohne dass jemand aufbleibt.</p></div>
+        <div class="lp-card"><h3>Stimmt die Dokumentation?</h3><p>Erfasste Vorgänge lassen sich gegen Lieferscheine oder Aufträge halten, wenn etwas unklar ist.</p></div>
+      </div>
+
+      <div class="ki-check">
+        <h3>Erst ansehen, dann entscheiden</h3>
+        <p>Ob sich eine Auswertung lohnt, hängt an der Anlage und an der Frage, die du beantwortet haben willst. Beim kostenlosen Potenzialcheck sehe ich mir die vorhandenen Kameras an und sage dir, was damit geht und was nicht. Ist die Anlage dafür nicht geeignet, erfährst du das an dem Tag und nicht nach dem ersten Rechnungsposten.</p>
+        <div class="lp-cta-row" style="margin:0;">
+          <a href="tel:+491782584438" class="lp-btn primary">Anlage ansehen lassen</a>
+          <a href="/kontakt/" class="lp-btn ghost">Lieber schreiben</a>
+        </div>
+      </div>
+""",
+        "faqs": [
+            ("Funktioniert das mit unseren vorhandenen Kameras?",
+             "In der Regel ja, wenn die Kameras einen brauchbaren Bildausschnitt und eine vernünftige "
+             "Auflösung liefern. Ich arbeite überwiegend mit Anlagen von Ubiquiti UniFi Protect, weil "
+             "ich diese Technik ohnehin plane und betreue. Andere Systeme gehen auch, solange sie "
+             "einen Videostream im Netzwerk bereitstellen. Was nicht geht, sage ich, bevor etwas "
+             "gekauft wird."),
+            ("Werden die Aufnahmen in die Cloud geschickt?",
+             "Nein. Erkennung und Auswertung laufen auf Hardware bei dir im Netzwerk. Was das Haus "
+             "verlässt, ist höchstens eine Meldung, dass etwas passiert ist, und auch nur, wenn du das "
+             "so willst. Genau das ist der Grund, warum ich diesen Weg baue und keinen Clouddienst "
+             "dazwischenschalte."),
+            ("Dürfen wir das überhaupt?",
+             "Videoüberwachung im Betrieb ist zulässig, wenn es einen berechtigten Grund gibt, die "
+             "Aufnahme verhältnismäßig bleibt, Hinweisschilder vorhanden sind, Löschfristen festgelegt "
+             "sind und die Verarbeitung dokumentiert ist. Sind Beschäftigte betroffen, müssen sie "
+             "beteiligt werden. Die Auswertung von Objekten und Vorgängen ist dabei deutlich weniger "
+             "kritisch als das Wiedererkennen von Personen, das ich bewusst nicht baue. Die rechtliche "
+             "Prüfung im Einzelfall gehört zu deinem Datenschutzbeauftragten."),
+            ("Wie zuverlässig erkennt so ein System?",
+             "Bei klar unterscheidbaren Objekten wie Fahrzeugen ist die Erkennung gut genug, um "
+             "belastbare Zahlen zu liefern. Fehler gibt es trotzdem, vor allem bei schlechtem Licht, "
+             "Regen oder ungünstigem Kamerawinkel. Deshalb wird jede Auswertung anfangs mit der "
+             "Wirklichkeit abgeglichen und nachjustiert, bevor sie in den Betrieb geht. Wer behauptet, "
+             "so etwas laufe von Anfang an fehlerfrei, hat es nicht gemacht."),
+            ("Was kostet eine solche Auswertung?",
+             "Abgerechnet wird nach Aufwand zum einheitlichen Stundensatz im 15-Minuten-Takt. Der "
+             "Aufwand hängt daran, wie viele Kameras beteiligt sind, wie klar die Fragestellung ist "
+             "und ob passende Hardware für die Erkennung schon vorhanden ist. Nach dem Blick auf die "
+             "Anlage bekommst du eine Schätzung, mit der du rechnen kannst."),
+        ],
+    },
+    {
+        "slug": "ki-dsgvo", "nav": "KI rechtssicher betreiben",
+        "title": "KI im Unternehmen: DSGVO, AVV & KI-Verordnung | Grundke IT-Service",
+        "h1": "KI im Unternehmen einsetzen, ohne rechtliches Risiko",
+        "label": "Rechtssicher betrieben", "service_type": "Beratung zum datenschutzkonformen KI-Einsatz in Unternehmen",
+        "published": KI_PUB_DATE, "modified": KI_DATE, "modified_disp": KI_DATE_DISP,
+        "extra_style": KI_STYLE,
+        "cta2_href": "/schulung/", "cta2_text": "Schulung für dein Team",
+        "desc": ("KI im Betrieb rechtssicher nutzen: lokales Modell oder Cloud, "
+                 "Auftragsverarbeitungsvertrag, Nutzungsrichtlinie und Schulung nach Artikel 4."),
+        "sub": "Die Frage ist selten, ob KI hilft. Die Frage ist, welche Daten hineindürfen und wer dafür geradesteht.",
+        "intro": ("Das häufigste Problem beim KI-Einsatz im Betrieb ist nicht die Technik. Es ist der "
+                  "Mitarbeiter, der eine Kundenliste in ein kostenloses Chatfenster kopiert, weil es "
+                  "schneller geht. <strong>Damit liegen personenbezogene Daten bei einem Anbieter, "
+                  "mit dem kein Vertrag besteht</strong>, und das ist ein Datenschutzvorfall und kein "
+                  "Kavaliersdelikt. Dahinter steckt selten böse Absicht, sondern eine fehlende "
+                  "Ansage. Ich kläre für deinen Betrieb, welche Werkzeuge benutzt werden dürfen, wo "
+                  "sie laufen und was hineindarf, und halte das so fest, dass es im Alltag auch "
+                  "jemand liest."),
+        "raw_intro": True,
+        "cards": [
+            ("Wo das Modell läuft", "Eigene Hardware, EU-Rechenzentrum oder Anbieter mit Vertrag. Für jede Aufgabe die passende Stufe."),
+            ("Auftragsverarbeitungsvertrag", "Welcher Anbieter einen anbietet, was darin stehen muss und wo die Daten tatsächlich liegen."),
+            ("Nutzungsrichtlinie", "Eine verständliche Seite für die Belegschaft: erlaubte Werkzeuge, erlaubte Daten, Ansprechpartner."),
+            ("Schulung der Mitarbeiter", "Artikel 4 der KI-Verordnung verlangt seit Februar 2025 ausreichende KI-Kompetenz im Unternehmen."),
+            ("Lokale Modelle einrichten", "Ein Sprachmodell auf eigener Hardware, das ohne Internetverbindung arbeitet. Für sensible Daten der sauberste Weg."),
+            ("Bestandsaufnahme", "Welche KI-Werkzeuge im Betrieb bereits benutzt werden, weiß meist niemand. Das lässt sich klären."),
+        ],
+        "extra": """
+      <h2>Drei Wege, und wann welcher passt</h2>
+      <p>Die wichtigste Entscheidung fällt vor der ersten Zeile Code: wo die Daten verarbeitet werden. Danach richtet sich alles Weitere.</p>
+      <div class="ki-tbl-wrap">
+        <table class="ki-tbl">
+          <thead><tr><th>Weg</th><th>Wie es funktioniert</th><th>Wofür geeignet</th></tr></thead>
+          <tbody>
+            <tr><td>Lokales Modell</td><td>Das Modell läuft auf Hardware im Betrieb. Die Daten verlassen das Netzwerk nicht, eine Internetverbindung ist nicht nötig.</td><td>Personaldaten, Patienten- und Mandantendaten, Kalkulationen, alles wirklich Vertrauliche.</td></tr>
+            <tr><td>EU-Rechenzentrum</td><td>Verarbeitung bei einem Anbieter mit Standort in der EU, mit Auftragsverarbeitungsvertrag und ohne Training auf deinen Daten.</td><td>Alltagsaufgaben mit Personenbezug, wenn die eigene Hardware dafür nicht reicht.</td></tr>
+            <tr><td>Großer Anbieter mit Vertrag</td><td>Leistungsfähige Modelle bekannter Anbieter, geschäftlich lizenziert, mit Vertrag und abgeschalteter Trainingsnutzung.</td><td>Texte, Recherche, Entwürfe, Programmierung. Alles ohne personenbezogene oder vertrauliche Inhalte.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>In der Praxis läuft es meist auf eine Kombination hinaus: das Bequeme für Unkritisches, das Lokale für alles, was den Betrieb nicht verlassen darf. Wichtig ist, dass die Grenze zwischen beidem klar gezogen und aufgeschrieben ist.</p>
+
+      <h2>Was die KI-Verordnung von einem KMU verlangt</h2>
+      <p>Seit dem 2. Februar 2025 gilt Artikel 4 der europäischen KI-Verordnung. Er verpflichtet jedes Unternehmen, das KI-Systeme einsetzt, dafür zu sorgen, dass die Menschen, die damit arbeiten, ausreichend KI-Kompetenz besitzen. Das betrifft ausdrücklich nicht nur Entwickler von Hochrisiko-Anwendungen, sondern auch den Betrieb, in dem drei Leute ChatGPT benutzen.</p>
+      <p>Ein festes Schulungsprogramm schreibt die Verordnung nicht vor. Verlangt wird, dass die Maßnahmen zur Rolle und zur tatsächlichen Nutzung passen und dass das Unternehmen sie belegen kann. Die nationale Marktüberwachung dazu läuft seit dem 2. August 2026. Ein eigener Bußgeldtatbestand für Artikel 4 besteht derzeit nicht, was die Sache aber nicht erledigt: Entsteht durch falsche KI-Nutzung ein Schaden, steht die Frage im Raum, ob eine angemessene Unterweisung ihn verhindert hätte.</p>
+      <div class="ki-note">
+        <p>Praktisch heißt das zweierlei: eine kurze, verständliche Nutzungsrichtlinie und eine Unterweisung, die dokumentiert ist. Beides mache ich zusammen mit dir. Die <a href="/schulung/">IT-Sicherheitsschulung</a> deckt den Teil ab, der die Belegschaft betrifft.</p>
+      </div>
+
+      <h2>Was in eine Nutzungsrichtlinie gehört</h2>
+      <div class="lp-grid">
+        <div class="lp-card"><h3>Welche Werkzeuge</h3><p>Eine kurze Liste der freigegebenen Anwendungen. Alles andere ist damit nicht freigegeben, ohne dass man jedes Werkzeug einzeln verbieten muss.</p></div>
+        <div class="lp-card"><h3>Welche Daten</h3><p>Klar benannt, was nie in ein Chatfenster gehört: Kundendaten, Personaldaten, Zugangsdaten, Kalkulationen, Verträge.</p></div>
+        <div class="lp-card"><h3>Wer prüft das Ergebnis</h3><p>KI-Ausgaben sind Entwürfe. Wer sie verantwortet, bevor sie den Betrieb verlassen, muss benannt sein.</p></div>
+        <div class="lp-card"><h3>Wen man fragt</h3><p>Ein Ansprechpartner für den Fall, dass jemand unsicher ist. Ohne den landet im Zweifel doch wieder alles im Chatfenster.</p></div>
+      </div>
+
+      <div class="ki-note">
+        <p><strong>Abgrenzung:</strong> Ich bin Fachinformatiker und kein Rechtsanwalt. Ich leiste keine Rechtsberatung. Was ich mache, ist die technische Umsetzung, die Bestandsaufnahme und die Vorbereitung der Entscheidungen, die dein Datenschutzbeauftragter, dein Steuerberater oder dein Anwalt trifft. Diese Seite gibt den allgemeinen Stand wieder und ersetzt keine Prüfung deines Einzelfalls.</p>
+      </div>
+""",
+        "faqs": [
+            ("Dürfen wir ChatGPT im Betrieb einfach so nutzen?",
+             "Für allgemeine Texte ohne Personenbezug ist das meist unproblematisch. Sobald Kunden-, "
+             "Personal- oder Gesundheitsdaten hineingehen, braucht es einen geschäftlichen Zugang, "
+             "einen Auftragsverarbeitungsvertrag mit dem Anbieter und die Gewissheit, dass die "
+             "Eingaben nicht zum Training verwendet werden. Der kostenlose Privatzugang erfüllt das "
+             "nicht. Die praktikable Lösung ist meist eine kurze Richtlinie plus ein geschäftlicher "
+             "Zugang für die, die ihn wirklich brauchen."),
+            ("Was ist ein lokales Modell und wann lohnt es sich?",
+             "Ein Sprachmodell, das auf einem Rechner im eigenen Netzwerk läuft, statt bei einem "
+             "Anbieter im Internet. Die Daten verlassen das Haus nicht, es entstehen keine laufenden "
+             "Nutzungskosten, dafür braucht es passende Hardware und die Leistung liegt unter der "
+             "großen Modelle. Es lohnt sich überall dort, wo regelmäßig mit vertraulichen Inhalten "
+             "gearbeitet wird, etwa in Kanzleien, Praxen und Personalabteilungen."),
+            ("Was verlangt die KI-Verordnung konkret von uns?",
+             "Seit dem 2. Februar 2025 verpflichtet Artikel 4 jedes Unternehmen, das KI einsetzt, für "
+             "ausreichende KI-Kompetenz der Beschäftigten zu sorgen. Ein festes Curriculum ist nicht "
+             "vorgeschrieben, die Maßnahmen müssen aber zur Rolle und zur tatsächlichen Nutzung passen "
+             "und nachweisbar sein. Die nationale Durchsetzung läuft seit dem 2. August 2026. In der "
+             "Praxis genügt für einen kleinen Betrieb meist eine dokumentierte Unterweisung zusammen "
+             "mit einer schriftlichen Nutzungsrichtlinie."),
+            ("Wir haben keinen Datenschutzbeauftragten. Ist das ein Problem?",
+             "Nicht zwangsläufig. Ein Datenschutzbeauftragter ist erst ab einer bestimmten Zahl von "
+             "Personen Pflicht, die regelmäßig mit personenbezogenen Daten arbeiten, oder bei "
+             "besonders sensiblen Verarbeitungen. Die Pflichten aus der DSGVO gelten aber unabhängig "
+             "davon auch für kleine Betriebe. Ob dein Fall eine Bestellung erfordert, ist eine "
+             "rechtliche Frage, die ich nicht beantworte. Ich sage dir, welche Verarbeitungen bei dir "
+             "tatsächlich stattfinden, damit die Frage überhaupt beurteilt werden kann."),
+            ("Was kostet die Einführung?",
+             "Sie wird nach Aufwand abgerechnet, zum einheitlichen Stundensatz im 15-Minuten-Takt. "
+             "Bestandsaufnahme und eine brauchbare Nutzungsrichtlinie sind für einen kleinen Betrieb "
+             "meist an einem Tag zu schaffen. Ein lokales Modell einzurichten dauert länger und hängt "
+             "an der Hardware. Was in deinem Fall nötig ist, klären wir im kostenlosen Erstgespräch."),
+        ],
+    },
 ]
 
 
@@ -727,7 +1177,8 @@ def render_service(s, places, services):
             {"@type": "Offer", "name": n, "price": pr, "priceCurrency": "EUR", "description": d}
             for n, pr, d in s["offers"]]
     schema = [breadcrumb(s["nav"], slug), service_schema, faq_schema(s["faqs"]),
-              webpage_schema(s["title"], s["desc"], slug)]
+              webpage_schema(s["title"], s["desc"], slug,
+                             s.get("published"), s.get("modified"))]
 
     price_html = ""
     if s.get("prices"):
@@ -761,7 +1212,7 @@ def render_service(s, places, services):
       <h2>Das steckt drin</h2>
       <div class="lp-grid">{cards}
       </div>
-{prices}
+{extra}{prices}
       <div class="lp-trust">
         <strong>Einheitlicher Stundensatz, Abrechnung im 15-Minuten-Takt, keine versteckten Kosten.</strong> Kein klassischer Kundendienst, sondern ein fester persönlicher Ansprechpartner mit über 20 Jahren IT-Erfahrung – im Raum München Ost, DSGVO-konform und auf Wunsch self-hosted.
       </div>
@@ -770,15 +1221,18 @@ def render_service(s, places, services):
 {author}
       <div class="lp-cta-row" style="margin-top:2.5rem;">
         <a href="tel:+491782584438" class="lp-btn primary">Jetzt anrufen · 0178 258 44 38</a>
-        <a href="/it-service-grasbrunn/" class="lp-btn ghost">IT-Service in deiner Region</a>
+        <a href="{cta2_href}" class="lp-btn ghost">{cta2_text}</a>
       </div>
     </div>
   </div>
 </article>""".format(label=esc(s["label"]), h1=s["h1"], sub=esc(s["sub"]), intro=intro,
                      cards=cards_html(s["cards"]), prices=price_html, faqs=faq_html(s["faqs"]),
-                     author=author_box())
+                     author=author_box(s.get("modified_disp")),
+                     extra=s.get("extra", ""),
+                     cta2_href=s.get("cta2_href", "/it-service-grasbrunn/"),
+                     cta2_text=esc(s.get("cta2_text", "IT-Service in deiner Region")))
 
-    return slug, page(h, schema, main, places, services)
+    return slug, page(h, schema, main, places, services, s.get("extra_style", ""))
 
 
 # --------------------------------------------------------------------------- #

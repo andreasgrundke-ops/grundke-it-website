@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>KI für KMU – Anwendungen im Betrieb | Grundke IT-Service München Ost</title>
+  <meta name="description" content="KI im Betrieb: Abläufe automatisieren, Auswertungen aus vorhandenen Daten, DSGVO-konform umgesetzt. Kostenloser Potenzialcheck im Raum München Ost."/>
+  <meta name="author" content="Andreas Grundke"/>
+  <meta name="robots" content="index, follow, max-image-preview:large"/>
+  <link rel="canonical" href="https://grundke-it.de/ki-fuer-kmu/"/>
+  <meta property="og:title" content="KI im Betrieb – für kleine &amp; mittlere Unternehmen – Andreas Grundke IT-Service"/>
+  <meta property="og:description" content="KI im Betrieb: Abläufe automatisieren, Auswertungen aus vorhandenen Daten, DSGVO-konform umgesetzt. Kostenloser Potenzialcheck im Raum München Ost."/>
+  <meta property="og:url" content="https://grundke-it.de/ki-fuer-kmu/"/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:locale" content="de_DE"/>
+  <meta property="og:site_name" content="Grundke IT-Service"/>
+  <meta property="og:image" content="https://grundke-it.de/assets/img/og-image.png"/>
+  <meta property="og:image:width" content="1200"/>
+  <meta property="og:image:height" content="630"/>
+  <meta property="og:image:alt" content="KI im Betrieb – für kleine &amp; mittlere Unternehmen – Andreas Grundke IT-Service"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="KI im Betrieb – für kleine &amp; mittlere Unternehmen – Andreas Grundke IT-Service"/>
+  <meta name="twitter:description" content="KI im Betrieb: Abläufe automatisieren, Auswertungen aus vorhandenen Daten, DSGVO-konform umgesetzt. Kostenloser Potenzialcheck im Raum München Ost."/>
+  <meta name="twitter:image" content="https://grundke-it.de/assets/img/og-image.png"/>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
+  <link rel="manifest" href="/site.webmanifest"/>
+  <meta name="theme-color" content="#0c4da2"/>
+  <meta name="apple-mobile-web-app-title" content="Grundke IT"/>
+  <meta name="application-name" content="Grundke IT"/>
+  <meta name="msapplication-TileColor" content="#0c4da2"/>
+  <link rel="stylesheet" href="../assets/css/fonts.css"/>
+  <link rel="stylesheet" href="../assets/css/style.css"/>
+
+  <style>
+    .lp-wrap { margin-top:var(--nav-h); padding:clamp(3rem,8vw,6rem) 0; }
+    .lp-content { max-width:880px; }
+    .lp-content h2 { font-family:var(--fh); font-size:clamp(1.3rem,3vw,1.8rem); font-weight:800; color:var(--text); letter-spacing:-.02em; margin:2.6rem 0 1rem; }
+    .lp-content p { font-size:.95rem; color:var(--text2); line-height:1.8; margin-bottom:1rem; }
+    .lp-content strong { color:var(--text); }
+    .lp-cta-row { display:flex; flex-wrap:wrap; gap:1rem; margin:2rem 0; }
+    .lp-btn { display:inline-flex; align-items:center; gap:.6rem; padding:.9rem 1.6rem; border-radius:8px; font-family:var(--fh); font-weight:700; font-size:.95rem; text-decoration:none; transition:transform .2s,box-shadow .2s; }
+    .lp-btn.primary { background:var(--cyan); color:#04263a; }
+    .lp-btn.primary:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(38,189,239,.25); }
+    .lp-btn.ghost { border:1px solid var(--border); color:var(--text); }
+    .lp-btn.ghost:hover { border-color:var(--cyan); }
+    .lp-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1rem; margin:1.5rem 0; }
+    .lp-card { background:var(--bg2); border:1px solid var(--border); border-left:3px solid var(--cyan); border-radius:12px; padding:1.3rem; }
+    .lp-card h3 { font-family:var(--fh); font-size:1rem; font-weight:700; color:var(--text); margin-bottom:.4rem; }
+    .lp-card p { font-size:.85rem; color:var(--text2); line-height:1.6; margin:0; }
+    .lp-price-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1rem; margin:1.5rem 0; }
+    .lp-price { background:var(--bg2); border:1px solid var(--border); border-radius:14px; padding:1.5rem; text-align:center; }
+    .lp-price.feat { border-color:var(--cyan); box-shadow:0 8px 24px rgba(38,189,239,.10); }
+    .lp-price .tier { font-family:var(--fm); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--text3); }
+    .lp-price .amount { font-family:var(--fh); font-size:1.8rem; font-weight:800; color:var(--text); margin:.4rem 0; }
+    .lp-price .amount span { font-size:.8rem; font-weight:500; color:var(--text3); }
+    .lp-price .desc { font-size:.82rem; color:var(--text2); line-height:1.6; }
+    .lp-places { display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0; }
+    .lp-place { font-family:var(--fm); font-size:.78rem; background:var(--bg2); border:1px solid var(--border); border-radius:999px; padding:.35rem .9rem; color:var(--text2); text-decoration:none; }
+    .lp-place:hover { border-color:var(--cyan); color:var(--cyan); }
+    .lp-place.here { border-color:var(--cyan); color:var(--cyan); }
+    .faq-item { border-bottom:1px solid var(--border); padding:1.1rem 0; }
+    .faq-item h3 { font-family:var(--fh); font-size:1rem; font-weight:700; color:var(--text); margin-bottom:.5rem; }
+    .faq-item p { font-size:.9rem; color:var(--text2); line-height:1.7; margin:0; }
+    .lp-trust { background:var(--bg2); border:1px solid var(--border); border-radius:16px; padding:1.6rem; margin:2rem 0; font-size:.9rem; color:var(--text2); line-height:1.7; }
+    .foot-links { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1.5rem; padding:2rem 0; border-bottom:1px solid var(--border); }
+    .foot-links h4 { font-family:var(--fh); font-size:.8rem; font-weight:700; color:var(--text); margin-bottom:.7rem; letter-spacing:.04em; }
+    .foot-links a { display:block; font-size:.85rem; color:var(--text2); text-decoration:none; padding:.2rem 0; }
+    .foot-links a:hover { color:var(--cyan); }
+    .lp-author { display:flex; gap:1.1rem; align-items:flex-start; background:var(--bg2); border:1px solid var(--border); border-left:3px solid var(--accent); border-radius:14px; padding:1.4rem 1.5rem; margin:2.5rem 0 1rem; }
+    .lp-author img { width:56px; height:56px; border-radius:50%; flex-shrink:0; background:var(--bg); object-fit:contain; border:1px solid var(--border); }
+    .lp-author-body { font-size:.88rem; color:var(--text2); line-height:1.7; }
+    .lp-author-name { font-family:var(--fh); font-weight:800; color:var(--text); font-size:1rem; }
+    .lp-author-role { display:block; font-size:.8rem; color:var(--text3); margin:.1rem 0 .6rem; }
+    .lp-author-meta { margin-top:.7rem; font-size:.78rem; color:var(--text3); }
+    .lp-author-meta a { color:var(--cyan); text-decoration:none; }
+  </style>
+  <style>
+    /* Bausteine nur fuer den KI-Bereich (via extra_style, damit die uebrigen Seiten unveraendert bleiben) */
+    .ki-case { background:var(--bg2); border:1px solid var(--border); border-left:3px solid var(--cyan); border-radius:14px; padding:1.5rem 1.6rem; margin:1.1rem 0; }
+    .ki-case-tag { font-family:var(--fm); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--cyan); display:block; margin-bottom:.5rem; }
+    .ki-case h3 { font-family:var(--fh); font-size:1.05rem; font-weight:800; color:var(--text); margin:0 0 .6rem; letter-spacing:-.01em; }
+    .ki-case p { font-size:.9rem; color:var(--text2); line-height:1.75; margin:0 0 .7rem; }
+    .ki-case p:last-child { margin-bottom:0; }
+    .ki-case .ki-result { font-size:.86rem; color:var(--text); background:rgba(38,189,239,.07); border-radius:8px; padding:.7rem .9rem; }
+    .ki-check { background:var(--bg2); border:1px solid var(--cyan); border-radius:16px; padding:1.8rem; margin:2.2rem 0; box-shadow:0 8px 28px rgba(38,189,239,.10); }
+    .ki-check h3 { font-family:var(--fh); font-size:1.2rem; font-weight:800; color:var(--text); margin:0 0 .7rem; }
+    .ki-check p { font-size:.92rem; color:var(--text2); line-height:1.75; margin:0 0 1rem; }
+    .ki-check ul { list-style:none; margin:0 0 1.2rem; padding:0; }
+    .ki-check li { font-size:.9rem; color:var(--text2); line-height:1.6; padding:.35rem 0 .35rem 1.5rem; position:relative; }
+    .ki-check li::before { content:""; position:absolute; left:0; top:.85rem; width:7px; height:7px; border-radius:50%; background:var(--cyan); }
+    .ki-note { background:var(--bg2); border:1px solid var(--border); border-left:3px solid var(--accent); border-radius:12px; padding:1.3rem 1.5rem; margin:1.8rem 0; }
+    .ki-note strong { color:var(--text); }
+    .ki-note p { font-size:.88rem; color:var(--text2); line-height:1.75; margin:0 0 .7rem; }
+    .ki-note p:last-child { margin-bottom:0; }
+    .ki-tbl-wrap { overflow-x:auto; margin:1.4rem 0; }
+    .ki-tbl { width:100%; border-collapse:collapse; font-size:.86rem; min-width:520px; }
+    .ki-tbl th { font-family:var(--fh); font-size:.78rem; letter-spacing:.03em; text-transform:uppercase; color:var(--text3); text-align:left; padding:.7rem .9rem; border-bottom:1px solid var(--border); }
+    .ki-tbl td { padding:.85rem .9rem; border-bottom:1px solid var(--border); color:var(--text2); line-height:1.65; vertical-align:top; }
+    .ki-tbl td:first-child { color:var(--text); font-weight:600; white-space:nowrap; }
+    .ki-tbl tr:last-child td { border-bottom:none; }
+    .ki-link { display:block; text-decoration:none; transition:border-color .2s,transform .2s; }
+    .ki-link:hover { border-color:var(--cyan); transform:translateY(-2px); }
+    .ki-link h3 { color:var(--text); }
+    .ki-link .ki-more { display:inline-block; margin-top:.7rem; font-family:var(--fh); font-size:.82rem; font-weight:700; color:var(--cyan); }
+    .ki-link .ki-more::after { content:" 92"; }
+  </style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Startseite",
+      "item": "https://grundke-it.de/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "KI im Betrieb",
+      "item": "https://grundke-it.de/ki-fuer-kmu/"
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "serviceType": "KI-Beratung und Anwendungsentwicklung für KMU",
+  "name": "KI im Betrieb – für kleine & mittlere Unternehmen",
+  "description": "KI im Betrieb: Abläufe automatisieren, Auswertungen aus vorhandenen Daten, DSGVO-konform umgesetzt. Kostenloser Potenzialcheck im Raum München Ost.",
+  "provider": {
+    "@type": "LocalBusiness",
+    "name": "Andreas Grundke IT-Service",
+    "alternateName": "Grundke IT-Service",
+    "telephone": "+49-178-2584438",
+    "url": "https://grundke-it.de"
+  },
+  "areaServed": [
+    {
+      "@type": "City",
+      "name": "Grasbrunn"
+    },
+    {
+      "@type": "City",
+      "name": "Vaterstetten"
+    },
+    {
+      "@type": "City",
+      "name": "Haar"
+    },
+    {
+      "@type": "City",
+      "name": "Ottobrunn"
+    },
+    {
+      "@type": "City",
+      "name": "München"
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Was bringt KI einem Betrieb mit 15 Mitarbeitern konkret?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Meistens Zeit an einer Stelle, die niemand gern macht. Typisch sind drei Fälle: Daten, die aus einem Export von Hand in ein anderes Programm übertragen werden. Auswertungen, die jemand am Monatsende in Excel zusammenbaut. Und Aufnahmen oder Protokolle, die niemand durchsieht, weil es zu lange dauert. Das sind Stunden, die jeden Monat anfallen und sich ohne zusätzliches Personal zurückholen lassen."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Ist das für einen kleinen Betrieb nicht viel zu teuer?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Abgerechnet wird nach Aufwand, zum einheitlichen Stundensatz im 15-Minuten-Takt wie bei jeder anderen Leistung auch. Eine überschaubare Automatisierung ist oft an einem Tag fertig. Ob sie sich rechnet, lässt sich vorher ausrechnen: Wenn eine Aufgabe monatlich vier Stunden kostet, ist die einzige Frage, nach wie vielen Monaten die Umsetzung bezahlt ist. Rechnet es sich nicht, sage ich das im Erstgespräch."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Was passiert mit unseren Daten?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Das wird vor der Umsetzung entschieden, nicht danach. Drei Wege sind üblich: Das Modell läuft auf eigener Hardware im Betrieb, dann verlassen die Daten das Haus nicht. Es läuft in einem Rechenzentrum innerhalb der EU. Oder es läuft bei einem Anbieter, mit dem ein Auftragsverarbeitungsvertrag besteht und der die Daten nicht zum Training seiner Modelle verwendet. Welcher Weg passt, hängt davon ab, wie sensibel die Daten sind."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Brauchen wir dafür neue Hardware?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Meistens nicht. Vieles läuft auf einem vorhandenen Server oder einem kleinen Rechner im Netzwerk. Erst wenn ein Sprachmodell wirklich lokal arbeiten soll, kommt Hardware mit Grafikkarte ins Spiel. Das ist eine überschaubare Investition, sie muss aber begründet sein, und ich sage dir vorher, ob sie sich in deinem Fall lohnt."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Wir nutzen schon ChatGPT. Reicht das nicht?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Für Texte oft ja. Der Unterschied beginnt dort, wo etwas regelmäßig und ohne einen Menschen davor passieren soll: Daten aus einem System holen, verarbeiten, in ein anderes schreiben, und das jede Nacht. Dafür braucht es eine gebaute Anwendung. Dazu kommt die Frage, was Mitarbeiter überhaupt in ein Chatfenster eingeben dürfen. Seit dem 2. Februar 2025 verlangt Artikel 4 der europäischen KI-Verordnung von jedem Unternehmen, das KI einsetzt, ausreichende KI-Kompetenz bei den Beschäftigten."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Wie fange ich an?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Mit dem kostenlosen KI-Potenzialcheck. Wir gehen 60 bis 90 Minuten durch deine Abläufe und schauen, wo Zeit verloren geht. Danach bekommst du schriftlich, was sich automatisieren lässt, was es ungefähr kostet und was rechtlich zu beachten ist. Ob du damit weiterarbeitest, entscheidest du in Ruhe."
+      }
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://grundke-it.de/ki-fuer-kmu/#webpage",
+  "url": "https://grundke-it.de/ki-fuer-kmu/",
+  "name": "KI für KMU – Anwendungen im Betrieb | Grundke IT-Service München Ost",
+  "description": "KI im Betrieb: Abläufe automatisieren, Auswertungen aus vorhandenen Daten, DSGVO-konform umgesetzt. Kostenloser Potenzialcheck im Raum München Ost.",
+  "inLanguage": "de-DE",
+  "isPartOf": {
+    "@id": "https://grundke-it.de/#website"
+  },
+  "datePublished": "2026-08-22",
+  "dateModified": "2026-08-22",
+  "author": {
+    "@type": "Person",
+    "@id": "https://grundke-it.de/#andreas",
+    "name": "Andreas Grundke",
+    "url": "https://grundke-it.de/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "@id": "https://grundke-it.de/#localbusiness",
+    "name": "Andreas Grundke IT-Service"
+  }
+}
+  </script>
+</head>
+<body class="has-sticky-call">
+<a class="skip-link" href="#main">Zum Inhalt springen</a>
+<header class="site-header">
+<nav aria-label="Hauptnavigation">
+  <div class="nav-inner inner">
+    <a href="/" class="logo" title="Grundke IT-Service – München Ost"><picture><source srcset="../assets/img/logo-grundke-it-white-480.webp" type="image/webp"><img class="logo-img" src="../assets/img/logo-grundke-it-white-480.png" alt="Grundke IT-Service" width="180" height="60" /></picture></a>
+    <a class="nav-loc" href="https://www.google.com/maps/place/IT-Service+-+Andreas+Grundke/@48.0944159,11.7631063,17z/data=!3m1!4b1!4m6!3m5!1s0x479de3eede6923f3:0x1ad9e3b1fcbd1081!8m2!3d48.0944123!4d11.7656812!16s%2Fg%2F11j7r45y6q" target="_blank" rel="noopener" aria-label="Standort auf Google Maps anzeigen"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>München Ost</a>
+    <ul class="nav-links">
+      <li><a href="/">Startseite</a></li>
+      <li><a href="/#leistungen">Leistungen</a></li>
+      <li><a href="/ki-fuer-kmu/">KI im Betrieb</a></li>
+      <li><a href="/#preise">Preise</a></li>
+      <li><a href="/kontakt/">Kontakt</a></li>
+      <li><a href="tel:+491782584438" class="nav-cta"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.8a16 16 0 0 0 6 6l.94-.94a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>Jetzt anrufen</span></a></li>
+    </ul>
+    <button class="hamburger" id="ham" aria-label="Menü"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="/">Startseite</a>
+  <a href="/#leistungen">Leistungen</a>
+  <a href="/ki-fuer-kmu/">KI im Betrieb</a>
+  <a href="/kontakt/">Kontakt</a>
+  <a href="/fernwartung/" style="color:var(--cyan);font-weight:700;">&#9889; Fernwartung starten</a>
+  <a href="tel:+491782584438" class="m-cta">Jetzt anrufen · 0178 258 44 38</a>
+</div>
+</header>
+
+<main id="main">
+<article class="lp-wrap">
+  <div class="inner">
+    <div class="lp-content">
+      <div class="s-label">KI in der Praxis</div>
+      <h1 class="s-title">KI im Betrieb – für kleine &amp; mittlere Unternehmen</h1>
+      <p class="s-sub">Keine Folien über Künstliche Intelligenz, sondern Anwendungen, die bei dir laufen. Gebaut von jemandem, der deine IT ohnehin betreut.</p>
+
+      <div class="lp-cta-row">
+        <a href="tel:+491782584438" class="lp-btn primary">Kostenloses Erstgespräch</a>
+        <a href="/kontakt/" class="lp-btn ghost">Anfrage senden</a>
+      </div>
+
+      <p>Wenn ein Betrieb heute über KI spricht, geht es meist um zwei Dinge: dass sich alles ändern wird und dass man vorsichtig sein muss. Beides hilft nicht weiter, solange am Montag wieder jemand Rechnungsdaten abtippt oder Kameraaufnahmen durchklickt. <strong>Ich baue Anwendungen für genau diese Stellen</strong> und betreue sie danach weiter. In meiner eigenen Firma läuft das seit über einem halben Jahr täglich: Kundenverwaltung, Monitoring, Auswertungen, Rechnungsläufe. Seit einigen Monaten entstehen die ersten Anwendungen bei Kunden. Was ich anbiete, benutze ich selbst.</p>
+
+      <h2>Das steckt drin</h2>
+      <div class="lp-grid">
+        <div class="lp-card"><h3>Abläufe automatisieren</h3><p>Wiederkehrende Handarbeit am Rechner: Daten übertragen, Listen erzeugen, Rechnungen bauen, Berichte zusammenstellen.</p></div>
+        <div class="lp-card"><h3>Auswertungen aus vorhandenen Daten</h3><p>Was in Kamera, Kasse, Zeiterfassung oder Warenwirtschaft schon steckt, wird sichtbar gemacht.</p></div>
+        <div class="lp-card"><h3>Systeme verbinden</h3><p>Zwei Programme, die nicht miteinander reden, koppele ich über ihre Dateiformate oder ihre Schnittstelle.</p></div>
+        <div class="lp-card"><h3>KI-Werkzeuge einführen</h3><p>Welches Werkzeug für welche Aufgabe taugt, wie es eingerichtet wird und was die Mitarbeiter darüber wissen müssen.</p></div>
+        <div class="lp-card"><h3>Datenschutz vorher klären</h3><p>Lokales Modell, EU-Rechenzentrum oder Anbieter mit Auftragsverarbeitungsvertrag. Die Entscheidung fällt vor der Umsetzung.</p></div>
+        <div class="lp-card"><h3>Betrieb und Pflege</h3><p>Eine gebaute Anwendung braucht jemanden, der sie weiter betreut. Ich bleibe der Ansprechpartner.</p></div>
+      </div>
+
+      <h2>Drei Anwendungen aus der Praxis</h2>
+      <p>Alle drei laufen. Die Kundenfälle sind anonymisiert, weil Betriebsabläufe niemanden etwas angehen außer dem Betrieb selbst.</p>
+
+      <div class="ki-case">
+        <span class="ki-case-tag">Kundenprojekt · Videoauswertung</span>
+        <h3>Eine Hofzufahrt, die sich selbst protokolliert</h3>
+        <p>Ein Betrieb im Landkreis München hatte eine vollständig aufgebaute UniFi-Protect-Anlage und trotzdem keine Antwort auf einfache Fragen: Wie viele Fahrzeuge kommen pro Woche? Wann ist am meisten los? Die Aufnahmen lagen vor, sie hätte nur jemand ansehen müssen.</p>
+        <p>Auf die vorhandenen Kameras habe ich eine Objekterkennung aufgesetzt. Fahrzeuge und Objekte werden automatisch erkannt, jedes Ereignis landet mit Zeitstempel in einer Datenbank, und eine Oberfläche zeigt daraus Verläufe und Summen. Die Erkennung läuft auf Hardware im Betrieb, die Aufnahmen verlassen das Haus nicht.</p>
+        <p class="ki-result">Statt Videomaterial zu sichten, gibt es jetzt Zahlen. Die Auswertung, für die vorher niemand Zeit hatte, steht beim Öffnen der Seite da.</p>
+      </div>
+
+      <div class="ki-case">
+        <span class="ki-case-tag">Kundenprojekt · Rechnungsstellung</span>
+        <h3>E-Rechnungen ohne Abtippen</h3>
+        <p>Die Leistungsdaten lagen als CSV-Export aus einem Vorsystem vor, die Rechnungen entstanden daraus von Hand. Jeden Monat dieselbe Strecke, jedes Mal einige Stunden, und gelegentlich ein Zahlendreher, den erst der Kunde bemerkt.</p>
+        <p>Heute liest ein Programm den Export ein, ordnet die Positionen zu und erzeugt daraus normgerechte E-Rechnungen im Format XRechnung beziehungsweise ZUGFeRD. Gerechnet wird gegen die Ausgangsdaten gegengeprüft, damit nichts ungesehen durchläuft.</p>
+        <p class="ki-result">Aus einem halben Arbeitstag im Monat sind ein paar Minuten geworden. Die Umstellung auf die kommende E-Rechnungspflicht ist damit nebenbei erledigt, statt kurz vor der Frist anzustehen.</p>
+      </div>
+
+      <div class="ki-case">
+        <span class="ki-case-tag">Eigenbetrieb · seit über einem halben Jahr</span>
+        <h3>Was ich selbst benutze</h3>
+        <p>Meine Kundenverwaltung, mein Monitoring, meine Auswertungen und meine Rechnungsläufe laufen über Anwendungen, die ich selbst gebaut habe und täglich benutze. Dazu kommen Werkzeuge, die aus einer konkreten Not entstanden sind: eine Prüfung von Websites auf technische und rechtliche Mängel, ein Scanner für Netzwerkumgebungen, ein Auswertungswerkzeug für die Sichtbarkeit in Suchmaschinen.</p>
+        <p class="ki-result">Der Punkt daran ist nicht die Liste. Der Punkt ist, dass ich im Erstgespräch aus eigener Erfahrung sagen kann, was funktioniert, was Zeit frisst und was sich nicht lohnt.</p>
+      </div>
+
+      <div class="ki-check">
+        <h3>Kostenloser KI-Potenzialcheck</h3>
+        <p>Der einfachste Einstieg. 60 bis 90 Minuten, bei dir im Betrieb oder per Videogespräch. Wir gehen durch, was bei euch regelmäßig Zeit kostet, und schauen, was davon eine Maschine übernehmen kann.</p>
+        <ul>
+          <li>Wir sehen uns die Abläufe an, die jeden Monat gleich laufen</li>
+          <li>Ich sage dir, was sich automatisieren lässt und was nicht</li>
+          <li>Du bekommst es schriftlich, mit Aufwand, Nutzen und den rechtlichen Punkten</li>
+          <li>Das Papier gehört dir, auch wenn wir nicht weiterarbeiten</li>
+        </ul>
+        <div class="lp-cta-row" style="margin:0;">
+          <a href="tel:+491782584438" class="lp-btn primary">Potenzialcheck vereinbaren</a>
+          <a href="/kontakt/" class="lp-btn ghost">Lieber schreiben</a>
+        </div>
+      </div>
+
+      <h2>Wann sich das nicht lohnt</h2>
+      <p>Nicht jede Aufgabe verdient eine eigene Anwendung. Was dreimal im Jahr vorkommt, ist von Hand billiger als jede Automatisierung, und wenn ein Ablauf sich alle paar Monate ändert, wird die Pflege teurer als der Nutzen. Auch dort, wo es am Ende auf ein Urteil ankommt und nicht auf eine Regel, hat eine Maschine wenig verloren.</p>
+      <p>Das sage ich im Erstgespräch, bevor daraus ein Projekt wird. Mir ist ein Kunde lieber, der einmal etwas Sinnvolles bekommt, als einer, der ein halbes Jahr später merkt, dass er es nie gebraucht hat.</p>
+
+      <h2>Die drei Bereiche im Einzelnen</h2>
+      <div class="lp-grid">
+        <a class="lp-card ki-link" href="/ki-automatisierung/"><h3>Abläufe automatisieren</h3><p>E-Rechnungen aus vorhandenen Daten, Schnittstellen zwischen Programmen, Dokumente auslesen, Berichte ohne Excel-Bastelei.</p><span class="ki-more">Ansehen</span></a>
+        <a class="lp-card ki-link" href="/ki-videoanalyse/"><h3>Videoanalyse und Auswertung</h3><p>Objekte erkennen, Vorgänge zählen, Ereignisse protokollieren, Kennzahlen darstellen. Auf Basis der vorhandenen Kameras.</p><span class="ki-more">Ansehen</span></a>
+        <a class="lp-card ki-link" href="/ki-dsgvo/"><h3>KI rechtssicher betreiben</h3><p>Wo das Modell läuft, welcher Anbieter einen Auftragsverarbeitungsvertrag bietet, was in eine Nutzungsrichtlinie gehört.</p><span class="ki-more">Ansehen</span></a>
+      </div>
+
+      <div class="lp-trust">
+        <strong>Einheitlicher Stundensatz, Abrechnung im 15-Minuten-Takt, keine versteckten Kosten.</strong> Kein klassischer Kundendienst, sondern ein fester persönlicher Ansprechpartner mit über 20 Jahren IT-Erfahrung – im Raum München Ost, DSGVO-konform und auf Wunsch self-hosted.
+      </div>
+
+      <h2>Häufige Fragen</h2>
+      <div class="faq-item">
+        <h3>Was bringt KI einem Betrieb mit 15 Mitarbeitern konkret?</h3>
+        <p>Meistens Zeit an einer Stelle, die niemand gern macht. Typisch sind drei Fälle: Daten, die aus einem Export von Hand in ein anderes Programm übertragen werden. Auswertungen, die jemand am Monatsende in Excel zusammenbaut. Und Aufnahmen oder Protokolle, die niemand durchsieht, weil es zu lange dauert. Das sind Stunden, die jeden Monat anfallen und sich ohne zusätzliches Personal zurückholen lassen.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Ist das für einen kleinen Betrieb nicht viel zu teuer?</h3>
+        <p>Abgerechnet wird nach Aufwand, zum einheitlichen Stundensatz im 15-Minuten-Takt wie bei jeder anderen Leistung auch. Eine überschaubare Automatisierung ist oft an einem Tag fertig. Ob sie sich rechnet, lässt sich vorher ausrechnen: Wenn eine Aufgabe monatlich vier Stunden kostet, ist die einzige Frage, nach wie vielen Monaten die Umsetzung bezahlt ist. Rechnet es sich nicht, sage ich das im Erstgespräch.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Was passiert mit unseren Daten?</h3>
+        <p>Das wird vor der Umsetzung entschieden, nicht danach. Drei Wege sind üblich: Das Modell läuft auf eigener Hardware im Betrieb, dann verlassen die Daten das Haus nicht. Es läuft in einem Rechenzentrum innerhalb der EU. Oder es läuft bei einem Anbieter, mit dem ein Auftragsverarbeitungsvertrag besteht und der die Daten nicht zum Training seiner Modelle verwendet. Welcher Weg passt, hängt davon ab, wie sensibel die Daten sind.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Brauchen wir dafür neue Hardware?</h3>
+        <p>Meistens nicht. Vieles läuft auf einem vorhandenen Server oder einem kleinen Rechner im Netzwerk. Erst wenn ein Sprachmodell wirklich lokal arbeiten soll, kommt Hardware mit Grafikkarte ins Spiel. Das ist eine überschaubare Investition, sie muss aber begründet sein, und ich sage dir vorher, ob sie sich in deinem Fall lohnt.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Wir nutzen schon ChatGPT. Reicht das nicht?</h3>
+        <p>Für Texte oft ja. Der Unterschied beginnt dort, wo etwas regelmäßig und ohne einen Menschen davor passieren soll: Daten aus einem System holen, verarbeiten, in ein anderes schreiben, und das jede Nacht. Dafür braucht es eine gebaute Anwendung. Dazu kommt die Frage, was Mitarbeiter überhaupt in ein Chatfenster eingeben dürfen. Seit dem 2. Februar 2025 verlangt Artikel 4 der europäischen KI-Verordnung von jedem Unternehmen, das KI einsetzt, ausreichende KI-Kompetenz bei den Beschäftigten.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Wie fange ich an?</h3>
+        <p>Mit dem kostenlosen KI-Potenzialcheck. Wir gehen 60 bis 90 Minuten durch deine Abläufe und schauen, wo Zeit verloren geht. Danach bekommst du schriftlich, was sich automatisieren lässt, was es ungefähr kostet und was rechtlich zu beachten ist. Ob du damit weiterarbeitest, entscheidest du in Ruhe.</p>
+      </div>
+
+      <div class="lp-author">
+        <img src="/assets/img/logo-grundke-it-badge.png" alt="Logo Andreas Grundke IT-Service" width="56" height="56" loading="lazy"/>
+        <div class="lp-author-body">
+          <span class="lp-author-name">Andreas Grundke</span>
+          <span class="lp-author-role">Inhaber · Fachinformatiker für Systemintegration</span>
+          Persönlicher IT-Betreuer mit über 20 Jahren Erfahrung in der IT-Branche. Single Point of Contact für KMU, Handwerk und Büros im Raum München Ost – von Microsoft 365 über Netzwerktechnik (Ubiquiti UniFi) bis zur Datensicherung nach der 3-2-1-Strategie.
+          <div class="lp-author-meta">Zuletzt aktualisiert: 22. August 2026 · <a href="/kontakt/">Kontakt aufnehmen</a></div>
+        </div>
+      </div>
+      <div class="lp-cta-row" style="margin-top:2.5rem;">
+        <a href="tel:+491782584438" class="lp-btn primary">Jetzt anrufen · 0178 258 44 38</a>
+        <a href="/ki-automatisierung/" class="lp-btn ghost">Abläufe automatisieren</a>
+      </div>
+    </div>
+  </div>
+</article>
+</main>
+
+<footer class="site-footer">
+  <div class="inner">
+    <div class="foot-links">
+      <div>
+        <h4>Standorte</h4>
+        <a href="/it-service-grasbrunn/">IT-Service Grasbrunn</a>
+        <a href="/it-service-vaterstetten/">IT-Service Vaterstetten</a>
+        <a href="/it-service-baldham/">IT-Service Baldham</a>
+        <a href="/it-service-zorneding/">IT-Service Zorneding</a>
+        <a href="/it-service-haar/">IT-Service Haar</a>
+        <a href="/it-service-putzbrunn/">IT-Service Putzbrunn</a>
+      </div>
+      <div>
+        <h4>Leistungen</h4>
+        <a href="/managed-it-service/">Managed IT-Service</a>
+        <a href="/microsoft-365-betreuung/">Microsoft 365 Betreuung</a>
+        <a href="/it-sicherheit-backup/">IT-Sicherheit &amp; Backup</a>
+        <a href="/netzwerk-wlan-firewall/">Netzwerk, WLAN &amp; Firewall</a>
+        <a href="/it-notdienst/">IT-Notdienst</a>
+        <a href="/ki-fuer-kmu/">KI im Betrieb</a>
+        <a href="/ki-automatisierung/">Abläufe automatisieren</a>
+        <a href="/ki-videoanalyse/">Videoanalyse &amp; Auswertung</a>
+        <a href="/ki-dsgvo/">KI rechtssicher betreiben</a>
+      </div>
+      <div>
+        <h4>Kontakt</h4>
+        <a href="tel:+491782584438">0178 258 44 38</a>
+        <a href="mailto:info@grundke-it.de">info@grundke-it.de</a>
+        <a href="/kontakt/">Kontaktseite</a>
+        <a href="/fernwartung/">Fernwartung starten</a>
+      </div>
+    </div>
+    <nav class="foot-legal" aria-label="Rechtliche Hinweise">
+      <a href="/impressum/">Impressum</a>
+      <a href="/datenschutz/">Datenschutz</a>
+      <a href="/agb/">AGB</a>
+      <a href="/barrierefreiheit/">Barrierefreiheit</a>
+    </nav>
+    <div class="foot-bottom">
+      <span>© 2026 Grundke IT-Service · Andreas Grundke · Beethovenring 16 · 85630 Grasbrunn</span>
+      <span class="foot-ci">CI 2026.01 · grundke-it.de</span>
+    </div>
+  </div>
+</footer>
+<script src="../assets/js/main.js"></script>
+
+<div class="sticky-contact" id="stickyContact" role="navigation" aria-label="Kontakt-Optionen">
+  <a href="tel:+491782584438" class="sc-btn sc-phone" aria-label="Anrufen">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+    <span>Anrufen</span>
+  </a>
+  <a href="https://wa.me/491782584438" target="_blank" rel="noopener" class="sc-btn sc-wa" aria-label="WhatsApp">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 0 0 .611.611l4.458-1.495A11.96 11.96 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75c-2.278 0-4.381-.733-6.093-1.975l-.426-.307-2.645.887.887-2.645-.307-.426A9.72 9.72 0 0 1 2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75z"/></svg>
+    <span>WhatsApp</span>
+  </a>
+  <a href="mailto:info@grundke-it.de" class="sc-btn sc-mail" aria-label="E-Mail">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+    <span>E-Mail</span>
+  </a>
+</div>
+</body>
+</html>

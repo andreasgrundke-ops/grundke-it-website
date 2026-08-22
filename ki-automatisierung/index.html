@@ -3,24 +3,24 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Netzwerk, WLAN &amp; Firewall für KMU | München Ost – Andreas Grundke IT-Service</title>
-  <meta name="description" content="Netzwerk, WLAN &amp; Firewall für KMU im Raum München Ost: stabiles WLAN, sichere Netzwerke und VPN mit professioneller UniFi-Technik – geplant, eingerichtet und betreut."/>
+  <title>Abläufe automatisieren: E-Rechnung &amp; Schnittstellen | Grundke IT-Service</title>
+  <meta name="description" content="E-Rechnungen aus vorhandenen Daten, Schnittstellen zwischen Programmen, Berichte ohne Excel-Bastelei. Automatisierung für KMU im Raum München Ost."/>
   <meta name="author" content="Andreas Grundke"/>
   <meta name="robots" content="index, follow, max-image-preview:large"/>
-  <link rel="canonical" href="https://grundke-it.de/netzwerk-wlan-firewall/"/>
-  <meta property="og:title" content="Netzwerk, WLAN &amp; Firewall für Unternehmen – Andreas Grundke IT-Service"/>
-  <meta property="og:description" content="Netzwerk, WLAN &amp; Firewall für KMU im Raum München Ost: stabiles WLAN, sichere Netzwerke und VPN mit professioneller UniFi-Technik – geplant, eingerichtet und betreut."/>
-  <meta property="og:url" content="https://grundke-it.de/netzwerk-wlan-firewall/"/>
+  <link rel="canonical" href="https://grundke-it.de/ki-automatisierung/"/>
+  <meta property="og:title" content="Abläufe automatisieren – von der E-Rechnung bis zur Schnittstelle – Andreas Grundke IT-Service"/>
+  <meta property="og:description" content="E-Rechnungen aus vorhandenen Daten, Schnittstellen zwischen Programmen, Berichte ohne Excel-Bastelei. Automatisierung für KMU im Raum München Ost."/>
+  <meta property="og:url" content="https://grundke-it.de/ki-automatisierung/"/>
   <meta property="og:type" content="website"/>
   <meta property="og:locale" content="de_DE"/>
   <meta property="og:site_name" content="Grundke IT-Service"/>
   <meta property="og:image" content="https://grundke-it.de/assets/img/og-image.png"/>
   <meta property="og:image:width" content="1200"/>
   <meta property="og:image:height" content="630"/>
-  <meta property="og:image:alt" content="Netzwerk, WLAN &amp; Firewall für Unternehmen – Andreas Grundke IT-Service"/>
+  <meta property="og:image:alt" content="Abläufe automatisieren – von der E-Rechnung bis zur Schnittstelle – Andreas Grundke IT-Service"/>
   <meta name="twitter:card" content="summary_large_image"/>
-  <meta name="twitter:title" content="Netzwerk, WLAN &amp; Firewall für Unternehmen – Andreas Grundke IT-Service"/>
-  <meta name="twitter:description" content="Netzwerk, WLAN &amp; Firewall für KMU im Raum München Ost: stabiles WLAN, sichere Netzwerke und VPN mit professioneller UniFi-Technik – geplant, eingerichtet und betreut."/>
+  <meta name="twitter:title" content="Abläufe automatisieren – von der E-Rechnung bis zur Schnittstelle – Andreas Grundke IT-Service"/>
+  <meta name="twitter:description" content="E-Rechnungen aus vorhandenen Daten, Schnittstellen zwischen Programmen, Berichte ohne Excel-Bastelei. Automatisierung für KMU im Raum München Ost."/>
   <meta name="twitter:image" content="https://grundke-it.de/assets/img/og-image.png"/>
   <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
@@ -77,6 +77,36 @@
     .lp-author-meta { margin-top:.7rem; font-size:.78rem; color:var(--text3); }
     .lp-author-meta a { color:var(--cyan); text-decoration:none; }
   </style>
+  <style>
+    /* Bausteine nur fuer den KI-Bereich (via extra_style, damit die uebrigen Seiten unveraendert bleiben) */
+    .ki-case { background:var(--bg2); border:1px solid var(--border); border-left:3px solid var(--cyan); border-radius:14px; padding:1.5rem 1.6rem; margin:1.1rem 0; }
+    .ki-case-tag { font-family:var(--fm); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--cyan); display:block; margin-bottom:.5rem; }
+    .ki-case h3 { font-family:var(--fh); font-size:1.05rem; font-weight:800; color:var(--text); margin:0 0 .6rem; letter-spacing:-.01em; }
+    .ki-case p { font-size:.9rem; color:var(--text2); line-height:1.75; margin:0 0 .7rem; }
+    .ki-case p:last-child { margin-bottom:0; }
+    .ki-case .ki-result { font-size:.86rem; color:var(--text); background:rgba(38,189,239,.07); border-radius:8px; padding:.7rem .9rem; }
+    .ki-check { background:var(--bg2); border:1px solid var(--cyan); border-radius:16px; padding:1.8rem; margin:2.2rem 0; box-shadow:0 8px 28px rgba(38,189,239,.10); }
+    .ki-check h3 { font-family:var(--fh); font-size:1.2rem; font-weight:800; color:var(--text); margin:0 0 .7rem; }
+    .ki-check p { font-size:.92rem; color:var(--text2); line-height:1.75; margin:0 0 1rem; }
+    .ki-check ul { list-style:none; margin:0 0 1.2rem; padding:0; }
+    .ki-check li { font-size:.9rem; color:var(--text2); line-height:1.6; padding:.35rem 0 .35rem 1.5rem; position:relative; }
+    .ki-check li::before { content:""; position:absolute; left:0; top:.85rem; width:7px; height:7px; border-radius:50%; background:var(--cyan); }
+    .ki-note { background:var(--bg2); border:1px solid var(--border); border-left:3px solid var(--accent); border-radius:12px; padding:1.3rem 1.5rem; margin:1.8rem 0; }
+    .ki-note strong { color:var(--text); }
+    .ki-note p { font-size:.88rem; color:var(--text2); line-height:1.75; margin:0 0 .7rem; }
+    .ki-note p:last-child { margin-bottom:0; }
+    .ki-tbl-wrap { overflow-x:auto; margin:1.4rem 0; }
+    .ki-tbl { width:100%; border-collapse:collapse; font-size:.86rem; min-width:520px; }
+    .ki-tbl th { font-family:var(--fh); font-size:.78rem; letter-spacing:.03em; text-transform:uppercase; color:var(--text3); text-align:left; padding:.7rem .9rem; border-bottom:1px solid var(--border); }
+    .ki-tbl td { padding:.85rem .9rem; border-bottom:1px solid var(--border); color:var(--text2); line-height:1.65; vertical-align:top; }
+    .ki-tbl td:first-child { color:var(--text); font-weight:600; white-space:nowrap; }
+    .ki-tbl tr:last-child td { border-bottom:none; }
+    .ki-link { display:block; text-decoration:none; transition:border-color .2s,transform .2s; }
+    .ki-link:hover { border-color:var(--cyan); transform:translateY(-2px); }
+    .ki-link h3 { color:var(--text); }
+    .ki-link .ki-more { display:inline-block; margin-top:.7rem; font-family:var(--fh); font-size:.82rem; font-weight:700; color:var(--cyan); }
+    .ki-link .ki-more::after { content:" 92"; }
+  </style>
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -91,8 +121,8 @@
     {
       "@type": "ListItem",
       "position": 2,
-      "name": "Netzwerk, WLAN & Firewall",
-      "item": "https://grundke-it.de/netzwerk-wlan-firewall/"
+      "name": "Abläufe automatisieren",
+      "item": "https://grundke-it.de/ki-automatisierung/"
     }
   ]
 }
@@ -101,9 +131,9 @@
 {
   "@context": "https://schema.org",
   "@type": "Service",
-  "serviceType": "Netzwerk, WLAN und Firewall",
-  "name": "Netzwerk, WLAN & Firewall für Unternehmen",
-  "description": "Netzwerk, WLAN & Firewall für KMU im Raum München Ost: stabiles WLAN, sichere Netzwerke und VPN mit professioneller UniFi-Technik – geplant, eingerichtet und betreut.",
+  "serviceType": "Prozessautomatisierung und Anwendungsentwicklung für KMU",
+  "name": "Abläufe automatisieren – von der E-Rechnung bis zur Schnittstelle",
+  "description": "E-Rechnungen aus vorhandenen Daten, Schnittstellen zwischen Programmen, Berichte ohne Excel-Bastelei. Automatisierung für KMU im Raum München Ost.",
   "provider": {
     "@type": "LocalBusiness",
     "name": "Andreas Grundke IT-Service",
@@ -142,34 +172,42 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Warum UniFi und nicht der Router vom Provider?",
+      "name": "Ab wann muss unser Betrieb E-Rechnungen verschicken können?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Provider-Router sind für den Hausgebrauch gedacht. Mit professioneller UniFi-Technik bekommst du stabiles WLAN auf der ganzen Fläche, getrennte Netze für Gäste und Betrieb sowie zentrale Verwaltung und Überwachung."
+        "text": "Empfangen muss sie seit dem 1. Januar 2025 jedes inländische Unternehmen. Beim Versand gilt eine Staffel: Bis Ende 2026 darf noch auf Papier gestellt werden, ein einfaches PDF nur mit Zustimmung des Empfängers. Ab dem 1. Januar 2027 müssen Unternehmen mit mehr als 800.000 Euro Vorjahresumsatz E-Rechnungen ausstellen, ab dem 1. Januar 2028 alle übrigen im inländischen B2B-Geschäft. Das ist die allgemeine Rechtslage und keine Steuerberatung. Für die Bewertung deines konkreten Falls ist dein Steuerberater da."
       }
     },
     {
       "@type": "Question",
-      "name": "Bekomme ich WLAN im ganzen Gebäude?",
+      "name": "Welche Abläufe eignen sich überhaupt?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Ja. Ich plane die Zahl und Platzierung der Access Points so, dass du auf jeder Etage und auf Wunsch auch im Außenbereich stabiles WLAN hast – ohne Funklöcher."
+        "text": "Am besten alles, was regelmäßig vorkommt, immer gleich abläuft und heute an einer Datei hängt: Exporte, Listen, Formulare, Berichte. Je klarer die Regel, desto einfacher die Umsetzung. Schwieriger wird es, wenn bei jedem Durchgang jemand eine Entscheidung treffen muss, die auf Erfahrung beruht. Dann automatisiert man die Vorarbeit und lässt die Entscheidung beim Menschen."
       }
     },
     {
       "@type": "Question",
-      "name": "Können meine Mitarbeiter sicher von zu Hause arbeiten?",
+      "name": "Was kostet eine Automatisierung?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Ja, über ein verschlüsseltes VPN (z. B. WireGuard). Der Zugriff aufs Firmennetz ist damit genauso sicher wie im Büro."
+        "text": "Sie wird nach Aufwand abgerechnet, zum einheitlichen Stundensatz im 15-Minuten-Takt. Kleinere Strecken sind oft an einem Tag fertig, größere brauchen mehrere. Nach dem ersten Blick auf den Ablauf bekommst du eine Schätzung, mit der du rechnen kannst, bevor irgendetwas gebaut wird."
       }
     },
     {
       "@type": "Question",
-      "name": "Was kostet die Einrichtung eines Firmennetzwerks?",
+      "name": "Was passiert, wenn sich unser Vorsystem ändert?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Das hängt von Größe und Anforderungen ab. Ich erstelle dir nach einem kurzen Termin ein transparentes Angebot; abgerechnet wird zum einheitlichen Stundensatz im 15-Minuten-Takt, Hardware zum fairen Einkaufspreis."
+        "text": "Dann muss die Anwendung angepasst werden, das gehört dazu. Deshalb baue ich die Schnittstelle so, dass die Stelle, an der die Daten hereinkommen, sauber getrennt vom Rest liegt. Ein Formatwechsel ist dann eine überschaubare Änderung und kein neues Projekt. Und weil ich deine IT ohnehin betreue, erfahre ich von der Umstellung meist vorher."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Woher weiß ich, dass die Ergebnisse stimmen?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Weil nichts ungeprüft durchläuft. Bei allem, was mit Geld oder Rechtsfolgen zu tun hat, arbeitet die Anwendung nach festen Regeln statt nach Wahrscheinlichkeiten, und die Ergebnisse werden gegen die Ausgangsdaten gegengerechnet. Wo ein Sprachmodell beteiligt ist, etwa beim Lesen eines Lieferscheins, gibt es eine Kontrollstufe: Unsichere Fälle landen zur Sichtung auf dem Bildschirm statt still in der Datenbank."
       }
     }
   ]
@@ -179,16 +217,16 @@
 {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  "@id": "https://grundke-it.de/netzwerk-wlan-firewall/#webpage",
-  "url": "https://grundke-it.de/netzwerk-wlan-firewall/",
-  "name": "Netzwerk, WLAN & Firewall für KMU | München Ost – Andreas Grundke IT-Service",
-  "description": "Netzwerk, WLAN & Firewall für KMU im Raum München Ost: stabiles WLAN, sichere Netzwerke und VPN mit professioneller UniFi-Technik – geplant, eingerichtet und betreut.",
+  "@id": "https://grundke-it.de/ki-automatisierung/#webpage",
+  "url": "https://grundke-it.de/ki-automatisierung/",
+  "name": "Abläufe automatisieren: E-Rechnung & Schnittstellen | Grundke IT-Service",
+  "description": "E-Rechnungen aus vorhandenen Daten, Schnittstellen zwischen Programmen, Berichte ohne Excel-Bastelei. Automatisierung für KMU im Raum München Ost.",
   "inLanguage": "de-DE",
   "isPartOf": {
     "@id": "https://grundke-it.de/#website"
   },
-  "datePublished": "2026-06-15",
-  "dateModified": "2026-06-18",
+  "datePublished": "2026-08-22",
+  "dateModified": "2026-08-22",
   "author": {
     "@type": "Person",
     "@id": "https://grundke-it.de/#andreas",
@@ -235,23 +273,61 @@
 <article class="lp-wrap">
   <div class="inner">
     <div class="lp-content">
-      <div class="s-label">Netzwerktechnik</div>
-      <h1 class="s-title">Netzwerk, WLAN &amp; Firewall für Unternehmen</h1>
-      <p class="s-sub">Stabiles WLAN im ganzen Gebäude, sichere Netze und verschlüsselter Zugriff fürs Home-Office.</p>
+      <div class="s-label">Weniger Handarbeit</div>
+      <h1 class="s-title">Abläufe automatisieren – von der E-Rechnung bis zur Schnittstelle</h1>
+      <p class="s-sub">Alles, was jeden Monat gleich abläuft und trotzdem jemand von Hand macht, lässt sich meistens automatisieren.</p>
 
       <div class="lp-cta-row">
         <a href="tel:+491782584438" class="lp-btn primary">Kostenloses Erstgespräch</a>
         <a href="/kontakt/" class="lp-btn ghost">Anfrage senden</a>
       </div>
 
-      <p>Langsames WLAN, ständige Abbrüche oder ein Netzwerk, das mit dem Betrieb gewachsen und unübersichtlich geworden ist – das kostet täglich Zeit und Nerven. Ich plane, richte ein und betreue Netzwerke mit professioneller UniFi-Technik: stabiles WLAN auf jeder Fläche, sauber getrennte Netze (VLAN) für Gäste und Betrieb sowie sichere Zugänge per Firewall und VPN.</p>
+      <p>In fast jedem Betrieb gibt es eine Stelle, an der Daten von Hand von einem System ins andere wandern. Jemand exportiert eine Liste, sortiert sie, tippt sie woanders wieder ein. Das dauert, dabei passieren Fehler, und im nächsten Monat geht es von vorn los. <strong>Genau solche Strecken automatisiere ich</strong>, mit einem Programm, das den Weg einmal richtig geht und danach von allein läuft. Wo KI dabei wirklich hilft, kommt sie zum Einsatz: beim Lesen unstrukturierter Dokumente etwa, oder beim Zuordnen von Positionen, die nie exakt gleich heißen. Wo eine feste Regel reicht, bleibt es bei der Regel. Das ist billiger und zuverlässiger.</p>
 
       <h2>Das steckt drin</h2>
       <div class="lp-grid">
-        <div class="lp-card"><h3>Netzwerk &amp; VLAN</h3><p>Strukturierte, sicher getrennte Netze für Betrieb, Gäste und Kasse.</p></div>
-        <div class="lp-card"><h3>WLAN (UniFi)</h3><p>Lückenloses, schnelles WLAN auf jeder Etage und im Außenbereich.</p></div>
-        <div class="lp-card"><h3>Firewall &amp; VPN</h3><p>Abgesicherter Internetzugang und verschlüsselter Zugriff von unterwegs.</p></div>
-        <div class="lp-card"><h3>Monitoring</h3><p>Ich sehe Störungen oft, bevor du sie bemerkst – und reagiere proaktiv.</p></div>
+        <div class="lp-card"><h3>E-Rechnungen aus vorhandenen Daten</h3><p>Aus CSV-Exporten, Listen oder einem Vorsystem entstehen normgerechte Rechnungen als XRechnung oder ZUGFeRD.</p></div>
+        <div class="lp-card"><h3>Schnittstellen zwischen Programmen</h3><p>Warenwirtschaft, Zeiterfassung, Buchhaltung, Kasse. Was Daten exportieren kann, lässt sich koppeln.</p></div>
+        <div class="lp-card"><h3>Dokumente auslesen</h3><p>Lieferscheine, Eingangsrechnungen, Formulare: Inhalte werden erkannt und landen strukturiert in der Datenbank.</p></div>
+        <div class="lp-card"><h3>Auswertungen und Berichte</h3><p>Zahlen, die heute jemand am Monatsende in Excel zusammensucht, entstehen automatisch und immer gleich.</p></div>
+        <div class="lp-card"><h3>Wiederkehrende Läufe</h3><p>Nächtliche Abgleiche, Erinnerungen, Prüfungen, Datenübernahmen. Einmal eingerichtet, läuft es weiter.</p></div>
+        <div class="lp-card"><h3>Meldung statt Nachsehen</h3><p>Wenn etwas schiefgeht, meldet sich die Anwendung von selbst. Per E-Mail oder Nachricht aufs Handy.</p></div>
+      </div>
+
+      <h2>Der aktuelle Anlass: die E-Rechnung</h2>
+      <p>Die E-Rechnung ist gerade für viele Betriebe der konkrete Grund, sich mit Automatisierung zu beschäftigen, weil eine Frist im Raum steht. Der Stand der gesetzlichen Regelung in Deutschland:</p>
+      <div class="ki-tbl-wrap">
+        <table class="ki-tbl">
+          <thead><tr><th>Ab wann</th><th>Was gilt</th></tr></thead>
+          <tbody>
+            <tr><td>1. Januar 2025</td><td>Jedes inländische Unternehmen muss E-Rechnungen <strong>empfangen</strong> können. Das gilt bereits.</td></tr>
+            <tr><td>bis 31. Dezember 2026</td><td>Übergangsfrist beim Versand: Papier ist weiterhin zulässig, ein einfaches PDF nur mit Zustimmung des Empfängers.</td></tr>
+            <tr><td>1. Januar 2027</td><td>Unternehmen mit mehr als 800.000 Euro Vorjahresumsatz müssen im inländischen B2B-Geschäft E-Rechnungen <strong>ausstellen</strong>.</td></tr>
+            <tr><td>1. Januar 2028</td><td>Die Ausstellungspflicht gilt für alle übrigen inländischen B2B-Umsätze.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Für Betriebe über der Umsatzgrenze bleiben damit noch wenige Monate. Wer seine Rechnungen ohnehin aus einem Vorsystem oder einer Excel-Liste heraus erstellt, kann diesen Schritt gleich mit der Automatisierung verbinden, statt zweimal umzustellen.</p>
+      <div class="ki-note">
+        <p><strong>Zur Einordnung:</strong> Das ist die technische Seite. Ob und ab wann die Pflicht deinen Betrieb genau trifft, welche Umsätze darunterfallen und wie das steuerlich zu behandeln ist, gehört zu deinem Steuerberater. Ich baue die Umsetzung, nicht die steuerliche Bewertung.</p>
+      </div>
+
+      <h2>Wie so ein Projekt abläuft</h2>
+      <p>Am Anfang steht kein Angebot, sondern ein Blick auf den Ablauf, um den es geht. Meist zeigt sich schon dabei, ob die Sache klein oder groß ist.</p>
+      <div class="lp-grid">
+        <div class="lp-card"><h3>1. Ablauf ansehen</h3><p>Wir gehen den Weg der Daten einmal gemeinsam durch, so wie er heute läuft. Mit den echten Dateien, nicht mit einem Beispiel.</p></div>
+        <div class="lp-card"><h3>2. Aufwand schätzen</h3><p>Du bekommst eine Einschätzung, wie lange die Umsetzung dauert und wie viel Zeit sie im Monat spart. Beides schriftlich.</p></div>
+        <div class="lp-card"><h3>3. Klein anfangen</h3><p>Erst läuft ein Teilstück, das nachweisbar funktioniert. Danach wird erweitert. Kein Projekt, das ein halbes Jahr im Dunkeln läuft.</p></div>
+        <div class="lp-card"><h3>4. Übergabe und Betreuung</h3><p>Die Anwendung wird dokumentiert und läuft bei dir. Ich bleibe der Ansprechpartner, wenn sich etwas ändert.</p></div>
+      </div>
+
+      <div class="ki-check">
+        <h3>Kostenloser KI-Potenzialcheck</h3>
+        <p>Wenn du nicht sicher bist, ob sich bei dir etwas lohnt: 60 bis 90 Minuten, wir gehen deine Abläufe durch, danach bekommst du schriftlich, was sich automatisieren lässt, was es kostet und was es bringt. Kostenlos und ohne Verpflichtung.</p>
+        <div class="lp-cta-row" style="margin:0;">
+          <a href="tel:+491782584438" class="lp-btn primary">Potenzialcheck vereinbaren</a>
+          <a href="/kontakt/" class="lp-btn ghost">Lieber schreiben</a>
+        </div>
       </div>
 
       <div class="lp-trust">
@@ -260,20 +336,24 @@
 
       <h2>Häufige Fragen</h2>
       <div class="faq-item">
-        <h3>Warum UniFi und nicht der Router vom Provider?</h3>
-        <p>Provider-Router sind für den Hausgebrauch gedacht. Mit professioneller UniFi-Technik bekommst du stabiles WLAN auf der ganzen Fläche, getrennte Netze für Gäste und Betrieb sowie zentrale Verwaltung und Überwachung.</p>
+        <h3>Ab wann muss unser Betrieb E-Rechnungen verschicken können?</h3>
+        <p>Empfangen muss sie seit dem 1. Januar 2025 jedes inländische Unternehmen. Beim Versand gilt eine Staffel: Bis Ende 2026 darf noch auf Papier gestellt werden, ein einfaches PDF nur mit Zustimmung des Empfängers. Ab dem 1. Januar 2027 müssen Unternehmen mit mehr als 800.000 Euro Vorjahresumsatz E-Rechnungen ausstellen, ab dem 1. Januar 2028 alle übrigen im inländischen B2B-Geschäft. Das ist die allgemeine Rechtslage und keine Steuerberatung. Für die Bewertung deines konkreten Falls ist dein Steuerberater da.</p>
       </div>
       <div class="faq-item">
-        <h3>Bekomme ich WLAN im ganzen Gebäude?</h3>
-        <p>Ja. Ich plane die Zahl und Platzierung der Access Points so, dass du auf jeder Etage und auf Wunsch auch im Außenbereich stabiles WLAN hast – ohne Funklöcher.</p>
+        <h3>Welche Abläufe eignen sich überhaupt?</h3>
+        <p>Am besten alles, was regelmäßig vorkommt, immer gleich abläuft und heute an einer Datei hängt: Exporte, Listen, Formulare, Berichte. Je klarer die Regel, desto einfacher die Umsetzung. Schwieriger wird es, wenn bei jedem Durchgang jemand eine Entscheidung treffen muss, die auf Erfahrung beruht. Dann automatisiert man die Vorarbeit und lässt die Entscheidung beim Menschen.</p>
       </div>
       <div class="faq-item">
-        <h3>Können meine Mitarbeiter sicher von zu Hause arbeiten?</h3>
-        <p>Ja, über ein verschlüsseltes VPN (z. B. WireGuard). Der Zugriff aufs Firmennetz ist damit genauso sicher wie im Büro.</p>
+        <h3>Was kostet eine Automatisierung?</h3>
+        <p>Sie wird nach Aufwand abgerechnet, zum einheitlichen Stundensatz im 15-Minuten-Takt. Kleinere Strecken sind oft an einem Tag fertig, größere brauchen mehrere. Nach dem ersten Blick auf den Ablauf bekommst du eine Schätzung, mit der du rechnen kannst, bevor irgendetwas gebaut wird.</p>
       </div>
       <div class="faq-item">
-        <h3>Was kostet die Einrichtung eines Firmennetzwerks?</h3>
-        <p>Das hängt von Größe und Anforderungen ab. Ich erstelle dir nach einem kurzen Termin ein transparentes Angebot; abgerechnet wird zum einheitlichen Stundensatz im 15-Minuten-Takt, Hardware zum fairen Einkaufspreis.</p>
+        <h3>Was passiert, wenn sich unser Vorsystem ändert?</h3>
+        <p>Dann muss die Anwendung angepasst werden, das gehört dazu. Deshalb baue ich die Schnittstelle so, dass die Stelle, an der die Daten hereinkommen, sauber getrennt vom Rest liegt. Ein Formatwechsel ist dann eine überschaubare Änderung und kein neues Projekt. Und weil ich deine IT ohnehin betreue, erfahre ich von der Umstellung meist vorher.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Woher weiß ich, dass die Ergebnisse stimmen?</h3>
+        <p>Weil nichts ungeprüft durchläuft. Bei allem, was mit Geld oder Rechtsfolgen zu tun hat, arbeitet die Anwendung nach festen Regeln statt nach Wahrscheinlichkeiten, und die Ergebnisse werden gegen die Ausgangsdaten gegengerechnet. Wo ein Sprachmodell beteiligt ist, etwa beim Lesen eines Lieferscheins, gibt es eine Kontrollstufe: Unsichere Fälle landen zur Sichtung auf dem Bildschirm statt still in der Datenbank.</p>
       </div>
 
       <div class="lp-author">
@@ -282,12 +362,12 @@
           <span class="lp-author-name">Andreas Grundke</span>
           <span class="lp-author-role">Inhaber · Fachinformatiker für Systemintegration</span>
           Persönlicher IT-Betreuer mit über 20 Jahren Erfahrung in der IT-Branche. Single Point of Contact für KMU, Handwerk und Büros im Raum München Ost – von Microsoft 365 über Netzwerktechnik (Ubiquiti UniFi) bis zur Datensicherung nach der 3-2-1-Strategie.
-          <div class="lp-author-meta">Zuletzt aktualisiert: 18. Juni 2026 · <a href="/kontakt/">Kontakt aufnehmen</a></div>
+          <div class="lp-author-meta">Zuletzt aktualisiert: 22. August 2026 · <a href="/kontakt/">Kontakt aufnehmen</a></div>
         </div>
       </div>
       <div class="lp-cta-row" style="margin-top:2.5rem;">
         <a href="tel:+491782584438" class="lp-btn primary">Jetzt anrufen · 0178 258 44 38</a>
-        <a href="/it-service-grasbrunn/" class="lp-btn ghost">IT-Service in deiner Region</a>
+        <a href="/ki-fuer-kmu/" class="lp-btn ghost">Überblick KI im Betrieb</a>
       </div>
     </div>
   </div>

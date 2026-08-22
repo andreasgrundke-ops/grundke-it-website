@@ -67,6 +67,30 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://grundke-it.de/ki-fuer-kmu/</loc>
+    <lastmod>2026-06-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://grundke-it.de/ki-automatisierung/</loc>
+    <lastmod>2026-06-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://grundke-it.de/ki-videoanalyse/</loc>
+    <lastmod>2026-06-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://grundke-it.de/ki-dsgvo/</loc>
+    <lastmod>2026-06-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://grundke-it.de/it-service-grasbrunn/</loc>
     <lastmod>2026-06-18</lastmod>
     <changefreq>monthly</changefreq>

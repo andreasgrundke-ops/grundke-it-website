@@ -23,3 +23,7 @@ CLAUDE-CODE-*.md
 
 # Claude Code - lokale Einstellungen (nicht teilen)
 .claude/settings.local.json
+
+# Python-Bytecode des Generators
+__pycache__/
+*.pyc
