@@ -54,7 +54,12 @@ Kundenprojekte laufen).
   ihren 1024er-Punkt behalten - dort sind es nur fuenf Punkte und 125 px Luft), dazu
   `margin-left:1.5rem` auf `.nav-links` als Mindestabstand zur Ortspille. Nachgemessen bei
   1239/1280/1366/1400/1440/1512/1600/1920: Abstand ueberall 22 px oder mehr, Anruf-Knopf
-  immer im Bild. sw.js auf v1.12.0/runtime-v11, weil style.css sich geaendert hat.
+  immer im Bild.
+  **Nachgezogen auf Andreas' Wunsch:** Im Bereich 1024-1239 px weicht jetzt die Ortspille
+  statt des Menues. Ohne die Pille passt das volle Menue schon ab 1024 px (gemessen 23 px
+  Abstand zum Logo), die Navigation bleibt also auf Laptop-Breiten vollstaendig lesbar. Der
+  Ortsbezug steht weiter im Quelltext (nur `display:none`, kein Entfernen) und ist ab 1240 px
+  wieder sichtbar. sw.js auf v1.13.0/runtime-v12.
 
 Davor (01.08.2026):
 

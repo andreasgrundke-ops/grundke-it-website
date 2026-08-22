@@ -34,10 +34,12 @@
  *                        ohne den Punkt "KI im Betrieb".
  *   1.2.1 / 2026-08-22 — Umschaltpunkt der Kopfzeile korrigiert (style.css +
  *                        index.html), deshalb erneut erhoeht.
+ *   1.2.2 / 2026-08-22 — In der Kopfzeile weicht jetzt die Ortspille statt des
+ *                        Menues (index.html), deshalb erneut erhoeht.
  */
 
-const CACHE_NAME    = 'grundke-it-v1.12.0';
-const RUNTIME_CACHE = 'grundke-it-runtime-v11';
+const CACHE_NAME    = 'grundke-it-v1.13.0';
+const RUNTIME_CACHE = 'grundke-it-runtime-v12';
 
 /* Pre-Cache: minimaler Kern fuer Offline-First-Boot */
 const PRECACHE_URLS = [

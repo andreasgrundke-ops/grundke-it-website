@@ -1293,16 +1293,18 @@
     .kih-cta { display:flex; flex-wrap:wrap; gap:.9rem; }
     @media (max-width:560px) { .kih-cta .btn-p, .kih-cta .btn-g { width:100%; justify-content:center; } }
 
-    /* ── Kopfzeile: Umschaltpunkt zum Hamburger ──────────────────────────────
-       Das Hauptmenue der Startseite traegt acht Punkte plus Anruf-Knopf und
-       braucht neben Logo und Ortspille rund 1240 px. Der globale Breakpoint in
-       style.css liegt bei 1024 px. Dazwischen klebte der erste Menuepunkt an der
-       Ortspille (gemessen 0 px Abstand bei 1100 px) und der Anruf-Knopf lief
-       rechts aus dem Bild (bei 1024 px um 114 px). Unterseiten haben nur fuenf
-       Punkte und behalten deshalb den globalen Umschaltpunkt. */
-    @media (max-width: 1239px) {
-      .site-header .nav-links { display: none; }
-      .site-header .hamburger { display: flex; }
+    /* ── Kopfzeile: Ortspille weicht dem Menue ───────────────────────────────
+       Das Hauptmenue der Startseite traegt acht Punkte plus Anruf-Knopf und ist
+       rund 850 px breit. Neben Logo UND Ortspille passt es erst ab etwa 1240 px;
+       darunter klebte der erste Menuepunkt an der Pille (gemessen 0 px Abstand
+       bei 1100 px) und der Anruf-Knopf lief aus dem Bild.
+       Ohne die Pille passt das volle Menue dagegen schon ab 1024 px (gemessen:
+       23 px Abstand zum Logo, Anruf-Knopf im Bild). Deshalb weicht im Bereich
+       dazwischen die Pille statt des Menues - die Navigation bleibt vollstaendig
+       lesbar, der Ortsbezug steht weiter im Quelltext und ab 1240 px auch wieder
+       sichtbar da. Unterseiten haben nur fuenf Punkte und sind nicht betroffen. */
+    @media (min-width: 1024px) and (max-width: 1239px) {
+      .site-header .nav-loc { display: none; }
     }
   </style>
 </head>
