@@ -1,13 +1,50 @@
 # STATUS – grundke-it.de Website
 <!-- CI 2026.01 · Grundke IT-Service · Standard-Statusdatei, wird von Mensch+KI gepflegt -->
 
-**Stand:** 2026-08-01 · **Status:** Live
+**Stand:** 2026-08-22 · **Status:** Live (KI-Bereich committet, noch nicht gepusht)
 
 ## Was ist das
 grundke-it.de Website – siehe README/CLAUDE.md im Projekt.
 
 ## Aktueller Stand
-Live. Letzter Arbeitsblock (01.08.2026):
+Letzter Arbeitsblock (22.08.2026): **KI als zweite Saeule aufgebaut.**
+
+KI kam auf der Website bisher nur als eine von zehn Leistungskacheln vor, ohne eigene Seite und
+ohne Substanz – fuer Suche und KI-Antworten also unsichtbar, obwohl das Thema laengst
+Schwerpunkt ist (eigene Anwendungen seit ueber einem halben Jahr im Einsatz, erste
+Kundenprojekte laufen).
+
+- **Vier neue Seiten** ueber `tools/build_landingpages.py`: `/ki-fuer-kmu/` (Hub mit drei
+  anonymisierten Praxisfaellen, Potenzialcheck und dem Abschnitt „wann sich das nicht lohnt"),
+  `/ki-automatisierung/` (E-Rechnung mit den Fristen 2025/2027/2028, Schnittstellen, Dokumente),
+  `/ki-videoanalyse/` (Objekterkennung auf UniFi Protect, Verarbeitung im Haus, klare Absage an
+  Gesichtserkennung und Verhaltensauswertung), `/ki-dsgvo/` (lokal vs. EU-Cloud vs. AVV,
+  KI-Verordnung Art. 4, Nutzungsrichtlinie, RDG-Abgrenzung).
+- **Generator minimal erweitert** um optionale Felder `extra`, `extra_style`, `extra_schema`,
+  `published`/`modified`/`modified_disp`, `cta2`. Ohne diese Felder rendert alles wie vorher –
+  die 11 Bestandsseiten aendern sich nur um sechs Zeilen Navigation und Footer.
+- **Eigene Datumsangaben fuer den KI-Bereich** (`KI_DATE`), damit `dateModified` der Orts- und
+  Leistungsseiten bei 2026-06-18 bleibt. Ein neuer Footer-Link ist keine inhaltliche
+  Aktualisierung; die Freshness-Signale bleiben ehrlich.
+- **Startseite:** neue Sektion `#ki` weit oben (zwischen den acht Situationen und der
+  USP-Sektion), Leistungskachel als Link, FAQ-Antwort mit Substanz (sichtbar und FAQPage-Schema
+  zeichengleich), Footer-Spalte, Service-Offer im Schema praezisiert.
+- **Navigation:** FAQ raus, „KI im Betrieb" rein – auf allen 20 indexierten Seiten inklusive der
+  vier handgebauten (empfehlungen, fernwartung, kontakt, schulung). Ein neunter Nav-Punkt haette
+  die Leiste um 1200 px umbrechen lassen; FAQ steht ohnehin weiter unten auf der Startseite.
+- **llms.txt:** eigener Abschnitt „KI im Betrieb" mit den drei Anwendungsfeldern – der Teil, den
+  zitierende KI-Systeme lesen.
+- **sw.js auf v1.11.0 / runtime-v10**, sonst behaelt jeder wiederkehrende Besucher die alte
+  Navigation ohne den KI-Punkt.
+- **Rechtsangaben vorher geprueft** (Websuche, nicht aus dem Gedaechtnis): E-Rechnung
+  Empfangspflicht seit 01.01.2025, Uebergangsfrist bis 31.12.2026, Ausstellungspflicht ab
+  01.01.2027 (>800.000 EUR Vorjahresumsatz) bzw. 01.01.2028 fuer alle. EU AI Act Art. 4 seit
+  02.02.2025, nationale Durchsetzung seit 02.08.2026. Auf beiden Seiten steht eine Abgrenzung:
+  keine Steuer-, keine Rechtsberatung.
+- Geprueft: 74 JSON-LD-Bloecke valide, je eine H1, Sitemap 20 URLs non-www, Darstellung bei
+  1440/1280/390 px.
+
+Davor (01.08.2026):
 
 - **Seitenkopf war auf JEDER Seite kaputt** – aufgefallen an /fernwartung, betraf aber alle
   21 Seiten. Ursache: `nav { position:fixed }` in `style.css` war ein blanker Element-Selektor
@@ -45,9 +82,17 @@ Davor (27.07.2026, Commit f331e57):
 - Geprüft bei 390/768/1440: kein horizontaler Scroll, keine Konsolenfehler, live verifiziert.
 
 ## Nächster Schritt
-- Search Console + Bing: non-www-Property prüfen, Sitemap `https://grundke-it.de/sitemap.xml`
-  neu einreichen; GBP/Verzeichnisse auf non-www ziehen (Cowork/Browser-Arbeit).
+- **Andreas liest den KI-Bereich gegen** (vier Seiten + Startseiten-Sektion), dann `git push`.
+  Bis dahin ist alles committet, aber nicht live.
+- Danach Search Console: die vier KI-URLs zur Indexierung einreichen, Sitemap neu einreichen.
+- Search Console + Bing: non-www-Property prüfen; GBP/Verzeichnisse auf non-www ziehen
+  (Cowork/Browser-Arbeit).
 - Offen zur Entscheidung: Hero-Karussell → statisches Hero, Cyan-Kontrast, DSGVO-Statistik.
+- Aufgefallen, nicht geändert: Stundensatz steht auf der Website und in llms.txt bei 110 EUR,
+  im Workspace-CLAUDE.md bei 90 EUR. Die KI-Texte nennen deshalb bewusst keine Zahl, sondern
+  nur „einheitlicher Stundensatz im 15-Minuten-Takt". Eine der beiden Quellen ist veraltet.
+- Vorschlag für später: auf `/schulung/` einen Absatz zur KI-Kompetenzpflicht nach Artikel 4
+  ergänzen. `/ki-dsgvo/` verlinkt bereits dorthin, ein Rückverweis fehlt noch.
 
 ## Blocker
 (keine)

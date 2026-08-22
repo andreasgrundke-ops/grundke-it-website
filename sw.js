@@ -28,10 +28,14 @@
  *                        Namen erhoehen.
  *   1.1.1 / 2026-08-02 — Position der Ortspille in der Kopfzeile vereinheitlicht
  *                        (style.css), deshalb erneut erhoeht.
+ *   1.2.0 / 2026-08-22 — KI-Bereich ergaenzt (vier neue Seiten, neue Navigation,
+ *                        geaenderte Startseite). Cache-Versionen erhoeht, sonst
+ *                        sieht ein wiederkehrender Besucher die alte Navigation
+ *                        ohne den Punkt "KI im Betrieb".
  */
 
-const CACHE_NAME    = 'grundke-it-v1.10.0';
-const RUNTIME_CACHE = 'grundke-it-runtime-v9';
+const CACHE_NAME    = 'grundke-it-v1.11.0';
+const RUNTIME_CACHE = 'grundke-it-runtime-v10';
 
 /* Pre-Cache: minimaler Kern fuer Offline-First-Boot */
 const PRECACHE_URLS = [
