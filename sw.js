@@ -44,8 +44,8 @@
  *                        mitgeaendert wurde.
  */
 
-const CACHE_NAME    = 'grundke-it-v1.14.0';
-const RUNTIME_CACHE = 'grundke-it-runtime-v13';
+const CACHE_NAME    = 'grundke-it-v1.14.1';
+const RUNTIME_CACHE = 'grundke-it-runtime-v14';
 
 /* Pre-Cache: minimaler Kern fuer Offline-First-Boot */
 const PRECACHE_URLS = [

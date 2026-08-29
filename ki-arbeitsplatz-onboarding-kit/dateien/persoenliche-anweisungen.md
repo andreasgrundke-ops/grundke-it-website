@@ -84,4 +84,4 @@ danach jeden Tag.
 
 ---
 
-*CI 2026.01 · Grundke IT-Service · [grundke-it.de](https://grundke-it.de) · Arbeitsbuch v1.1.0*
+*CI 2026.01 · Grundke IT-Service · [grundke-it.de](https://grundke-it.de) · Arbeitsbuch v1.1.1*

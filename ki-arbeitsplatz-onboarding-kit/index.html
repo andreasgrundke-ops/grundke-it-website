@@ -26,6 +26,8 @@
   Änderungshistorie:
     v1.0.0  2026-08-29  Erstfassung (neutral)
     v1.1.0  2026-08-29  Volles Branding Grundke IT-Service, CI 2026.01
+    v1.1.1  2026-08-29  Verweisfarbe gesetzt (Standardblau war im Dunkelmodus
+                        unlesbar), Sprungziele unter der Kopfzeile korrigiert
 */
 :root{
   --bg:#f4f7fc; --bg2:#ffffff; --bg3:#eaf0f9;
@@ -48,6 +50,12 @@ html[data-theme="dark"]{
 body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font);font-size:15px;line-height:1.55}
 .wrap{max-width:1080px;margin:0 auto;padding:0 20px 80px}
 h1,h2,h3,.pnum{font-family:var(--font-ui)}
+/* Ohne diese Regel erben Verweise das Standardblau des Browsers und sind
+   im Dunkelmodus auf dunklem Grund praktisch unlesbar. */
+a{color:var(--akzent);text-decoration:none}
+a:hover{text-decoration:underline}
+/* Sprungziele nicht unter die feststehende Kopfzeile schieben. */
+[id]{scroll-margin-top:78px}
 
 header{background:var(--bg2);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:20}
 .hd{max-width:1080px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
@@ -797,7 +805,7 @@ footer .ver{font-family:var(--mono);font-size:.72rem;color:var(--muted);margin-t
       <a href="https://grundke-it.de/datenschutz/">Datenschutz</a>
     </div>
   </div>
-  <div class="ver">CI 2026.01 · Grundke IT-Service · KI-Arbeitsplatz-Arbeitsbuch v1.1.0 · Stand 2026-08-29</div>
+  <div class="ver">CI 2026.01 · Grundke IT-Service · KI-Arbeitsplatz-Arbeitsbuch v1.1.1 · Stand 2026-08-29</div>
 </footer>
 </div>
 
