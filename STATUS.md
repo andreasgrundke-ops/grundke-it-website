@@ -1,13 +1,38 @@
 # STATUS – grundke-it.de Website
 <!-- CI 2026.01 · Grundke IT-Service · Standard-Statusdatei, wird von Mensch+KI gepflegt -->
 
-**Stand:** 2026-08-22 · **Status:** Live (KI-Bereich committet, noch nicht gepusht)
+**Stand:** 2026-08-29 · **Status:** Live
 
 ## Was ist das
 grundke-it.de Website – siehe README/CLAUDE.md im Projekt.
 
 ## Aktueller Stand
-Letzter Arbeitsblock (22.08.2026): **KI als zweite Saeule aufgebaut.**
+Letzter Arbeitsblock (29.08.2026): **Unverlinktes Arbeitsbuch `/ki-arbeitsplatz-onboarding-kit/`.**
+
+Zweck: Wer jemanden mit Claude arbeitsfaehig machen will, schickt kuenftig einen Link statt eines
+ZIP-Anhangs. Die Person hakt zwoelf Phasen direkt im Browser ab (Stand im localStorage) und laedt
+sich darunter die Vorlagen — Muster-MDs, zwei Projektvorlagen, zwoelf Skills,
+Konnektoren-Checkliste, dazu das Komplettpaket mit einer Offline-Fassung des Arbeitsbuchs.
+
+- **Nicht auffindbar, aber ohne Zugangsdaten erreichbar:** `noindex, nofollow` im Kopf,
+  `Disallow` in `robots.txt` fuer alle Crawler einschliesslich der KI-Bots, kein Eintrag in
+  `sitemap.xml`, von keiner Seite verlinkt. Wer den Link hat, kommt hinein — genau so gewollt.
+- **URL ohne Versionsnummer**, damit sie stabil bleibt und weitergegebene Links immer den
+  aktuellen Stand zeigen. Die Version steht klein in der Fusszeile (Arbeitsbuch v1.1.1).
+- **`sw.js` auf 1.14.1 / runtime v14.** Die Seite bewusst **nicht** im Pre-Cache: sie gehoert
+  nicht auf jedes Geraet, sondern nur zu denen, die den Link bekommen haben.
+- **Kein Kunden- oder Projektbezug im Inhalt.** Das Repo ist public, die Dateien sind damit auch
+  ueber github.com sichtbar — ein Link ohne Zugangsdaten ist kein Zugriffsschutz. Wer echten
+  Schutz braucht, nimmt Basic Auth auf dem VPS statt GitHub Pages.
+- Commits `e7927fb` (Seite) und `f875d3f` (Verweisfarbe im Dunkelmodus, Sprungziele). Der
+  Farbfehler fiel erst im Screenshot-Test auf: Verweise erbten das Standardblau des Browsers und
+  waren auf dunklem Grund praktisch unlesbar. Lehre: bei neuen Seiten beide Themen ansehen, nicht
+  nur den Quelltext pruefen.
+- Live geprueft: 200 auf Seite und allen sieben Downloads, `noindex` vorhanden, 17
+  `Disallow`-Zeilen, kein Sitemap- und kein Startseiten-Link, Abhaken und Fortschrittsbalken
+  funktionieren in hell und dunkel.
+
+Davor (22.08.2026): **KI als zweite Saeule aufgebaut** — inzwischen gepusht und live.
 
 KI kam auf der Website bisher nur als eine von zehn Leistungskacheln vor, ohne eigene Seite und
 ohne Substanz – fuer Suche und KI-Antworten also unsichtbar, obwohl das Thema laengst
