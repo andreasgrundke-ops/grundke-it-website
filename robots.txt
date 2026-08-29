@@ -1,78 +1,97 @@
 # robots.txt — Grundke IT-Service
-# Pflegt Andreas Grundke selbst. Stand: 2026-04-15.
+# Pflegt Andreas Grundke selbst. Stand: 2026-08-29.
 
 # ── Alle Standard-Crawler ──────────────────────────────────────
 User-agent: *
 Allow: /
 Disallow: /tree/
+Disallow: /ki-arbeitsplatz-onboarding-kit/
 
 # ── KI-Crawler / LLM-Assistenten: explizit erlaubt ─────────────
 # Ziel: Grundke IT-Service soll als Quelle in KI-Antworten zu
 # Anfragen wie "IT-Dienstleister in Grasbrunn" zitiert werden.
-# /tree/ bleibt ausgeschlossen (QR-Landing, kein Content-Wert).
+# Ausgeschlossen bleiben: /tree/ (QR-Landing, kein Content-Wert) und
+# /ki-arbeitsplatz-onboarding-kit/ (Arbeitsbuch, wird gezielt per Link
+# weitergegeben und soll nicht in Such- oder KI-Ergebnissen auftauchen).
 
 User-agent: GPTBot
 Allow: /
 Disallow: /tree/
+Disallow: /ki-arbeitsplatz-onboarding-kit/
 
 User-agent: ChatGPT-User
 Allow: /
 Disallow: /tree/
+Disallow: /ki-arbeitsplatz-onboarding-kit/
 
 User-agent: OAI-SearchBot
 Allow: /
 Disallow: /tree/
+Disallow: /ki-arbeitsplatz-onboarding-kit/
 
 User-agent: ClaudeBot
 Allow: /
 Disallow: /tree/
+Disallow: /ki-arbeitsplatz-onboarding-kit/
 
 User-agent: Claude-Web
 Allow: /
 Disallow: /tree/
+Disallow: /ki-arbeitsplatz-onboarding-kit/
 
 User-agent: Claude-User
 Allow: /
 Disallow: /tree/
+Disallow: /ki-arbeitsplatz-onboarding-kit/
 
 User-agent: anthropic-ai
 Allow: /
 Disallow: /tree/
+Disallow: /ki-arbeitsplatz-onboarding-kit/
 
 User-agent: Google-Extended
 Allow: /
 Disallow: /tree/
+Disallow: /ki-arbeitsplatz-onboarding-kit/
 
 User-agent: PerplexityBot
 Allow: /
 Disallow: /tree/
+Disallow: /ki-arbeitsplatz-onboarding-kit/
 
 User-agent: Perplexity-User
 Allow: /
 Disallow: /tree/
+Disallow: /ki-arbeitsplatz-onboarding-kit/
 
 User-agent: CCBot
 Allow: /
 Disallow: /tree/
+Disallow: /ki-arbeitsplatz-onboarding-kit/
 
 User-agent: Applebot-Extended
 Allow: /
 Disallow: /tree/
+Disallow: /ki-arbeitsplatz-onboarding-kit/
 
 User-agent: Meta-ExternalAgent
 Allow: /
 Disallow: /tree/
+Disallow: /ki-arbeitsplatz-onboarding-kit/
 
 User-agent: Bytespider
 Allow: /
 Disallow: /tree/
+Disallow: /ki-arbeitsplatz-onboarding-kit/
 
 User-agent: DuckAssistBot
 Allow: /
 Disallow: /tree/
+Disallow: /ki-arbeitsplatz-onboarding-kit/
 
 User-agent: YouBot
 Allow: /
 Disallow: /tree/
+Disallow: /ki-arbeitsplatz-onboarding-kit/
 
 Sitemap: https://grundke-it.de/sitemap.xml

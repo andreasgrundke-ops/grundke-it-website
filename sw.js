@@ -36,10 +36,16 @@
  *                        index.html), deshalb erneut erhoeht.
  *   1.2.2 / 2026-08-22 — In der Kopfzeile weicht jetzt die Ortspille statt des
  *                        Menues (index.html), deshalb erneut erhoeht.
+ *   1.3.0 / 2026-08-29 — Unverlinkte Seite /ki-arbeitsplatz-onboarding-kit/
+ *                        dazugekommen (Arbeitsbuch zum Onboarding). Bewusst
+ *                        NICHT im Pre-Cache: die Seite bekommt nur, wer den
+ *                        Link hat - sie gehoert nicht auf jedes Geraet.
+ *                        Cache-Versionen trotzdem erhoeht, weil robots.txt
+ *                        mitgeaendert wurde.
  */
 
-const CACHE_NAME    = 'grundke-it-v1.13.0';
-const RUNTIME_CACHE = 'grundke-it-runtime-v12';
+const CACHE_NAME    = 'grundke-it-v1.14.0';
+const RUNTIME_CACHE = 'grundke-it-runtime-v13';
 
 /* Pre-Cache: minimaler Kern fuer Offline-First-Boot */
 const PRECACHE_URLS = [

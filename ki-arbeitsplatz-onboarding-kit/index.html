@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KI-Arbeitsplatz einrichten — Onboarding | Grundke IT-Service</title>
+<meta name="author" content="Grundke IT-Service · www.grundke-it.de">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Arbeitsbuch zum Einrichten eines KI-Arbeitsplatzes mit Claude.">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<meta name="theme-color" content="#0c4da2">
+<link rel="stylesheet" href="/assets/css/fonts.css">
+<style>
+/*
+  Titel:       START-HIER.html — Onboarding-Kit, Einstiegsblatt
+  Version:     1.1.0
+  Autor:       Grundke IT-Service · www.grundke-it.de
+  Datum:       2026-08-29
+  Beschreibung: Abhakbarer Onboarding-Plan für einen neuen Claude-Arbeitsplatz.
+               Single-File, läuft ohne Internet (Webschriften fallen dann auf
+               die Systemschrift zurück). Fortschritt in localStorage.
+  Gestaltung:  CI 2026.01 — #0c4da2 / #26bdef, CTA #0000FE, Syne + Manrope +
+               JetBrains Mono, Light Mode als Vorgabe mit Dark-Mode-Schalter.
+  Änderungshistorie:
+    v1.0.0  2026-08-29  Erstfassung (neutral)
+    v1.1.0  2026-08-29  Volles Branding Grundke IT-Service, CI 2026.01
+*/
+:root{
+  --bg:#f4f7fc; --bg2:#ffffff; --bg3:#eaf0f9;
+  --text:#111111; --muted:#666f7d; --border:#d0daea;
+  --akzent:#0c4da2; --akzent2:#26bdef; --cta:#0000FE;
+  --ok:#1a7a5e; --warn:#cc8800; --stop:#c0392b;
+  --radius:12px;
+  --font:'Manrope',-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  --font-ui:'Space Grotesk','Manrope',-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+html[data-theme="dark"]{
+  --bg:#0f1117; --bg2:#1a1f2e; --bg3:#1e2538;
+  --text:#f1f5f9; --muted:#94a3b8; --border:#2d3748;
+  --akzent:#26bdef; --akzent2:#26bdef; --cta:#2b2bff;
+  --ok:#22c55e; --warn:#f59e0b; --stop:#ef4444;
+  --font-ui:'Manrope',Arial,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font);font-size:15px;line-height:1.55}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px 80px}
+h1,h2,h3,.pnum{font-family:var(--font-ui)}
+
+header{background:var(--bg2);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:20}
+.hd{max-width:1080px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.logo{width:40px;height:40px;flex:0 0 auto;border-radius:10px;background:#fff;padding:3px;
+  box-shadow:0 0 0 1px var(--border)}
+.logo i{display:flex;width:100%;height:100%;border-radius:8px;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#0c4da2,#26bdef);color:#fff;font-family:var(--font-ui);
+  font-weight:800;font-size:1.15rem;font-style:normal;line-height:1}
+.hd h1{font-size:1.05rem;margin:0;font-weight:800;letter-spacing:-.01em}
+.hd .sub{color:var(--muted);font-size:.78rem;margin-top:1px;font-family:var(--mono)}
+.hdr{margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.btn{font:inherit;font-size:.82rem;padding:6px 12px;border-radius:7px;border:1px solid var(--border);
+  background:var(--bg3);color:var(--text);cursor:pointer}
+.btn:hover{border-color:var(--akzent2)}
+.btn.prim{background:var(--cta);color:#fff;border-color:var(--cta)}
+.btn.prim:hover{filter:brightness(1.12);border-color:var(--cta)}
+
+.fortschritt{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;margin:22px 0}
+.balken{height:9px;border-radius:9px;background:var(--bg3);overflow:hidden;margin:10px 0 6px}
+.balken i{display:block;height:100%;background:linear-gradient(90deg,var(--akzent),var(--akzent2));width:0;transition:width .3s}
+.fz{display:flex;justify-content:space-between;font-size:.82rem;color:var(--muted)}
+
+.intro{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--akzent);
+  border-radius:var(--radius);padding:16px 18px;margin:20px 0}
+.intro h2{margin:0 0 8px;font-size:1rem}
+.intro p{margin:0 0 8px}
+.intro p:last-child{margin-bottom:0}
+
+.phase{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);margin:14px 0;overflow:hidden}
+.pkopf{display:flex;align-items:center;gap:12px;padding:13px 16px;cursor:pointer;user-select:none}
+.pkopf:hover{background:var(--bg3)}
+.pnum{width:30px;height:30px;flex:0 0 auto;border-radius:8px;background:var(--bg3);color:var(--akzent);
+  display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem}
+.phase.fertig .pnum{background:var(--ok);color:#fff}
+.ptitel{font-weight:650;font-size:.98rem}
+.pmeta{color:var(--muted);font-size:.78rem;margin-top:1px}
+.pzahl{margin-left:auto;font-size:.78rem;color:var(--muted);white-space:nowrap}
+.pfeil{transition:transform .2s;color:var(--muted);font-size:.8rem}
+.phase.auf .pfeil{transform:rotate(90deg)}
+.pkoerper{display:none;border-top:1px solid var(--border);padding:6px 16px 14px}
+.phase.auf .pkoerper{display:block}
+
+.pkt{display:flex;gap:11px;padding:11px 0;border-bottom:1px solid var(--border)}
+.pkt:last-child{border-bottom:0}
+.pkt input{margin-top:3px;width:17px;height:17px;flex:0 0 auto;accent-color:var(--akzent);cursor:pointer}
+.pkt .txt{flex:1;min-width:0}
+.pkt .t1{font-weight:600;font-size:.92rem}
+.pkt.ab .t1{text-decoration:line-through;color:var(--muted)}
+.pkt .t2{color:var(--muted);font-size:.86rem;margin-top:3px}
+.pkt .t2 code{font-family:var(--mono);font-size:.85em;background:var(--bg3);padding:1px 5px;border-radius:4px}
+.pkt .t2 a{color:var(--akzent)}
+.mark{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+  padding:2px 7px;border-radius:5px;margin-left:7px;vertical-align:1px}
+.mark.pflicht{background:rgba(176,52,44,.13);color:var(--stop)}
+.mark.opt{background:var(--bg3);color:var(--muted)}
+.mark.spaeter{background:rgba(178,106,0,.15);color:var(--warn)}
+
+.hinweis{border-left:3px solid var(--warn);background:var(--bg3);border-radius:0 7px 7px 0;
+  padding:9px 12px;margin:9px 0 2px;font-size:.85rem}
+.hinweis.stop{border-left-color:var(--stop)}
+.hinweis b{color:var(--text)}
+
+pre{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:10px 12px;
+  overflow-x:auto;font-family:var(--mono);font-size:.82rem;margin:8px 0 2px;line-height:1.5}
+
+.abschnitt{margin:34px 0 10px;font-size:.76rem;font-weight:700;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--muted)}
+
+.dl{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;margin:14px 0}
+.dl h2{margin:0 0 6px;font-size:1.15rem}
+.dlgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;margin-top:14px}
+.dlk{display:block;background:var(--bg3);border:1px solid var(--border);border-radius:9px;
+  padding:12px 14px;text-decoration:none;color:var(--text)}
+.dlk:hover{border-color:var(--akzent2)}
+.dlk b{display:block;font-size:.92rem}
+.dlk span{display:block;color:var(--muted);font-size:.8rem;margin-top:2px}
+.dlk em{display:block;font-family:var(--mono);font-size:.72rem;color:var(--akzent);font-style:normal;margin-top:5px}
+.dlhaupt{display:inline-block;background:var(--cta);color:#fff;text-decoration:none;font-weight:700;
+  padding:11px 20px;border-radius:9px;margin-top:6px}
+.dlhaupt:hover{filter:brightness(1.12)}
+footer{color:var(--muted);font-size:.8rem;padding:26px 20px 0;border-top:1px solid var(--border);margin-top:40px}
+footer .fz{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:flex-start}
+footer a{color:var(--akzent);text-decoration:none}
+footer a:hover{text-decoration:underline}
+footer .ver{font-family:var(--mono);font-size:.72rem;color:var(--muted);margin-top:18px;text-align:center}
+
+@media print{
+  header{position:static} .btn,.hdr{display:none}
+  .pkoerper{display:block!important} .phase{break-inside:avoid;border:1px solid #ccc}
+  body{background:#fff;color:#000;font-size:11pt}
+}
+@media (max-width:600px){ .hd h1{font-size:.95rem} .pzahl{display:none} }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hd">
+    <div class="logo"><i>G</i></div>
+    <div>
+      <h1>KI-Arbeitsplatz — das Arbeitsbuch</h1>
+      <div class="sub">Grundke IT-Service · von null auf arbeitsfähig mit Claude</div>
+    </div>
+    <div class="hdr">
+      <button class="btn" id="btnOffen">Nur offene</button>
+      <button class="btn" id="btnAlle">Alle aufklappen</button>
+      <button class="btn" id="btnTheme">Dunkel</button>
+      <button class="btn" id="btnReset">Zurücksetzen</button>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+<div class="fortschritt">
+  <div style="font-weight:650">Gesamtfortschritt</div>
+  <div class="balken"><i id="gbalken"></i></div>
+  <div class="fz"><span id="gtext">0 von 0 erledigt</span><span>Der Stand wird lokal im Browser gespeichert</span></div>
+</div>
+
+<div class="intro">
+  <h2>Was das hier ist</h2>
+  <p>Ein <b>Arbeitsbuch</b>, kein Handbuch. Es bringt Sie von null auf arbeitsfähig — Konto, Rechner,
+  Struktur, Claude Code, und am Ende die ersten echten Aufgaben. Zwölf Phasen, jeder Punkt zum Abhaken;
+  der Stand bleibt in diesem Browser gespeichert, auch wenn Sie zwischendurch schließen.</p>
+  <p>Von oben nach unten durcharbeiten. Die Reihenfolge ist nicht beliebig: Phase 0 entscheidet, welche
+  Daten überhaupt angefasst werden dürfen, und Phase 3 legt fest, wie Claude arbeitet — beides wirkt auf
+  alles Spätere. Phase 4 (Design-System) steht bewusst früh, damit alle späteren Oberflächen und Dokumente
+  von Anfang an gleich aussehen.</p>
+  <p><b>Legende:</b> <span class="mark pflicht">Pflicht</span> muss sitzen, bevor es weitergeht ·
+  <span class="mark opt">Optional</span> nach Bedarf · <span class="mark spaeter">Später</span> bewusst
+  auf einen zweiten Durchgang verschoben.</p>
+  <p>Die Vorlagen, Muster-Dateien und fertigen Skills, auf die die Phasen verweisen, stehen weiter unten
+  unter <a href="#material">Material zum Herunterladen</a>.</p>
+</div>
+
+<div class="abschnitt">Teil A · Rahmen und Konto</div>
+
+<!-- ===================== PHASE 0 ===================== -->
+<div class="phase" data-p="0">
+  <div class="pkopf">
+    <div class="pnum">0</div>
+    <div><div class="ptitel">Rahmen klären — bevor irgendetwas installiert wird</div>
+      <div class="pmeta">Ohne diese vier Antworten kein Setup</div></div>
+    <div class="pzahl"></div><div class="pfeil">›</div>
+  </div>
+  <div class="pkoerper">
+    <div class="pkt"><input type="checkbox" id="p0-1"><label class="txt" for="p0-1">
+      <div class="t1">Gerät festlegen<span class="mark pflicht">Pflicht</span></div>
+      <div class="t2">Privatgerät oder Firmengerät? Auf einem Firmengerät entscheidet die IT der Firma über
+      Installation, Konnektoren und Browserzugriff — dann ist dieser Plan eine Antragsliste, kein
+      Selbstbau-Leitfaden. Der Rest dieses Plans geht von einem <b>Privatgerät</b> aus.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p0-2"><label class="txt" for="p0-2">
+      <div class="t1">Datenrahmen schriftlich festlegen<span class="mark pflicht">Pflicht</span></div>
+      <div class="t2">Eine Zeile genügt, aber sie muss existieren: <i>„In dieses Konto gehen ausschließlich
+      neutralisierte oder erfundene Daten sowie Strukturen ohne Personenbezug."</i> Vorlage:
+      <code>00_Anleitungen/08_Datenschutz-und-Grenzen.md</code></div>
+      <div class="hinweis stop"><b>Der wichtigste Satz im ganzen Kit:</b> Ein privates Einzelabo (Pro/Max)
+      läuft unter Verbraucherbedingungen. Dazu gibt es <b>keinen Auftragsverarbeitungsvertrag nach Art. 28
+      DSGVO</b> — den gibt es erst ab dem Team-Plan unter den Commercial Terms. Wer Arbeitgeber- oder
+      Kundendaten mit Personenbezug in ein privates Abo kippt, hat kein Werkzeugproblem, sondern ein
+      Rechtsproblem. Für Methodik, Struktur und Fachwissen braucht man diese Daten nicht.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p0-3"><label class="txt" for="p0-3">
+      <div class="t1">Bei Arbeitgeberbezug: Freigabe einholen<span class="mark pflicht">Pflicht</span></div>
+      <div class="t2">Wenn irgendetwas aus der Arbeitswelt eine Rolle spielt — auch nur Schemanamen oder
+      interne Begriffe —, gehört das vorher an IT-Security, Datenschutzbeauftragte und ggf. Betriebsrat.
+      Ohne Antwort gilt: nur allgemeines Fachwissen, keine Hausinterna.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p0-4"><label class="txt" for="p0-4">
+      <div class="t1">Passwortmanager und zweiter Faktor bereitstellen<span class="mark pflicht">Pflicht</span></div>
+      <div class="t2">Neues Konto = neues starkes Passwort im Passwortmanager, zweiter Faktor eingerichtet.
+      Kein „mache ich später".</div></label></div>
+  </div>
+</div>
+
+<!-- ===================== PHASE 1 ===================== -->
+<div class="phase" data-p="1">
+  <div class="pkopf">
+    <div class="pnum">1</div>
+    <div><div class="ptitel">Konto und Abo</div>
+      <div class="pmeta">Registrierung, Plan, Datenschutzschalter</div></div>
+    <div class="pzahl"></div><div class="pfeil">›</div>
+  </div>
+  <div class="pkoerper">
+    <div class="pkt"><input type="checkbox" id="p1-1"><label class="txt" for="p1-1">
+      <div class="t1">Konto anlegen<span class="mark pflicht">Pflicht</span></div>
+      <div class="t2">Auf <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a> mit einer
+      <b>privaten</b> Mailadresse registrieren. Nicht mit der Firmenadresse — sonst hängt das Konto am
+      Arbeitgeber-Tenant und die Trennung ist von Anfang an verwaschen.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p1-2"><label class="txt" for="p1-2">
+      <div class="t1">Plan wählen: Pro<span class="mark pflicht">Pflicht</span></div>
+      <div class="t2">Pro kostet rund 20 USD monatlich (jährlich günstiger) und enthält bereits alles, was
+      dieser Plan braucht: Chat, Projekte, <b>Claude Code</b>, <b>Cowork</b>, <b>Design</b> und Konnektoren.
+      Der kostenlose Plan enthält weder Claude Code noch Cowork.</div>
+      <div class="hinweis"><b>Ehrlich gesagt:</b> Pro reicht zum Lernen und für normale Büroarbeit. Sobald
+      Claude Code an einem größeren Datenbank- oder Auswertungsprojekt länger am Stück arbeitet, sind die
+      Nutzungsfenster (5-Stunden-Fenster plus Wochenlimit, geteilt über Chat, Code und Cowork) schnell
+      erreicht. Erst dann über die höhere Stufe nachdenken — nicht vorher auf Verdacht.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p1-3"><label class="txt" for="p1-3">
+      <div class="t1">Trainingsfreigabe prüfen und ausschalten<span class="mark pflicht">Pflicht</span></div>
+      <div class="t2">Einstellungen → Datenschutz → <i>„Help improve Claude"</i> (Modellverbesserung).
+      Bei Verbraucherplänen ist das eine bewusste Zustimmung. Bleibt sie <b>aus</b>, liegt die
+      Aufbewahrung bei 30 Tagen; ist sie <b>an</b>, bei bis zu fünf Jahren. Für Arbeitskontext: aus.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p1-4"><label class="txt" for="p1-4">
+      <div class="t1">Zwei-Faktor-Anmeldung aktivieren<span class="mark pflicht">Pflicht</span></div>
+      <div class="t2">Einstellungen → Konto/Sicherheit. Wiederherstellungscodes in den Passwortmanager.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p1-5"><label class="txt" for="p1-5">
+      <div class="t1">Rechnungsdaten und Kündigungsfrist notieren<span class="mark opt">Optional</span></div>
+      <div class="t2">Verlängerungsdatum im Kalender eintragen, damit die Verlängerung eine Entscheidung
+      bleibt und keine Überraschung wird.</div></label></div>
+  </div>
+</div>
+
+<div class="abschnitt">Teil B · Rechner einrichten</div>
+
+<!-- ===================== PHASE 2 ===================== -->
+<div class="phase" data-p="2">
+  <div class="pkopf">
+    <div class="pnum">2</div>
+    <div><div class="ptitel">Desktop-App installieren (macOS und Windows)</div>
+      <div class="pmeta">Die App ist die Zentrale — ohne sie kein Zugriff auf lokale Dateien</div></div>
+    <div class="pzahl"></div><div class="pfeil">›</div>
+  </div>
+  <div class="pkoerper">
+    <div class="pkt"><input type="checkbox" id="p2-1"><label class="txt" for="p2-1">
+      <div class="t1">Systemvoraussetzung prüfen<span class="mark pflicht">Pflicht</span></div>
+      <div class="t2">macOS 11 oder neuer für die App. Für <b>Claude Code</b> (Phase 8) wird macOS 13 oder
+      neuer verlangt — auf einem älteren Mac endet der Plan nach Phase 7.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p2-2"><label class="txt" for="p2-2">
+      <div class="t1">App laden und installieren<span class="mark pflicht">Pflicht</span></div>
+      <div class="t2"><a href="https://claude.com/download" target="_blank" rel="noopener">claude.com/download</a>
+      → DMG öffnen → Claude in „Programme" ziehen → aus dem Programme-Ordner starten. Das Paket läuft auf
+      Intel- und Apple-Silicon-Macs.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p2-3"><label class="txt" for="p2-3">
+      <div class="t1">Anmelden und App im Dock verankern<span class="mark pflicht">Pflicht</span></div>
+      <div class="t2">Mit dem Konto aus Phase 1 anmelden. Danach im Dock festhalten — die App wird der
+      tägliche Einstieg, nicht der Browser-Tab.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p2-4"><label class="txt" for="p2-4">
+      <div class="t1">Ordnerzugriff verstehen<span class="mark pflicht">Pflicht</span></div>
+      <div class="t2">Cowork-Sitzungen laufen auf Servern des Anbieters. Damit Claude an <b>lokale
+      Dateien</b> oder den Browser kommt, muss die Desktop-App geöffnet sein und ein Ordner ausdrücklich
+      freigegeben werden. Freigeben heißt: lesen <b>und schreiben</b> in diesem Ordner. Deshalb einen
+      Arbeitsordner freigeben, nicht das Benutzerverzeichnis.</div></label></div>
+  </div>
+</div>
+
+<!-- ===================== PHASE 3 ===================== -->
+<div class="phase" data-p="3">
+  <div class="pkopf">
+    <div class="pnum">3</div>
+    <div><div class="ptitel">Persönliche Einstellungen — „Wer ich bin, wie wir arbeiten"</div>
+      <div class="pmeta">Der Schritt mit dem größten Wirkungsgrad im ganzen Plan</div></div>
+    <div class="pzahl"></div><div class="pfeil">›</div>
+  </div>
+  <div class="pkoerper">
+    <div class="pkt"><input type="checkbox" id="p3-1"><label class="txt" for="p3-1">
+      <div class="t1">Kontoweite Anweisungen ausfüllen<span class="mark pflicht">Pflicht</span></div>
+      <div class="t2">Initialen unten links → Einstellungen → <i>„Instructions for Claude"</i>. Diese
+      Anweisungen gelten in <b>jedem</b> Chat. Vorlage zum Ausfüllen und Einfügen:
+      <code>10_Muster-MD/00_Persoenliche-Anweisungen.md</code></div>
+      <div class="hinweis">Die Vorlage deckt fünf Dinge ab: wer man ist und was man fachlich macht, wie die
+      Antworten aussehen sollen (Sprache, Länge, Tabellen statt Prosa), wie mit Unsicherheit umzugehen ist
+      (nachfragen statt raten), welche Datenklassen tabu sind, und woran der Erfolg gemessen wird.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p3-2"><label class="txt" for="p3-2">
+      <div class="t1">Gedächtnis prüfen und einrichten<span class="mark pflicht">Pflicht</span></div>
+      <div class="t2">Einstellungen → Memory. Claude bringt ein <b>eingebautes, dauerhaftes Gedächtnis</b>
+      über Chats hinweg mit; bei Einzelplänen ist es standardmäßig an. Dort lässt sich einsehen, bearbeiten
+      und löschen, was gemerkt wurde. Ein selbstgebautes „Gehirn" ist nicht nötig — die Frage ist nur,
+      ob man dem eingebauten Gedächtnis vertraut oder es pausiert.</div>
+      <div class="hinweis">Was ins Gedächtnis darf, entscheidet der Datenrahmen aus Phase 0. Gesundheit,
+      Religion, Politik und ähnlich Sensibles bleibt standardmäßig ausgeschlossen — das sollte so bleiben.
+      Ergänzend gilt: geschäftliche Fakten gehören in die Projektunterlagen (CLAUDE.md), nicht ins
+      persönliche Gedächtnis.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p3-3"><label class="txt" for="p3-3">
+      <div class="t1">Code-Ausführung aktivieren<span class="mark pflicht">Pflicht</span></div>
+      <div class="t2">Einstellungen → Capabilities → Code Execution einschalten. <b>Ohne diesen Schalter
+      bleiben Skills unsichtbar</b> und es lassen sich keine Excel-, Word-, PowerPoint- oder PDF-Dateien
+      erzeugen. Das ist die häufigste Stolperfalle beim ersten Einrichten.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p3-4"><label class="txt" for="p3-4">
+      <div class="t1">Gegenprobe machen<span class="mark pflicht">Pflicht</span></div>
+      <div class="t2">Neuen Chat öffnen und fragen: <i>„Fasse in fünf Zeilen zusammen, wer ich bin und wie
+      ich Antworten haben will."</i> Stimmt die Antwort nicht, sind die Anweisungen zu vage — nachschärfen,
+      bevor es weitergeht.</div></label></div>
+  </div>
+</div>
+
+<!-- ===================== PHASE 4 ===================== -->
+<div class="phase" data-p="4">
+  <div class="pkopf">
+    <div class="pnum">4</div>
+    <div><div class="ptitel">Design-System früh festlegen</div>
+      <div class="pmeta">Einmal am Anfang — sonst sieht später jedes Dokument anders aus</div></div>
+    <div class="pzahl"></div><div class="pfeil">›</div>
+  </div>
+  <div class="pkoerper">
+    <div class="hinweis"><b>Warum so früh?</b> Jedes Dashboard, jede Auswertung, jede Präsentation, die ab
+    jetzt entsteht, erbt eine Optik. Wird die erst nach zwanzig Dokumenten festgelegt, muss man zwanzig
+    Dokumente nacharbeiten. Fünf Minuten hier sparen später Stunden.</div>
+
+    <div class="pkt"><input type="checkbox" id="p4-1"><label class="txt" for="p4-1">
+      <div class="t1">Claude Design öffnen<span class="mark pflicht">Pflicht</span></div>
+      <div class="t2"><a href="https://claude.ai/design" target="_blank" rel="noopener">claude.ai/design</a>
+      oder über die Seitenleiste der Desktop-App. Links Chat, rechts eine Zeichenfläche.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p4-2"><label class="txt" for="p4-2">
+      <div class="t1">Design-System für den Arbeitskontext anlegen<span class="mark pflicht">Pflicht</span></div>
+      <div class="t2">Festhalten: Primär- und Akzentfarbe, Farben für gut/Warnung/kritisch, Schriftfamilie,
+      Abstände, Tabellen- und Diagrammstil, hell und dunkel. Wenn es im Haus eine Gestaltungsvorgabe gibt,
+      wird sie hier abgebildet statt neu erfunden. Fragenkatalog:
+      <code>00_Anleitungen/07_Design-System.md</code></div>
+      <div class="hinweis">Für Kennzahlen-Dashboards zusätzlich festlegen: Farbe für Ist gegen Plan,
+      Vorzeichenlogik (ist ein Minus rot oder grün?), Tausendertrennung, Nachkommastellen,
+      Währungsdarstellung. Genau daran scheitern Berichte in der Praxis, nicht an der Schriftart.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p4-3"><label class="txt" for="p4-3">
+      <div class="t1">Design-System sichern und verlinken<span class="mark pflicht">Pflicht</span></div>
+      <div class="t2">Ergebnis exportieren und in beide Projekte (Phase 5) als Projektwissen legen. Erst
+      dann greift es automatisch bei allem Weiteren.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p4-4"><label class="txt" for="p4-4">
+      <div class="t1">Zweites, schlichteres System für Privates<span class="mark opt">Optional</span></div>
+      <div class="t2">Privat darf es anders aussehen als dienstlich. Zwei Systeme sind übersichtlicher als
+      eines, das beides halb kann.</div></label></div>
+  </div>
+</div>
+
+<div class="abschnitt">Teil C · Struktur und Werkzeuge</div>
+
+<!-- ===================== PHASE 5 ===================== -->
+<div class="phase" data-p="5">
+  <div class="pkopf">
+    <div class="pnum">5</div>
+    <div><div class="ptitel">Projekte und Ordnerstruktur anlegen</div>
+      <div class="pmeta">Zwei getrennte Welten: privat und beruflich</div></div>
+    <div class="pzahl"></div><div class="pfeil">›</div>
+  </div>
+  <div class="pkoerper">
+    <div class="pkt"><input type="checkbox" id="p5-1"><label class="txt" for="p5-1">
+      <div class="t1">Projekt „Privat" anlegen<span class="mark pflicht">Pflicht</span></div>
+      <div class="t2"><a href="https://claude.ai/projects" target="_blank" rel="noopener">claude.ai/projects</a>
+      → Neues Projekt. Name, kurze Beschreibung, Projektanweisungen aus
+      <code>20_Projektvorlagen/Privat/</code> einsetzen.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p5-2"><label class="txt" for="p5-2">
+      <div class="t1">Projekt „Beruf / Fachbereich" anlegen<span class="mark pflicht">Pflicht</span></div>
+      <div class="t2">Zweites Projekt, streng getrennt. Vorlage:
+      <code>20_Projektvorlagen/Beruf-Controlling-BI/</code>. Die Projektanweisung enthält den Datenrahmen
+      aus Phase 0 als erste Zeile — damit steht die Grenze in jedem Chat dieses Projekts.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p5-3"><label class="txt" for="p5-3">
+      <div class="t1">CLAUDE.md je Projekt schreiben und hochladen<span class="mark pflicht">Pflicht</span></div>
+      <div class="t2">Das ist das Projektgedächtnis: Ziel, Technik, Regeln, Stand, nächster Schritt.
+      Drei Ebenen liegen bereit — global, Projekt, Baustein:
+      <code>10_Muster-MD/CLAUDE_Ebene1_Global.md</code>,
+      <code>CLAUDE_Ebene2_Projekt.md</code>, <code>CLAUDE_Ebene3_Baustein.md</code>.</div>
+      <div class="hinweis">Diktieren statt tippen ist hier der schnellste Weg: Claude fragt der Reihe nach
+      ab, was ins Dokument gehört, und schreibt es sauber aus. Der Fragenkatalog steht in
+      <code>00_Anleitungen/04_Projekte-anlegen.md</code>.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p5-4"><label class="txt" for="p5-4">
+      <div class="t1">Lokale Ordnerstruktur anlegen<span class="mark pflicht">Pflicht</span></div>
+      <div class="t2">Ein Wurzelordner, darunter je Welt ein Zweig, darunter je Thema ein Ordner mit
+      eigener <code>CLAUDE.md</code>. Fertige Struktur samt Beispieldateien:
+      <code>20_Projektvorlagen/</code></div>
+      <pre>KI-Arbeit/
+  00_Wurzel/            CLAUDE.md (global), LANDKARTE.md
+  01_Privat/
+    &lt;thema&gt;/            CLAUDE.md, STATUS.md, daten/, ergebnisse/
+  02_Beruf/
+    &lt;thema&gt;/            CLAUDE.md, STATUS.md, sql/, dax/, doku/, testdaten/
+  99_Vorlagen/          Muster-MDs, Skills, Design-System</pre></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p5-5"><label class="txt" for="p5-5">
+      <div class="t1">Arbeitsordner in der Desktop-App freigeben<span class="mark pflicht">Pflicht</span></div>
+      <div class="t2">Nur <code>KI-Arbeit/</code> freigeben, nicht das Benutzerverzeichnis. Damit ist der
+      Wirkungskreis von Claude auf dem Rechner klar begrenzt.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p5-6"><label class="txt" for="p5-6">
+      <div class="t1">Namensschema festlegen<span class="mark opt">Optional</span></div>
+      <div class="t2">Ordner, Dateien und Projekte nach einem Schema benennen — etwa
+      <code>&lt;Bereich&gt;-&lt;Thema&gt;-&lt;Objekt&gt;</code>. Klingt pedantisch, ist aber der einzige
+      Grund, warum man nach hundert Chats noch etwas wiederfindet.</div></label></div>
+  </div>
+</div>
+
+<!-- ===================== PHASE 6 ===================== -->
+<div class="phase" data-p="6">
+  <div class="pkopf">
+    <div class="pnum">6</div>
+    <div><div class="ptitel">Skills aktivieren und eigene hochladen</div>
+      <div class="pmeta">Fachwissen einmal formulieren, danach wirkt es automatisch</div></div>
+    <div class="pzahl"></div><div class="pfeil">›</div>
+  </div>
+  <div class="pkoerper">
+    <div class="hinweis"><b>Was ein Skill ist:</b> ein Ordner mit einer <code>SKILL.md</code> und
+    optionalen Hilfsdateien. Claude lädt ihn nur, wenn das Thema tatsächlich vorkommt. Man braucht keine
+    Programmierkenntnisse dafür — es ist strukturierter Text.</div>
+
+    <div class="pkt"><input type="checkbox" id="p6-1"><label class="txt" for="p6-1">
+      <div class="t1">Grundausstattung einschalten<span class="mark pflicht">Pflicht</span></div>
+      <div class="t2">Seitenleiste → <i>Customize</i> → Reiter <i>Skills</i>. Einschalten:
+      Tabellen (xlsx), Textdokumente (docx), Präsentationen (pptx), PDF. Voraussetzung ist der Schalter
+      aus Phase 3.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p6-2"><label class="txt" for="p6-2">
+      <div class="t1">Verzeichnis durchsehen<span class="mark pflicht">Pflicht</span></div>
+      <div class="t2"><i>Customize</i> → <i>Skills</i> → <b>+</b> → <i>Browse skills</i>. Dort liegen
+      Skills, Konnektoren und Plugins gemeinsam. Nur installieren, was man versteht — ein Skill ist
+      ausführbarer Text und gehört wie jede Software geprüft.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p6-3"><label class="txt" for="p6-3">
+      <div class="t1">Fach-Skills aus diesem Kit hochladen<span class="mark pflicht">Pflicht</span></div>
+      <div class="t2">Jeden Ordner unter <code>30_Skills/</code> einzeln als ZIP packen, dann
+      <i>Customize</i> → <i>Skills</i> → <b>+</b> → <i>Upload a skill</i>. Enthalten sind:</div>
+      <div class="t2">
+      <b>Datenbank und Auswertung:</b> <code>sql-hausstil</code> (T-SQL sauber und einheitlich),
+      <code>dax-hausstil</code> (Kennzahlen einheitlich benennen und kommentieren),
+      <code>datenmodell-review</code> (Stern-Schema-Prüfliste),
+      <code>berechtigungs-audit</code> (Ist-Berechtigungen aus Exporten prüfen),
+      <code>rls-konzept</code> (Zeilenrechte planbar statt improvisiert),
+      <code>testdaten-generator</code> (erfundene, aber plausible Daten statt Echtdaten).<br>
+      <b>Handwerk:</b> <code>code-review</code>, <code>fehlersuche</code>, <code>dokumentation</code>.<br>
+      <b>Außenwirkung:</b> <code>marketing-text</code>, <code>seo-und-ki-suche</code>,
+      <code>oberflaechen-design</code>.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p6-4"><label class="txt" for="p6-4">
+      <div class="t1">Skills am eigenen Fall schärfen<span class="mark pflicht">Pflicht</span></div>
+      <div class="t2">Die mitgelieferten Skills sind bewusst neutral. Nach der ersten Woche eigene
+      Namenskonventionen, verbotene Muster und Hausregeln eintragen — dann werden sie richtig nützlich.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p6-5"><label class="txt" for="p6-5">
+      <div class="t1">Fertige Power-BI-Skills aus der Community prüfen<span class="mark opt">Optional</span></div>
+      <div class="t2">Es gibt öffentliche Skills für Modell-Audit, Dokumentation und DAX auf Basis des
+      PBIP-Formats. Sinnvoll, aber erst ansehen, wenn die eigenen Grundlagen stehen — und vor dem Einsatz
+      im Haus freigeben lassen.</div></label></div>
+  </div>
+</div>
+
+<!-- ===================== PHASE 7 ===================== -->
+<div class="phase" data-p="7">
+  <div class="pkopf">
+    <div class="pnum">7</div>
+    <div><div class="ptitel">Konnektoren verbinden</div>
+      <div class="pmeta">So viele wie nötig, so wenige wie möglich — jeder mit klarem Zweck</div></div>
+    <div class="pzahl"></div><div class="pfeil">›</div>
+  </div>
+  <div class="pkoerper">
+    <div class="pkt"><input type="checkbox" id="p7-1"><label class="txt" for="p7-1">
+      <div class="t1">Lokalen Rechner verbinden<span class="mark pflicht">Pflicht</span></div>
+      <div class="t2">In der Desktop-App den Arbeitsordner aus Phase 5 hinzufügen. Danach kann Claude
+      Dateien dort lesen, ändern und neue anlegen — der eigentliche Produktivitätssprung gegenüber
+      Copy-Paste im Browser.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p7-2"><label class="txt" for="p7-2">
+      <div class="t1">Browserzugriff einrichten<span class="mark pflicht">Pflicht</span></div>
+      <div class="t2">Erweiterung für Google Chrome aus dem Chrome Web Store, anmelden, anheften,
+      Berechtigungen <b>pro Website</b> vergeben. Damit kann Claude Seiten lesen, klicken, ausfüllen und
+      wiederkehrende Abläufe aufzeichnen. Nur Chrome, nicht Safari oder Firefox.</div>
+      <div class="hinweis stop"><b>Bewusst einsetzen:</b> Ein Agent, der im angemeldeten Browser handelt,
+      handelt mit den Rechten des angemeldeten Menschen. Freigaben eng halten, niemals pauschal für alle
+      Seiten, und nie im angemeldeten Zustand an Firmensystemen ohne Freigabe.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p7-3"><label class="txt" for="p7-3">
+      <div class="t1">Microsoft 365 verbinden<span class="mark spaeter">Später</span></div>
+      <div class="t2">Deckt Outlook, SharePoint, OneDrive und Teams ab. <b>Zwei harte Hürden:</b> Es braucht
+      einen Microsoft-Geschäftstenant — private Microsoft-Konten funktionieren nicht — und die
+      <b>ausdrückliche Zustimmung eines globalen Administrators</b> in Entra ID. In einem Konzern ist das
+      kein Klick, sondern ein Vorgang. Deshalb: einplanen, beantragen, nicht darauf warten.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p7-4"><label class="txt" for="p7-4">
+      <div class="t1">Office-Erweiterungen für Excel, PowerPoint und Word<span class="mark opt">Optional</span></div>
+      <div class="t2">Add-ins aus Microsoft AppSource, verfügbar für bezahlte Pläne auf Mac und Windows.
+      Claude arbeitet dann direkt in der geöffneten Arbeitsmappe — für Controlling der naheliegendste
+      Alltagsnutzen überhaupt. Auf einem verwalteten Firmenrechner entscheidet das Admin Center darüber.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p7-5"><label class="txt" for="p7-5">
+      <div class="t1">Google-Dienste verbinden<span class="mark opt">Optional</span></div>
+      <div class="t2">Gmail, Kalender und Drive — sinnvoll für die private Seite, nicht für die
+      berufliche.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p7-6"><label class="txt" for="p7-6">
+      <div class="t1">Power BI / Fabric anbinden<span class="mark spaeter">Später</span></div>
+      <div class="t2">Es gibt <b>keinen</b> fertigen Konnektor im offiziellen Verzeichnis. Microsoft
+      liefert eigene MCP-Server: einen lokalen zum Bearbeiten semantischer Modelle (Tabellen, Measures,
+      Beziehungen, Sicherheitsrollen) und einen entfernten zum Abfragen. Beide sind <b>Public Preview</b>,
+      der entfernte braucht eine Freigabe durch die Power-BI-Administration.</div>
+      <div class="hinweis stop">Das ist der Punkt, an dem aus „Werkzeug ausprobieren" ein
+      genehmigungspflichtiges Vorhaben wird. Vorher lässt sich alles Fachliche an <b>exportierten
+      Metadaten und erfundenen Daten</b> erledigen — und genau das ist der empfohlene Einstieg.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p7-7"><label class="txt" for="p7-7">
+      <div class="t1">Bild- und Videowerkzeuge anbinden<span class="mark opt">Optional</span></div>
+      <div class="t2">Für Erklärvideos, Schulungsclips und Bildmaterial gibt es Konnektoren zu
+      Generierungsdiensten (etwa Higgsfield AI). Nur anbinden, wenn wirklich Bild- oder Videomaterial
+      entstehen soll — und auf die Kostenseite achten: solche Dienste rechnen nach Guthaben ab, nicht über
+      das Claude-Abo.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p7-8"><label class="txt" for="p7-8">
+      <div class="t1">Konnektoren-Liste dokumentieren<span class="mark pflicht">Pflicht</span></div>
+      <div class="t2">Festhalten, was verbunden ist, warum, und wer es freigegeben hat. Vorlage:
+      <code>40_Konnektoren/Konnektoren-Checkliste.md</code>. Das ist die Unterlage, die bei der ersten
+      Rückfrage aus der IT gebraucht wird.</div></label></div>
+  </div>
+</div>
+
+<!-- ===================== PHASE 8 ===================== -->
+<div class="phase" data-p="8">
+  <div class="pkopf">
+    <div class="pnum">8</div>
+    <div><div class="ptitel">Claude Code und VS Code</div>
+      <div class="pmeta">Für SQL, Skripte und alles, was in Dateien lebt</div></div>
+    <div class="pzahl"></div><div class="pfeil">›</div>
+  </div>
+  <div class="pkoerper">
+    <div class="pkt"><input type="checkbox" id="p8-1"><label class="txt" for="p8-1">
+      <div class="t1">VS Code installieren<span class="mark pflicht">Pflicht</span></div>
+      <div class="t2"><a href="https://code.visualstudio.com/" target="_blank" rel="noopener">code.visualstudio.com</a>
+      — gibt es für macOS. Version 1.94 oder neuer wird für die Erweiterung vorausgesetzt.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p8-2"><label class="txt" for="p8-2">
+      <div class="t1">Claude Code installieren<span class="mark pflicht">Pflicht</span></div>
+      <div class="t2">Terminal öffnen und ausführen:</div>
+      <pre>curl -fsSL https://claude.ai/install.sh | bash</pre>
+      <div class="t2">Alternativ über Homebrew: <code>brew install --cask claude-code</code>.
+      Node.js ist beim empfohlenen Weg <b>nicht</b> nötig.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p8-3"><label class="txt" for="p8-3">
+      <div class="t1">Anmelden — mit Abo, ohne Schlüssel<span class="mark pflicht">Pflicht</span></div>
+      <div class="t2">In einen Projektordner wechseln und <code>claude</code> starten. Es öffnet sich der
+      Browser-Login. Ein API-Schlüssel wird <b>nicht</b> gebraucht. Prüfen mit
+      <code>claude --version</code> und <code>claude doctor</code>.</div>
+      <div class="hinweis">Falls in der Shell eine Variable <code>ANTHROPIC_API_KEY</code> gesetzt ist,
+      will Claude Code diese benutzen und rechnet dann nach Verbrauch ab statt über das Abo. Vorher
+      entfernen.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p8-4"><label class="txt" for="p8-4">
+      <div class="t1">VS-Code-Erweiterung installieren<span class="mark pflicht">Pflicht</span></div>
+      <div class="t2">In VS Code die Erweiterungen öffnen, nach <b>Claude Code</b> suchen (Herausgeber
+      Anthropic), installieren, Fenster neu laden.</div>
+      <div class="hinweis">Erweiterung und Kommandozeile sind <b>zwei getrennte Installationen</b>. Die
+      Erweiterung allein gibt kein <code>claude</code> im Terminal.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p8-5"><label class="txt" for="p8-5">
+      <div class="t1">Erste Sitzung im echten Ordner<span class="mark pflicht">Pflicht</span></div>
+      <div class="t2">Einen Themenordner aus Phase 5 öffnen, <code>claude</code> starten, die
+      <code>CLAUDE.md</code> anlegen oder ergänzen lassen. Danach ist der Ordner für jede weitere Sitzung
+      vorbereitet.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p8-6"><label class="txt" for="p8-6">
+      <div class="t1">Arbeitsweise verstehen: erst planen, dann bauen<span class="mark pflicht">Pflicht</span></div>
+      <div class="t2">Planmodus nutzen, Plan lesen, dann freigeben. Änderungen kommen als Vorher-Nachher zum
+      Annehmen oder Ablehnen. Ein Fenster pro Thema; fertig → dokumentieren → neuer Kontext. Und: den
+      Arbeitspfad eng halten, nie das Benutzerverzeichnis.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p8-7"><label class="txt" for="p8-7">
+      <div class="t1">Modellwahl verstehen<span class="mark opt">Optional</span></div>
+      <div class="t2">Schnell und günstig für Routine, Allrounder für die meiste Arbeit, das stärkste
+      Modell für Architektur und schwierige Analysen. Das stärkste Modell verbraucht deutlich mehr vom
+      Kontingent — bewusst wählen. Welche Modelle das Konto anbietet, zeigt <code>/model</code>.</div></label></div>
+  </div>
+</div>
+
+<!-- ===================== PHASE 9 ===================== -->
+<div class="phase" data-p="9">
+  <div class="pkopf">
+    <div class="pnum">9</div>
+    <div><div class="ptitel">Mobil einrichten</div>
+      <div class="pmeta">Diktieren unterwegs, nachlesen am Schreibtisch</div></div>
+    <div class="pzahl"></div><div class="pfeil">›</div>
+  </div>
+  <div class="pkoerper">
+    <div class="pkt"><input type="checkbox" id="p9-1"><label class="txt" for="p9-1">
+      <div class="t1">App auf dem Telefon installieren<span class="mark pflicht">Pflicht</span></div>
+      <div class="t2">iPhone: App Store, iOS 17 oder neuer. Android: Play Store, Android 8 oder neuer.
+      Mit demselben Konto anmelden — Projekte, Gedächtnis und Verlauf sind sofort da.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p9-2"><label class="txt" for="p9-2">
+      <div class="t1">Sprachmodus ausprobieren<span class="mark pflicht">Pflicht</span></div>
+      <div class="t2">Wellen-Symbol im Eingabefeld. Freihändig oder mit Halten-zum-Sprechen; der Wechsel
+      zwischen Sprechen und Tippen ist im selben Chat möglich. Für Gedanken auf dem Weg zur Arbeit der
+      schnellste Weg, etwas festzuhalten.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p9-3"><label class="txt" for="p9-3">
+      <div class="t1">Grenzen mobil kennen<span class="mark opt">Optional</span></div>
+      <div class="t2">Konnektoren aus dem Verzeichnis funktionieren mobil; das <b>Einrichten</b> eigener
+      Konnektoren gehört an den Rechner. Lokale Dateien erreicht nur die Desktop-App.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p9-4"><label class="txt" for="p9-4">
+      <div class="t1">Kurzbefehl oder Widget einrichten<span class="mark opt">Optional</span></div>
+      <div class="t2">Auf dem iPhone lässt sich ein Kurzbefehl anlegen, der direkt in einen Chat springt —
+      spart den Umweg über den Startbildschirm.</div></label></div>
+  </div>
+</div>
+
+<div class="abschnitt">Teil D · Ankommen</div>
+
+<!-- ===================== PHASE 10 ===================== -->
+<div class="phase" data-p="10">
+  <div class="pkopf">
+    <div class="pnum">10</div>
+    <div><div class="ptitel">Erste Woche — an echten Aufgaben üben</div>
+      <div class="pmeta">Nicht Tutorials, sondern die eigene Arbeit</div></div>
+    <div class="pzahl"></div><div class="pfeil">›</div>
+  </div>
+  <div class="pkoerper">
+    <div class="hinweis">Alle Übungen kommen ohne Echtdaten aus. Struktur, Metadaten und erfundene Werte
+    reichen für Modellarbeit, Kennzahlen und Berechtigungslogik vollständig aus.</div>
+
+    <div class="pkt"><input type="checkbox" id="p10-1"><label class="txt" for="p10-1">
+      <div class="t1">Übung 1 — Eine geerbte Kennzahl erklären lassen</div>
+      <div class="t2">Eine komplizierte Formel einfügen und um eine Erklärung in normalem Deutsch bitten,
+      inklusive Fallstricken. Ergebnis als Dokumentationsbaustein sichern. Sofortiger Nutzen, null Risiko.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p10-2"><label class="txt" for="p10-2">
+      <div class="t1">Übung 2 — Eine Abfrage optimieren lassen</div>
+      <div class="t2">Eine langsame Abfrage samt Ausführungsplan geben, Verbesserungsvorschläge mit
+      Begründung anfordern. Vorschläge zuerst auf einer Testumgebung prüfen, niemals direkt produktiv.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p10-3"><label class="txt" for="p10-3">
+      <div class="t1">Übung 3 — Testdaten erzeugen lassen</div>
+      <div class="t2">Nicht die Daten selbst erzeugen lassen, sondern <b>das Skript</b>, das sie erzeugt.
+      Reproduzierbar, prüfbar, versionierbar. Skill <code>testdaten-generator</code> hilft dabei.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p10-4"><label class="txt" for="p10-4">
+      <div class="t1">Übung 4 — Berechtigungen sichtbar machen</div>
+      <div class="t2">Die größte Zeitersparnis im Berufsalltag und zugleich harmlos: Rollen- und
+      Gruppenexporte (nur Metadaten, Namen bei Bedarf pseudonymisiert) auswerten lassen und Widersprüche
+      finden — Personen in sich ausschließenden Rollen, Rechte, die Zeilenfilter unbemerkt aushebeln,
+      Gruppen ohne Mitglieder, Berichte ohne Zuweisung. Skill <code>berechtigungs-audit</code>.</div>
+      <div class="hinweis">Der häufigste stille Fehler in solchen Umgebungen: Wer über eine Bearbeitungs-
+      statt einer Leserolle zugreift, umgeht Zeilenfilter vollständig. Ein Audit findet das in Minuten;
+      manuelle Pflege findet es nie.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p10-5"><label class="txt" for="p10-5">
+      <div class="t1">Übung 5 — Ein Dokument im eigenen Design erzeugen</div>
+      <div class="t2">Eine kleine Auswertung als Tabellendatei oder Präsentation bauen lassen — mit dem
+      Design-System aus Phase 4. Zeigt sofort, ob Phase 4 richtig gemacht wurde.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p10-6"><label class="txt" for="p10-6">
+      <div class="t1">Übung 6 — Ein eigenes Skill schreiben</div>
+      <div class="t2">Eine Hausregel, die man ohnehin ständig erklärt, einmal als <code>SKILL.md</code>
+      festhalten. Ab dann wendet Claude sie von selbst an. Das ist der Moment, in dem aus einem Werkzeug
+      ein Arbeitsplatz wird.</div></label></div>
+  </div>
+</div>
+
+<!-- ===================== PHASE 11 ===================== -->
+<div class="phase" data-p="11">
+  <div class="pkopf">
+    <div class="pnum">11</div>
+    <div><div class="ptitel">Abschluss und Übergabe</div>
+      <div class="pmeta">Was steht, was fehlt, wie es weitergeht</div></div>
+    <div class="pzahl"></div><div class="pfeil">›</div>
+  </div>
+  <div class="pkoerper">
+    <div class="pkt"><input type="checkbox" id="p11-1"><label class="txt" for="p11-1">
+      <div class="t1">Stand festhalten<span class="mark pflicht">Pflicht</span></div>
+      <div class="t2">Diese Seite ausdrucken oder als PDF sichern — sie ist der Nachweis, was eingerichtet
+      wurde. Offene Punkte mit Begründung notieren (etwa: Microsoft 365 wartet auf Administratorfreigabe).</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p11-2"><label class="txt" for="p11-2">
+      <div class="t1">Nutzung nach zwei bis drei Wochen prüfen<span class="mark pflicht">Pflicht</span></div>
+      <div class="t2">Läuft man regelmäßig gegen Nutzungsgrenzen, ist die höhere Abostufe die Antwort —
+      vorher nicht. Diese Entscheidung gehört auf Basis echter Nutzung getroffen, nicht auf Verdacht.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p11-3"><label class="txt" for="p11-3">
+      <div class="t1">Ausbaustufen bewerten<span class="mark opt">Optional</span></div>
+      <div class="t2">Drei Richtungen, in der Reihenfolge ihres Nutzens: eigene Skills vertiefen ·
+      wiederkehrende Aufgaben planen lassen (geplante Aufgaben statt manuellem Anstoß) · echte Anbindung an
+      Fachsysteme, sobald sie freigegeben ist.</div></label></div>
+
+    <div class="pkt"><input type="checkbox" id="p11-4"><label class="txt" for="p11-4">
+      <div class="t1">Nächsten Termin vereinbaren<span class="mark pflicht">Pflicht</span></div>
+      <div class="t2">Ein kurzer Folgetermin nach zwei Wochen bringt mehr als drei Stunden Schulung am
+      ersten Tag. Bis dahin sind die echten Fragen entstanden.</div></label></div>
+  </div>
+</div>
+
+<div class="abschnitt" id="material">Material</div>
+
+<div class="dl">
+  <h2>Material zum Herunterladen</h2>
+  <p style="margin:0;color:var(--muted)">Alle Vorlagen, auf die die Phasen verweisen — Textbausteine zum
+  Kopieren, zwei fertige Projektvorlagen, zwölf einsatzbereite Skills und die Konnektoren-Checkliste.
+  Einmal alles als Paket, oder einzeln.</p>
+  <p><a class="dlhaupt" href="dateien/grundke-it-ki-arbeitsplatz-arbeitsbuch.zip" download>Komplettes Paket herunterladen (ZIP)</a></p>
+
+  <div class="dlgrid">
+    <a class="dlk" href="dateien/persoenliche-anweisungen.md" download>
+      <b>Persönliche Anweisungen</b>
+      <span>Vorlage für „Instructions for Claude" — Phase 3</span>
+      <em>Markdown</em></a>
+    <a class="dlk" href="dateien/claude-md-vorlagen.zip" download>
+      <b>CLAUDE.md in drei Ebenen</b>
+      <span>Global, Projekt, Baustein — Phase 5</span>
+      <em>Markdown</em></a>
+    <a class="dlk" href="dateien/projektvorlagen.zip" download>
+      <b>Projektvorlagen</b>
+      <span>Privat und Beruf, je Anweisung und CLAUDE.md — Phase 5</span>
+      <em>ZIP</em></a>
+    <a class="dlk" href="dateien/skills.zip" download>
+      <b>Zwölf Skills</b>
+      <span>Fertig zum Hochladen, je eine ZIP — Phase 6</span>
+      <em>ZIP</em></a>
+    <a class="dlk" href="dateien/konnektoren-checkliste.md" download>
+      <b>Konnektoren-Checkliste</b>
+      <span>Nachweis, was verbunden ist und wer freigegeben hat — Phase 7</span>
+      <em>Markdown</em></a>
+    <a class="dlk" href="dateien/anleitungen.zip" download>
+      <b>Alle Langfassungen</b>
+      <span>Elf Anleitungen inklusive Lernkarten und Datenschutz</span>
+      <em>ZIP</em></a>
+  </div>
+</div>
+
+<div class="intro">
+  <h2>Wenn etwas klemmt</h2>
+  <p>Die drei häufigsten Stolperstellen stehen in den Phasen selbst: <b>Code Execution</b> nicht
+  eingeschaltet (dann sind Skills unsichtbar), <code>ANTHROPIC_API_KEY</code> noch in der Shell (dann
+  wird nach Verbrauch statt über das Abo abgerechnet), und die Annahme, die VS-Code-Erweiterung ersetze
+  die Kommandozeile (tut sie nicht).</p>
+  <p>Alles andere: melden Sie sich. Rückmeldungen fließen in die nächste Fassung dieses Arbeitsbuchs ein.</p>
+</div>
+
+<footer>
+  <div class="fz">
+    <div>
+      <b>Grundke IT-Service</b><br>
+      IT-Betreuung und KI-Anwendungen für kleine und mittlere Unternehmen<br>
+      <a href="https://grundke-it.de">grundke-it.de</a>
+    </div>
+    <div>
+      <a href="https://grundke-it.de/kontakt/">Kontakt</a> ·
+      <a href="https://grundke-it.de/impressum/">Impressum</a> ·
+      <a href="https://grundke-it.de/datenschutz/">Datenschutz</a>
+    </div>
+  </div>
+  <div class="ver">CI 2026.01 · Grundke IT-Service · KI-Arbeitsplatz-Arbeitsbuch v1.1.0 · Stand 2026-08-29</div>
+</footer>
+</div>
+
+<script>
+(function(){
+  var SP='onb_v1_';
+  var kaesten=[].slice.call(document.querySelectorAll('.pkt input[type=checkbox]'));
+  var phasen=[].slice.call(document.querySelectorAll('.phase'));
+  var nurOffen=false;
+
+  function lade(){
+    kaesten.forEach(function(k){
+      try{ k.checked = localStorage.getItem(SP+k.id)==='1'; }catch(e){}
+    });
+  }
+  function sichere(k){ try{ localStorage.setItem(SP+k.id, k.checked?'1':'0'); }catch(e){} }
+
+  function zeichne(){
+    var g=0, ga=0;
+    phasen.forEach(function(ph){
+      var ks=[].slice.call(ph.querySelectorAll('input[type=checkbox]'));
+      var n=ks.filter(function(k){return k.checked}).length;
+      g+=n; ga+=ks.length;
+      ph.querySelector('.pzahl').textContent = n+' / '+ks.length;
+      ph.classList.toggle('fertig', n===ks.length && ks.length>0);
+      ks.forEach(function(k){
+        var zeile=k.closest('.pkt');
+        zeile.classList.toggle('ab', k.checked);
+        zeile.style.display = (nurOffen && k.checked) ? 'none' : '';
+      });
+      if(nurOffen){ ph.style.display = (n===ks.length) ? 'none' : ''; }
+      else { ph.style.display=''; }
+    });
+    var pct = ga ? Math.round(g/ga*100) : 0;
+    document.getElementById('gbalken').style.width = pct+'%';
+    document.getElementById('gtext').textContent = g+' von '+ga+' erledigt ('+pct+'%)';
+  }
+
+  kaesten.forEach(function(k){
+    k.addEventListener('change', function(){ sichere(k); zeichne(); });
+  });
+
+  phasen.forEach(function(ph){
+    ph.querySelector('.pkopf').addEventListener('click', function(){ ph.classList.toggle('auf'); });
+  });
+
+  document.getElementById('btnAlle').addEventListener('click', function(){
+    var zu = phasen.some(function(p){ return !p.classList.contains('auf'); });
+    phasen.forEach(function(p){ p.classList.toggle('auf', zu); });
+    this.textContent = zu ? 'Alle zuklappen' : 'Alle aufklappen';
+  });
+
+  document.getElementById('btnOffen').addEventListener('click', function(){
+    nurOffen=!nurOffen;
+    this.textContent = nurOffen ? 'Alle zeigen' : 'Nur offene';
+    if(nurOffen) phasen.forEach(function(p){ p.classList.add('auf'); });
+    zeichne();
+  });
+
+  document.getElementById('btnReset').addEventListener('click', function(){
+    if(!confirm('Alle Haken zurücksetzen?')) return;
+    kaesten.forEach(function(k){ k.checked=false; sichere(k); });
+    zeichne();
+  });
+
+  var tb=document.getElementById('btnTheme');
+  function thema(t){
+    document.documentElement.setAttribute('data-theme',t);
+    tb.textContent = (t==='dark') ? 'Hell' : 'Dunkel';
+    try{ localStorage.setItem(SP+'theme',t); }catch(e){}
+  }
+  tb.addEventListener('click', function(){
+    thema(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');
+  });
+  var gespeichert='light';
+  try{ gespeichert = localStorage.getItem(SP+'theme') || 'light'; }catch(e){}
+  thema(gespeichert);
+
+  lade();
+  phasen[0].classList.add('auf');
+  zeichne();
+})();
+</script>
+</body>
+</html>
