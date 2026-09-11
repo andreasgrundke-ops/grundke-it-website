@@ -42,10 +42,17 @@
  *                        Link hat - sie gehoert nicht auf jedes Geraet.
  *                        Cache-Versionen trotzdem erhoeht, weil robots.txt
  *                        mitgeaendert wurde.
+ *   1.3.1 / 2026-09-11 — Kundenstimmen auf der Startseite ueberarbeitet: vierte
+ *                        Google-Rezension ergaenzt, Direktstimme Blumenschein
+ *                        dazu, zwei Zitate auf den Google-Wortlaut gezogen
+ *                        (index.html). Die Seite selbst laeuft zwar
+ *                        Network-First und kaeme auch so an, aber '/' und
+ *                        '/index.html' liegen im Pre-Cache: ohne Erhoehung
+ *                        bleibt die Offline-Kopie auf dem alten Stand.
  */
 
-const CACHE_NAME    = 'grundke-it-v1.14.1';
-const RUNTIME_CACHE = 'grundke-it-runtime-v14';
+const CACHE_NAME    = 'grundke-it-v1.15.0';
+const RUNTIME_CACHE = 'grundke-it-runtime-v15';
 
 /* Pre-Cache: minimaler Kern fuer Offline-First-Boot */
 const PRECACHE_URLS = [

@@ -40,11 +40,17 @@ Version steht nur in der Fusszeile, damit sich der Link jederzeit weitergeben la
 ohne neue URL moeglich sind. Nicht in den Pre-Cache von `sw.js` aufnehmen.
 
 Weitere Konventionen: FAQ-Texte stehen doppelt (sichtbar und im FAQPage-JSON-LD) und muessen
-zeichengleich bleiben. `dateModified` nur hochsetzen, wenn sich der Inhalt der Seite wirklich
+zeichengleich bleiben; dasselbe gilt fuer die Kundenstimmen und ihre `reviewBody`-Eintraege im
+LocalBusiness-Schema. Bewertungen werden **wortgetreu** zitiert — nicht kuerzen, nicht glaetten,
+und die Quelle unter der Karte muss stimmen (`Google-Bewertung` nur, wenn sie dort wirklich steht). `dateModified` nur hochsetzen, wenn sich der Inhalt der Seite wirklich
 geaendert hat, nicht wegen eines neuen Footer-Links.
 
 ## Stand / offen / naechster Schritt
-- **Stand:** 29.08.2026 — Unverlinkte Seite `/ki-arbeitsplatz-onboarding-kit/` gebaut: Arbeitsbuch
+- **Stand:** 11.09.2026 — Kundenstimmen der Startseite auf fuenf erweitert und auf den Wortlaut
+  gezogen: vier Google-Rezensionen plus eine direkt uebermittelte Stimme (Blumenschein,
+  Steuerberatung — dort bewusst **ohne** das Label „Google-Bewertung"). `reviewCount` im Schema
+  auf 5, Testimonial-Raster auf feste Spalten. `sw.js` 1.15.0 / runtime v15.
+  Davor 29.08.2026 — Unverlinkte Seite `/ki-arbeitsplatz-onboarding-kit/` gebaut: Arbeitsbuch
   zum Onboarding neuer Claude-Nutzer, zwoelf Phasen abhakbar, dazu sieben Downloads unter
   `dateien/`. `robots.txt` und `sw.js` mitgezogen, Seite bewusst nicht in `sitemap.xml`.
   Davor 22.08.2026 — KI-Bereich als zweite Saeule (Hub `/ki-fuer-kmu/` plus drei Unterseiten,

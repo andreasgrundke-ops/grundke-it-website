@@ -1,13 +1,40 @@
 # STATUS – grundke-it.de Website
 <!-- CI 2026.01 · Grundke IT-Service · Standard-Statusdatei, wird von Mensch+KI gepflegt -->
 
-**Stand:** 2026-08-29 · **Status:** Live
+**Stand:** 2026-09-11 · **Status:** Live
 
 ## Was ist das
 grundke-it.de Website – siehe README/CLAUDE.md im Projekt.
 
 ## Aktueller Stand
-Letzter Arbeitsblock (29.08.2026): **Unverlinktes Arbeitsbuch `/ki-arbeitsplatz-onboarding-kit/`.**
+Letzter Arbeitsblock (11.09.2026): **Kundenstimmen auf der Startseite überarbeitet.**
+
+Anlass war eine direkt übermittelte Bewertung von Janine Blumenschein (Steuerberatung). Beim
+Gegenlesen des Google-Profils kam heraus, dass dort **vier** Rezensionen stehen, die Website aber
+nur drei zeigte und zwei davon nicht wörtlich zitierte.
+
+- **Fünf Stimmen** stehen jetzt auf der Seite: vier Google-Rezensionen (Fleischmann, Dietz,
+  Verena K., **Martina Polednik – war neu**) plus Blumenschein als direkt übermittelte Stimme.
+- **Zitate auf den Wortlaut gezogen.** Fleischmann stand gekürzt und umformuliert da
+  („Schnell, zuverlässig…" statt „Ich bin sehr zufrieden mit der Arbeit der Firma. Die Umsetzung
+  erfolgte schnell…"), bei Dietz war aus „Service...perfekte" ein Gedankenstrich geworden. In
+  Anführungszeichen gesetzte Kundenaussagen müssen wörtlich sein — sonst angreifbar.
+- **Quellenangabe ehrlich halten:** Blumenschein trägt „Steuerberatung", nicht
+  „Google-Bewertung" — sie hat dort (noch) nicht bewertet. Label erst angleichen, wenn die
+  Google-Rezension wirklich steht.
+- **Schema:** `reviewCount` 3 → 5 (vier Google + eine direkt), fünf `Review`-Objekte, alle
+  `reviewBody` zeichengleich mit dem sichtbaren Text. `dateModified` auf 2026-09-11.
+- **Layout:** `.testi-grid` von `auto-fit` auf feste Spalten (1 / 2 ab 680px / 4 ab 1150px) —
+  mit fünf Karten blieb sonst je nach Fensterbreite eine Zelle leer. Die lange Blumenschein-Stimme
+  läuft als `.testi-wide` über die volle Reihe, Zitat auf 66ch begrenzt, Signatur daneben. Karten
+  sind Flex-Spalten, damit Name und Rolle einer Reihe auf gleicher Höhe sitzen.
+- `sw.js` auf **1.15.0 / runtime v15**.
+- Geprüft bei 390/768/1440/1920: kein horizontaler Scroll, keine leeren Rasterzellen, JSON-LD
+  valide. Offen aus dem Code-Review: die Sterne sind Deko-SVGs ohne Textalternative (alle fünf
+  Karten), und `reviewCount` 5 steht gegen die Google-Zahl 4 — bewusst, weil Blumenschein echt,
+  aber nicht bei Google ist.
+
+Davor (29.08.2026): **Unverlinktes Arbeitsbuch `/ki-arbeitsplatz-onboarding-kit/`.**
 
 Zweck: Wer jemanden mit Claude arbeitsfaehig machen will, schickt kuenftig einen Link statt eines
 ZIP-Anhangs. Die Person hakt zwoelf Phasen direkt im Browser ab (Stand im localStorage) und laedt

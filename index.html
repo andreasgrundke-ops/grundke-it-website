@@ -119,7 +119,7 @@
         "aggregateRating":{
           "@type":"AggregateRating",
           "ratingValue":"5.0",
-          "reviewCount":"3",
+          "reviewCount":"5",
           "bestRating":"5",
           "worstRating":"1"
         },
@@ -128,19 +128,31 @@
             "@type":"Review",
             "reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"},
             "author":{"@type":"Person","name":"Christian Fleischmann"},
-            "reviewBody":"Schnell, zuverlässig und in sehr guter Qualität. Alle Anliegen wurden professionell gelöst. Klare Empfehlung!"
+            "reviewBody":"Ich bin sehr zufrieden mit der Arbeit der Firma. Die Umsetzung erfolgte schnell, zuverlässig und in sehr guter Qualität. Alle meine Anliegen wurden professionell gelöst. Klare Empfehlung!"
           },
           {
             "@type":"Review",
             "reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"},
             "author":{"@type":"Person","name":"Sebastian Dietz"},
-            "reviewBody":"Sehr guter Service – perfekte Zusammenarbeit! Jederzeit wieder!"
+            "reviewBody":"Sehr guter Service...perfekte Zusammenarbeit! Jederzeit wieder!"
           },
           {
             "@type":"Review",
             "reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"},
             "author":{"@type":"Person","name":"Verena K."},
             "reviewBody":"Sehr nette und kompetente Unterstützung! Empfehle ich uneingeschränkt."
+          },
+          {
+            "@type":"Review",
+            "reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"},
+            "author":{"@type":"Person","name":"Martina Polednik"},
+            "reviewBody":"Man merkt gar nicht, dass man selber überhaupt keine Ahnung hat. Perfekt"
+          },
+          {
+            "@type":"Review",
+            "reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"},
+            "author":{"@type":"Person","name":"Janine Blumenschein"},
+            "reviewBody":"Ich kann Grundke IT Service uneingeschränkt empfehlen. Andreas zeichnet sich durch eine äußerst zeitnahe und zuverlässige Betreuung aus. Er ist fachlich hervorragend aufgestellt und setzt gezielt moderne Technologien wie Künstliche Intelligenz ein, um optimale Lösungen zu erarbeiten. Ich fühle mich in allen IT-Angelegenheiten bestens betreut und schätze die professionelle Zusammenarbeit sehr."
           }
         ]
       },
@@ -212,7 +224,7 @@
     "about":{"@id":"https://grundke-it.de/#localbusiness"},
     "primaryImageOfPage":"https://grundke-it.de/assets/img/og-image.png",
     "datePublished":"2026-04-10",
-    "dateModified":"2026-06-18",
+    "dateModified":"2026-09-11",
     "author":{"@id":"https://grundke-it.de/#andreas"},
     "publisher":{"@id":"https://grundke-it.de/#localbusiness"}
   }
@@ -1019,14 +1031,32 @@
 
   /* Testimonials */
   .testimonials { background:var(--bg); }
-  .testi-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr)); gap:1.5rem; margin-top:3rem; }
-  .testi-card { background:var(--bg2); border:1px solid var(--border); border-radius:16px; padding:1.8rem; position:relative; }
+  /* Feste Spaltenzahl statt auto-fit: bei vier kurzen Stimmen plus der vollen
+     Reihe der .testi-wide-Karte bleibt sonst je nach Fensterbreite eine Zelle
+     leer. 2 oder 4 Spalten gehen bei vier Karten immer auf. */
+  .testi-grid { display:grid; grid-template-columns:1fr; gap:1.5rem; margin-top:3rem; }
+  @media (min-width:680px)  { .testi-grid { grid-template-columns:repeat(2,1fr); } }
+  @media (min-width:1150px) { .testi-grid { grid-template-columns:repeat(4,1fr); } }
+  /* Flex-Spalte, damit Name und Rolle in allen Karten einer Reihe auf gleicher
+     Hoehe stehen, auch wenn die Zitate unterschiedlich lang sind. */
+  .testi-card { background:var(--bg2); border:1px solid var(--border); border-radius:16px; padding:1.8rem; position:relative; display:flex; flex-direction:column; }
   .testi-card::before { content:'"'; position:absolute; top:1rem; right:1.4rem; font-family:var(--fh); font-size:3.5rem; color:var(--border); line-height:1; }
   .stars { display:flex; gap:2px; color:var(--warning); margin-bottom:.9rem; }
   .stars svg { width:14px; height:14px; }
-  .testi-txt { font-size:.88rem; color:var(--text2); line-height:1.7; font-style:italic; margin-bottom:1.3rem; }
+  .testi-txt { font-size:.88rem; color:var(--text2); line-height:1.7; font-style:italic; margin-bottom:1.3rem; flex:1 1 auto; }
   .testi-who { font-weight:700; font-size:.86rem; color:var(--text); }
   .testi-role { font-size:.75rem; color:var(--text2); font-family:var(--fm); }
+  /* Ausfuehrliche Stimme: volle Grid-Breite, Zitat bleibt auf Lesemass begrenzt.
+     Ohne das Deko-Anfuehrungszeichen — in der breiten Karte haengt es sonst
+     losgeloest ueber der freien Flaeche rechts. */
+  .testi-wide { grid-column:1/-1; }
+  .testi-wide::before { content:none; }
+  .testi-wide .testi-txt { font-size:.95rem; max-width:66ch; }
+  @media (min-width:900px) {
+    .testi-wide { display:grid; grid-template-columns:minmax(0,auto) 14rem; justify-content:start; gap:2.5rem; align-items:center; }
+    .testi-wide .testi-txt { margin-bottom:0; }
+    .testi-wide-who { border-left:1px solid var(--border); padding-left:2rem; }
+  }
 
   /* FAQ — Release-2 (Schritt 5): natives <details>/<summary>, kein JS noetig */
   .faq { background:var(--bg2); }
@@ -2321,18 +2351,32 @@
     <div class="testi-grid">
       <div class="testi-card">
         <div class="stars"><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg></div>
-        <p class="testi-txt">„Schnell, zuverlässig und in sehr guter Qualität. Alle Anliegen wurden professionell gelöst. Klare Empfehlung!"</p>
+        <p class="testi-txt">„Ich bin sehr zufrieden mit der Arbeit der Firma. Die Umsetzung erfolgte schnell, zuverlässig und in sehr guter Qualität. Alle meine Anliegen wurden professionell gelöst. Klare Empfehlung!"</p>
         <div class="testi-who">Christian Fleischmann</div><div class="testi-role">Google-Bewertung</div>
       </div>
       <div class="testi-card">
         <div class="stars"><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg></div>
-        <p class="testi-txt">„Sehr guter Service – perfekte Zusammenarbeit! Jederzeit wieder!"</p>
+        <p class="testi-txt">„Sehr guter Service...perfekte Zusammenarbeit! Jederzeit wieder!"</p>
         <div class="testi-who">Sebastian Dietz</div><div class="testi-role">Google-Bewertung</div>
       </div>
       <div class="testi-card">
         <div class="stars"><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg></div>
         <p class="testi-txt">„Sehr nette und kompetente Unterstützung! Empfehle ich uneingeschränkt."</p>
         <div class="testi-who">Verena K.</div><div class="testi-role">Google-Bewertung</div>
+      </div>
+      <div class="testi-card">
+        <div class="stars"><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg></div>
+        <p class="testi-txt">„Man merkt gar nicht, dass man selber überhaupt keine Ahnung hat. Perfekt"</p>
+        <div class="testi-who">Martina Polednik</div><div class="testi-role">Google-Bewertung</div>
+      </div>
+      <div class="testi-card testi-wide">
+        <div class="testi-wide-quote">
+          <div class="stars"><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg></div>
+          <p class="testi-txt">„Ich kann Grundke IT Service uneingeschränkt empfehlen. Andreas zeichnet sich durch eine äußerst zeitnahe und zuverlässige Betreuung aus. Er ist fachlich hervorragend aufgestellt und setzt gezielt moderne Technologien wie Künstliche Intelligenz ein, um optimale Lösungen zu erarbeiten. Ich fühle mich in allen IT-Angelegenheiten bestens betreut und schätze die professionelle Zusammenarbeit sehr."</p>
+        </div>
+        <div class="testi-wide-who">
+          <div class="testi-who">Janine Blumenschein</div><div class="testi-role">Steuerberatung</div>
+        </div>
       </div>
     </div>
   </div>
