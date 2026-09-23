@@ -1,13 +1,30 @@
 # STATUS – grundke-it.de Website
 <!-- CI 2026.01 · Grundke IT-Service · Standard-Statusdatei, wird von Mensch+KI gepflegt -->
 
-**Stand:** 2026-09-11 · **Status:** Live
+**Stand:** 2026-09-23 · **Status:** Live
 
 ## Was ist das
 grundke-it.de Website – siehe README/CLAUDE.md im Projekt.
 
 ## Aktueller Stand
-Letzter Arbeitsblock (11.09.2026): **Kundenstimmen auf der Startseite überarbeitet.**
+Letzter Arbeitsblock (23.09.2026): **Seite aus einem Guss, Inhalte bereinigt** (Commit 462a594 ff., live).
+
+- **Ein Menü und ein Footer für alle Seiten.** Beides erzeugt `tools/build_landingpages.py`
+  (`nav_html`, `footer_html`); `sync_shared()` schreibt es auch in Startseite und handgebaute
+  Seiten. Vorher gab es vier Menü- und fünf Footer-Varianten, die KI-Seite wirkte angestückelt.
+- Aktiver Menüpunkt per `aria-current`, Brotkrumen, FAQ als Akkordeon, Buttons `.btn-p/.btn-g`
+  überall, KI-Hub mit eigenem Einstieg, Querverweise zwischen den KI-Seiten.
+- **Inhalte nach Andreas' Vorgaben** (siehe Gehirn `angebot-fakten-website.md`): nur
+  Geschäftskunden, keine garantierten Reaktionszeiten, planbare Monatspauschale, Anfahrt bis
+  5 km inklusive, Monatsreport nur Premium, „KI datenschutzgerecht einsetzen", Art. 4 KI-VO nach
+  Digital Omnibus, KI-Modul in der Schulung, Floskeln raus.
+- Datenschutzerklärung um Amazon-Partnerprogramm, Fernwartungs-Download (Hetzner),
+  Service Worker und localStorage ergänzt; Barrierefreiheit: § 3 Abs. 3 BFSG, Grau-Kontrast als
+  bekannte Einschränkung.
+- IndexNow-Schlüssel im Root, geänderte URLs an Bing/IndexNow gemeldet.
+- `sw.js` 1.16.0 / runtime v16. Code-Review ohne kritische Befunde.
+
+Davor (11.09.2026): **Kundenstimmen auf der Startseite überarbeitet.**
 
 Anlass war eine direkt übermittelte Bewertung von Janine Blumenschein (Steuerberatung). Beim
 Gegenlesen des Google-Profils kam heraus, dass dort **vier** Rezensionen stehen, die Website aber
@@ -151,9 +168,12 @@ Davor (27.07.2026, Commit f331e57):
 - Geprüft bei 390/768/1440: kein horizontaler Scroll, keine Konsolenfehler, live verifiziert.
 
 ## Nächster Schritt
-- **Andreas liest den KI-Bereich gegen** (vier Seiten + Startseiten-Sektion), dann `git push`.
-  Bis dahin ist alles committet, aber nicht live.
-- Danach Search Console: die vier KI-URLs zur Indexierung einreichen, Sitemap neu einreichen.
+- Search Console: die vier KI-URLs zur Indexierung einreichen, Sitemap neu einreichen
+  (braucht Andreas' Google-Anmeldung).
+- Hetzner: prüfen, ob ein Auftragsverarbeitungsvertrag besteht (Datenschutzerklärung nennt den
+  Server msp.grundke-it.de).
+- Offen aus dem Inhalts-Audit: AGB-PDF von 2024 aktualisieren; Kombi-Paket Schulung klarstellen
+  (Live-Schulung jedes Halbjahr enthalten?); Datenschutzerklärung durchgehend „wir".
 - Search Console + Bing: non-www-Property prüfen; GBP/Verzeichnisse auf non-www ziehen
   (Cowork/Browser-Arbeit).
 - Offen zur Entscheidung: Hero-Karussell → statisches Hero, Cyan-Kontrast, DSGVO-Statistik.
@@ -161,8 +181,6 @@ Davor (27.07.2026, Commit f331e57):
   ueber die Website meldet, wird mit 110 EUR abgerechnet; die 90 EUR im Workspace-CLAUDE.md
   sind der Bestandskundensatz. Beide Zahlen sind richtig, die Abweichung ist Absicht. Die
   KI-Seiten nennen daher jetzt ebenfalls 110 EUR netto im 15-Minuten-Takt.
-- Vorschlag für später: auf `/schulung/` einen Absatz zur KI-Kompetenzpflicht nach Artikel 4
-  ergänzen. `/ki-dsgvo/` verlinkt bereits dorthin, ein Rückverweis fehlt noch.
 
 ## Blocker
 (keine)
