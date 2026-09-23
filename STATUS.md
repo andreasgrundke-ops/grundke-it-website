@@ -168,8 +168,9 @@ Davor (27.07.2026, Commit f331e57):
 - Geprüft bei 390/768/1440: kein horizontaler Scroll, keine Konsolenfehler, live verifiziert.
 
 ## Nächster Schritt
-- Search Console: die vier KI-URLs zur Indexierung einreichen, Sitemap neu einreichen
-  (braucht Andreas' Google-Anmeldung).
+- Erledigt 23.09.2026: Sitemap in der Search Console neu eingereicht, die vier KI-URLs zur
+  Indexierung beantragt (Property `https://grundke-it.de/`, Konto andreasgrundke@googlemail.com;
+  alle vier waren Google bis dahin unbekannt). In ein paar Tagen unter „Seiten" nachsehen.
 - Hetzner: prüfen, ob ein Auftragsverarbeitungsvertrag besteht (Datenschutzerklärung nennt den
   Server msp.grundke-it.de).
 - Offen aus dem Inhalts-Audit: AGB-PDF von 2024 aktualisieren; Kombi-Paket Schulung klarstellen
