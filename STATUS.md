@@ -171,8 +171,8 @@ Davor (27.07.2026, Commit f331e57):
 - Erledigt 23.09.2026: Sitemap in der Search Console neu eingereicht, die vier KI-URLs zur
   Indexierung beantragt (Property `https://grundke-it.de/`, Konto andreasgrundke@googlemail.com;
   alle vier waren Google bis dahin unbekannt). In ein paar Tagen unter „Seiten" nachsehen.
-- Hetzner: prüfen, ob ein Auftragsverarbeitungsvertrag besteht (Datenschutzerklärung nennt den
-  Server msp.grundke-it.de).
+- Erledigt 23.09.2026: AVV mit Hetzner besteht (Kundennr. K0408355526), Unterlagen samt TOM und
+  TÜV-Prüfbericht unter `02_GIT/infrastruktur/hetzner/Vertraege/2026-09-23_Hetzner-AVV/`.
 - Offen aus dem Inhalts-Audit: AGB-PDF von 2024 aktualisieren; Kombi-Paket Schulung klarstellen
   (Live-Schulung jedes Halbjahr enthalten?); Datenschutzerklärung durchgehend „wir".
 - Search Console + Bing: non-www-Property prüfen; GBP/Verzeichnisse auf non-www ziehen

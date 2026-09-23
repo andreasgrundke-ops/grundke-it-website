@@ -73,7 +73,8 @@ geaendert hat, nicht wegen eines neuen Footer-Links.
   `dateien/`. `robots.txt` und `sw.js` mitgezogen, Seite bewusst nicht in `sitemap.xml`.
   Davor 22.08.2026 — KI-Bereich als zweite Saeule (Hub `/ki-fuer-kmu/` plus drei Unterseiten,
   Startseiten-Sektion, Navigation, llms.txt), inzwischen gepusht und live.
-- **Offen:** Hetzner-AVV pruefen (accounts.hetzner.com/account/dpa). KI-URLs sind seit
+- **Offen:** nichts Dringendes. Hetzner-AVV besteht (23.09.2026, abgelegt unter
+  `02_GIT/infrastruktur/hetzner/Vertraege/`). KI-URLs sind seit
   23.09.2026 zur Indexierung beantragt; das Arbeitsbuch dort ausdruecklich **nicht** einreichen.
 - **Naechster Schritt:** siehe `STATUS.md` — dort steht der vollstaendige Arbeitsstand.
 
