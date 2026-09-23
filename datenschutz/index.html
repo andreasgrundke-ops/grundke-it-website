@@ -66,18 +66,28 @@
 <header class="site-header">
 <nav aria-label="Hauptnavigation">
   <div class="nav-inner inner">
-    <a href="/" class="logo" title="Grundke IT-Service – München Ost"><picture><source srcset="../assets/img/logo-grundke-it-white-480.webp" type="image/webp"><img class="logo-img" src="../assets/img/logo-grundke-it-white-480.png" alt="Grundke IT-Service" width="180" height="60" /></picture></a>
+    <a href="/" class="logo" title="Grundke IT-Service – München Ost"><picture><source srcset="/assets/img/logo-grundke-it-white-480.webp" type="image/webp"><img class="logo-img" src="/assets/img/logo-grundke-it-white-480.png" alt="Grundke IT-Service" width="180" height="60" /></picture></a>
     <a class="nav-loc" href="https://www.google.com/maps/place/IT-Service+-+Andreas+Grundke/@48.0944159,11.7631063,17z/data=!3m1!4b1!4m6!3m5!1s0x479de3eede6923f3:0x1ad9e3b1fcbd1081!8m2!3d48.0944123!4d11.7656812!16s%2Fg%2F11j7r45y6q" target="_blank" rel="noopener" aria-label="Standort auf Google Maps anzeigen"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>München Ost</a>
     <ul class="nav-links">
-      <li><a href="/">Startseite</a></li>
+      <li><a href="/#schnellcheck">IT-Schnellcheck</a></li>
+      <li><a href="/#leistungen">IT-Service</a></li>
+      <li><a href="/ki-fuer-kmu/">KI im Betrieb</a></li>
+      <li><a href="/schulung/">Schulungen</a></li>
+      <li><a href="/#preise">Preise</a></li>
       <li class="nav-dropdown" id="fernwartungDropdown"><button class="nav-dropdown-toggle" onclick="toggleFernwartungDropdown(event)" aria-haspopup="true" aria-expanded="false">Fernwartung<svg class="nav-dropdown-arrow" xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul class="nav-dropdown-menu" role="menu"><li><a href="https://www.teamviewer.com/de/download/portal/windows/" target="_blank" rel="noopener" class="nav-dropdown-item"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>TeamViewer</a></li><li><a href="/fernwartung/" class="nav-dropdown-item nav-dropdown-item--highlight"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>Fernwartung starten</a></li></ul></li>
+      <li><a href="/kontakt/">Kontakt</a></li>
       <li><a href="tel:+491782584438" class="nav-cta"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.8a16 16 0 0 0 6 6l.94-.94a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>Jetzt anrufen</span></a></li>
     </ul>
-    <button class="hamburger" id="ham" aria-label="Menü"><span></span><span></span><span></span></button>
+    <button class="hamburger" id="ham" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span><span></span></button>
   </div>
 </nav>
 <div class="mobile-menu" id="mobileMenu">
-  <a href="/">Startseite</a>
+  <a href="/#schnellcheck">IT-Schnellcheck</a>
+  <a href="/#leistungen">IT-Service</a>
+  <a href="/ki-fuer-kmu/">KI im Betrieb</a>
+  <a href="/schulung/">Schulungen</a>
+  <a href="/#preise">Preise</a>
+  <a href="/kontakt/">Kontakt</a>
   <a href="https://www.teamviewer.com/de/download/portal/windows/" target="_blank" rel="noopener">Fernwartung (TeamViewer)</a>
   <a href="/fernwartung/" style="color:var(--cyan);font-weight:700;">&#9889; Fernwartung starten</a>
   <a href="tel:+491782584438" class="m-cta">Jetzt anrufen · 0178 258 44 38</a>
@@ -89,7 +99,7 @@
   <div class="inner">
     <div class="page-content">
       <h1>Datenschutzerklärung</h1>
-      <p class="dse-stand">Stand: April 2026 · v2026.04-r3</p>
+      <p class="dse-stand">Stand: September 2026</p>
 
       <!-- Inhaltsverzeichnis -->
       <div class="dse-toc">
@@ -101,7 +111,7 @@
           <li><a href="#dse-5">Datenerfassung auf dieser Website</a></li>
           <li><a href="#dse-6">Kontaktaufnahme (E-Mail, Telefon, WhatsApp)</a></li>
           <li><a href="#dse-7">Externe Dienste und Drittanbieter</a></li>
-          <li><a href="#dse-8">Cookies</a></li>
+          <li><a href="#dse-8">Cookies und lokale Speicherung</a></li>
           <li><a href="#dse-9">Ihre Rechte als betroffene Person</a></li>
           <li><a href="#dse-10">Änderung dieser Datenschutzerklärung</a></li>
         </ol>
@@ -190,7 +200,7 @@
 
       <h3>Kontakt per E-Mail</h3>
       <p>Wenn Sie uns per E-Mail kontaktieren, wird Ihre Anfrage inklusive aller daraus hervorgehenden personenbezogenen Daten (Name, E-Mail-Adresse, Inhalt der Anfrage) zum Zwecke der Bearbeitung Ihres Anliegens bei uns gespeichert und verarbeitet.</p>
-      <p>Die E-Mail-Links auf dieser Website enthalten einen vorausgefüllten Betreff und Textvorlage. Der Absender entscheidet selbst, welche Daten er in der E-Mail übermittelt. Mit dem Absenden der E-Mail stimmt der Absender der Verarbeitung der enthaltenen Daten zum Zweck der Anfragenbearbeitung zu.</p>
+      <p>Die E-Mail-Links auf dieser Website enthalten einen vorausgefüllten Betreff und Textvorlage. Der Absender entscheidet selbst, welche Daten er in der E-Mail übermittelt. Wir verarbeiten diese Daten ausschließlich, um die Anfrage zu bearbeiten.</p>
       <p>Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche Maßnahmen) bzw. Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der Bearbeitung von Kundenanfragen).</p>
       <p>Die von Ihnen an uns per E-Mail übersandten Daten verbleiben bei uns, bis Sie uns zur Löschung auffordern, Ihre Einwilligung zur Speicherung widerrufen oder der Zweck für die Datenspeicherung entfällt. Zwingende gesetzliche Bestimmungen – insbesondere steuerrechtliche Aufbewahrungsfristen – bleiben unberührt.</p>
 
@@ -211,12 +221,31 @@
       <p>Diese Website nutzt die Schriftarten <strong>Space Grotesk</strong>, <strong>Manrope</strong> und <strong>JetBrains Mono</strong> zur einheitlichen Darstellung. Die Schriftarten sind <strong>lokal auf unserem Server gespeichert</strong> und werden nicht von externen Servern (z. B. Google) nachgeladen.</p>
       <p>Es findet <strong>keine Verbindung zu Google-Servern</strong> oder anderen Drittanbietern statt. Es werden keine Daten (insbesondere keine IP-Adressen) an Google übermittelt.</p>
 
-      <h3>Lucide Icons (CDN)</h3>
+      <h3>Lucide Icons (lokal eingebettet)</h3>
       <p>Diese Website nutzt Icons der Bibliothek <strong>Lucide</strong>. Die Icons werden als SVG-Sprites direkt im HTML-Quellcode eingebettet und <strong>nicht</strong> von einem externen CDN nachgeladen. Es findet daher <strong>keine Datenübertragung</strong> an Drittanbieter statt.</p>
 
+      <h3>Links zu anderen Anbietern</h3>
+      <p>Diese Website enthält Links zu Angeboten anderer Anbieter, zum Beispiel zu Google Maps (Standort), TeamViewer (Download der Fernwartungssoftware) und WhatsApp. Solange Sie einen solchen Link nicht anklicken, werden keine Daten an diese Anbieter übertragen. Mit dem Klick verlassen Sie diese Website; für die weitere Verarbeitung Ihrer Daten ist dann der jeweilige Anbieter verantwortlich.</p>
+
+      <h3>Amazon-Partnerprogramm</h3>
+      <p>Auf der Seite „Produktempfehlungen“ stehen Links zu Amazon. Wir nehmen am Partnerprogramm von <strong>Amazon Europe Core S.à r.l.</strong> (38 avenue John F. Kennedy, L-1855 Luxemburg) teil. Kaufen Sie nach einem Klick auf einen solchen Link bei Amazon ein, erhalten wir eine Provision. Am Preis für Sie ändert das nichts.</p>
+      <p>Auf dieser Website selbst werden dafür keine Cookies gesetzt und keine Daten an Amazon übermittelt. Erst wenn Sie einen Amazon-Link anklicken (auch die Kurzlinks „amzn.to“ gehören zu Amazon), werden Sie zu Amazon weitergeleitet. Amazon kann dann Cookies setzen und erfassen, dass Sie über diesen Link gekommen sind, um die Provision zuzuordnen. Einzelheiten stehen in der Datenschutzerklärung von Amazon.</p>
+      <p>Rechtsgrundlage für das Setzen der Links ist Art. 6 Abs. 1 lit. f DSGVO. Unser berechtigtes Interesse liegt darin, die Website über die Provision mitzufinanzieren.</p>
+
+      <h3>Download der Fernwartungssoftware</h3>
+      <p>Auf der Seite „Fernwartung“ können Sie ein Fernwartungsprogramm herunterladen. Die Datei liegt auf unserem eigenen Server unter <strong>msp.grundke-it.de</strong>, der in einem Rechenzentrum der Hetzner Online GmbH in Deutschland steht. Beim Download verarbeitet der Server technisch bedingt Ihre IP-Adresse, den Zeitpunkt des Abrufs, die angefragte Datei und die Kennung Ihres Browsers. Diese Angaben können in Server-Protokollen gespeichert werden.</p>
+      <p>Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Unser berechtigtes Interesse liegt in der sicheren Bereitstellung der Datei und im Erkennen von Missbrauch. Die anschließende Fernwartungssitzung findet auf Ihre Veranlassung statt, um Ihren Auftrag zu erfüllen (Art. 6 Abs. 1 lit. b DSGVO).</p>
+
       <!-- §8 -->
-      <h2 id="dse-8">8. Cookies</h2>
-      <p>Diese Website verwendet <strong>keine Cookies</strong> und setzt keine Tracking-Technologien ein. Es findet keine Speicherung von Informationen auf Ihrem Endgerät statt, die über die technisch notwendige Bereitstellung der Website hinausgeht.</p>
+      <h2 id="dse-8">8. Cookies und lokale Speicherung</h2>
+      <p>Diese Website verwendet <strong>keine Cookies</strong> und setzt keine Tracking-Technologien ein. In Ihrem Browser werden nur die beiden folgenden Dinge gespeichert.</p>
+
+      <h3>Zwischenspeicher (Service Worker)</h3>
+      <p>Damit die Seiten schneller laden und auch bei schwacher Verbindung erreichbar bleiben, legt Ihr Browser über einen sogenannten Service Worker Kopien der Website-Dateien (Seiten, Stylesheets, Schriften, Bilder) in seinem lokalen Zwischenspeicher ab. Diese Kopien enthalten keine personenbezogenen Daten und werden weder an uns noch an Dritte übertragen. Sie können sie jederzeit in den Einstellungen Ihres Browsers löschen.</p>
+
+      <h3>Lokaler Speicher (localStorage)</h3>
+      <p>Seiten mit abhakbaren Checklisten merken sich im lokalen Speicher Ihres Browsers (localStorage), welche Punkte Sie abgehakt haben. So bleibt Ihr Fortschritt erhalten, wenn Sie die Seite später wieder öffnen. Diese Angaben verlassen Ihr Gerät nicht und werden nicht an uns übertragen.</p>
+      <p>Rechtsgrundlage für beides ist § 25 Abs. 2 Nr. 2 TDDDG: Die Speicherung ist erforderlich, damit die von Ihnen genutzte Funktion bereitgestellt werden kann.</p>
       <p>Sollte in Zukunft der Einsatz von Cookies oder vergleichbaren Technologien erfolgen, werden wir diese Datenschutzerklärung entsprechend aktualisieren und – sofern erforderlich – Ihre Einwilligung einholen.</p>
 
       <!-- §9 -->
@@ -257,7 +286,7 @@
       <h2 id="dse-10">10. Änderung dieser Datenschutzerklärung</h2>
       <p>Wir behalten uns vor, diese Datenschutzerklärung anzupassen, damit sie stets den aktuellen rechtlichen Anforderungen entspricht oder um Änderungen unserer Leistungen in der Datenschutzerklärung umzusetzen. Für Ihren erneuten Besuch gilt dann die neue Datenschutzerklärung.</p>
 
-      <p style="margin-top:3rem;font-size:.75rem;color:var(--text3);">Erstellt unter Berücksichtigung der Vorgaben der DSGVO, des BDSG und des TTDSG. · Stand: April 2026</p>
+      <p style="margin-top:3rem;font-size:.75rem;color:var(--text3);">Erstellt unter Berücksichtigung der Vorgaben der DSGVO, des BDSG und des TDDDG. · Stand: September 2026</p>
     </div>
   </div>
 </article>
@@ -265,15 +294,59 @@
 
 <footer class="site-footer">
   <div class="inner">
-    <nav class="foot-legal" aria-label="Rechtliche Hinweise">
-      <a href="/impressum/">Impressum</a>
-      <a href="/datenschutz/" aria-current="page">Datenschutz</a>
-      <a href="/agb/">AGB</a>
-      <a href="/barrierefreiheit/">Barrierefreiheit</a>
-    </nav>
+    <div class="foot-grid">
+      <div>
+        <div class="foot-brand">Grundke IT-Service</div>
+        <p class="foot-desc">IT-Betreuung für Selbstständige und KMUs im Raum München Ost.<br>Persönlich und verlässlich, mit planbarer Monatspauschale.<br>Angebot für Unternehmen, alle Preise zzgl. MwSt.</p>
+        <address class="foot-contact" style="font-style:normal;">
+          <a href="tel:+491782584438">☎ 0178 258 44 38</a>
+          <a href="https://wa.me/491782584438" target="_blank" rel="noopener">WhatsApp schreiben</a>
+          <a href="mailto:info@grundke-it.de?subject=Anfrage%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0AMein%20Anliegen%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F).">info@grundke-it.de</a>
+          <a href="https://grundke-it.de">www.grundke-it.de</a>
+        </address>
+      </div>
+      <div>
+        <div class="foot-h">Leistungen</div>
+        <ul class="foot-links">
+          <li><a href="/managed-it-service/">Managed IT-Service</a></li>
+          <li><a href="/microsoft-365-betreuung/">Microsoft 365 Betreuung</a></li>
+          <li><a href="/it-sicherheit-backup/">IT-Sicherheit &amp; Backup</a></li>
+          <li><a href="/netzwerk-wlan-firewall/">Netzwerk, WLAN &amp; Firewall</a></li>
+          <li><a href="/it-notdienst/">IT-Notdienst</a></li>
+          <li><a href="/ki-fuer-kmu/">KI im Betrieb</a></li>
+          <li><a href="/ki-automatisierung/">Abläufe automatisieren</a></li>
+          <li><a href="/ki-videoanalyse/">Videoanalyse &amp; Auswertung</a></li>
+          <li><a href="/ki-dsgvo/">KI datenschutzgerecht einsetzen</a></li>
+          <li><a href="/empfehlungen/">Produktempfehlungen</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="foot-h">Standorte</div>
+        <ul class="foot-links">
+          <li><a href="/it-service-grasbrunn/">IT-Service Grasbrunn</a></li>
+          <li><a href="/it-service-vaterstetten/">IT-Service Vaterstetten</a></li>
+          <li><a href="/it-service-baldham/">IT-Service Baldham</a></li>
+          <li><a href="/it-service-zorneding/">IT-Service Zorneding</a></li>
+          <li><a href="/it-service-haar/">IT-Service Haar</a></li>
+          <li><a href="/it-service-putzbrunn/">IT-Service Putzbrunn</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="foot-h">Kontakt &amp; Rechtliches</div>
+        <ul class="foot-links">
+          <li><a href="/#ablauf">So arbeite ich</a></li>
+          <li><a href="/kontakt/">Kontakt</a></li>
+          <li><a href="/fernwartung/">Fernwartung starten</a></li>
+          <li><a href="/impressum/">Impressum</a></li>
+          <li><a href="/datenschutz/" aria-current="page">Datenschutz</a></li>
+          <li><a href="/agb/">AGB</a></li>
+          <li><a href="/barrierefreiheit/">Barrierefreiheit</a></li>
+        </ul>
+      </div>
+    </div>
     <div class="foot-bottom">
-      <span>&copy; 2026 Grundke IT-Service · Andreas Grundke · Beethovenring 16 · 85630 Grasbrunn</span>
-      <span class="foot-ci">v2026.04-r3 · grundke-it.de</span>
+      <span>© 2026 Grundke IT-Service · Andreas Grundke · Beethovenring 16 · 85630 Grasbrunn</span>
+      <span class="foot-ci">CI 2026.01 · grundke-it.de</span>
     </div>
   </div>
 </footer>

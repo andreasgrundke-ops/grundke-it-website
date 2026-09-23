@@ -21,6 +21,11 @@ KI-Anwendungen fuer den Betrieb.
    `python tools/build_landingpages.py` laufen lassen. Handgebaut sind nur: Startseite,
    kontakt, schulung, fernwartung, empfehlungen, tree, ki-arbeitsplatz-onboarding-kit,
    404 und die Rechtsseiten.
+   **Navigation und Footer (`<header class="site-header">`, `<footer class="site-footer">`)
+   kommen seit 23.09.2026 fuer ALLE Seiten aus dem Generator** (`NAV_ITEMS`/`nav_html`,
+   `footer_html`); `sync_shared()` schreibt beides auch in die Startseite und die handgebauten
+   Seiten (`HAND_PAGES`). Nie in einer einzelnen Datei aendern — bis dahin gab es vier
+   Menue- und fuenf Footer-Varianten.
 2. **Bei JEDEM Release `CACHE_NAME` und `RUNTIME_CACHE` in `sw.js` erhoehen.** Statische
    Dateien laufen Cache-First; ohne Erhoehung sieht ein wiederkehrender Besucher weiter die
    alte Version, obwohl der Deploy durch ist. Das ist hier schon zweimal passiert.
@@ -46,7 +51,20 @@ und die Quelle unter der Karte muss stimmen (`Google-Bewertung` nur, wenn sie do
 geaendert hat, nicht wegen eines neuen Footer-Links.
 
 ## Stand / offen / naechster Schritt
-- **Stand:** 11.09.2026 — Kundenstimmen der Startseite auf fuenf erweitert und auf den Wortlaut
+- **Stand:** 23.09.2026 — Seite aus einem Guss: ein Menue (IT-Schnellcheck · IT-Service ·
+  KI im Betrieb · Schulungen · Preise · Fernwartung · Kontakt · Anrufen) und ein Footer fuer
+  alle Seiten, aktiver Punkt per `aria-current`, Brotkrumen, FAQ als Akkordeon, Buttons
+  `.btn-p`/`.btn-g` ueberall, KI-Hub mit eigenem Einstieg (`hero` im SERVICES-Eintrag),
+  Querverweise zwischen den KI-Seiten, Pfeil-Glyphe repariert (war Oktal-Escape), `/tree/`
+  nirgends mehr verlinkt, Inhaltskorrekturen aus dem Audit (Radius 25 km, netto an Preisen,
+  TDDDG, Sitemap-lastmod). Ortspille weicht zwischen 1024 und 1239 px jetzt auf allen Seiten.
+  Danach Inhaber-Entscheidungen eingearbeitet: nur Geschaeftskunden, KEINE garantierten
+  Reaktionszeiten, „KI datenschutzgerecht einsetzen", „planbare Monatspauschale", Anfahrt
+  bis 5 km inklusive, Monatsreport nur Premium, Erreichbarkeit im Schema taeglich, KI-Modul in
+  der Schulung, Art. 4 KI-VO nach Digital Omnibus (VO (EU) 2026/1744), Datenschutzerklaerung
+  um Amazon-Partnerprogramm, Fernwartungs-Download, Service Worker und localStorage ergaenzt.
+  `sw.js` 1.16.0 / runtime v16.
+  Davor 11.09.2026 — Kundenstimmen der Startseite auf fuenf erweitert und auf den Wortlaut
   gezogen: vier Google-Rezensionen plus eine direkt uebermittelte Stimme (Blumenschein,
   Steuerberatung — dort bewusst **ohne** das Label „Google-Bewertung"). `reviewCount` im Schema
   auf 5, Testimonial-Raster auf feste Spalten. `sw.js` 1.15.0 / runtime v15.

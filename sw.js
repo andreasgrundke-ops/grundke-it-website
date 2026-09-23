@@ -49,10 +49,16 @@
  *                        Network-First und kaeme auch so an, aber '/' und
  *                        '/index.html' liegen im Pre-Cache: ohne Erhoehung
  *                        bleibt die Offline-Kopie auf dem alten Stand.
+ *   1.4.0 / 2026-09-23 — Eine Navigation und ein Footer fuer alle Seiten
+ *                        (Generator schreibt beides auch in Startseite und
+ *                        handgebaute Seiten), aktiver Menuepunkt, Brotkrumen,
+ *                        FAQ als Akkordeon, Einstieg fuer den KI-Hub, gemeinsame
+ *                        Buttons, style.css geaendert, Inhaltskorrekturen,
+ *                        Datenschutzerklaerung ergaenzt.
  */
 
-const CACHE_NAME    = 'grundke-it-v1.15.0';
-const RUNTIME_CACHE = 'grundke-it-runtime-v15';
+const CACHE_NAME    = 'grundke-it-v1.16.0';
+const RUNTIME_CACHE = 'grundke-it-runtime-v16';
 
 /* Pre-Cache: minimaler Kern fuer Offline-First-Boot */
 const PRECACHE_URLS = [

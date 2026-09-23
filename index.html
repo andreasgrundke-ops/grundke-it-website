@@ -10,7 +10,7 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/SpaceGrotesk-latin.woff2"/>
 
   <title>Grundke IT-Service – IT-Betreuung München Ost | Grasbrunn</title>
-  <meta name="description" content="Gib deine IT ab: Andreas Grundke betreut KMU im Raum München Ost. Ein fester Ansprechpartner statt Ticketsystem – persönlich, Festpreis, schnell erreichbar."/>
+  <meta name="description" content="Gib deine IT ab: Andreas Grundke betreut KMU im Raum München Ost. Ein fester Ansprechpartner statt Ticketsystem – persönlich, planbare Monatspauschale, schnell erreichbar."/>
   <meta name="author" content="Andreas Grundke"/>
   <meta name="robots" content="index, follow, max-image-preview:large"/>
   <link rel="canonical" href="https://grundke-it.de/"/>
@@ -97,8 +97,8 @@
         "currenciesAccepted":"EUR",
         "openingHoursSpecification":[{
           "@type":"OpeningHoursSpecification",
-          "dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],
-          "opens":"06:00",
+          "dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+          "opens":"00:00",
           "closes":"23:59"
         }],
         "geo":{
@@ -224,7 +224,7 @@
     "about":{"@id":"https://grundke-it.de/#localbusiness"},
     "primaryImageOfPage":"https://grundke-it.de/assets/img/og-image.png",
     "datePublished":"2026-04-10",
-    "dateModified":"2026-09-11",
+    "dateModified":"2026-09-23",
     "author":{"@id":"https://grundke-it.de/#andreas"},
     "publisher":{"@id":"https://grundke-it.de/#localbusiness"}
   }
@@ -802,7 +802,7 @@
   .srv-card:hover { border-color:var(--cyan); transform:translateY(-3px); box-shadow:0 8px 28px rgba(38,189,239,.07); }
   /* Kachel als Link (KI & Automatisierung): Grid-Verhalten erhalten, Klickbarkeit zeigen */
   a.srv-card { display:block; text-decoration:none; color:inherit; }
-  a.srv-card .srv-name::after { content:" 92"; color:var(--cyan); }
+  a.srv-card .srv-name::after { content:" →"; color:var(--cyan); }
   a.srv-card:hover .srv-name { color:var(--cyan); }
   .srv-ico {
     width:clamp(2.25rem,6vw,2.85rem); height:clamp(2.25rem,6vw,2.85rem);
@@ -1060,25 +1060,6 @@
 
   /* FAQ — Release-2 (Schritt 5): natives <details>/<summary>, kein JS noetig */
   .faq { background:var(--bg2); }
-  .faq-wrap { max-width:820px; margin-top:3rem; display:flex; flex-direction:column; gap:.6rem; }
-  .faq-item { background:var(--bg3); border:1px solid var(--border); border-radius:10px; overflow:hidden; transition:border-color .2s; }
-  .faq-item[open] { border-color:var(--accent); }
-  .faq-item summary {
-    padding:1.15rem 1.4rem;
-    display:flex; justify-content:space-between; align-items:center;
-    font-weight:600; font-size:.9rem;
-    cursor:pointer; color:var(--text); user-select:none;
-    list-style:none; min-height:44px; /* Touch-Target */
-  }
-  .faq-item summary::-webkit-details-marker { display:none; }
-  .faq-item summary::marker { content:''; }
-  .faq-item summary:hover { color:var(--cyan); }
-  .faq-ico { color:var(--cyan); font-size:1.1rem; transition:transform .3s; flex-shrink:0; margin-left:1rem; }
-  .faq-item[open] .faq-ico { transform:rotate(45deg); }
-  .faq-a {
-    font-size:.87rem; color:var(--text2); line-height:1.7;
-    padding:0 1.4rem 1.3rem;
-  }
 
   /* CTA Final */
   .cta-sec { background:var(--bg); padding:clamp(4rem,10vw,8rem) 0; text-align:center; position:relative; overflow:hidden; }
@@ -1323,19 +1304,6 @@
     .kih-cta { display:flex; flex-wrap:wrap; gap:.9rem; }
     @media (max-width:560px) { .kih-cta .btn-p, .kih-cta .btn-g { width:100%; justify-content:center; } }
 
-    /* ── Kopfzeile: Ortspille weicht dem Menue ───────────────────────────────
-       Das Hauptmenue der Startseite traegt acht Punkte plus Anruf-Knopf und ist
-       rund 850 px breit. Neben Logo UND Ortspille passt es erst ab etwa 1240 px;
-       darunter klebte der erste Menuepunkt an der Pille (gemessen 0 px Abstand
-       bei 1100 px) und der Anruf-Knopf lief aus dem Bild.
-       Ohne die Pille passt das volle Menue dagegen schon ab 1024 px (gemessen:
-       23 px Abstand zum Logo, Anruf-Knopf im Bild). Deshalb weicht im Bereich
-       dazwischen die Pille statt des Menues - die Navigation bleibt vollstaendig
-       lesbar, der Ortsbezug steht weiter im Quelltext und ab 1240 px auch wieder
-       sichtbar da. Unterseiten haben nur fuenf Punkte und sind nicht betroffen. */
-    @media (min-width: 1024px) and (max-width: 1239px) {
-      .site-header .nav-loc { display: none; }
-    }
   </style>
 </head>
 <body class="has-sticky-call">
@@ -1390,9 +1358,7 @@
 <header class="site-header">
 <nav aria-label="Hauptnavigation">
   <div class="nav-inner inner">
-    <a href="/" class="logo" title="Grundke IT-Service – München Ost">
-      <picture><source srcset="assets/img/logo-grundke-it-white-480.webp" type="image/webp"><img class="logo-img" src="assets/img/logo-grundke-it-white-480.png" alt="Grundke IT-Service" width="180" height="60" /></picture>
-    </a>
+    <a href="/" class="logo" title="Grundke IT-Service – München Ost"><picture><source srcset="/assets/img/logo-grundke-it-white-480.webp" type="image/webp"><img class="logo-img" src="/assets/img/logo-grundke-it-white-480.png" alt="Grundke IT-Service" width="180" height="60" /></picture></a>
     <a class="nav-loc" href="https://www.google.com/maps/place/IT-Service+-+Andreas+Grundke/@48.0944159,11.7631063,17z/data=!3m1!4b1!4m6!3m5!1s0x479de3eede6923f3:0x1ad9e3b1fcbd1081!8m2!3d48.0944123!4d11.7656812!16s%2Fg%2F11j7r45y6q" target="_blank" rel="noopener" aria-label="Standort auf Google Maps anzeigen"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>München Ost</a>
     <ul class="nav-links">
       <li><a href="#schnellcheck">IT-Schnellcheck</a></li>
@@ -1401,12 +1367,10 @@
       <li><a href="#schulung">Schulungen</a></li>
       <li><a href="#preise">Preise</a></li>
       <li class="nav-dropdown" id="fernwartungDropdown"><button class="nav-dropdown-toggle" onclick="toggleFernwartungDropdown(event)" aria-haspopup="true" aria-expanded="false">Fernwartung<svg class="nav-dropdown-arrow" xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul class="nav-dropdown-menu" role="menu"><li><a href="https://www.teamviewer.com/de/download/portal/windows/" target="_blank" rel="noopener" class="nav-dropdown-item"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>TeamViewer</a></li><li><a href="/fernwartung/" class="nav-dropdown-item nav-dropdown-item--highlight"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>Fernwartung starten</a></li></ul></li>
-      <li><a href="empfehlungen/">Empfehlungen</a></li>
-      <li><a href="tel:+491782584438" class="nav-cta"><svg width="16" height="16" aria-hidden="true"><use href="#ico-phone"/></svg><span>Jetzt anrufen</span></a></li>
+      <li><a href="/kontakt/">Kontakt</a></li>
+      <li><a href="tel:+491782584438" class="nav-cta"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.8a16 16 0 0 0 6 6l.94-.94a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>Jetzt anrufen</span></a></li>
     </ul>
-    <button class="hamburger" id="ham" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobileMenu">
-      <span></span><span></span><span></span>
-    </button>
+    <button class="hamburger" id="ham" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span><span></span></button>
   </div>
 </nav>
 <div class="mobile-menu" id="mobileMenu">
@@ -1415,9 +1379,10 @@
   <a href="/ki-fuer-kmu/">KI im Betrieb</a>
   <a href="#schulung">Schulungen</a>
   <a href="#preise">Preise</a>
+  <a href="/kontakt/">Kontakt</a>
   <a href="https://www.teamviewer.com/de/download/portal/windows/" target="_blank" rel="noopener">Fernwartung (TeamViewer)</a>
   <a href="/fernwartung/" style="color:var(--cyan);font-weight:700;">&#9889; Fernwartung starten</a>
-  <a href="empfehlungen/">Empfehlungen</a>
+  <a href="tel:+491782584438" class="m-cta">Jetzt anrufen · 0178 258 44 38</a>
 </div>
 </header>
 
@@ -1442,7 +1407,7 @@
           </div>
         </div>
         <div class="hero-qr">
-          <a href="tree/" title="Alle Kontaktwege"><img src="assets/img/qr-tree.png" alt="QR-Code – Kontakt aufnehmen" width="140" height="140"/></a>
+          <a href="/kontakt/" title="Alle Kontaktwege"><img src="assets/img/qr-tree.png" alt="QR-Code – Kontakt aufnehmen" width="140" height="140"/></a>
           <span>Scan mich.<br>Dann reden wir.</span>
         </div>
       </div>
@@ -1463,7 +1428,7 @@
           </div>
         </div>
         <div class="hero-qr">
-          <a href="tree/" title="Alle Kontaktwege"><img src="assets/img/qr-tree.png" alt="QR-Code – Kontakt aufnehmen" width="140" height="140"/></a>
+          <a href="/kontakt/" title="Alle Kontaktwege"><img src="assets/img/qr-tree.png" alt="QR-Code – Kontakt aufnehmen" width="140" height="140"/></a>
           <span>Scan mich.<br>Dann reden wir.</span>
         </div>
       </div>
@@ -1473,9 +1438,9 @@
       <div class="slide-ov"></div>
       <div class="slide-content">
         <div class="slide-text">
-          <span class="slide-tag">Managed IT-Service · Festpreis</span>
+          <span class="slide-tag">Managed IT-Service · Monatspauschale</span>
           <h2 class="slide-h1">Deine IT ist <br>zu groß geworden. <br><em>Gib sie ab.</em></h2>
-          <p class="slide-p">Du hast keine Zeit mehr, dich um IT zu kümmern – und willst dich um dein echtes Geschäft kümmern. Ich übernehme. Komplett. Zum Festpreis.</p>
+          <p class="slide-p">Du hast keine Zeit mehr, dich um IT zu kümmern – und willst dich um dein echtes Geschäft kümmern. Ich übernehme. Komplett. Mit planbarer Monatspauschale.</p>
           <div class="slide-ctas">
             <a href="tel:+491782584438" class="btn-p"><svg width="18" height="18"><use href="#ico-phone"/></svg> Anrufen</a>
             <a href="https://wa.me/491782584438" target="_blank" rel="noopener" class="btn-wa" style="padding:clamp(.7rem,.9rem,1rem) clamp(1.2rem,1.8rem,2rem);font-size:clamp(.82rem,.9rem,1rem);"><svg width="18" height="18"><use href="#ico-wa"/></svg> WhatsApp</a>
@@ -1484,7 +1449,7 @@
           </div>
         </div>
         <div class="hero-qr">
-          <a href="tree/" title="Alle Kontaktwege"><img src="assets/img/qr-tree.png" alt="QR-Code – Kontakt aufnehmen" width="140" height="140"/></a>
+          <a href="/kontakt/" title="Alle Kontaktwege"><img src="assets/img/qr-tree.png" alt="QR-Code – Kontakt aufnehmen" width="140" height="140"/></a>
           <span>Scan mich.<br>Dann reden wir.</span>
         </div>
       </div>
@@ -1505,7 +1470,7 @@
           </div>
         </div>
         <div class="hero-qr">
-          <a href="tree/" title="Alle Kontaktwege"><img src="assets/img/qr-tree.png" alt="QR-Code – Kontakt aufnehmen" width="140" height="140"/></a>
+          <a href="/kontakt/" title="Alle Kontaktwege"><img src="assets/img/qr-tree.png" alt="QR-Code – Kontakt aufnehmen" width="140" height="140"/></a>
           <span>Scan mich.<br>Dann reden wir.</span>
         </div>
       </div>
@@ -1517,7 +1482,7 @@
         <div class="slide-text">
           <span class="slide-tag">Flatrate ab €149/Monat · Keine Überraschungen</span>
           <h2 class="slide-h1">Wieder Zeit <br>für dein <br><em>echtes Geschäft.</em></h2>
-          <p class="slide-p">Ich kümmere mich um deine IT – du kümmerst dich ums Geschäft. Proaktiv, zuverlässig, zum Festpreis. Schreib wann du willst – ich meld mich.</p>
+          <p class="slide-p">Ich kümmere mich um deine IT – du kümmerst dich ums Geschäft. Proaktiv und zuverlässig, mit planbarer Monatspauschale. Schreib wann du willst – ich meld mich.</p>
           <div class="slide-ctas">
             <a href="tel:+491782584438" class="btn-p"><svg width="18" height="18"><use href="#ico-phone"/></svg> Anrufen</a>
             <a href="https://wa.me/491782584438" target="_blank" rel="noopener" class="btn-wa" style="padding:clamp(.7rem,.9rem,1rem) clamp(1.2rem,1.8rem,2rem);font-size:clamp(.82rem,.9rem,1rem);"><svg width="18" height="18"><use href="#ico-wa"/></svg> WhatsApp</a>
@@ -1526,7 +1491,7 @@
           </div>
         </div>
         <div class="hero-qr">
-          <a href="tree/" title="Alle Kontaktwege"><img src="assets/img/qr-tree.png" alt="QR-Code – Kontakt aufnehmen" width="140" height="140"/></a>
+          <a href="/kontakt/" title="Alle Kontaktwege"><img src="assets/img/qr-tree.png" alt="QR-Code – Kontakt aufnehmen" width="140" height="140"/></a>
           <span>Scan mich.<br>Dann reden wir.</span>
         </div>
       </div>
@@ -1767,7 +1732,7 @@
       <div class="compare-box">
         <div class="compare-hd"><span class="bh">Großes Systemhaus</span><span class="mh">vs</span><span class="gh">Du mit Grundke IT</span></div>
         <div class="c-row"><span class="c-bad">Ticketsystem</span><span class="c-mid">→</span><span class="c-good">Direkter Kontakt</span></div>
-        <div class="c-row"><span class="c-bad">Rückruf nächste Woche</span><span class="c-mid">→</span><span class="c-good">Heute gelöst</span></div>
+        <div class="c-row"><span class="c-bad">Rückruf nächste Woche</span><span class="c-mid">→</span><span class="c-good">Meist am selben Tag</span></div>
         <div class="c-row"><span class="c-bad">Anonymes Team</span><span class="c-mid">→</span><span class="c-good">Ein Ansprechpartner</span></div>
         <div class="c-row"><span class="c-bad">Stundensatz unklar</span><span class="c-mid">→</span><span class="c-good">€110/h, fix</span></div>
         <div class="c-row"><span class="c-bad">Wochenendzuschlag</span><span class="c-mid">→</span><span class="c-good">Kein Aufschlag</span></div>
@@ -1838,7 +1803,7 @@
         <a href="mailto:info@grundke-it.de?subject=IT-Schnellcheck%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0Aich%20interessiere%20mich%20f%C3%BCr%20den%20kostenlosen%20IT-Schnellcheck.%0A%0AMein%20Unternehmen%20%2F%20meine%20Situation%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F)." class="sc-cta">
           Jetzt Termin anfragen <svg><use href="#ico-arrow-r"/></svg>
         </a>
-        <p class="sc-hint">Der Schnellcheck ist auch die Basis für die monatlichen Zustandsberichte in den <a href="#preise">Business- und Premium-Paketen</a>.</p>
+        <p class="sc-hint">Der Schnellcheck ist auch die Basis für den monatlichen IT-Report im <a href="#preise">Premium-Paket</a>.</p>
       </div>
     </div>
   </div>
@@ -1916,12 +1881,12 @@
   <div class="inner">
     <div class="s-label">Was ich für dich tue</div>
     <h2 class="s-title">Leistungen</h2>
-    <p class="s-sub">Von Sofort-Hilfe bis Vollbetreuung – egal was an deinem Netzwerk hängt, ich finde eine Lösung.</p>
+    <p class="s-sub">Von der schnellen Hilfe bei einer Störung bis zur laufenden Betreuung deiner ganzen IT.</p>
     <div class="srv-grid">
       <div class="srv-card"><div class="srv-ico"><svg><use href="#ico-network"/></svg></div><div class="srv-name">Netzwerk &amp; WLAN</div><p class="srv-desc">Router, Switches, Access Points, VLAN – sauber aufgebaut und sicher betrieben.</p></div>
       <div class="srv-card"><div class="srv-ico"><svg><use href="#ico-monitor"/></svg></div><div class="srv-name">PC &amp; Hardware</div><p class="srv-desc">Neue Hardware, Einrichtung, Austausch, Reparatur – schnell und ohne Umwege.</p></div>
       <div class="srv-card"><div class="srv-ico"><svg><use href="#ico-mail"/></svg></div><div class="srv-name">Microsoft 365 &amp; E-Mail</div><p class="srv-desc">Outlook, Teams, Exchange, SharePoint – Einrichtung und laufende Betreuung.</p></div>
-      <div class="srv-card"><div class="srv-ico"><svg><use href="#ico-shield"/></svg></div><div class="srv-name">IT-Sicherheit &amp; Backup</div><p class="srv-desc">Virenschutz, Firewall, 3-2-1 Backup-Strategie – deine Daten sind sicher.</p></div>
+      <div class="srv-card"><div class="srv-ico"><svg><use href="#ico-shield"/></svg></div><div class="srv-name">IT-Sicherheit &amp; Backup</div><p class="srv-desc">Virenschutz, Firewall und Datensicherung nach der 3-2-1-Regel, mit getesteter Rücksicherung.</p></div>
       <div class="srv-card"><div class="srv-ico"><svg><use href="#ico-camera"/></svg></div><div class="srv-name">Kamera &amp; Zugang</div><p class="srv-desc">Videoüberwachung, Türzugangssysteme, Netzwerk-Integration.</p></div>
       <div class="srv-card"><div class="srv-ico"><svg><use href="#ico-printer"/></svg></div><div class="srv-name">Drucker &amp; Peripherie</div><p class="srv-desc">Einrichtung, Treiber, Netzwerkdrucker, Kassensysteme – läuft oder wird gelöst.</p></div>
       <div class="srv-card"><div class="srv-ico"><svg><use href="#ico-cloud"/></svg></div><div class="srv-name">Cloud &amp; Hosting</div><p class="srv-desc">Website, E-Mail-Hosting, Cloud-Backup, M365 – DSGVO-konform betrieben.</p></div>
@@ -1960,7 +1925,7 @@
       <div class="bsi-info-ico"><svg><use href="#ico-info"/></svg></div>
       <div class="bsi-info-body">
         <strong>Warum eine richtige Firewall?</strong>
-        <p>Laut aktuellem BSI-Lagebericht finden täglich Millionen automatisierter Angriffsversuche auf Netzwerke im deutschsprachigen Raum statt – überwiegend vollautomatisch. Eine richtig konfigurierte Firewall filtert davon den Großteil weg, bevor dein Rechner sie überhaupt bemerkt.</p>
+        <p>Jeder Internetanschluss mit öffentlicher Adresse wird laufend automatisiert abgetastet, auch der eines kleinen Büros. Der BSI-Lagebericht beschreibt das jedes Jahr. Eine richtig konfigurierte Firewall filtert den Großteil davon weg, bevor dein Rechner etwas davon mitbekommt.</p>
         <a href="https://www.bsi.bund.de/DE/Service-Navi/Publikationen/Lagebericht/lagebericht_node.html" target="_blank" rel="noopener">→ BSI Lagebericht zur IT-Sicherheit</a>
       </div>
     </aside>
@@ -1969,7 +1934,7 @@
     <div class="leist-intro">
       <div class="s-label" style="display:inline-block;">Das komplette Spektrum</div>
       <h3>Für welche Themen bin ich da?</h3>
-      <p>Abgeleitet aus über 496 realen Einsätzen bei KMU, Handwerk, Gastro, Hotels und Praxen – das ist das, was täglich bei mir auf dem Tisch landet.</p>
+      <p>Abgeleitet aus 496 realen Einsätzen bei KMU, Handwerk, Gastro, Hotels und Praxen – das ist das, was täglich bei mir auf dem Tisch landet.</p>
     </div>
 
     <div class="leist-grid">
@@ -2057,7 +2022,7 @@
       <div class="leist-group leist-group-highlight">
         <div class="leist-head"><svg><use href="#ico-clock"/></svg><span>Vor Ort &amp; Remote – wann's brennt</span></div>
         <ul class="leist-list">
-          <li>Vor-Ort-Support im Raum München (Anfahrt in Paketen inklusive)</li>
+          <li>Vor-Ort-Support im Raum München (Anfahrt bis 5 km inklusive, darüber nach vereinbarter Pauschale)</li>
           <li>Remote-Support im 15-Minuten-Takt</li>
           <li>Keine festen Öffnungszeiten – auch Abend, Wochenende, Feiertag</li>
           <li>Single Point of Contact für alle IT-Themen</li>
@@ -2103,7 +2068,7 @@
   <div class="inner">
     <div class="s-label">Pflicht &amp; Schutz</div>
     <h2 class="s-title">IT-Sicherheitsschulung<br>&amp; Datenschutz</h2>
-    <p class="s-sub">Phishing, Social Engineering, Passwortsicherheit – die größte Schwachstelle sitzt vor dem Bildschirm. Sensibilisiere dein Team, bevor es zu spät ist.</p>
+    <p class="s-sub">Die meisten Angriffe beginnen mit einer E-Mail, die jemand im Team öffnet. In der Schulung lernen deine Leute, solche Mails zu erkennen, sichere Passwörter zu nutzen und KI-Werkzeuge ohne Datenpanne einzusetzen.</p>
 
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:1.5rem;margin-top:2.5rem;">
 
@@ -2164,7 +2129,7 @@
             <div style="font-family:var(--fh);font-size:1.05rem;font-weight:800;color:var(--text);">Kombi-Paket</div>
           </div>
         </div>
-        <p style="font-size:.84rem;color:var(--text2);line-height:1.65;margin-bottom:1rem;">Das Beste aus beiden Welten: Starte mit einer Live-Schulung, damit alle auf dem gleichen Stand sind – und halte das Wissen mit dem Portal dauerhaft aktuell.</p>
+        <p style="font-size:.84rem;color:var(--text2);line-height:1.65;margin-bottom:1rem;">Die Live-Schulung bringt alle auf denselben Stand, das Portal frischt das Wissen danach jedes Halbjahr auf.</p>
         <ul style="list-style:none;display:flex;flex-direction:column;gap:.4rem;margin-bottom:1.2rem;">
           <li style="display:flex;align-items:flex-start;gap:.5rem;font-size:.82rem;color:var(--text2);"><span class="pfy">&#10003;</span>Live-Schulung per Teams (1,5h)</li>
           <li style="display:flex;align-items:flex-start;gap:.5rem;font-size:.82rem;color:var(--text2);"><span class="pfy">&#10003;</span>Portal-Zugang für alle Mitarbeiter</li>
@@ -2304,7 +2269,7 @@
   <div class="inner">
     <div class="s-label">Für wen ich da bin</div>
     <h2 class="s-title">Dein Betrieb. Mein Job.</h2>
-    <p class="s-sub">Egal welche Branche, egal wie groß deine IT-Landschaft – ich finde eine Lösung. Raum München Ost.</p>
+    <p class="s-sub">Handwerk, Praxis, Kanzlei, Gastronomie oder Büro: Ich betreue Betriebe mit 5 bis 50 Arbeitsplätzen im Raum München Ost.</p>
     <div class="tgt-grid">
       <div class="tgt-card"><div class="tgt-ico"><svg><use href="#ico-tools"/></svg></div><div class="tgt-name">Handwerksbetriebe</div></div>
       <div class="tgt-card"><div class="tgt-ico"><svg><use href="#ico-gastro"/></svg></div><div class="tgt-name">Gastronomie &amp; Hotels</div></div>
@@ -2326,7 +2291,7 @@
     <p class="s-sub">Kein komplizierter Prozess, kein langes Onboarding. Du rufst an – wir legen los.</p>
     <div class="steps-wrap">
       <div class="step-item"><div class="step-n">01</div><div><div class="step-t">Erstgespräch</div><p class="step-d">Kostenlos, 30 Min. Was hast du, was brauchst du?</p></div></div>
-      <div class="step-item"><div class="step-n">02</div><div><div class="step-t">IT-Assessment</div><p class="step-d">Ich schaue mir dein System an und dokumentiere alles. Einmalig €110/h.</p></div></div>
+      <div class="step-item"><div class="step-n">02</div><div><div class="step-t">IT-Assessment</div><p class="step-d">Ich schaue mir dein System an und dokumentiere alles. Ohne Paket 110 € netto pro Stunde, mit Paket inklusive.</p></div></div>
       <div class="step-item"><div class="step-n">03</div><div><div class="step-t">Risiko-Report</div><p class="step-d">Du bekommst schriftlich: Was ist offen, was ist kritisch, was empfehle ich.</p></div></div>
       <div class="step-item"><div class="step-n">04</div><div><div class="step-t">Fahrplan</div><p class="step-d">Gemeinsam entscheiden: Vertrag oder Stundenbasis. Kein Druck von mir.</p></div></div>
       <div class="step-item"><div class="step-n">05</div><div><div class="step-t">Betrieb</div><p class="step-d">Remote-Zugriff eingerichtet. Du rufst an – ich regel's.</p></div></div>
@@ -2390,7 +2355,7 @@
     <div class="faq-wrap">
       <details class="faq-item"><summary>Welche IT-Services gibt es in Grasbrunn und Ottobrunn? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Ich biete das komplette Spektrum der IT-Betreuung für kleine Unternehmen: Netzwerk, WLAN, PC, Microsoft 365, IT-Sicherheit, Backup, Kassenanlagen, Kameras und mehr – vor Ort in Grasbrunn, Ottobrunn, Vaterstetten, Haar, Neubiberg und Umgebung.</div></details>
       <details class="faq-item"><summary>Was kostet eine IT-Betreuung für meinen Betrieb? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Ohne Vertrag: €110/h netto im 15-Minuten-Takt, kein Wochenendzuschlag. Mit Betreuungsvertrag ab €149/Monat – inklusive IT-Assessment, Remote-Zugriff und bevorzugtem Support.</div></details>
-      <details class="faq-item"><summary>Wie schnell bist du bei einem IT-Notfall erreichbar? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Managed-Kunden haben Priorität und werden bevorzugt behandelt. Für alle anderen: Ich melde mich so schnell wie möglich – in der Regel noch am selben Tag.</div></details>
+      <details class="faq-item"><summary>Wie schnell bist du bei einem IT-Notfall erreichbar? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Vertragskunden werden bevorzugt behandelt, Premium-Kunden zuerst. Ohne Vertrag melde ich mich so schnell wie möglich, in der Regel noch am selben Tag.</div></details>
       <details class="faq-item"><summary>Was unterscheidet dich von einem großen IT-Systemhaus? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Kein Ticketsystem, kein anonymes Team, kein Rückruf nächste Woche. Du hast einen festen Ansprechpartner – mich. Ich lerne dein System, denke mit und handle proaktiv.</div></details>
       <details class="faq-item"><summary>Was passiert wenn du im Urlaub oder krank bist? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Ich habe ein Netzwerk aus vertrauenswürdigen Kollegen, die im Notfall einspringen. Du wirst rechtzeitig informiert und bist nie ohne Ansprechpartner.</div></details>
       <details class="faq-item"><summary>Kannst du auch bei KI und Automatisierung helfen? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Ja, das ist inzwischen einer meiner Schwerpunkte. Ich baue Anwendungen, die wiederkehrende Arbeit übernehmen: E-Rechnungen aus vorhandenen Daten, Schnittstellen zwischen Programmen, Auswertungen von Kameraaufnahmen. Dazu kommt die Frage, welche KI-Werkzeuge im Betrieb überhaupt benutzt werden dürfen und wo die Daten dabei landen. In der eigenen Firma setze ich das seit über einem halben Jahr täglich ein, die ersten Kundenanwendungen laufen. <a href="/ki-fuer-kmu/">KI im Betrieb ansehen</a></div></details>
@@ -2423,7 +2388,7 @@
         <div style="font-family:var(--fm);font-size:.68rem;color:var(--cyan);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1rem;">Vor-Ort-Einsatz · ~25 km Radius</div>
         <div style="font-family:var(--fh);font-size:1rem;font-weight:700;color:var(--text);margin-bottom:.8rem;">Schnell bei dir – ohne Stau</div>
         <p style="font-size:.85rem;color:var(--text2);line-height:1.7;margin-bottom:1rem;">Grasbrunn · Ottobrunn · Vaterstetten · Haar · Neubiberg · Putzbrunn · Hohenbrunn · Baldham · Parsdorf · Zorneding · Eglharting</p>
-        <p style="font-size:.78rem;color:var(--text3);line-height:1.6;">Ich bleibe bewusst im Münchner Osten. Auf der anderen Seite Münchens steh ich im Stau – und das hilft dir nicht wenn dein Server steht.</p>
+        <p style="font-size:.78rem;color:var(--text3);line-height:1.6;">Von Neukeferloh aus sind Grasbrunn, Haar und Vaterstetten nur ein paar Minuten entfernt.</p>
       </div>
       <div style="background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--cyan);border-radius:var(--r);padding:1.8rem;">
         <div style="font-family:var(--fm);font-size:.68rem;color:var(--cyan);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1rem;">Remote-Support · Deutschlandweit</div>
@@ -2474,7 +2439,7 @@
     <div class="foot-grid">
       <div>
         <div class="foot-brand">Grundke IT-Service</div>
-        <p class="foot-desc">IT-Betreuung für Selbstständige und KMUs im Raum München Ost.<br>Persönlich, verlässlich, zum Festpreis.</p>
+        <p class="foot-desc">IT-Betreuung für Selbstständige und KMUs im Raum München Ost.<br>Persönlich und verlässlich, mit planbarer Monatspauschale.<br>Angebot für Unternehmen, alle Preise zzgl. MwSt.</p>
         <address class="foot-contact" style="font-style:normal;">
           <a href="tel:+491782584438">☎ 0178 258 44 38</a>
           <a href="https://wa.me/491782584438" target="_blank" rel="noopener">WhatsApp schreiben</a>
@@ -2485,45 +2450,46 @@
       <div>
         <div class="foot-h">Leistungen</div>
         <ul class="foot-links">
-          <li><a href="managed-it-service/">Managed IT-Service</a></li>
-          <li><a href="microsoft-365-betreuung/">Microsoft 365 Betreuung</a></li>
-          <li><a href="it-sicherheit-backup/">IT-Sicherheit &amp; Backup</a></li>
-          <li><a href="netzwerk-wlan-firewall/">Netzwerk, WLAN &amp; Firewall</a></li>
-          <li><a href="it-notdienst/">IT-Notdienst</a></li>
-          <li><a href="ki-fuer-kmu/">KI im Betrieb</a></li>
-          <li><a href="ki-automatisierung/">Abläufe automatisieren</a></li>
-          <li><a href="ki-videoanalyse/">Videoanalyse &amp; Auswertung</a></li>
-          <li><a href="ki-dsgvo/">KI rechtssicher betreiben</a></li>
-          <li><a href="empfehlungen/">Produktempfehlungen</a></li>
+          <li><a href="/managed-it-service/">Managed IT-Service</a></li>
+          <li><a href="/microsoft-365-betreuung/">Microsoft 365 Betreuung</a></li>
+          <li><a href="/it-sicherheit-backup/">IT-Sicherheit &amp; Backup</a></li>
+          <li><a href="/netzwerk-wlan-firewall/">Netzwerk, WLAN &amp; Firewall</a></li>
+          <li><a href="/it-notdienst/">IT-Notdienst</a></li>
+          <li><a href="/ki-fuer-kmu/">KI im Betrieb</a></li>
+          <li><a href="/ki-automatisierung/">Abläufe automatisieren</a></li>
+          <li><a href="/ki-videoanalyse/">Videoanalyse &amp; Auswertung</a></li>
+          <li><a href="/ki-dsgvo/">KI datenschutzgerecht einsetzen</a></li>
+          <li><a href="/empfehlungen/">Produktempfehlungen</a></li>
         </ul>
       </div>
       <div>
         <div class="foot-h">Standorte</div>
         <ul class="foot-links">
-          <li><a href="it-service-grasbrunn/">IT-Service Grasbrunn</a></li>
-          <li><a href="it-service-vaterstetten/">IT-Service Vaterstetten</a></li>
-          <li><a href="it-service-baldham/">IT-Service Baldham</a></li>
-          <li><a href="it-service-zorneding/">IT-Service Zorneding</a></li>
-          <li><a href="it-service-haar/">IT-Service Haar</a></li>
-          <li><a href="it-service-putzbrunn/">IT-Service Putzbrunn</a></li>
+          <li><a href="/it-service-grasbrunn/">IT-Service Grasbrunn</a></li>
+          <li><a href="/it-service-vaterstetten/">IT-Service Vaterstetten</a></li>
+          <li><a href="/it-service-baldham/">IT-Service Baldham</a></li>
+          <li><a href="/it-service-zorneding/">IT-Service Zorneding</a></li>
+          <li><a href="/it-service-haar/">IT-Service Haar</a></li>
+          <li><a href="/it-service-putzbrunn/">IT-Service Putzbrunn</a></li>
         </ul>
       </div>
       <div>
-        <div class="foot-h">Rechtliches</div>
+        <div class="foot-h">Kontakt &amp; Rechtliches</div>
         <ul class="foot-links">
           <li><a href="#ablauf">So arbeite ich</a></li>
-          <li><a href="tree/">Kontakt / QR-Code</a></li>
-          <li><a href="impressum/">Impressum</a></li>
-          <li><a href="datenschutz/">Datenschutz</a></li>
-          <li><a href="agb/">AGB</a></li>
-          <li><a href="barrierefreiheit/">Barrierefreiheit</a></li>
+          <li><a href="/kontakt/">Kontakt</a></li>
+          <li><a href="/fernwartung/">Fernwartung starten</a></li>
+          <li><a href="/impressum/">Impressum</a></li>
+          <li><a href="/datenschutz/">Datenschutz</a></li>
+          <li><a href="/agb/">AGB</a></li>
+          <li><a href="/barrierefreiheit/">Barrierefreiheit</a></li>
         </ul>
       </div>
     </div>
     <div class="foot-bottom">
       <span>© 2026 Grundke IT-Service · Andreas Grundke · Beethovenring 16 · 85630 Grasbrunn</span>
-      <span>Zuletzt aktualisiert: 18.06.2026</span>
-      <span class="foot-ci">v2026.04-r13 · grundke-it.de</span>
+      <span>Zuletzt aktualisiert: 23.09.2026</span>
+      <span class="foot-ci">CI 2026.01 · grundke-it.de</span>
     </div>
   </div>
 </footer>
@@ -2550,7 +2516,7 @@
       {
         "@type": "Question",
         "name": "Wie schnell bist du bei einem IT-Notfall erreichbar?",
-        "acceptedAnswer": {"@type": "Answer", "text": "Managed-Kunden haben Priorität und werden bevorzugt behandelt. Für alle anderen: Ich melde mich so schnell wie möglich – in der Regel noch am selben Tag."}
+        "acceptedAnswer": {"@type": "Answer", "text": "Vertragskunden werden bevorzugt behandelt, Premium-Kunden zuerst. Ohne Vertrag melde ich mich so schnell wie möglich, in der Regel noch am selben Tag."}
       },
       {
         "@type": "Question",

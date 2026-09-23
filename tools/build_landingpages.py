@@ -17,18 +17,29 @@ Ablauf:
      via json.dumps -> garantiert valides JSON).
   4. sitemap.xml wird komplett neu geschrieben (statische Seiten + alle Landingpages).
 
+  5. Der gemeinsame Seitenkopf (nav_html) wird auch in die Startseite und die
+     handgebauten Seiten (HAND_PAGES) geschrieben -> ein Menue fuer die ganze Site.
+
 Aufruf: python tools/build_landingpages.py
+
+Aenderungen:
+  2026-09-23  Einheitliche Navigation und Fusszeile fuer alle Seiten (nav_html,
+              footer_html, sync_shared), Buttons .btn-p/.btn-g, FAQ als Akkordeon,
+              Einstieg (hero) fuer den KI-Hub,
+              aktiver Menuepunkt per aria-current, sichtbare Brotkrumen,
+              KI-Unterseiten im Schema unter dem Hub, Pfeil-Glyphe repariert.
 """
 
 import os
 import json
+import re
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DOMAIN = "https://grundke-it.de"
 PHONE = "+491782584438"
 PHONE_DISP = "0178 258 44 38"
-TODAY = "2026-06-18"          # dateModified (Stand der letzten Aktualisierung)
-TODAY_DISP = "18. Juni 2026"  # sichtbares Datum fuer Leser (E-E-A-T-Freshness-Signal)
+TODAY = "2026-09-23"          # dateModified (Stand der letzten Aktualisierung)
+TODAY_DISP = "23. September 2026"  # sichtbares Datum fuer Leser (E-E-A-T-Freshness-Signal)
 PUB_DATE = "2026-06-15"       # datePublished (Ersterstellung der Landingpages)
 PERSON_ID = DOMAIN + "/#andreas"          # @id der Person Andreas Grundke (Startseite)
 BUSINESS_ID = DOMAIN + "/#localbusiness"  # @id des Unternehmens (Startseite)
@@ -36,8 +47,8 @@ WEBSITE_ID = DOMAIN + "/#website"         # @id der Website (Startseite)
 # Der KI-Bereich ist juenger als die uebrigen Landingpages und fuehrt deshalb eigene
 # Datumsangaben. So bleibt dateModified der Orts-/Leistungsseiten ehrlich (kein
 # kuenstliches Hochsetzen der Freshness-Signale nur wegen eines neuen Footer-Links).
-KI_DATE = "2026-08-22"          # dateModified der KI-Seiten
-KI_DATE_DISP = "22. August 2026"
+KI_DATE = "2026-09-23"          # dateModified der KI-Seiten
+KI_DATE_DISP = "23. September 2026"
 KI_PUB_DATE = "2026-08-22"      # datePublished der KI-Seiten
 
 # --------------------------------------------------------------------------- #
@@ -47,15 +58,19 @@ KI_PUB_DATE = "2026-08-22"      # datePublished der KI-Seiten
 STYLE = """  <style>
     .lp-wrap { margin-top:var(--nav-h); padding:clamp(3rem,8vw,6rem) 0; }
     .lp-content { max-width:880px; }
+    .lp-crumbs ol { display:flex; flex-wrap:wrap; gap:.35rem; list-style:none; margin:0 0 1.4rem; padding:0; font-size:.8rem; color:var(--text3); }
+    .lp-crumbs li + li::before { content:"/"; margin-right:.35rem; color:var(--border); }
+    .lp-crumbs a { color:var(--text2); text-decoration:none; }
+    .lp-crumbs a:hover { color:var(--cyan); }
+    .lp-crumbs [aria-current] { color:var(--text); }
     .lp-content h2 { font-family:var(--fh); font-size:clamp(1.3rem,3vw,1.8rem); font-weight:800; color:var(--text); letter-spacing:-.02em; margin:2.6rem 0 1rem; }
     .lp-content p { font-size:.95rem; color:var(--text2); line-height:1.8; margin-bottom:1rem; }
     .lp-content strong { color:var(--text); }
     .lp-cta-row { display:flex; flex-wrap:wrap; gap:1rem; margin:2rem 0; }
-    .lp-btn { display:inline-flex; align-items:center; gap:.6rem; padding:.9rem 1.6rem; border-radius:8px; font-family:var(--fh); font-weight:700; font-size:.95rem; text-decoration:none; transition:transform .2s,box-shadow .2s; }
-    .lp-btn.primary { background:var(--cyan); color:#04263a; }
-    .lp-btn.primary:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(38,189,239,.25); }
-    .lp-btn.ghost { border:1px solid var(--border); color:var(--text); }
-    .lp-btn.ghost:hover { border-color:var(--cyan); }
+    .lp-content .faq-wrap { margin-top:1.2rem; }
+    .lp-related { margin-top:2rem; }
+    .lp-content p a { color:var(--cyan); text-underline-offset:.2em; }
+    @media (max-width:560px) { .lp-cta-row .btn-p, .lp-cta-row .btn-g { width:100%; justify-content:center; } }
     .lp-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1rem; margin:1.5rem 0; }
     .lp-card { background:var(--bg2); border:1px solid var(--border); border-left:3px solid var(--cyan); border-radius:12px; padding:1.3rem; }
     .lp-card h3 { font-family:var(--fh); font-size:1rem; font-weight:700; color:var(--text); margin-bottom:.4rem; }
@@ -71,14 +86,7 @@ STYLE = """  <style>
     .lp-place { font-family:var(--fm); font-size:.78rem; background:var(--bg2); border:1px solid var(--border); border-radius:999px; padding:.35rem .9rem; color:var(--text2); text-decoration:none; }
     .lp-place:hover { border-color:var(--cyan); color:var(--cyan); }
     .lp-place.here { border-color:var(--cyan); color:var(--cyan); }
-    .faq-item { border-bottom:1px solid var(--border); padding:1.1rem 0; }
-    .faq-item h3 { font-family:var(--fh); font-size:1rem; font-weight:700; color:var(--text); margin-bottom:.5rem; }
-    .faq-item p { font-size:.9rem; color:var(--text2); line-height:1.7; margin:0; }
     .lp-trust { background:var(--bg2); border:1px solid var(--border); border-radius:16px; padding:1.6rem; margin:2rem 0; font-size:.9rem; color:var(--text2); line-height:1.7; }
-    .foot-links { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1.5rem; padding:2rem 0; border-bottom:1px solid var(--border); }
-    .foot-links h4 { font-family:var(--fh); font-size:.8rem; font-weight:700; color:var(--text); margin-bottom:.7rem; letter-spacing:.04em; }
-    .foot-links a { display:block; font-size:.85rem; color:var(--text2); text-decoration:none; padding:.2rem 0; }
-    .foot-links a:hover { color:var(--cyan); }
     .lp-author { display:flex; gap:1.1rem; align-items:flex-start; background:var(--bg2); border:1px solid var(--border); border-left:3px solid var(--accent); border-radius:14px; padding:1.4rem 1.5rem; margin:2.5rem 0 1rem; }
     .lp-author img { width:56px; height:56px; border-radius:50%; flex-shrink:0; background:var(--bg); object-fit:contain; border:1px solid var(--border); }
     .lp-author-body { font-size:.88rem; color:var(--text2); line-height:1.7; }
@@ -88,31 +96,141 @@ STYLE = """  <style>
     .lp-author-meta a { color:var(--cyan); text-decoration:none; }
   </style>"""
 
-NAV = """<header class="site-header">
+# --- Navigation: EINE Quelle fuer alle Seiten (seit 2026-09-23) ------------- #
+# Vorher gab es vier Varianten (Startseite, Generator, handgebaute Unterseiten,
+# Rechtsseiten) -- das Menue baute sich bei jedem Seitenwechsel um. Jetzt erzeugt
+# nav_html() den kompletten <header> und sync_shared() schreibt ihn auch in die
+# Startseite und die handgebauten Seiten (HAND_PAGES). Menue nur HIER aendern.
+#
+# (Label, Ziel auf Unterseiten, Ziel auf der Startseite, Bereichsschluessel)
+# Auf der Startseite bleiben es reine #-Anker: Scroll-Spy und Lenis-Smooth-Scroll
+# in main.js greifen nur auf href="#...".
+NAV_ITEMS = [
+    ("IT-Schnellcheck", "/#schnellcheck", "#schnellcheck", "check"),
+    ("IT-Service", "/#leistungen", "#leistungen", "it"),
+    ("KI im Betrieb", "/ki-fuer-kmu/", "/ki-fuer-kmu/", "ki"),
+    ("Schulungen", "/schulung/", "#schulung", "schulung"),
+    ("Preise", "/#preise", "#preise", "preise"),
+]
+NAV_KONTAKT = ("Kontakt", "/kontakt/", "kontakt")
+TEAMVIEWER_URL = "https://www.teamviewer.com/de/download/portal/windows/"
+MAPS_URL = ("https://www.google.com/maps/place/IT-Service+-+Andreas+Grundke/@48.0944159,11.7631063,17z/"
+            "data=!3m1!4b1!4m6!3m5!1s0x479de3eede6923f3:0x1ad9e3b1fcbd1081!8m2!3d48.0944123!4d11.7656812!16s%2Fg%2F11j7r45y6q")
+PHONE_SVG = ('<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" '
+             'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 '
+             '19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 '
+             '2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.8a16 16 0 0 0 6 6l.94-.94a2 2 0 0 1 2.11-.45 '
+             '12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>')
+DROPDOWN = (
+    '<li class="nav-dropdown" id="fernwartungDropdown"><button class="nav-dropdown-toggle" '
+    'onclick="toggleFernwartungDropdown(event)" aria-haspopup="true" aria-expanded="false">Fernwartung'
+    '<svg class="nav-dropdown-arrow" xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" '
+    'fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" '
+    'aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button>'
+    '<ul class="nav-dropdown-menu" role="menu">'
+    '<li><a href="' + TEAMVIEWER_URL + '" target="_blank" rel="noopener" class="nav-dropdown-item">'
+    '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" '
+    'stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+    '<rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line>'
+    '<line x1="12" y1="17" x2="12" y2="21"></line></svg>TeamViewer</a></li>'
+    '<li><a href="/fernwartung/" class="nav-dropdown-item nav-dropdown-item--highlight">'
+    '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" '
+    'stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+    '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>Fernwartung starten</a></li></ul></li>')
+
+
+def nav_html(current=None, home=False):
+    """Kompletter Seitenkopf (Desktop-Leiste + Mobilmenue).
+    current = (bereich, art): bereich aus NAV_ITEMS/NAV_KONTAKT, art "page" fuer die
+    Bereichsseite selbst, "true" fuer Seiten darunter (aria-current)."""
+    def cur(key):
+        if current and current[0] == key:
+            return ' aria-current="{}"'.format(current[1])
+        return ""
+
+    items = [(lbl, home_href if home else href, key) for lbl, href, home_href, key in NAV_ITEMS]
+    fw_cur = cur("fernwartung")  # Fernwartungsseite: Eintrag im Dropdown und im Mobilmenue markieren
+    dropdown = DROPDOWN.replace('<a href="/fernwartung/" class=', '<a href="/fernwartung/"' + fw_cur + ' class=')
+    k_lbl, k_href, k_key = NAV_KONTAKT
+    desk = "".join('\n      <li><a href="{h}"{c}>{l}</a></li>'.format(h=h, c=cur(k), l=l) for l, h, k in items)
+    mob = "".join('\n  <a href="{h}"{c}>{l}</a>'.format(h=h, c=cur(k), l=l) for l, h, k in items)
+    return """<header class="site-header">
 <nav aria-label="Hauptnavigation">
   <div class="nav-inner inner">
-    <a href="/" class="logo" title="Grundke IT-Service – München Ost"><picture><source srcset="../assets/img/logo-grundke-it-white-480.webp" type="image/webp"><img class="logo-img" src="../assets/img/logo-grundke-it-white-480.png" alt="Grundke IT-Service" width="180" height="60" /></picture></a>
-    <a class="nav-loc" href="https://www.google.com/maps/place/IT-Service+-+Andreas+Grundke/@48.0944159,11.7631063,17z/data=!3m1!4b1!4m6!3m5!1s0x479de3eede6923f3:0x1ad9e3b1fcbd1081!8m2!3d48.0944123!4d11.7656812!16s%2Fg%2F11j7r45y6q" target="_blank" rel="noopener" aria-label="Standort auf Google Maps anzeigen"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>München Ost</a>
-    <ul class="nav-links">
-      <li><a href="/">Startseite</a></li>
-      <li><a href="/#leistungen">Leistungen</a></li>
-      <li><a href="/ki-fuer-kmu/">KI im Betrieb</a></li>
-      <li><a href="/#preise">Preise</a></li>
-      <li><a href="/kontakt/">Kontakt</a></li>
-      <li><a href="tel:+491782584438" class="nav-cta"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.8a16 16 0 0 0 6 6l.94-.94a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>Jetzt anrufen</span></a></li>
+    <a href="/" class="logo" title="Grundke IT-Service – München Ost"><picture><source srcset="/assets/img/logo-grundke-it-white-480.webp" type="image/webp"><img class="logo-img" src="/assets/img/logo-grundke-it-white-480.png" alt="Grundke IT-Service" width="180" height="60" /></picture></a>
+    <a class="nav-loc" href="{maps}" target="_blank" rel="noopener" aria-label="Standort auf Google Maps anzeigen"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>München Ost</a>
+    <ul class="nav-links">{desk}
+      {dropdown}
+      <li><a href="{k_href}"{k_cur}>{k_lbl}</a></li>
+      <li><a href="tel:+491782584438" class="nav-cta">{phone}<span>Jetzt anrufen</span></a></li>
     </ul>
-    <button class="hamburger" id="ham" aria-label="Menü"><span></span><span></span><span></span></button>
+    <button class="hamburger" id="ham" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span><span></span></button>
   </div>
 </nav>
-<div class="mobile-menu" id="mobileMenu">
-  <a href="/">Startseite</a>
-  <a href="/#leistungen">Leistungen</a>
-  <a href="/ki-fuer-kmu/">KI im Betrieb</a>
-  <a href="/kontakt/">Kontakt</a>
-  <a href="/fernwartung/" style="color:var(--cyan);font-weight:700;">&#9889; Fernwartung starten</a>
+<div class="mobile-menu" id="mobileMenu">{mob}
+  <a href="{k_href}"{k_cur}>{k_lbl}</a>
+  <a href="{tv}" target="_blank" rel="noopener">Fernwartung (TeamViewer)</a>
+  <a href="/fernwartung/"{fw_cur} style="color:var(--cyan);font-weight:700;">&#9889; Fernwartung starten</a>
   <a href="tel:+491782584438" class="m-cta">Jetzt anrufen · 0178 258 44 38</a>
 </div>
-</header>"""
+</header>""".format(maps=MAPS_URL, desk=desk, mob=mob, dropdown=dropdown, phone=PHONE_SVG, fw_cur=fw_cur,
+                     k_href=k_href, k_lbl=k_lbl, k_cur=cur(k_key), tv=TEAMVIEWER_URL)
+
+
+def section_of(slug):
+    """Bereich einer generierten Seite fuer Menue-Markierung und Brotkrumen."""
+    if slug == "ki-fuer-kmu":
+        return ("ki", "page")
+    if slug.startswith("ki-"):
+        return ("ki", "true")
+    return ("it", "true")
+
+
+# Handgebaute Seiten, deren <header> und <footer> sync_shared() ersetzt: Pfad -> current
+HAND_PAGES = {
+    "index.html": None,
+    "kontakt/index.html": ("kontakt", "page"),
+    "schulung/index.html": ("schulung", "page"),
+    "fernwartung/index.html": ("fernwartung", "page"),
+    "empfehlungen/index.html": None,
+    "impressum/index.html": None,
+    "datenschutz/index.html": None,
+    "agb/index.html": None,
+    "barrierefreiheit/index.html": None,
+    "404.html": None,
+}
+HEADER_RE = re.compile(r'<header class="site-header">.*?</header>', re.S)
+
+
+FOOTER_RE = re.compile(r'<footer class="site-footer">.*?</footer>', re.S)
+UPDATED_RE = re.compile(r'<span>Zuletzt aktualisiert: ([^<]+)</span>')
+
+
+def sync_shared(places, services):
+    """Schreibt den gemeinsamen Header und Footer in die handgebauten Seiten.
+    Ein vorhandenes 'Zuletzt aktualisiert' im Fuss (Startseite) bleibt erhalten."""
+    for rel, current in HAND_PAGES.items():
+        path = os.path.join(ROOT, rel)
+        with open(path, encoding="utf-8", newline="") as f:
+            html = f.read()
+        home = rel == "index.html"
+        page_path = "/" + os.path.dirname(rel) + "/" if "/" in rel else "/"
+        old_footer = FOOTER_RE.search(html)
+        if not old_footer or not HEADER_RE.search(html):
+            raise SystemExit("Header oder Footer fehlt in " + rel)
+        upd = UPDATED_RE.search(old_footer.group(0))
+        blocks = [(HEADER_RE, nav_html(current, home=home)),
+                  (FOOTER_RE, footer_html(places, services, page_path,
+                                          upd.group(1) if upd else None, home))]
+        html_new = html
+        for rx, block in blocks:
+            if "\r\n" in html:  # Zeilenenden der Datei beibehalten (404.html ist CRLF)
+                block = block.replace("\n", "\r\n")
+            html_new = rx.sub(lambda _m, b=block: b, html_new, count=1)
+        if html_new != html:
+            with open(path, "w", encoding="utf-8", newline="") as f:
+                f.write(html_new)
+            print("  Header/Footer aktualisiert: " + rel)
 
 STICKY = """<div class="sticky-contact" id="stickyContact" role="navigation" aria-label="Kontakt-Optionen">
   <a href="tel:+491782584438" class="sc-btn sc-phone" aria-label="Anrufen">
@@ -183,42 +301,74 @@ def head(title, desc, slug, og_title, og_desc, og_alt):
            domain=DOMAIN)
 
 
-def footer(places, services):
-    place_links = "".join(
-        '\n        <a href="/it-service-{slug}/">IT-Service {name}</a>'.format(slug=p["slug"], name=esc(p["name"]))
-        for p in places)
-    service_links = "".join(
-        '\n        <a href="/{slug}/">{name}</a>'.format(slug=s["slug"], name=esc(s["nav"]))
-        for s in services)
+MAILTO_PREFILLED = "mailto:info@grundke-it.de?subject=Anfrage%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0AMein%20Anliegen%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F)."
+LEGAL_LINKS = [("Impressum", "/impressum/"), ("Datenschutz", "/datenschutz/"),
+               ("AGB", "/agb/"), ("Barrierefreiheit", "/barrierefreiheit/")]
+
+
+def footer_html(places, services, current_path="", updated=None, home=False):
+    """Gemeinsamer Fuss fuer ALLE Seiten (seit 2026-09-23; vorher fuenf Varianten).
+    Aufbau wie auf der Startseite: Marke/Kontakt · Leistungen · Standorte · Rechtliches.
+    current_path markiert den Link der aktuellen Seite (aria-current), updated zeigt
+    optional 'Zuletzt aktualisiert' (nur die Startseite fuehrt das im Fuss)."""
+    def li(label, href):
+        cur = ' aria-current="page"' if href == current_path else ""
+        return '\n          <li><a href="{h}"{c}>{l}</a></li>'.format(h=href, c=cur, l=esc(label))
+    service_links = "".join(li(sv["nav"], "/" + sv["slug"] + "/") for sv in services)
+    service_links += li("Produktempfehlungen", "/empfehlungen/")
+    place_links = "".join(li("IT-Service " + pl["name"], "/it-service-" + pl["slug"] + "/") for pl in places)
+    legal_links = (li("So arbeite ich", "#ablauf" if home else "/#ablauf")
+                   + li("Kontakt", "/kontakt/") + li("Fernwartung starten", "/fernwartung/")
+                   + "".join(li(l, h) for l, h in LEGAL_LINKS))
+    updated_html = '\n      <span>Zuletzt aktualisiert: {}</span>'.format(updated) if updated else ""
     return """<footer class="site-footer">
   <div class="inner">
-    <div class="foot-links">
+    <div class="foot-grid">
       <div>
-        <h4>Standorte</h4>{place_links}
+        <div class="foot-brand">Grundke IT-Service</div>
+        <p class="foot-desc">IT-Betreuung für Selbstständige und KMUs im Raum München Ost.<br>Persönlich und verlässlich, mit planbarer Monatspauschale.<br>Angebot für Unternehmen, alle Preise zzgl. MwSt.</p>
+        <address class="foot-contact" style="font-style:normal;">
+          <a href="tel:+491782584438">☎ 0178 258 44 38</a>
+          <a href="https://wa.me/491782584438" target="_blank" rel="noopener">WhatsApp schreiben</a>
+          <a href="{mailto}">info@grundke-it.de</a>
+          <a href="https://grundke-it.de">www.grundke-it.de</a>
+        </address>
       </div>
       <div>
-        <h4>Leistungen</h4>{service_links}
+        <div class="foot-h">Leistungen</div>
+        <ul class="foot-links">{service_links}
+        </ul>
       </div>
       <div>
-        <h4>Kontakt</h4>
-        <a href="tel:+491782584438">0178 258 44 38</a>
-        <a href="mailto:info@grundke-it.de">info@grundke-it.de</a>
-        <a href="/kontakt/">Kontaktseite</a>
-        <a href="/fernwartung/">Fernwartung starten</a>
+        <div class="foot-h">Standorte</div>
+        <ul class="foot-links">{place_links}
+        </ul>
+      </div>
+      <div>
+        <div class="foot-h">Kontakt &amp; Rechtliches</div>
+        <ul class="foot-links">{legal_links}
+        </ul>
       </div>
     </div>
-    <nav class="foot-legal" aria-label="Rechtliche Hinweise">
-      <a href="/impressum/">Impressum</a>
-      <a href="/datenschutz/">Datenschutz</a>
-      <a href="/agb/">AGB</a>
-      <a href="/barrierefreiheit/">Barrierefreiheit</a>
-    </nav>
     <div class="foot-bottom">
-      <span>© 2026 Grundke IT-Service · Andreas Grundke · Beethovenring 16 · 85630 Grasbrunn</span>
+      <span>© 2026 Grundke IT-Service · Andreas Grundke · Beethovenring 16 · 85630 Grasbrunn</span>{updated}
       <span class="foot-ci">CI 2026.01 · grundke-it.de</span>
     </div>
   </div>
-</footer>""".format(place_links=place_links, service_links=service_links)
+</footer>""".format(mailto=MAILTO_PREFILLED, service_links=service_links, place_links=place_links,
+                     legal_links=legal_links, updated=updated_html)
+
+
+KI_HUB = ("KI im Betrieb", "ki-fuer-kmu")
+
+
+def crumb_trail(name, slug):
+    """Pfad Startseite > (KI-Hub) > Seite als Liste von (Name, URL-Pfad)."""
+    trail = [("Startseite", "/")]
+    if slug.startswith("ki-") and slug != KI_HUB[1]:
+        trail.append((KI_HUB[0], "/" + KI_HUB[1] + "/"))
+    trail.append((name, "/" + slug + "/"))
+    return trail
 
 
 def breadcrumb(name, slug):
@@ -226,10 +376,18 @@ def breadcrumb(name, slug):
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         "itemListElement": [
-            {"@type": "ListItem", "position": 1, "name": "Startseite", "item": DOMAIN + "/"},
-            {"@type": "ListItem", "position": 2, "name": name, "item": DOMAIN + "/" + slug + "/"},
+            {"@type": "ListItem", "position": i, "name": n, "item": DOMAIN + u}
+            for i, (n, u) in enumerate(crumb_trail(name, slug), start=1)
         ],
     }
+
+
+def crumbs_html(name, slug):
+    """Sichtbare Brotkrumen, deckungsgleich mit dem BreadcrumbList-Schema."""
+    trail = crumb_trail(name, slug)
+    links = "".join('<li><a href="{u}">{n}</a></li>'.format(u=u, n=esc(n)) for n, u in trail[:-1])
+    return ('<nav class="lp-crumbs" aria-label="Brotkrumen"><ol>{l}'
+            '<li aria-current="page">{n}</li></ol></nav>').format(l=links, n=esc(trail[-1][0]))
 
 
 def faq_schema(faqs):
@@ -282,10 +440,12 @@ def author_box(mod_disp=None):
 
 
 def faq_html(faqs):
+    """FAQ als Akkordeon (<details>), gleiches Markup wie auf der Startseite.
+    Text bleibt zeichengleich mit dem FAQPage-Schema (faq_schema)."""
     items = "".join(
-        '\n      <div class="faq-item">\n        <h3>{q}</h3>\n        <p>{a}</p>\n      </div>'.format(
-            q=esc(q), a=esc(a)) for q, a in faqs)
-    return items
+        '\n        <details class="faq-item"><summary>{q} <span class="faq-ico" aria-hidden="true">+</span></summary>'
+        '<div class="faq-a">{a}</div></details>'.format(q=esc(q), a=esc(a)) for q, a in faqs)
+    return '\n      <div class="faq-wrap">' + items + '\n      </div>'
 
 
 def cards_html(cards):
@@ -294,7 +454,7 @@ def cards_html(cards):
         for h, t in cards)
 
 
-def page(head_html, schema_blocks, main_html, places, services, extra_style=""):
+def page(head_html, schema_blocks, main_html, places, services, extra_style="", slug=""):
     """extra_style wird nur von Seiten genutzt, die eigene Bausteine mitbringen
     (KI-Bereich). Alle uebrigen Seiten bleiben dadurch unveraendert."""
     parts = [head_html, STYLE]
@@ -305,11 +465,11 @@ def page(head_html, schema_blocks, main_html, places, services, extra_style=""):
     parts.append("</head>")
     parts.append('<body class="has-sticky-call">')
     parts.append('<a class="skip-link" href="#main">Zum Inhalt springen</a>')
-    parts.append(NAV)
+    parts.append(nav_html(section_of(slug)))
     parts.append('\n<main id="main">')
     parts.append(main_html)
     parts.append("</main>\n")
-    parts.append(footer(places, services))
+    parts.append(footer_html(places, services, "/" + slug + "/"))
     parts.append('<script src="../assets/js/main.js"></script>\n')
     parts.append(STICKY)
     parts.append("</body>\n</html>\n")
@@ -365,7 +525,7 @@ PLACES = [
         "intro": ("Zorneding mit Pöring und Wolfesing liegt an der S-Bahn-Linie S4 im grünen Osten "
                   "des Landkreises Ebersberg. Viele Handwerksbetriebe und kleine Firmen hier haben "
                   "keine eigene IT-Abteilung – genau dafür bin ich da: als externer IT-Betreuer mit "
-                  "kurzen Wegen und festen Reaktionszeiten."),
+                  "kurzen Wegen und einem festen Ansprechpartner."),
         "near_q": "Betreust du auch Betriebe in Zorneding und Pöring?",
         "near_a": ("Ja. Zorneding, Pöring und Wolfesing liegen in meinem Einsatzgebiet im Münchner "
                    "Osten. Ob laufende Betreuung oder einmalige Hilfe – ich bin schnell erreichbar "
@@ -390,7 +550,7 @@ PLACES = [
                   "Ansprechpartner – zu einem einheitlichen Stundensatz, abgerechnet im "
                   "15-Minuten-Takt und ohne versteckte Kosten."),
         "near_q": "Gibt es in Putzbrunn nicht schon genug IT-Dienstleister?",
-        "near_a": ("Einige – aber kaum einen, der so persönlich und transparent arbeitet wie ich. "
+        "near_a": ("Einige. Bei mir hast du einen einzigen Ansprechpartner, der die Arbeit selbst macht. "
                    "Du bekommst einen festen Ansprechpartner statt Ticketsystem, faire Abrechnung im "
                    "15-Minuten-Takt und schnelle Hilfe für Putzbrunn und Solalinden."),
     },
@@ -414,7 +574,7 @@ def place_faqs(p):
          "anonymen Hotline möchten."),
         ("Was kostet IT-Service in {n}?".format(n=p["name"]),
          "Einzeleinsätze rechne ich transparent im 15-Minuten-Takt ab. Für laufende Betreuung gibt "
-         "es feste Monatspakete mit garantierten Reaktionszeiten – planbar und ohne versteckte Kosten."),
+         "es planbare Monatspakete, in denen Vertragskunden bevorzugt behandelt werden."),
         ("Wie schnell bekomme ich Hilfe?",
          "Akute Störungen löse ich oft sofort per Fernwartung. Vor-Ort-Termine sind durch die kurzen "
          "Wege meist am selben oder nächsten Tag möglich; Managed-Kunden haben Priorität."),
@@ -463,13 +623,14 @@ def render_place(p, places, services):
     main = """<article class="lp-wrap">
   <div class="inner">
     <div class="lp-content">
+      {crumbs}
       <div class="s-label">IT-Service vor Ort</div>
       <h1 class="s-title">IT-Service in {tn}</h1>
       <p class="s-sub">Dein persönlicher IT-Betreuer für {name} – kurze Wege, schnelle Hilfe, ein fester Ansprechpartner statt anonymer Hotline.</p>
 
       <div class="lp-cta-row">
-        <a href="tel:+491782584438" class="lp-btn primary">Jetzt anrufen · 0178 258 44 38</a>
-        <a href="/kontakt/" class="lp-btn ghost">Kontakt &amp; Anfrage</a>
+        <a href="tel:+491782584438" class="btn-p">Jetzt anrufen · 0178 258 44 38</a>
+        <a href="/kontakt/" class="btn-g">Kontakt &amp; Anfrage</a>
       </div>
 
       <p>{intro}</p>
@@ -479,11 +640,11 @@ def render_place(p, places, services):
       </div>
 
       <div class="lp-trust">
-        <strong>Warum Unternehmen aus {name} mit mir arbeiten:</strong> Ein einheitlicher Stundensatz, Abrechnung im 15-Minuten-Takt, keine versteckten Kosten – und ein Ansprechpartner, der zurückruft. Genau das, was meine Kunden in den Google-Bewertungen mit „schnell, zuverlässig und in sehr guter Qualität" beschreiben.
+        <strong>Warum Unternehmen aus {name} mit mir arbeiten:</strong> Ein einheitlicher Stundensatz, Abrechnung im 15-Minuten-Takt, keine versteckten Kosten – und ein Ansprechpartner, der zurückruft. Genau das, was meine Kunden in den Google-Bewertungen mit „schnell, zuverlässig und in sehr guter Qualität“ beschreiben.
       </div>
 
       <h2>Auch in deiner Nähe im Einsatz</h2>
-      <p>Von Neukeferloh aus betreue ich den gesamten Münchner Osten im Umkreis von rund 10&nbsp;km:</p>
+      <p>Von Neukeferloh aus betreue ich den gesamten Münchner Osten im Umkreis von rund 25&nbsp;km:</p>
       <div class="lp-places">
         {chips}
       </div>
@@ -491,16 +652,16 @@ def render_place(p, places, services):
       <h2>Häufige Fragen zum IT-Service in {name}</h2>{faqs}
 {author}
       <div class="lp-cta-row" style="margin-top:2.5rem;">
-        <a href="tel:+491782584438" class="lp-btn primary">IT-Problem? Jetzt anrufen</a>
-        <a href="/managed-it-service/" class="lp-btn ghost">Mehr zur laufenden IT-Betreuung</a>
+        <a href="tel:+491782584438" class="btn-p">IT-Problem? Jetzt anrufen</a>
+        <a href="/managed-it-service/" class="btn-g">Mehr zur laufenden IT-Betreuung</a>
       </div>
     </div>
   </div>
-</article>""".format(tn=esc(p["title_name"]), name=esc(p["name"]), intro=esc(p["intro"]),
+</article>""".format(crumbs=crumbs_html("IT-Service " + p["name"], slug), tn=esc(p["title_name"]), name=esc(p["name"]), intro=esc(p["intro"]),
                      cards=cards_html(PLACE_CARDS), chips=chips_html, faqs=faq_html(faqs),
                      author=author_box())
 
-    return slug, page(h, schema, main, places, services)
+    return slug, page(h, schema, main, places, services, slug=slug)
 
 
 # --------------------------------------------------------------------------- #
@@ -531,6 +692,25 @@ POTENZIALCHECK_SCHEMA = {
 # eingehaengt, damit Orts- und uebrige Leistungsseiten unveraendert bleiben.
 KI_STYLE = '''  <style>
     /* Bausteine nur fuer den KI-Bereich (via extra_style, damit die uebrigen Seiten unveraendert bleiben) */
+    .lp-wrap--hero { padding-top:0; }
+    .lp-hero { background:var(--bg2); border-bottom:1px solid var(--border); padding:clamp(2.5rem,7vw,5.5rem) 0 clamp(2.5rem,6vw,4.5rem); margin-bottom:clamp(2.5rem,6vw,4rem); position:relative; overflow:hidden; }
+    .lp-hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 55% 70% at 85% 15%, rgba(12,77,162,.28), transparent 70%); pointer-events:none; }
+    .lp-hero-grid { position:relative; display:grid; gap:clamp(2rem,5vw,4rem); align-items:center; }
+    @media (min-width:1024px) { .lp-hero-grid { grid-template-columns:minmax(0,1.35fr) minmax(0,1fr); } }
+    .lp-hero-h1 { font-family:var(--fh); font-size:clamp(2.1rem,5.2vw,3.6rem); font-weight:800; line-height:1.07; letter-spacing:-.035em; color:var(--text); margin-bottom:1.1rem; text-wrap:balance; }
+    .lp-hero-accent { display:block; color:var(--cyan); }
+    .lp-hero .lp-cta-row { margin-bottom:0; }
+    .lp-paths { background:var(--bg); border:1px solid var(--border); border-radius:14px; padding:.6rem; }
+    .lp-paths-h { font-family:var(--fh); font-size:.95rem; font-weight:700; color:var(--text); padding:.8rem .9rem .5rem; }
+    .lp-paths ul { list-style:none; margin:0; padding:0; }
+    .lp-paths li + li { border-top:1px solid var(--border); }
+    .lp-paths a { display:block; padding:.95rem .9rem; border-radius:10px; text-decoration:none; transition:background .2s; }
+    .lp-paths a:hover { background:var(--bg3); }
+    .lp-paths a:focus-visible { outline:2px solid var(--cyan); outline-offset:2px; }
+    .lp-path-t { display:block; font-family:var(--fh); font-weight:700; font-size:1rem; color:var(--text); }
+    .lp-path-t::after { content:" →"; color:var(--cyan); transition:margin .2s; }
+    .lp-paths a:hover .lp-path-t::after { margin-left:.25rem; }
+    .lp-path-d { display:block; font-size:.85rem; color:var(--text2); line-height:1.55; margin-top:.25rem; }
     .ki-case { background:var(--bg2); border:1px solid var(--border); border-left:3px solid var(--cyan); border-radius:14px; padding:1.5rem 1.6rem; margin:1.1rem 0; }
     .ki-case-tag { font-family:var(--fm); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--cyan); display:block; margin-bottom:.5rem; }
     .ki-case h3 { font-family:var(--fh); font-size:1.05rem; font-weight:800; color:var(--text); margin:0 0 .6rem; letter-spacing:-.01em; }
@@ -553,11 +733,6 @@ KI_STYLE = '''  <style>
     .ki-tbl td { padding:.85rem .9rem; border-bottom:1px solid var(--border); color:var(--text2); line-height:1.65; vertical-align:top; }
     .ki-tbl td:first-child { color:var(--text); font-weight:600; white-space:nowrap; }
     .ki-tbl tr:last-child td { border-bottom:none; }
-    .ki-link { display:block; text-decoration:none; transition:border-color .2s,transform .2s; }
-    .ki-link:hover { border-color:var(--cyan); transform:translateY(-2px); }
-    .ki-link h3 { color:var(--text); }
-    .ki-link .ki-more { display:inline-block; margin-top:.7rem; font-family:var(--fh); font-size:.82rem; font-weight:700; color:var(--cyan); }
-    .ki-link .ki-more::after { content:" 92"; }
   </style>'''
 
 
@@ -568,9 +743,9 @@ SERVICES = [
         "h1": "Managed IT-Service für kleine &amp; mittlere Unternehmen",
         "label": "Laufende IT-Betreuung", "service_type": "Managed IT-Service",
         "desc": ("Managed IT-Service für kleine & mittlere Unternehmen im Raum München Ost: laufende "
-                 "IT-Betreuung, feste Reaktionszeiten, ein persönlicher Ansprechpartner. Planbare "
+                 "IT-Betreuung, bevorzugter Support, ein persönlicher Ansprechpartner. Planbare "
                  "Monatspakete statt teurer Ausfälle."),
-        "sub": "Deine komplette IT in einer Hand – proaktiv betreut, mit festen Reaktionszeiten und einem persönlichen Ansprechpartner, der zurückruft.",
+        "sub": "Deine komplette IT in einer Hand – proaktiv betreut, mit bevorzugtem Support und einem persönlichen Ansprechpartner, der zurückruft.",
         "intro": ("Die meisten kleinen Unternehmen rufen erst an, wenn die IT schon steht – und dann "
                   "wird es teuer. <strong>Managed IT-Service dreht das um:</strong> Ich kümmere mich "
                   "laufend um deine Rechner, Server, E-Mails und Sicherheit, bevor etwas ausfällt. "
@@ -583,17 +758,17 @@ SERVICES = [
             ("Microsoft 365", "Postfächer, Teams, Lizenzen und Sicherheit zentral verwaltet."),
             ("Backup & Wiederherstellung", "Automatische Datensicherung nach 3-2-1 – inklusive Test der Rücksicherung."),
             ("IT-Sicherheit", "Virenschutz, Firewall, VPN und Schutz vor Ransomware & Phishing."),
-            ("Schneller Support", "Feste Reaktionszeiten – Premium-Kunden in unter 1 Stunde."),
+            ("Bevorzugter Support", "Vertragskunden kommen vor Ad-hoc-Anfragen dran, Premium-Kunden zuerst."),
             ("Beratung & Einkauf", "Hardware-Empfehlungen und Beschaffung ohne Aufschlag-Spielchen."),
         ],
         "prices": [
             ("Starter", "149 €", "Laufende Betreuung für kleine Teams & Einzelplätze.", False),
-            ("Business", "249 €", "Erweiterte Betreuung mit kürzeren Reaktionszeiten.", True),
-            ("Premium", "449 €", "Rundum-Betreuung mit höchster Priorität (unter 1 Std.).", False),
+            ("Business", "249 €", "Erweiterte Betreuung mit Patchmanagement.", True),
+            ("Premium", "449 €", "Rundum-Betreuung mit höchster Priorität, Virenschutz und Monatsreport.", False),
         ],
         "offers": [
             ("Starter", "149.00", "Laufende IT-Betreuung für kleine Teams."),
-            ("Business", "249.00", "Erweiterte Betreuung mit kürzeren Reaktionszeiten."),
+            ("Business", "249.00", "Erweiterte Betreuung mit Patchmanagement."),
             ("Premium", "449.00", "Rundum-Betreuung mit höchster Priorität."),
         ],
         "faqs": [
@@ -606,11 +781,11 @@ SERVICES = [
              "haben, aber auf funktionierende IT angewiesen sind – Handwerk, Büros, Praxen, Kanzleien "
              "und Gastronomie."),
             ("Was kostet Managed IT-Service?",
-             "Es gibt feste Monatspakete ab 149 € (Starter), 249 € (Business) und 449 € (Premium). "
-             "Welches Paket passt, hängt von Anzahl der Arbeitsplätze und gewünschter Reaktionszeit "
+             "Es gibt feste Monatspakete ab 149 € (Starter), 249 € (Business) und 449 € (Premium), jeweils netto. "
+             "Welches Paket passt, hängt von der Anzahl der Arbeitsplätze und dem gewünschten Umfang "
              "ab – das klären wir in einem kurzen kostenlosen Erstgespräch."),
             ("Bin ich an lange Verträge gebunden?",
-             "Nein. Die Betreuung ist fair und planbar kalkuliert, ohne überlange Mindestlaufzeiten. "
+             "Nein. Die Monatspakete sind monatlich kündbar. "
              "Du behältst die Kontrolle und einen festen Ansprechpartner – kein Ticketsystem, keine "
              "Warteschleife."),
         ],
@@ -639,7 +814,7 @@ SERVICES = [
         "faqs": [
             ("Was kostet die Microsoft 365 Betreuung?",
              "Die Einrichtung rechne ich transparent nach Aufwand im 15-Minuten-Takt ab; die laufende "
-             "Betreuung ist Teil meiner Managed-IT-Pakete ab 149 € im Monat. Die Microsoft-Lizenzen "
+             "Betreuung ist Teil meiner Managed-IT-Pakete ab 149 € netto im Monat. Die Microsoft-Lizenzen "
              "selbst kommen je nach Plan hinzu."),
             ("Kannst du mein altes Postfach zu Microsoft 365 migrieren?",
              "Ja. Ich migriere E-Mails, Kontakte und Kalender von einem alten Exchange-Server, von "
@@ -689,7 +864,7 @@ SERVICES = [
              "zurückspielen lassen."),
             ("Was kostet IT-Sicherheit für ein kleines Unternehmen?",
              "Deutlich weniger als ein einziger ernster Ausfall. Backup, Virenschutz und Firewall sind "
-             "Teil meiner Managed-IT-Pakete ab 149 € im Monat oder als Einzelprojekt zum festen "
+             "Teil meiner Managed-IT-Pakete ab 149 € netto im Monat oder als Einzelprojekt zum festen "
              "Stundensatz umsetzbar."),
         ],
     },
@@ -735,7 +910,7 @@ SERVICES = [
         "title": "IT-Notdienst & schnelle IT-Hilfe | München Ost – Andreas Grundke IT-Service",
         "h1": "IT-Notdienst &amp; schnelle IT-Hilfe",
         "label": "Soforthilfe", "service_type": "IT-Notdienst",
-        "desc": ("IT-Notdienst für KMU & Privat im Raum München Ost: schnelle Hilfe bei IT-Störungen, "
+        "desc": ("IT-Notdienst für Unternehmen im Raum München Ost: schnelle Hilfe bei IT-Störungen, "
                  "Virenbefall und Datenverlust – sofort per Fernwartung oder vor Ort. Dein ITler geht "
                  "nicht ran? Ich schon."),
         "sub": "Dein ITler geht nicht ran? Ich schon. Schnelle Hilfe bei IT-Störungen – sofort per Fernwartung oder vor Ort.",
@@ -757,14 +932,14 @@ SERVICES = [
              "nötig, bin ich durch die kurzen Wege im Münchner Osten in der Regel am selben Tag bei dir."),
             ("Was kostet der IT-Notdienst?",
              "Ad-hoc-Hilfe rechne ich transparent zum einheitlichen Stundensatz im 15-Minuten-Takt ab "
-             "– du zahlst nur die tatsächlich benötigte Zeit, ohne Pauschal-Abzocke."),
+             "– du zahlst nur die tatsächlich benötigte Zeit."),
             ("Wie funktioniert die Fernwartung?",
              "Du lädst ein kleines Programm (TeamViewer) und nennst mir die Verbindungs-ID. Ich "
-             "verbinde mich, du siehst alles mit und kannst die Sitzung jederzeit beenden – "
-             "DSGVO-konform und sicher."),
+             "verbinde mich, du siehst alles mit und kannst die Sitzung jederzeit beenden. Ohne deine "
+             "Freigabe komme ich nicht auf deinen Rechner."),
             ("Hilfst du auch Privatkunden?",
-             "Ja. Neben Unternehmen helfe ich auch Privatpersonen im Raum München Ost bei IT-Problemen "
-             "– vom langsamen PC bis zum Virenbefall."),
+             "Nein. Mein Angebot richtet sich an Unternehmen, Selbstständige und Freiberufler. "
+             "Alle Preise verstehen sich zuzüglich Mehrwertsteuer."),
         ],
     },
     # ----------------------------------------------------------------------- #
@@ -774,7 +949,16 @@ SERVICES = [
     {
         "slug": "ki-fuer-kmu", "nav": "KI im Betrieb",
         "title": "KI für KMU – Anwendungen im Betrieb | Grundke IT-Service München Ost",
-        "h1": "KI im Betrieb – für kleine &amp; mittlere Unternehmen",
+        "h1": "KI im Betrieb",
+        "hero": {
+            "accent": "für kleine &amp; mittlere Unternehmen",
+            "paths_label": "Die drei Bereiche",
+            "paths": [
+                ("Abläufe automatisieren", "E-Rechnungen aus vorhandenen Daten, Schnittstellen, Berichte ohne Excel-Bastelei.", "/ki-automatisierung/"),
+                ("Videoanalyse und Auswertung", "Vorhandene Kameras zählen, erkennen und protokollieren.", "/ki-videoanalyse/"),
+                ("KI datenschutzgerecht einsetzen", "Wo das Modell läuft, Auftragsverarbeitung, Nutzungsrichtlinie.", "/ki-dsgvo/"),
+            ],
+        },
         "label": "KI in der Praxis", "service_type": "KI-Beratung und Anwendungsentwicklung für KMU",
         "published": KI_PUB_DATE, "modified": KI_DATE, "modified_disp": KI_DATE_DISP,
         "extra_style": KI_STYLE,
@@ -816,7 +1000,7 @@ SERVICES = [
         <span class="ki-case-tag">Kundenprojekt · Rechnungsstellung</span>
         <h3>E-Rechnungen ohne Abtippen</h3>
         <p>Die Leistungsdaten lagen als CSV-Export aus einem Vorsystem vor, die Rechnungen entstanden daraus von Hand. Jeden Monat dieselbe Strecke, jedes Mal einige Stunden, und gelegentlich ein Zahlendreher, den erst der Kunde bemerkt.</p>
-        <p>Heute liest ein Programm den Export ein, ordnet die Positionen zu und erzeugt daraus normgerechte E-Rechnungen im Format XRechnung beziehungsweise ZUGFeRD. Gerechnet wird gegen die Ausgangsdaten gegengeprüft, damit nichts ungesehen durchläuft.</p>
+        <p>Heute liest ein Programm den Export ein, ordnet die Positionen zu und erzeugt daraus normgerechte E-Rechnungen im Format XRechnung beziehungsweise ZUGFeRD. Jede Rechnung wird gegen die Ausgangsdaten gegengeprüft, damit nichts ungesehen durchläuft.</p>
         <p class="ki-result">Aus einem halben Arbeitstag im Monat sind ein paar Minuten geworden. Die Umstellung auf die kommende E-Rechnungspflicht ist damit nebenbei erledigt, statt kurz vor der Frist anzustehen.</p>
       </div>
 
@@ -837,8 +1021,8 @@ SERVICES = [
           <li>Das Papier gehört dir, auch wenn wir nicht weiterarbeiten</li>
         </ul>
         <div class="lp-cta-row" style="margin:0;">
-          <a href="tel:+491782584438" class="lp-btn primary">Potenzialcheck vereinbaren</a>
-          <a href="/kontakt/" class="lp-btn ghost">Lieber schreiben</a>
+          <a href="tel:+491782584438" class="btn-p">Potenzialcheck vereinbaren</a>
+          <a href="/kontakt/" class="btn-g">Lieber schreiben</a>
         </div>
       </div>
 
@@ -846,12 +1030,6 @@ SERVICES = [
       <p>Nicht jede Aufgabe verdient eine eigene Anwendung. Was dreimal im Jahr vorkommt, ist von Hand billiger als jede Automatisierung, und wenn ein Ablauf sich alle paar Monate ändert, wird die Pflege teurer als der Nutzen. Auch dort, wo es am Ende auf ein Urteil ankommt und nicht auf eine Regel, hat eine Maschine wenig verloren.</p>
       <p>Das sage ich im Erstgespräch, bevor daraus ein Projekt wird. Mir ist ein Kunde lieber, der einmal etwas Sinnvolles bekommt, als einer, der ein halbes Jahr später merkt, dass er es nie gebraucht hat.</p>
 
-      <h2>Die drei Bereiche im Einzelnen</h2>
-      <div class="lp-grid">
-        <a class="lp-card ki-link" href="/ki-automatisierung/"><h3>Abläufe automatisieren</h3><p>E-Rechnungen aus vorhandenen Daten, Schnittstellen zwischen Programmen, Dokumente auslesen, Berichte ohne Excel-Bastelei.</p><span class="ki-more">Ansehen</span></a>
-        <a class="lp-card ki-link" href="/ki-videoanalyse/"><h3>Videoanalyse und Auswertung</h3><p>Objekte erkennen, Vorgänge zählen, Ereignisse protokollieren, Kennzahlen darstellen. Auf Basis der vorhandenen Kameras.</p><span class="ki-more">Ansehen</span></a>
-        <a class="lp-card ki-link" href="/ki-dsgvo/"><h3>KI rechtssicher betreiben</h3><p>Wo das Modell läuft, welcher Anbieter einen Auftragsverarbeitungsvertrag bietet, was in eine Nutzungsrichtlinie gehört.</p><span class="ki-more">Ansehen</span></a>
-      </div>
 """,
         "faqs": [
             ("Was bringt KI einem Betrieb mit 15 Mitarbeitern konkret?",
@@ -881,9 +1059,9 @@ SERVICES = [
              "Für Texte oft ja. Der Unterschied beginnt dort, wo etwas regelmäßig und ohne einen "
              "Menschen davor passieren soll: Daten aus einem System holen, verarbeiten, in ein anderes "
              "schreiben, und das jede Nacht. Dafür braucht es eine gebaute Anwendung. Dazu kommt die "
-             "Frage, was Mitarbeiter überhaupt in ein Chatfenster eingeben dürfen. Seit dem 2. Februar "
-             "2025 verlangt Artikel 4 der europäischen KI-Verordnung von jedem Unternehmen, das KI "
-             "einsetzt, ausreichende KI-Kompetenz bei den Beschäftigten."),
+             "Frage, was Mitarbeiter überhaupt in ein Chatfenster eingeben dürfen. Artikel 4 der "
+             "europäischen KI-Verordnung verlangt von jedem Unternehmen, das KI einsetzt, Maßnahmen "
+             "zur Förderung der KI-Kompetenz seiner Beschäftigten."),
             ("Wie fange ich an?",
              "Mit dem kostenlosen KI-Potenzialcheck. Wir gehen 60 bis 90 Minuten durch deine Abläufe "
              "und schauen, wo Zeit verloren geht. Danach bekommst du schriftlich, was sich "
@@ -951,8 +1129,8 @@ SERVICES = [
         <h3>Kostenloser KI-Potenzialcheck</h3>
         <p>Wenn du nicht sicher bist, ob sich bei dir etwas lohnt: 60 bis 90 Minuten, wir gehen deine Abläufe durch, danach bekommst du schriftlich, was sich automatisieren lässt, was es kostet und was es bringt. Kostenlos und ohne Verpflichtung.</p>
         <div class="lp-cta-row" style="margin:0;">
-          <a href="tel:+491782584438" class="lp-btn primary">Potenzialcheck vereinbaren</a>
-          <a href="/kontakt/" class="lp-btn ghost">Lieber schreiben</a>
+          <a href="tel:+491782584438" class="btn-p">Potenzialcheck vereinbaren</a>
+          <a href="/kontakt/" class="btn-g">Lieber schreiben</a>
         </div>
       </div>
 """,
@@ -1038,8 +1216,8 @@ SERVICES = [
         <h3>Erst ansehen, dann entscheiden</h3>
         <p>Ob sich eine Auswertung lohnt, hängt an der Anlage und an der Frage, die du beantwortet haben willst. Beim kostenlosen Potenzialcheck sehe ich mir die vorhandenen Kameras an und sage dir, was damit geht und was nicht. Ist die Anlage dafür nicht geeignet, erfährst du das an dem Tag und nicht nach dem ersten Rechnungsposten.</p>
         <div class="lp-cta-row" style="margin:0;">
-          <a href="tel:+491782584438" class="lp-btn primary">Anlage ansehen lassen</a>
-          <a href="/kontakt/" class="lp-btn ghost">Lieber schreiben</a>
+          <a href="tel:+491782584438" class="btn-p">Anlage ansehen lassen</a>
+          <a href="/kontakt/" class="btn-g">Lieber schreiben</a>
         </div>
       </div>
 """,
@@ -1076,14 +1254,14 @@ SERVICES = [
         ],
     },
     {
-        "slug": "ki-dsgvo", "nav": "KI rechtssicher betreiben",
+        "slug": "ki-dsgvo", "nav": "KI datenschutzgerecht einsetzen",
         "title": "KI im Unternehmen: DSGVO, AVV & KI-Verordnung | Grundke IT-Service",
-        "h1": "KI im Unternehmen einsetzen, ohne rechtliches Risiko",
-        "label": "Rechtssicher betrieben", "service_type": "Beratung zum datenschutzkonformen KI-Einsatz in Unternehmen",
+        "h1": "KI im Unternehmen einsetzen, ohne Datenschutz-Blindflug",
+        "label": "Datenschutzgerecht eingesetzt", "service_type": "Beratung zum datenschutzkonformen KI-Einsatz in Unternehmen",
         "published": KI_PUB_DATE, "modified": KI_DATE, "modified_disp": KI_DATE_DISP,
         "extra_style": KI_STYLE,
         "cta2_href": "/schulung/", "cta2_text": "Schulung für dein Team",
-        "desc": ("KI im Betrieb rechtssicher nutzen: lokales Modell oder Cloud, "
+        "desc": ("KI im Betrieb datenschutzgerecht nutzen: lokales Modell oder Cloud, "
                  "Auftragsverarbeitungsvertrag, Nutzungsrichtlinie und Schulung nach Artikel 4."),
         "sub": "Die Frage ist selten, ob KI hilft. Die Frage ist, welche Daten hineindürfen und wer dafür geradesteht.",
         "intro": ("Das häufigste Problem beim KI-Einsatz im Betrieb ist nicht die Technik. Es ist der "
@@ -1099,7 +1277,7 @@ SERVICES = [
             ("Wo das Modell läuft", "Eigene Hardware, EU-Rechenzentrum oder Anbieter mit Vertrag. Für jede Aufgabe die passende Stufe."),
             ("Auftragsverarbeitungsvertrag", "Welcher Anbieter einen anbietet, was darin stehen muss und wo die Daten tatsächlich liegen."),
             ("Nutzungsrichtlinie", "Eine verständliche Seite für die Belegschaft: erlaubte Werkzeuge, erlaubte Daten, Ansprechpartner."),
-            ("Schulung der Mitarbeiter", "Artikel 4 der KI-Verordnung verlangt seit Februar 2025 ausreichende KI-Kompetenz im Unternehmen."),
+            ("Schulung der Mitarbeiter", "Artikel 4 der KI-Verordnung verlangt Maßnahmen, die die KI-Kompetenz im Unternehmen fördern."),
             ("Lokale Modelle einrichten", "Ein Sprachmodell auf eigener Hardware, das ohne Internetverbindung arbeitet. Für sensible Daten der sauberste Weg."),
             ("Bestandsaufnahme", "Welche KI-Werkzeuge im Betrieb bereits benutzt werden, weiß meist niemand. Das lässt sich klären."),
         ],
@@ -1119,10 +1297,10 @@ SERVICES = [
       <p>In der Praxis läuft es meist auf eine Kombination hinaus: das Bequeme für Unkritisches, das Lokale für alles, was den Betrieb nicht verlassen darf. Wichtig ist, dass die Grenze zwischen beidem klar gezogen und aufgeschrieben ist.</p>
 
       <h2>Was die KI-Verordnung von einem KMU verlangt</h2>
-      <p>Seit dem 2. Februar 2025 gilt Artikel 4 der europäischen KI-Verordnung. Er verpflichtet jedes Unternehmen, das KI-Systeme einsetzt, dafür zu sorgen, dass die Menschen, die damit arbeiten, ausreichend KI-Kompetenz besitzen. Das betrifft ausdrücklich nicht nur Entwickler von Hochrisiko-Anwendungen, sondern auch den Betrieb, in dem drei Leute ChatGPT benutzen.</p>
-      <p>Ein festes Schulungsprogramm schreibt die Verordnung nicht vor. Verlangt wird, dass die Maßnahmen zur Rolle und zur tatsächlichen Nutzung passen und dass das Unternehmen sie belegen kann. Die nationale Marktüberwachung dazu läuft seit dem 2. August 2026. Ein eigener Bußgeldtatbestand für Artikel 4 besteht derzeit nicht, was die Sache aber nicht erledigt: Entsteht durch falsche KI-Nutzung ein Schaden, steht die Frage im Raum, ob eine angemessene Unterweisung ihn verhindert hätte.</p>
+      <p>Artikel 4 der europäischen KI-Verordnung gilt seit dem 2. Februar 2025. Mit dem sogenannten Digital Omnibus (Verordnung (EU) 2026/1744, in Kraft seit dem 27. Juli 2026) wurde er entschärft: Ein Unternehmen, das KI-Systeme einsetzt, muss nicht mehr sicherstellen, dass jeder Beschäftigte einen bestimmten Wissensstand erreicht. Es muss aber Maßnahmen ergreifen, die die KI-Kompetenz der Menschen fördern, die damit arbeiten. Das gilt für den Betrieb, in dem drei Leute ChatGPT benutzen, genauso wie für Entwickler von Hochrisiko-Anwendungen.</p>
+      <p>Ein festes Schulungsprogramm schreibt die Verordnung nicht vor. Verlangt wird, dass die Maßnahmen zur Rolle und zur tatsächlichen Nutzung passen und dass das Unternehmen sie belegen kann. In Deutschland ist die Bundesnetzagentur als Aufsichtsbehörde vorgesehen. Ein eigener Bußgeldtatbestand für Artikel 4 besteht derzeit nicht, was die Sache aber nicht erledigt: Entsteht durch falsche KI-Nutzung ein Schaden, steht die Frage im Raum, ob eine angemessene Unterweisung ihn verhindert hätte.</p>
       <div class="ki-note">
-        <p>Praktisch heißt das zweierlei: eine kurze, verständliche Nutzungsrichtlinie und eine Unterweisung, die dokumentiert ist. Beides mache ich zusammen mit dir. Die <a href="/schulung/">IT-Sicherheitsschulung</a> deckt den Teil ab, der die Belegschaft betrifft.</p>
+        <p>Praktisch heißt das zweierlei: eine kurze, verständliche Nutzungsrichtlinie und eine Unterweisung, die dokumentiert ist. Beides mache ich zusammen mit dir. Die <a href="/schulung/">IT-Sicherheitsschulung</a> enthält ein eigenes Modul zum sicheren und datenschutzgerechten Umgang mit KI-Werkzeugen und deckt damit den Teil ab, der die Belegschaft betrifft.</p>
       </div>
 
       <h2>Was in eine Nutzungsrichtlinie gehört</h2>
@@ -1152,10 +1330,12 @@ SERVICES = [
              "großen Modelle. Es lohnt sich überall dort, wo regelmäßig mit vertraulichen Inhalten "
              "gearbeitet wird, etwa in Kanzleien, Praxen und Personalabteilungen."),
             ("Was verlangt die KI-Verordnung konkret von uns?",
-             "Seit dem 2. Februar 2025 verpflichtet Artikel 4 jedes Unternehmen, das KI einsetzt, für "
-             "ausreichende KI-Kompetenz der Beschäftigten zu sorgen. Ein festes Curriculum ist nicht "
+             "Artikel 4 verpflichtet jedes Unternehmen, das KI einsetzt, Maßnahmen zur Förderung der "
+             "KI-Kompetenz seiner Beschäftigten zu ergreifen. Seit der Änderung durch den Digital "
+             "Omnibus (in Kraft seit 27. Juli 2026) muss kein bestimmter Wissensstand mehr "
+             "sichergestellt werden. Ein festes Curriculum ist nicht "
              "vorgeschrieben, die Maßnahmen müssen aber zur Rolle und zur tatsächlichen Nutzung passen "
-             "und nachweisbar sein. Die nationale Durchsetzung läuft seit dem 2. August 2026. In der "
+             "und nachweisbar sein. In der "
              "Praxis genügt für einen kleinen Betrieb meist eine dokumentierte Unterweisung zusammen "
              "mit einer schriftlichen Nutzungsrichtlinie."),
             ("Wir haben keinen Datenschutzbeauftragten. Ist das ein Problem?",
@@ -1177,15 +1357,18 @@ SERVICES = [
 
 def render_service(s, places, services):
     slug = s["slug"]
-    og_title = s["h1"].replace("&amp;", "&") + " – Andreas Grundke IT-Service"
+    # Voller Titel fuer OG und Schema: beim Hub steht der zweite Teil als Akzentzeile
+    # im Einstieg, inhaltlich bleibt die Ueberschrift dieselbe wie vorher.
+    h1_full = (s["h1"] + " – " + s["hero"]["accent"] if s.get("hero") else s["h1"]).replace("&amp;", "&")
+    og_title = h1_full + " – Andreas Grundke IT-Service"
     h = head(s["title"], s["desc"], slug, og_title, s["desc"],
-             s["h1"].replace("&amp;", "&") + " – Andreas Grundke IT-Service")
+             h1_full + " – Andreas Grundke IT-Service")
 
     service_schema = {
         "@context": "https://schema.org",
         "@type": "Service",
         "serviceType": s["service_type"],
-        "name": s["h1"].replace("&amp;", "&"),
+        "name": h1_full,
         "description": s["desc"],
         "provider": {"@type": "LocalBusiness", "name": "Andreas Grundke IT-Service",
                      "alternateName": "Grundke IT-Service", "telephone": "+49-178-2584438",
@@ -1207,7 +1390,7 @@ def render_service(s, places, services):
     if s.get("prices"):
         cells = "".join(
             '\n        <div class="lp-price{feat}">\n          <div class="tier">{t}</div>\n'
-            '          <div class="amount">{a}<span> / Monat</span></div>\n'
+            '          <div class="amount">{a}<span> / Monat zzgl. MwSt.</span></div>\n'
             '          <div class="desc">{d}</div>\n        </div>'.format(
                 feat=" feat" if feat else "", t=esc(t), a=esc(a), d=esc(d))
             for t, a, d, feat in s["prices"])
@@ -1218,18 +1401,61 @@ def render_service(s, places, services):
 
     intro = s["intro"] if s.get("raw_intro") else esc(s["intro"])
 
-    main = """<article class="lp-wrap">
+    cta_row = """<div class="lp-cta-row">
+        <a href="tel:+491782584438" class="btn-p">Kostenloses Erstgespräch</a>
+        <a href="/kontakt/" class="btn-g">Anfrage senden</a>
+      </div>"""
+    hero = s.get("hero")
+    if hero:
+        # Eigener Einstieg fuer Bereichs-Hubs (KI im Betrieb): grosse Ueberschrift wie auf
+        # der Startseite und daneben die Unterseiten als direkte Wege.
+        paths = "".join(
+            '\n          <li><a href="{h}"><span class="lp-path-t">{t}</span>'
+            '<span class="lp-path-d">{d}</span></a></li>'.format(h=h, t=esc(t), d=esc(d))
+            for t, d, h in hero["paths"])
+        top = """<article class="lp-wrap lp-wrap--hero">
+  <div class="lp-hero">
+    <div class="inner lp-hero-grid">
+      <div>
+        {crumbs}
+        <h1 class="lp-hero-h1">{h1}<span class="lp-hero-accent">{accent}</span></h1>
+        <p class="s-sub">{sub}</p>
+        {cta_row}
+      </div>
+      <nav class="lp-paths" aria-label="{paths_label}">
+        <h2 class="lp-paths-h">{paths_label}</h2>
+        <ul>{paths}
+        </ul>
+      </nav>
+    </div>
+  </div>
   <div class="inner">
     <div class="lp-content">
+""".format(crumbs=crumbs_html(s["nav"], slug), h1=s["h1"], accent=hero["accent"], sub=esc(s["sub"]),
+           cta_row=cta_row, paths_label=esc(hero["paths_label"]), paths=paths)
+    else:
+        top = """<article class="lp-wrap">
+  <div class="inner">
+    <div class="lp-content">
+      {crumbs}
       <div class="s-label">{label}</div>
       <h1 class="s-title">{h1}</h1>
       <p class="s-sub">{sub}</p>
 
-      <div class="lp-cta-row">
-        <a href="tel:+491782584438" class="lp-btn primary">Kostenloses Erstgespräch</a>
-        <a href="/kontakt/" class="lp-btn ghost">Anfrage senden</a>
-      </div>
+      {cta_row}
+""".format(crumbs=crumbs_html(s["nav"], slug), label=esc(s["label"]), h1=s["h1"], sub=esc(s["sub"]),
+           cta_row=cta_row)
 
+    related = ""
+    if slug.startswith("ki-") and slug != KI_HUB[1]:
+        # Rueckweg zum Hub und Querverweise zwischen den KI-Bereichen
+        siblings = [sv for sv in services if sv["slug"].startswith("ki-")
+                    and sv["slug"] not in (slug, KI_HUB[1])]
+        links = " und ".join('<a href="/{s}/">{n}</a>'.format(s=sv["slug"], n=esc(sv["nav"])) for sv in siblings)
+        related = ('\n      <p class="lp-related">Mehr aus dem Bereich <a href="/{hub}/">{hubn}</a>: '
+                   '{links}.</p>\n').format(hub=KI_HUB[1], hubn=esc(KI_HUB[0]), links=links)
+
+    main = top + """
       <p>{intro}</p>
 
       <h2>Das steckt drin</h2>
@@ -1237,52 +1463,52 @@ def render_service(s, places, services):
       </div>
 {extra}{prices}
       <div class="lp-trust">
-        <strong>Einheitlicher Stundensatz, Abrechnung im 15-Minuten-Takt, keine versteckten Kosten.</strong> Kein klassischer Kundendienst, sondern ein fester persönlicher Ansprechpartner mit über 20 Jahren IT-Erfahrung – im Raum München Ost, DSGVO-konform und auf Wunsch self-hosted.
+        <strong>Einheitlicher Stundensatz von 110 € netto, Abrechnung im 15-Minuten-Takt, keine versteckten Kosten.</strong> Kein klassischer Kundendienst, sondern ein fester persönlicher Ansprechpartner mit über 20 Jahren IT-Erfahrung – im Raum München Ost, DSGVO-konform und auf Wunsch self-hosted.
       </div>
 
       <h2>Häufige Fragen</h2>{faqs}
-{author}
+{related}{author}
       <div class="lp-cta-row" style="margin-top:2.5rem;">
-        <a href="tel:+491782584438" class="lp-btn primary">Jetzt anrufen · 0178 258 44 38</a>
-        <a href="{cta2_href}" class="lp-btn ghost">{cta2_text}</a>
+        <a href="tel:+491782584438" class="btn-p">Jetzt anrufen · 0178 258 44 38</a>
+        <a href="{cta2_href}" class="btn-g">{cta2_text}</a>
       </div>
     </div>
   </div>
-</article>""".format(label=esc(s["label"]), h1=s["h1"], sub=esc(s["sub"]), intro=intro,
+</article>""".format(intro=intro,
                      cards=cards_html(s["cards"]), prices=price_html, faqs=faq_html(s["faqs"]),
-                     author=author_box(s.get("modified_disp")),
+                     author=author_box(s.get("modified_disp")), related=related,
                      extra=s.get("extra", ""),
                      cta2_href=s.get("cta2_href", "/it-service-grasbrunn/"),
                      cta2_text=esc(s.get("cta2_text", "IT-Service in deiner Region")))
 
-    return slug, page(h, schema, main, places, services, s.get("extra_style", ""))
+    return slug, page(h, schema, main, places, services, s.get("extra_style", ""), slug=slug)
 
 
 # --------------------------------------------------------------------------- #
 #  Sitemap                                                                     #
 # --------------------------------------------------------------------------- #
 
-STATIC_URLS = [
-    ("/", "1.0"),
-    ("/kontakt/", "0.7"),
-    ("/schulung/", "0.8"),
-    ("/empfehlungen/", "0.7"),
+STATIC_URLS = [   # (Pfad, Prioritaet, lastmod) -- lastmod der Startseite = ihr dateModified
+    ("/", "1.0", "2026-09-23"),
+    ("/kontakt/", "0.7", "2026-09-23"),
+    ("/schulung/", "0.8", "2026-05-01"),
+    ("/empfehlungen/", "0.7", "2026-05-01"),
 ]
 
 
 def write_sitemap(places, services):
     urls = []
-    for loc, prio in STATIC_URLS:
-        urls.append((loc, "2026-05-01", prio))
+    for loc, prio, mod in STATIC_URLS:
+        urls.append((loc, mod, prio))
     urls.append(("/barrierefreiheit/", TODAY, "0.3"))
     for s in services:
-        urls.append(("/" + s["slug"] + "/", TODAY, "0.8"))
+        urls.append(("/" + s["slug"] + "/", s.get("modified", TODAY), "0.8"))
     for p in places:
         urls.append(("/it-service-" + p["slug"] + "/", TODAY, "0.8"))
     body = []
     body.append('<?xml version="1.0" encoding="UTF-8"?>')
     body.append("<!--")
-    body.append("  Sitemap · Grundke IT-Service · www.grundke-it.de")
+    body.append("  Sitemap · Grundke IT-Service · grundke-it.de")
     body.append("  Stand: " + TODAY + " (generiert via tools/build_landingpages.py)")
     body.append("  Enthalten sind ausschliesslich Seiten mit robots index, follow.")
     body.append("  /agb/, /impressum/, /datenschutz/ sind bewusst noindex und NICHT gelistet.")
@@ -1325,6 +1551,7 @@ def main():
     for w in written:
         print("  -", w)
     print("sitemap.xml aktualisiert")
+    sync_shared(PLACES, SERVICES)
 
 
 if __name__ == "__main__":

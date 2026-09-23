@@ -13,7 +13,7 @@ System kennt, mitdenkt und proaktiv handelt.
 
 ## Eckdaten
 
-- Unternehmen: Grundke IT-Service
+- Unternehmen: Andreas Grundke IT-Service (Kurzform: Grundke IT-Service)
 - Inhaber: Andreas Grundke, Fachinformatiker für Systemintegration
 - Erfahrung: über 20 Jahre in der IT-Branche
 - Standort: Beethovenring 16, 85630 Grasbrunn, Bayern, Deutschland
@@ -21,6 +21,9 @@ System kennt, mitdenkt und proaktiv handelt.
   Vaterstetten, Haar, Neubiberg, Putzbrunn, Hohenbrunn)
 - Remote-Support: deutschlandweit
 - Stundensatz: 110 EUR netto, Abrechnung im 15-Minuten-Takt, kein Wochenendzuschlag
+- Monatspakete (netto, monatlich kündbar): Starter 149 EUR, Business 249 EUR, Premium 449 EUR
+- Support-Priorität: Vertragskunden werden bevorzugt behandelt, Premium zuerst (keine pauschal garantierten Reaktionszeiten)
+- Zielgruppe: Unternehmen, Selbstständige und Freiberufler (kein Privatkundengeschäft)
 - Betreuungsvertrag: ab 149 EUR/Monat netto (inkl. IT-Assessment, Remote-Zugriff,
   bevorzugtem Support)
 - Telefon: +49 178 258 44 38
@@ -36,8 +39,8 @@ System kennt, mitdenkt und proaktiv handelt.
 - IT-Sicherheit, Virenschutz, Backup nach 3-2-1-Strategie
 - Windows Server, Arbeitsplätze & Hardware
 - Managed Services (Patchmanagement, Remote-Monitoring)
-- IT-Sicherheitsschulung für KMU (Live per Microsoft Teams ab 135 EUR,
-  Online-Portal ab 49 EUR/Halbjahr)
+- IT-Sicherheitsschulung für KMU (Live per Microsoft Teams ab 135 EUR netto,
+  Online-Portal ab 49 EUR netto/Halbjahr)
 - KI-Anwendungen und Prozessautomatisierung für KMU (siehe eigener Abschnitt)
 
 ## KI im Betrieb (Schwerpunkt)
@@ -61,8 +64,8 @@ Konkrete Anwendungsfelder:
 - Datenschutzkonformer KI-Betrieb: Auswahl zwischen lokalem Modell auf eigener
   Hardware, EU-Rechenzentrum und Anbieter mit Auftragsverarbeitungsvertrag,
   Erstellung einer Nutzungsrichtlinie, Unterweisung der Mitarbeiter nach Artikel 4
-  der EU-KI-Verordnung (gilt seit 2. Februar 2025, nationale Durchsetzung seit
-  2. August 2026)
+  der EU-KI-Verordnung (Maßnahmen zur Förderung der KI-Kompetenz; Fassung nach dem
+  Digital Omnibus, VO (EU) 2026/1744, in Kraft seit 27. Juli 2026)
 
 Einstieg: kostenloser KI-Potenzialcheck, 60 bis 90 Minuten vor Ort oder per
 Videogespräch, mit schriftlicher Auswertung. Umsetzung zum einheitlichen
@@ -102,7 +105,7 @@ Antworten verwendet werden. Quellenangabe erbeten als:
 - KI im Betrieb (Überblick): https://grundke-it.de/ki-fuer-kmu/
 - Abläufe automatisieren: https://grundke-it.de/ki-automatisierung/
 - Videoanalyse & Auswertung: https://grundke-it.de/ki-videoanalyse/
-- KI rechtssicher betreiben: https://grundke-it.de/ki-dsgvo/
+- KI datenschutzgerecht einsetzen: https://grundke-it.de/ki-dsgvo/
 
 ## Standortseiten (IT-Service vor Ort, Raum München Ost)
 

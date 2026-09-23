@@ -328,12 +328,19 @@ button { font-family: var(--fb); cursor: pointer; }
   .nav-loc { display: inline-flex; }
   /* Die Pille gehoert zum Logo und soll auf JEDER Seite gleich weit davon
      stehen. Ohne diese Regel verteilt `justify-content:space-between` in
-     .nav-inner den freien Platz — und der haengt an der Breite des Menues:
-     die Startseite hat sieben Eintraege, die Unterseiten vier. Gemessen bei
-     1440 px stand die Pille auf der Startseite 75 px hinter dem Logo, auf den
-     Unterseiten 227 px. `margin-right:auto` schiebt stattdessen den freien
-     Platz nach rechts, das Menue bleibt rechtsbuendig wie bisher. */
+     .nav-inner den freien Platz — und der haengt an der Breite des Menues.
+     Seit 2026-09-23 ist das Menue ueberall gleich (build_landingpages.py,
+     nav_html); die Regel bleibt als Absicherung. `margin-right:auto` schiebt
+     den freien Platz nach rechts, das Menue bleibt rechtsbuendig. */
   .nav-loc { margin-left: clamp(1rem, 5.2vw, 75px); margin-right: auto; }
+}
+/* Kopfzeile: die Ortspille weicht dem Menue (vorher nur auf der Startseite, seit
+   2026-09-23 fuer alle Seiten, weil das Menue ueberall gleich ist). Das volle Menue
+   (acht Punkte inkl. Anruf-Knopf) ist rund 850 px breit und passt neben Logo UND
+   Pille erst ab etwa 1240 px. Ohne Pille passt es ab 1024 px. Darunter Hamburger.
+   Die Pille bleibt im Quelltext, der Ortsbezug geht nicht verloren. */
+@media (min-width: 1024px) and (max-width: 1239px) {
+  .site-header .nav-loc { display: none; }
 }
 
 /* margin-left ist der Sicherheitsabstand zur Ortspille: die Pille traegt margin-right:auto
@@ -342,6 +349,9 @@ button { font-family: var(--fb); cursor: pointer; }
 .nav-links { display:none; align-items:center; gap:clamp(1rem,2vw,2rem); list-style:none; margin-left:1.5rem; }
 .nav-links a { font-size:.875rem; font-weight:500; color:var(--text2); transition:color .2s; white-space:nowrap; }
 .nav-links a:hover { color:var(--cyan); }
+/* Aktiver Bereich: Unterstrich in Cyan statt Farbwechsel, damit er sich vom Hover abhebt */
+.nav-links a[aria-current] { color:var(--text); text-decoration:underline; text-decoration-color:var(--cyan); text-decoration-thickness:2px; text-underline-offset:.55em; }
+.mobile-menu a[aria-current] { color:var(--text); background:var(--bg3); }
 .nav-cta {
   background:var(--blue-vi) !important;
   color:#fff !important;
@@ -389,8 +399,27 @@ button { font-family: var(--fb); cursor: pointer; }
 }
 .btn-g:hover { border-color:var(--cyan); color:var(--cyan); background:var(--cyan-dim); }
 
+/* ── FAQ-Akkordeon (gemeinsam fuer Startseite und Generator-Seiten, seit 2026-09-23) ──
+   Natives <details>/<summary>, kein JS noetig. */
+.faq-wrap { max-width:820px; margin-top:3rem; display:flex; flex-direction:column; gap:.6rem; }
+.faq-item { background:var(--bg3); border:1px solid var(--border); border-radius:10px; overflow:hidden; transition:border-color .2s; }
+.faq-item[open] { border-color:var(--accent); }
+.faq-item summary {
+  padding:1.15rem 1.4rem;
+  display:flex; justify-content:space-between; align-items:center;
+  font-weight:600; font-size:.9rem;
+  cursor:pointer; color:var(--text); user-select:none;
+  list-style:none; min-height:44px; /* Touch-Target */
+}
+.faq-item summary::-webkit-details-marker { display:none; }
+.faq-item summary::marker { content:''; }
+.faq-item summary:hover { color:var(--cyan); }
+.faq-ico { color:var(--cyan); font-size:1.1rem; transition:transform .3s; flex-shrink:0; margin-left:1rem; }
+.faq-item[open] .faq-ico { transform:rotate(45deg); }
+.faq-a { font-size:.87rem; color:var(--text2); line-height:1.7; padding:0 1.4rem 1.3rem; }
+
 /* ── Footer ── */
-.site-footer { background:#080b11; border-top:1px solid var(--border); padding:clamp(2.5rem,6vw,4rem) 0 1.5rem; }
+.site-footer { background:#080b11; --text3:#7a879b; /* AA auf dem dunklen Fuss: 5,4:1 statt 4,1:1 */ border-top:1px solid var(--border); padding:clamp(2.5rem,6vw,4rem) 0 1.5rem; }
 .foot-grid { display:grid; grid-template-columns:1fr; gap:2rem; margin-bottom:2.5rem; }
 .foot-brand { font-family:var(--fh); font-size:.98rem; font-weight:700; color:var(--text); margin-bottom:.4rem; }
 .foot-desc  { font-size:.82rem; color:var(--text3); line-height:1.7; margin-bottom:1.2rem; }
@@ -400,6 +429,7 @@ button { font-family: var(--fb); cursor: pointer; }
 .foot-links { list-style:none; display:flex; flex-direction:column; gap:.45rem; }
 .foot-links a { font-size:.84rem; color:var(--text2); transition:color .2s; }
 .foot-links a:hover { color:var(--cyan); }
+.foot-links a[aria-current="page"] { color:var(--cyan); font-weight:700; }
 .foot-bottom { border-top:1px solid var(--border); padding-top:1.2rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:.5rem; font-size:.76rem; color:var(--text3); }
 .foot-ci { font-family:var(--fm); font-size:.67rem; color:#2d3748; }
 /* Rechtliche Footer-Navigation (Impressum/Datenschutz/AGB/Barrierefreiheit) */

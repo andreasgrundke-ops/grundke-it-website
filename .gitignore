@@ -27,3 +27,6 @@ CLAUDE-CODE-*.md
 # Python-Bytecode des Generators
 __pycache__/
 *.pyc
+
+# Impeccable-Arbeitsdaten (Critique-Snapshots, Live-Server)
+.impeccable/
