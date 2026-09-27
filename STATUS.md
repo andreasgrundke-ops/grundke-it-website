@@ -1,13 +1,26 @@
 # STATUS – grundke-it.de Website
 <!-- CI 2026.01 · Grundke IT-Service · Standard-Statusdatei, wird von Mensch+KI gepflegt -->
 
-**Stand:** 2026-09-23 · **Status:** Live
+**Stand:** 2026-09-27 · **Status:** Live
 
 ## Was ist das
 grundke-it.de Website – siehe README/CLAUDE.md im Projekt.
 
 ## Aktueller Stand
-Letzter Arbeitsblock (23.09.2026): **Seite aus einem Guss, Inhalte bereinigt** (Commit 462a594 ff., live).
+Letzter Arbeitsblock (27.09.2026): **sechste Kundenstimme + Sichtbarkeits-Check.**
+
+- Google-Rezension **Apartments Bauer** (26.09.2026, WLAN auf Ubiquiti im Altbau) wortgetreu
+  als breite Karte oben in `#referenzen` und als Praxisbeispiel auf `/netzwerk-wlan-firewall/`
+  (Generator: `extra` + `VOICE_STYLE`). Schema `reviewCount` 6. Google-Profil: 5,0 bei 5.
+- Schema `hasMap`/`sameAs` auf den CID-Link (`maps.google.com/?cid=1934827868521304193`),
+  ProvenExpert in `sameAs`, `llms.txt` nachgezogen. `sw.js` 1.17.1 / runtime v18.
+- Sichtbarkeit (WebSearch, nicht Google): bei „Grasbrunn"-Suchen auf der ersten Seite, bei
+  Haar, München Ost, Notdienst und KI nicht. Verzeichnisse: Name in drei Varianten,
+  meinestadt/bedirect mit falscher Telefonnummer (0178 258448), 11880 ohne Hausnummer,
+  Das Örtliche/Gelbe Seiten/Bing Places fehlen. ProvenExpert: kein Logo, Beschreibung und
+  Angebote leer, Website-Link mit www, 0 Bewertungen.
+
+Davor (23.09.2026): **Seite aus einem Guss, Inhalte bereinigt** (Commit 462a594 ff., live).
 
 - **Ein Menü und ein Footer für alle Seiten.** Beides erzeugt `tools/build_landingpages.py`
   (`nav_html`, `footer_html`); `sync_shared()` schreibt es auch in Startseite und handgebaute
