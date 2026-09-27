@@ -57,8 +57,8 @@
  *                        Datenschutzerklaerung ergaenzt.
  */
 
-const CACHE_NAME    = 'grundke-it-v1.16.0';
-const RUNTIME_CACHE = 'grundke-it-runtime-v16';
+const CACHE_NAME    = 'grundke-it-v1.17.0';
+const RUNTIME_CACHE = 'grundke-it-runtime-v17';
 
 /* Pre-Cache: minimaler Kern fuer Offline-First-Boot */
 const PRECACHE_URLS = [

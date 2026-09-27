@@ -688,6 +688,19 @@ POTENZIALCHECK_SCHEMA = {
                "description": "Kostenlos und unverbindlich, das schriftliche Ergebnis bleibt beim Kunden."},
 }
 
+# Kundenstimme auf einer Leistungsseite (bisher nur Netzwerk). Eigener Baustein statt der
+# Startseiten-Karte, weil die Leistungsseiten deren CSS und Stern-Sprite nicht laden.
+VOICE_STYLE = '''  <style>
+    .lp-voice { margin:1.5rem 0 2.5rem; padding:1.6rem 1.8rem; background:var(--bg2); border:1px solid var(--border); border-radius:16px; }
+    .lp-voice blockquote { margin:0; max-width:66ch; font-style:italic; color:var(--text2); line-height:1.7; }
+    .lp-voice blockquote p { margin:0; }
+    .lp-voice blockquote p + p { margin-top:.85em; }
+    .lp-voice figcaption { margin-top:1.2rem; padding-top:1rem; border-top:1px solid var(--border); font-size:.85rem; color:var(--text2); }
+    .lp-voice figcaption strong { color:var(--text); }
+    .lp-voice figcaption a { color:var(--cyan); text-decoration:underline; text-underline-offset:3px; }
+  </style>
+'''
+
 # Zusatz-CSS ausschliesslich fuer die KI-Seiten. Wird ueber das Feld "extra_style"
 # eingehaengt, damit Orts- und uebrige Leistungsseiten unveraendert bleiben.
 KI_STYLE = '''  <style>
@@ -888,6 +901,22 @@ SERVICES = [
             ("Firewall & VPN", "Abgesicherter Internetzugang und verschlüsselter Zugriff von unterwegs."),
             ("Monitoring", "Ich sehe Störungen oft, bevor du sie bemerkst – und reagiere proaktiv."),
         ],
+        "modified": "2026-09-27", "modified_disp": "27.09.2026",
+        # Kundenstimme wortgetreu wie auf Google (Apartments Bauer, 26.09.2026). Nicht kuerzen,
+        # nicht glaetten; identisch mit der Karte und dem reviewBody auf der Startseite.
+        "extra": """
+      <h2>Aus der Praxis: WLAN in einem älteren Gebäude</h2>
+      <figure class="lp-voice">
+        <blockquote>
+          <p>„Andy hat das WLAN in unserem Haus modernisiert und auf Ubiquiti umgestellt, damit unsere Gäste eine bessere Internetverbindung genießen können. Die Zusammenarbeit hat sehr viel Spaß gemacht – auch wenn wir aufgrund des älteren Gebäudes die eine oder andere Hürde zu bewältigen hatten.</p>
+          <p>Besonders beeindruckt hat uns Andys hoher Anspruch an die Qualität seiner Arbeit. Dazu kommt seine herzliche und unkomplizierte Art, die die Zusammenarbeit auch menschlich sehr angenehm gemacht hat.</p>
+          <p>Über den eigentlichen Auftrag hinaus hat Andy uns wertvolle Tipps zum Einsatz von KI gegeben und hilfreiche Analysen erstellt, für die wir ihm sehr dankbar sind.</p>
+          <p>Rundum eine tolle Erfahrung. Ich kann Andy mit bestem Gewissen weiterempfehlen!“</p>
+        </blockquote>
+        <figcaption><strong>Apartments Bauer</strong> · Google-Bewertung, 5 von 5 Sternen · <a href="/#referenzen">weitere Kundenstimmen</a></figcaption>
+      </figure>
+""",
+        "extra_style": VOICE_STYLE,
         "faqs": [
             ("Warum UniFi und nicht der Router vom Provider?",
              "Provider-Router sind für den Hausgebrauch gedacht. Mit professioneller UniFi-Technik "
@@ -1489,7 +1518,7 @@ def render_service(s, places, services):
 # --------------------------------------------------------------------------- #
 
 STATIC_URLS = [   # (Pfad, Prioritaet, lastmod) -- lastmod der Startseite = ihr dateModified
-    ("/", "1.0", "2026-09-23"),
+    ("/", "1.0", "2026-09-27"),
     ("/kontakt/", "0.7", "2026-09-23"),
     ("/schulung/", "0.8", "2026-05-01"),
     ("/empfehlungen/", "0.7", "2026-05-01"),

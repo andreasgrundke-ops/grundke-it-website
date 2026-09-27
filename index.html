@@ -119,11 +119,18 @@
         "aggregateRating":{
           "@type":"AggregateRating",
           "ratingValue":"5.0",
-          "reviewCount":"5",
+          "reviewCount":"6",
           "bestRating":"5",
           "worstRating":"1"
         },
         "review":[
+          {
+            "@type":"Review",
+            "reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"},
+            "author":{"@type":"Organization","name":"Apartments Bauer"},
+            "datePublished":"2026-09-26",
+            "reviewBody":"Andy hat das WLAN in unserem Haus modernisiert und auf Ubiquiti umgestellt, damit unsere Gäste eine bessere Internetverbindung genießen können. Die Zusammenarbeit hat sehr viel Spaß gemacht – auch wenn wir aufgrund des älteren Gebäudes die eine oder andere Hürde zu bewältigen hatten.\n\nBesonders beeindruckt hat uns Andys hoher Anspruch an die Qualität seiner Arbeit. Dazu kommt seine herzliche und unkomplizierte Art, die die Zusammenarbeit auch menschlich sehr angenehm gemacht hat.\n\nÜber den eigentlichen Auftrag hinaus hat Andy uns wertvolle Tipps zum Einsatz von KI gegeben und hilfreiche Analysen erstellt, für die wir ihm sehr dankbar sind.\n\nRundum eine tolle Erfahrung. Ich kann Andy mit bestem Gewissen weiterempfehlen!"
+          },
           {
             "@type":"Review",
             "reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"},
@@ -224,7 +231,7 @@
     "about":{"@id":"https://grundke-it.de/#localbusiness"},
     "primaryImageOfPage":"https://grundke-it.de/assets/img/og-image.png",
     "datePublished":"2026-04-10",
-    "dateModified":"2026-09-23",
+    "dateModified":"2026-09-27",
     "author":{"@id":"https://grundke-it.de/#andreas"},
     "publisher":{"@id":"https://grundke-it.de/#localbusiness"}
   }
@@ -1052,6 +1059,12 @@
   .testi-wide { grid-column:1/-1; }
   .testi-wide::before { content:none; }
   .testi-wide .testi-txt { font-size:.95rem; max-width:66ch; }
+  /* Mehrabsaetzige Stimme (blockquote mit <p>): Abstand nur zwischen den Absaetzen */
+  figure.testi-card { margin:0; }
+  blockquote.testi-txt { margin-top:0; margin-left:0; margin-right:0; }
+  .testi-txt p { margin:0; }
+  .testi-txt p + p { margin-top:.85em; }
+  .testi-ctx { font-size:.78rem; color:var(--text2); margin-top:.55rem; line-height:1.45; }
   @media (min-width:900px) {
     .testi-wide { display:grid; grid-template-columns:minmax(0,auto) 14rem; justify-content:start; gap:2.5rem; align-items:center; }
     .testi-wide .testi-txt { margin-bottom:0; }
@@ -2314,6 +2327,21 @@
     <div class="s-label">Was Kunden sagen</div>
     <h2 class="s-title">Was andere über mich sagen</h2>
     <div class="testi-grid">
+      <figure class="testi-card testi-wide testi-lead">
+        <div class="testi-wide-quote">
+          <div class="stars"><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg></div>
+          <blockquote class="testi-txt">
+            <p>„Andy hat das WLAN in unserem Haus modernisiert und auf Ubiquiti umgestellt, damit unsere Gäste eine bessere Internetverbindung genießen können. Die Zusammenarbeit hat sehr viel Spaß gemacht – auch wenn wir aufgrund des älteren Gebäudes die eine oder andere Hürde zu bewältigen hatten.</p>
+            <p>Besonders beeindruckt hat uns Andys hoher Anspruch an die Qualität seiner Arbeit. Dazu kommt seine herzliche und unkomplizierte Art, die die Zusammenarbeit auch menschlich sehr angenehm gemacht hat.</p>
+            <p>Über den eigentlichen Auftrag hinaus hat Andy uns wertvolle Tipps zum Einsatz von KI gegeben und hilfreiche Analysen erstellt, für die wir ihm sehr dankbar sind.</p>
+            <p>Rundum eine tolle Erfahrung. Ich kann Andy mit bestem Gewissen weiterempfehlen!“</p>
+          </blockquote>
+        </div>
+        <figcaption class="testi-wide-who">
+          <div class="testi-who">Apartments Bauer</div><div class="testi-role">Google-Bewertung</div>
+          <div class="testi-ctx">WLAN-Modernisierung auf Ubiquiti im Altbau</div>
+        </figcaption>
+      </figure>
       <div class="testi-card">
         <div class="stars"><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg></div>
         <p class="testi-txt">„Ich bin sehr zufrieden mit der Arbeit der Firma. Die Umsetzung erfolgte schnell, zuverlässig und in sehr guter Qualität. Alle meine Anliegen wurden professionell gelöst. Klare Empfehlung!"</p>
