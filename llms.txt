@@ -1,5 +1,5 @@
 # llms.txt — Grundke IT-Service
-# Stand: 2026-08-22
+# Stand: 2026-09-27
 # Zweck: Maschinenlesbare, zitierfähige Eckdaten für KI-/LLM-Suchmaschinen
 # (ChatGPT, Claude, Perplexity, Gemini, Copilot). Ergänzt die robots.txt,
 # die alle KI-Crawler bereits erlaubt.
@@ -30,7 +30,8 @@ System kennt, mitdenkt und proaktiv handelt.
 - E-Mail: info@grundke-it.de
 - Website: https://grundke-it.de
 - Gegründet: 2024
-- Google-Bewertung: 5,0 / 5
+- Google-Bewertung: 5,0 / 5 bei 5 Rezensionen (Stand 27.09.2026)
+- ProvenExpert: https://www.provenexpert.com/grundke-it-service/
 
 ## Leistungen
 
