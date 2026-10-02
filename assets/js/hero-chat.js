@@ -33,7 +33,8 @@
  *   1.3.0 (2026-10-02) Kundensicht nach Andreas: Handy gehoert dem Kunden (Kontakt
  *                      „Andreas IT"), Messenger-Optik, Tastatur faehrt beim Tippen
  *                      des Kunden ein, gedrueckte Tasten leuchten auf; Kopfzeile
- *                      zeigt „schreibt …", waehrend Andreas antwortet.
+ *                      zeigt „schreibt …", waehrend Andreas antwortet. Tipptempo
+ *                      menschlich (ca. 115 ms je Taste, Pausen nach Wort und Satzzeichen).
  * ═══════════════════════════════════════════════════════════
  */
 (function () {
@@ -243,19 +244,28 @@
   var zustand = 'laeuft';   // laeuft | pause | fertig
   var offscreen = false;
 
-  var TIPP_MS = 45;   // Abstand zwischen zwei Tastendruecken
+  /* Tipptempo wie ein Mensch am Handy: ruhig genug zum Mitlesen, nach Wortende
+     und Satzzeichen eine kleine Denkpause, dazu leichte Unregelmaessigkeit */
+  var TIPP_MS = 115;
+  function tippPause(ch, n) {
+    var p = TIPP_MS + (n * 37 % 5) * 14;
+    if (ch === ' ') p += 90;
+    if (',.!?'.indexOf(ch) >= 0) p += 260;
+    return p;
+  }
 
   /* Kunde tippt: Tastatur auf, Buchstabe fuer Buchstabe ins Feld, Senden, Tastatur zu.
      Haengt die Schritte an s an und gibt den Zeitpunkt nach dem Senden zurueck. */
   function tippen(s, at, text, time) {
     s.push({ at: at, run: function () { tastatur(true); } });
-    var start = at + 350;
+    var zeit = at + 450;
     for (var i = 0; i < text.length; i++) {
       (function (n) {
-        s.push({ at: start + n * TIPP_MS, run: function () { hit(text.charAt(n)); setField(text.slice(0, n + 1)); } });
+        s.push({ at: zeit, run: function () { hit(text.charAt(n)); setField(text.slice(0, n + 1)); } });
       })(i);
+      zeit += tippPause(text.charAt(i), i);
     }
-    var ende = start + text.length * TIPP_MS + 250;
+    var ende = zeit + 500;
     s.push({ at: ende, run: function () {
       if (KEYS.ret) { KEYS.ret.classList.add('is-hit'); setTimeout(function () { KEYS.ret.classList.remove('is-hit'); }, 130); }
       setField('');
