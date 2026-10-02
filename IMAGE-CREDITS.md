@@ -1,25 +1,20 @@
 # Bildnachweis / Image Credits
 
-**Stand:** 2026-04-05
-**Hinweis:** Alle Bilder sind Platzhalter bis eigene Fotos vorliegen.
+**Stand:** 2026-10-02
 
-## Hero-Slider Bilder (assets/img/)
+## Startseite
 
-| Datei | Quelle | Fotograf | Lizenz | Unsplash-ID |
-|---|---|---|---|---|
-| hero-01-office.jpg | Unsplash | Power Digital Marketing | Unsplash License (frei nutzbar) | P_dneF5Pz_c |
-| hero-02-datacenter.jpg | Unsplash | (Datacenter/Server) | Unsplash License (frei nutzbar) | photo-1558494949-ef010cbdcc31 |
-| hero-03-meeting.jpg | Unsplash | (Business Meeting) | Unsplash License (frei nutzbar) | photo-1600880292203-757bb62b4baf |
-| hero-04-office.jpg | Unsplash | (Office/Work) | Unsplash License (frei nutzbar) | photo-1556761175-4b46a572b786 |
-| hero-05-coworking.jpg | Unsplash | (Coworking Space) | Unsplash License (frei nutzbar) | photo-1504384308090-c894fdcc538d |
+Seit dem 02.10.2026 nutzt der Hero der Startseite keine Fotos mehr: Das Handy und der
+Beispiel-Chat sind in HTML/CSS gezeichnet (`index.html`, `assets/js/hero-chat.js`). Die fünf
+Unsplash-Bilder des alten Hero-Sliders (`hero-01` bis `hero-05`, Unsplash License) wurden aus dem
+Repo entfernt; sie stehen nur noch in der Git-Historie.
 
-## TODO: Eigene Bilder ersetzen
+## Offen
 
-- [ ] Porträtfoto von Andreas Grundke (Business/Profi)
-- [ ] Eigene Fotos vom Arbeitsalltag (Serverraum, Netzwerk, Kundenbesuch)
-- [ ] Dann diese Datei aktualisieren und Unsplash-Bilder entfernen
+- [ ] Porträtfotos von Andreas Grundke (Shooting geplant: Porträt, am Netzwerkschrank, am Laptop,
+      mit Telefon) – danach Avatar im Hero-Chat und „Über mich" damit bestücken und hier eintragen.
 
-## Unsplash-Lizenz
+## Unsplash-Lizenz (für künftige Fremdbilder)
 
 Unsplash-Bilder sind unter der [Unsplash License](https://unsplash.com/license) frei nutzbar,
 auch kommerziell, ohne Namensnennung (Namensnennung ist aber empfohlen).

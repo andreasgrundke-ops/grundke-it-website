@@ -18,7 +18,7 @@ grundke-it-website/
 │   ├── css/
 │   │   └── style.css       # Shared CI 2026.01 Dark Mode Styles
 │   ├── js/
-│   │   └── main.js         # Shared JavaScript (Nav, Dropdown, Slider, FAQ, vCard)
+│   │   └── main.js         # Shared JavaScript (Nav, Dropdown, FAQ, vCard); Hero-Chat: hero-chat.js
 │   └── agb/
 │       └── AGB-Grundke-IT-Service.pdf   # ← PDF hier ablegen!
 ├── tree/

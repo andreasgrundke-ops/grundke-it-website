@@ -216,7 +216,7 @@ button { font-family: var(--fb); cursor: pointer; }
   animation: shimmer-sweep 12s ease-in-out 5s infinite;
 }
 @media (prefers-reduced-motion: reduce) {
-  .sticky-contact::after, .hero-qr a::after { animation: none; display: none; }
+  .sticky-contact::after { animation: none; display: none; }
 }
 
 /* Release-2: Primary-/Accent-Flaeche mit subtilem radialen Highlight
@@ -482,7 +482,7 @@ button { font-family: var(--fb); cursor: pointer; }
 }
 /* Buttons / Links mit eigener border-radius respektieren das weiterhin */
 .btn-p:focus-visible, .btn-g:focus-visible, .btn-wa:focus-visible,
-.btn-tel:focus-visible, .btn-email:focus-visible, .btn-ghost:focus-visible,
+.btn-tel:focus-visible, .btn-email:focus-visible,
 .nav-cta:focus-visible {
   outline: 3px solid var(--cyan);
   outline-offset: 3px;
@@ -610,12 +610,6 @@ a, button {
 /* #29 Preisspalten: keine Sprünge mehr durch proportionale Ziffern */
 .price-val, .hourly-val, .sch-price-val, .rp-head-r {
   font-variant-numeric: tabular-nums;
-}
-
-/* #4 Hero-Slider Bildzoom respektiert reduced-motion */
-@media (prefers-reduced-motion: reduce) {
-  .slide-bg { transition: none !important; transform: none !important; }
-  .slide.active .slide-bg { transform: none !important; }
 }
 
 /* #14 Schulungs-Cards: ehemalige Inline-onmouseover als CSS-Hover */

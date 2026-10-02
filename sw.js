@@ -55,10 +55,14 @@
  *                        FAQ als Akkordeon, Einstieg fuer den KI-Hub, gemeinsame
  *                        Buttons, style.css geaendert, Inhaltskorrekturen,
  *                        Datenschutzerklaerung ergaenzt.
+ *   1.18.0 / 2026-10-02 — Hero der Startseite neu: Chat statt Foto-Slider.
+ *   1.19.0 / 2026-10-02 — Hero-Chat in Kundensicht mit Tastatur, neue Faelle.
+ *                        Neue Datei assets/js/hero-chat.js (im Pre-Cache),
+ *                        Slider-Code aus main.js und style.css entfernt.
  */
 
-const CACHE_NAME    = 'grundke-it-v1.17.1';
-const RUNTIME_CACHE = 'grundke-it-runtime-v18';
+const CACHE_NAME    = 'grundke-it-v1.19.0';
+const RUNTIME_CACHE = 'grundke-it-runtime-v20';
 
 /* Pre-Cache: minimaler Kern fuer Offline-First-Boot */
 const PRECACHE_URLS = [
@@ -69,6 +73,7 @@ const PRECACHE_URLS = [
   '/assets/css/style.css',
   '/assets/css/fonts.css',
   '/assets/js/main.js',
+  '/assets/js/hero-chat.js',
   '/assets/js/lenis.min.js',
   '/assets/img/logo-grundke-it-white.png',
   '/favicon.ico',
