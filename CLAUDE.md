@@ -51,14 +51,15 @@ und die Quelle unter der Karte muss stimmen (`Google-Bewertung` nur, wenn sie do
 geaendert hat, nicht wegen eines neuen Footer-Links.
 
 ## Stand / offen / naechster Schritt
-- **02.10.2026 (Branch `feat/chat-hero`, noch nicht live):** Hero der Startseite neu – **„Der Chat"**
+- **02.10.2026 (live):** Hero der Startseite neu – **„Der Chat"**
   statt Foto-Slider. Gezeichnetes Handy, Beispiel-Einsatz als Chat in der echten Uhrzeit des
-  Besuchers (Statusleiste; abends/nachts grosse Uhrzeit mit Satz), laeuft einmal durch und haelt,
+  Besuchers (nur Statusleiste; abends/nachts ein Satz darueber), in Kundensicht mit Tastatur, die beim
+  Tippen des Kunden einfaehrt; laeuft einmal durch und haelt,
   Pause-/Nochmal-Knopf, reduced-motion = fertiger Chat. Logik in `assets/js/hero-chat.js`, Markup
   und CSS im Block „Hero „Der Chat"" in `index.html`. Slider-Code und die fuenf Unsplash-Fotos
   entfernt. Produktbeschreibung fuer impeccable in `PRODUCT.md`, Entwurfsvertrag in
   `.impeccable/surfaces/` (gitignored). Avatar „AG" wird nach dem Foto-Shooting durch ein Foto
-  ersetzt. `sw.js` 1.18.0 / runtime v19.
+  ersetzt. `sw.js` 1.19.0 / runtime v20.
 - **Davor 23.09.2026 — Seite aus einem Guss: ein Menue (IT-Schnellcheck · IT-Service ·
   KI im Betrieb · Schulungen · Preise · Fernwartung · Kontakt · Anrufen) und ein Footer fuer
   alle Seiten, aktiver Punkt per `aria-current`, Brotkrumen, FAQ als Akkordeon, Buttons

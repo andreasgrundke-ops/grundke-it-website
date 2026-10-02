@@ -1,21 +1,25 @@
 # STATUS – grundke-it.de Website
 <!-- CI 2026.01 · Grundke IT-Service · Standard-Statusdatei, wird von Mensch+KI gepflegt -->
 
-**Stand:** 2026-09-27 · **Status:** Live
+**Stand:** 2026-10-02 · **Status:** Live
 
 ## Was ist das
 grundke-it.de Website – siehe README/CLAUDE.md im Projekt.
 
 ## Aktueller Stand
-Letzter Arbeitsblock (02.10.2026): **Chat-Hero statt Foto-Slider** (Branch `feat/chat-hero`).
+Letzter Arbeitsblock (02.10.2026): **Chat-Hero statt Foto-Slider** (von Andreas freigegeben, live, `sw.js` 1.19.0 / runtime v20).
 
 - Kritik des alten Sliders (impeccable, zwei Agenten): 14/32 – anonyme Stockfotos, 5 rotierende
   Botschaften, 31 Tab-Stopps in unsichtbare Slides, kein Pause-Knopf, Unterzeile klang nach Garantie.
 - Neu: Headline bleibt, Unterzeile „IT-Betreuung für Betriebe im Münchner Osten … am anderen Ende bin
   ich, Andreas Grundke", Belege (5,0 Google · 20 Jahre · ab 149 € netto), zwei Buttons, QR ruhig;
   rechts Chat-Demo mit Uhrzeit des Besuchers, einmal durchgespielt. 5 Tab-Stopps, LCP = H1, CLS ≈ 0.
+- Nachschärfung nach Andreas: **Kundensicht** (Kontakt „Andreas IT", Messenger-Optik), Tastatur fährt
+  beim Tippen des Kunden ein, Tasten leuchten, Tipptempo menschlich (~115 ms/Taste). Fünf Fälle: Kasse/EC,
+  E-Mail beim Anbieter, IT-Kollege hört auf, defekter Netzwerkspeicher, Buchungsseite (bleibt stehen).
+  Durchlauf ~2:20 min, danach Endzustand. Uhrzeit nur in der Statusleiste, CTAs zierlicher. Ad hoc 110 € netto/Std.
 - Code-Review: freigegeben (2 MEDIUM behoben). Finish-Review: Nacharbeiten eingebaut.
-- **Offen:** Freigabe/Merge durch Andreas; Laufband- und Kontaktleisten-Texte gegen Angebotsfakten
+- **Offen:** Laufband- und Kontaktleisten-Texte gegen Angebotsfakten
   („Remote-Hilfe in Minuten", „Flatrate", „erreichbar. Jetzt.") – Andreas entscheidet; Foto-Shooting.
 
 Davor (27.09.2026): **sechste Kundenstimme + Sichtbarkeits-Check.**
