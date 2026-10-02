@@ -482,7 +482,7 @@ button { font-family: var(--fb); cursor: pointer; }
 }
 /* Buttons / Links mit eigener border-radius respektieren das weiterhin */
 .btn-p:focus-visible, .btn-g:focus-visible, .btn-wa:focus-visible,
-.btn-tel:focus-visible, .btn-email:focus-visible, .btn-ghost:focus-visible,
+.btn-tel:focus-visible, .btn-email:focus-visible,
 .nav-cta:focus-visible {
   outline: 3px solid var(--cyan);
   outline-offset: 3px;

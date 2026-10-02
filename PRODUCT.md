@@ -79,6 +79,7 @@ Automatisierung aus einer Hand. Vor Ort im Münchner Osten (Radius 25 km), remot
 
 ## Accessibility & Inclusion
 
-WCAG 2.1 AA als Ziel. Bewegung respektiert `prefers-reduced-motion`; alles, was länger als fünf
-Sekunden von selbst läuft, lässt sich anhalten (WCAG 2.2.2). Bekannte Einschränkung laut
+WCAG 2.1 AA als Ziel. Bewegung respektiert `prefers-reduced-motion`. Neue Bewegung, die länger als
+fünf Sekunden von selbst läuft, muss sich anhalten lassen (WCAG 2.2.2) – der Hero-Chat erfüllt das;
+das Laufband unter dem Hero noch nicht (offen). Bekannte Einschränkung laut
 Barrierefreiheitserklärung: Grau-Kontraste.

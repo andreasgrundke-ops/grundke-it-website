@@ -231,7 +231,7 @@
     "about":{"@id":"https://grundke-it.de/#localbusiness"},
     "primaryImageOfPage":"https://grundke-it.de/assets/img/og-image.png",
     "datePublished":"2026-04-10",
-    "dateModified":"2026-09-27",
+    "dateModified":"2026-10-02",
     "author":{"@id":"https://grundke-it.de/#andreas"},
     "publisher":{"@id":"https://grundke-it.de/#localbusiness"}
   }
@@ -354,6 +354,10 @@
       radial-gradient(ellipse 30% 40% at 80% 64%, rgba(38,189,239,.07), transparent 70%),
       var(--bg);
   }
+  /* Leuchtleisten links und rechts (Wiedererkennung aus dem alten Slider, Andreas 02.10.2026) */
+  .hero::before, .hero::after { content:''; position:absolute; top:12%; bottom:12%; width:3px; z-index:2; pointer-events:none; background:linear-gradient(180deg, transparent, var(--blue-vi), transparent); }
+  .hero::before { left:0; }
+  .hero::after { right:0; }
   .hc-inner {
     display: grid;
     grid-template-columns: minmax(0, 1.12fr) minmax(0, .88fr);
@@ -382,17 +386,20 @@
   .hc-wa:hover { border-color:#25d366; background:rgba(37,211,102,.13); transform:translateY(-2px); }
   .hc-call:focus-visible, .hc-wa:focus-visible, .hc-proof a:focus-visible, .hc-qr a:focus-visible { outline:2px solid var(--cyan); outline-offset:3px; }
   .hc-qr { display:flex; align-items:center; gap:1rem; margin-top:1.8rem; }
-  .hc-qr a { display:block; flex-shrink:0; border-radius:10px; background:var(--blue-vi); padding:6px; transition:transform .2s; }
-  .hc-qr a:hover { transform:scale(1.04); }
-  .hc-qr img { width:88px; height:88px; display:block; border-radius:6px; }
+  /* QR ruhig: kein dritter blauer Block neben „Anrufen" – das Bild (weiss auf Blau) wird
+     per Graustufe zu weiss auf Fast-Schwarz, der Rahmen nimmt denselben Ton auf */
+  .hc-qr a { display:block; flex-shrink:0; border-radius:10px; background:#121212; padding:6px; border:1px solid var(--border); transition:border-color .2s; }
+  .hc-qr a:hover { border-color:#4a5568; }
+  .hc-qr img { width:88px; height:88px; display:block; border-radius:6px; filter:grayscale(1); }
   .hc-qr p { margin:0; font-size:.88rem; line-height:1.5; color:var(--text2); }
   .hc-qr strong { display:block; color:var(--text); font-weight:600; }
 
   /* Buehne rechts: Uhrzeit-Zeile, Handy, Pause-Knopf */
   .hc-stage { display:flex; flex-direction:column; align-items:center; gap:1rem; }
-  .hc-clock { margin:0; max-width:330px; min-height:1.5em; font-size:.92rem; line-height:1.5; color:var(--text2); text-align:center; text-wrap:balance; }
-  .hc-clock.is-empty { visibility:hidden; }
-  .hc-clock time { color:var(--cyan); font-weight:700; font-variant-numeric:tabular-nums; }
+  /* Abends/nachts: grosse Uhrzeit des Besuchers ueber dem Handy, der Satz darunter */
+  .hc-clock { margin:0; max-width:330px; font-size:.92rem; line-height:1.45; color:var(--text2); text-align:center; text-wrap:balance; }
+  .hc-clock.is-empty { display:none; }
+  .hc-clock time { display:block; margin-bottom:.15rem; font-family:var(--fh); font-size:clamp(1.7rem, 2.6vw, 2.2rem); font-weight:700; letter-spacing:-.02em; line-height:1.1; color:var(--cyan); font-variant-numeric:tabular-nums; }
   .hc-device { position:relative; }
   .hc-phone {
     width:clamp(270px, 24vw, 330px); aspect-ratio:9 / 18;
@@ -402,8 +409,16 @@
     box-shadow:0 1px 0 rgba(255,255,255,.1) inset, 0 0 0 1px rgba(255,255,255,.07), 0 44px 80px -24px rgba(0,0,0,.7), 0 18px 40px -14px rgba(0,0,40,.6);
   }
   .hc-screen { position:relative; height:100%; display:flex; flex-direction:column; border-radius:34px; overflow:hidden; background:#0b0f18; }
-  .hc-screen::before { content:''; position:absolute; top:10px; left:50%; width:86px; height:22px; margin-left:-43px; border-radius:12px; background:#04060a; z-index:2; }
-  .hc-head { display:flex; align-items:center; gap:.65rem; padding:44px 16px 12px; background:#121827; border-bottom:1px solid rgba(255,255,255,.06); }
+  .hc-screen::before { content:''; position:absolute; top:10px; left:50%; width:74px; height:22px; margin-left:-37px; border-radius:12px; background:#04060a; z-index:2; }
+  /* Statusleiste des Handys: traegt die echte Uhrzeit des Besuchers, in allen Modi */
+  .hc-status { display:flex; align-items:center; justify-content:space-between; height:40px; padding:6px 26px 0; background:#121827; font-size:.8rem; font-weight:700; color:var(--text); font-variant-numeric:tabular-nums; }
+  .hc-status-icons { display:flex; align-items:center; gap:6px; }
+  .hc-status-icons i { display:block; background:var(--text); border-radius:1px; }
+  .hc-sig { width:3px; }
+  .hc-sig:nth-child(1) { height:4px; } .hc-sig:nth-child(2) { height:6px; } .hc-sig:nth-child(3) { height:8px; } .hc-sig:nth-child(4) { height:10px; }
+  .hc-bat { position:relative; width:20px; height:10px; margin-left:4px; border-radius:3px !important; background:none !important; border:1.5px solid var(--text); }
+  .hc-bat::after { content:''; position:absolute; inset:1.5px 5px 1.5px 1.5px; border-radius:1px; background:var(--text); }
+  .hc-head { display:flex; align-items:center; gap:.65rem; padding:6px 16px 12px; background:#121827; border-bottom:1px solid rgba(255,255,255,.06); }
   .hc-ava { width:38px; height:38px; flex-shrink:0; border-radius:50%; display:grid; place-items:center; background:var(--blue-vi); color:#fff; font-family:var(--fh); font-weight:700; font-size:.82rem; letter-spacing:.02em; }
   .hc-who { font-size:.9rem; font-weight:700; color:var(--text); line-height:1.25; }
   .hc-who small { display:block; font-size:.74rem; font-weight:500; color:var(--text2); }
@@ -435,8 +450,9 @@
   .hc-pause:hover { color:var(--text); border-color:#4a5568; background:rgba(255,255,255,.08); }
   .hc-pause:focus-visible { outline:2px solid var(--cyan); outline-offset:3px; }
   .hc-pause svg { width:16px; height:16px; fill:none; stroke:currentColor; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
-  .hc-pause .i-play, .hc-pause[aria-pressed="true"] .i-pause { display:none; }
-  .hc-pause[aria-pressed="true"] .i-play { display:block; }
+  /* Ein Knopf, drei Zustaende: laeuft (Pause), angehalten (Weiter), durchgespielt (Nochmal) */
+  .hc-pause svg { display:none; }
+  .hc-pause[data-zustand="laeuft"] .i-pause, .hc-pause[data-zustand="pause"] .i-play, .hc-pause[data-zustand="fertig"] .i-replay { display:block; }
   @media (prefers-reduced-motion: reduce) {
     .hc-in, .hc-typing i, .hc-sys.is-run .hc-bar i { animation:none !important; }
     .hc-thread { transition:none; }
@@ -449,8 +465,13 @@
   @media (max-width:1024px) {
     .hc-inner { gap:2rem; }
     .hc-phone { width:clamp(250px, 30vw, 290px); }
-    .hc-pause { right:-52px; }
     .hc-qr { display:none; }
+  }
+  /* Tablet: neben dem Handy ist kein Platz, rechts liegt die feste Kontaktleiste -
+     Pause-Knopf mittig unter das Handy */
+  @media (min-width:768px) and (max-width:1100px) {
+    .hc-device { padding-bottom:52px; }
+    .hc-pause { right:auto; left:50%; bottom:0; margin-left:-20px; }
   }
   /* Handy: eine Spalte, Chat ohne Geraeterahmen als kompakter Streifen,
      die Buttons uebernimmt die feste Kontaktleiste unten */
@@ -461,12 +482,18 @@
     .hc-ctas { display:none; }
     .hc-stage { align-items:stretch; gap:.6rem; }
     .hc-clock { text-align:left; font-size:.86rem; }
-    .hc-clock.is-empty { display:none; }
-    .hc-phone { width:auto; aspect-ratio:auto; height:280px; min-height:0; max-height:none; padding:0; border-radius:18px; background:none; box-shadow:none; }
+    .hc-clock time { font-size:1.6rem; }
+    .hc-phone { width:auto; aspect-ratio:auto; height:380px; min-height:0; max-height:none; padding:0; border-radius:18px; background:none; box-shadow:none; }
     .hc-screen { border-radius:18px; border:1px solid var(--border); }
     .hc-screen::before { display:none; }
-    .hc-head { padding:12px 56px 12px 14px; }
-    .hc-pause { right:10px; top:10px; bottom:auto; }
+    .hc-status { height:28px; padding:6px 16px 0; font-size:.75rem; }
+    .hc-head { padding:6px 56px 12px 14px; }
+    /* Kompakter, damit die Kundennachricht im Endzustand im Streifen bleibt */
+    .hc-day { display:none; }
+    .hc-thread { gap:6px; padding:10px 10px 12px; }
+    .hc-msg { font-size:.84rem; padding:7px 10px 5px; }
+    .hc-sys { padding:7px 10px 8px; }
+    .hc-pause { right:10px; top:36px; bottom:auto; }
   }
   /* Handy quer: kein Platz fuer die Buehne */
   @media (max-height:500px) and (orientation:landscape) {
@@ -1170,7 +1197,6 @@
   /* Responsive */
   @media (max-width:1023px) { .usp-grid { grid-template-columns:1fr; gap:2rem; } }
   @media (max-width:767px) {
-    /* .hero max-height entfaellt — Mobile-Default ist jetzt Mobile-First (siehe oben) */
     .steps-wrap { grid-template-columns:1fr; gap:1rem; }
     .steps-wrap::before { display:none; }
     .step-item { flex-direction:row; text-align:left; gap:1rem; align-items:flex-start; }
@@ -1429,8 +1455,9 @@
       <p class="hc-sub">IT-Betreuung für Betriebe im Münchner Osten. Kein Ticketsystem, keine Hotline: Du rufst an oder schreibst, und am anderen Ende bin ich, <strong>Andreas Grundke</strong>.</p>
       <ul class="hc-proof">
         <li><svg class="is-star" aria-hidden="true"><use href="#ico-star"/></svg><a href="#referenzen">5,0 bei Google</a></li>
-        <li><svg aria-hidden="true"><use href="#ico-clock"/></svg>Keine Öffnungszeiten</li>
+        <li><svg aria-hidden="true"><use href="#ico-user-check"/></svg>Über 20 Jahre IT-Erfahrung</li>
         <li><svg aria-hidden="true"><use href="#ico-check"/></svg>Monatspauschale ab 149&nbsp;€ netto</li>
+        <li><svg aria-hidden="true"><use href="#ico-clock"/></svg>Ad hoc 110&nbsp;€ netto/Std. im 15-Minuten-Takt</li>
       </ul>
       <div class="hc-ctas">
         <a href="tel:+491782584438" class="btn-p hc-call"><svg width="18" height="18" aria-hidden="true"><use href="#ico-phone"/></svg>Anrufen <span class="hc-num">0178 258 44 38</span></a>
@@ -1446,23 +1473,25 @@
       <div class="hc-device">
         <div class="hc-phone" aria-hidden="true">
           <div class="hc-screen">
+            <div class="hc-status"><time data-hc-status>09:20</time><span class="hc-status-icons"><i class="hc-sig"></i><i class="hc-sig"></i><i class="hc-sig"></i><i class="hc-sig"></i><i class="hc-bat"></i></span></div>
             <div class="hc-head">
               <span class="hc-ava">AG</span>
-              <span class="hc-who">Andreas Grundke<small>Beispiel-Chat · so läuft's ab</small></span>
+              <span class="hc-who">Andreas Grundke<small>Beispiel aus dem Alltag</small></span>
             </div>
             <ol class="hc-thread" data-hc-thread>
               <li class="hc-day">Heute</li>
-              <li class="hc-msg is-me">Hi Andreas, unser Drucker druckt nichts mehr. Morgen ist Abgabe.<time>09:12</time></li>
-              <li class="hc-msg is-ag">Bin dran. Ich schalte mich kurz auf euren Rechner.<time>09:13</time></li>
+              <li class="hc-msg is-me">Hi Andreas, unser Drucker druckt nichts mehr. Morgen ist Abgabe.<time>09:08</time></li>
+              <li class="hc-msg is-ag">Bin dran. Ich schalte mich kurz auf euren Rechner.<time>09:11</time></li>
               <li class="hc-sys is-done"><span class="hc-sys-t">Druckwarteschlange geleert</span><span class="hc-bar"><i></i></span></li>
-              <li class="hc-msg is-ag">Die Warteschlange hing. Läuft wieder.<time>09:21</time></li>
-              <li class="hc-msg is-me">Super, danke dir!<time>09:22</time></li>
+              <li class="hc-msg is-ag">Die Warteschlange hing. Läuft wieder.<time>09:19</time></li>
+              <li class="hc-msg is-me">Super, danke dir!<time>09:20</time></li>
             </ol>
           </div>
         </div>
-        <button class="hc-pause" type="button" data-hc-pause aria-pressed="false" aria-label="Beispiel-Chat anhalten" hidden>
+        <button class="hc-pause" type="button" data-hc-pause data-zustand="laeuft" aria-label="Beispiel-Chat anhalten" hidden>
           <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5v14M15 5v14"/></svg>
           <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>
+          <svg class="i-replay" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>
         </button>
       </div>
     </div>
@@ -2464,7 +2493,7 @@
     </div>
     <div class="foot-bottom">
       <span>© 2026 Grundke IT-Service · Andreas Grundke · Beethovenring 16 · 85630 Grasbrunn</span>
-      <span>Zuletzt aktualisiert: 23.09.2026</span>
+      <span>Zuletzt aktualisiert: 02.10.2026</span>
       <span class="foot-ci">CI 2026.01 · grundke-it.de</span>
     </div>
   </div>

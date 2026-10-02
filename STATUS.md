@@ -7,7 +7,18 @@
 grundke-it.de Website – siehe README/CLAUDE.md im Projekt.
 
 ## Aktueller Stand
-Letzter Arbeitsblock (27.09.2026): **sechste Kundenstimme + Sichtbarkeits-Check.**
+Letzter Arbeitsblock (02.10.2026): **Chat-Hero statt Foto-Slider** (Branch `feat/chat-hero`).
+
+- Kritik des alten Sliders (impeccable, zwei Agenten): 14/32 – anonyme Stockfotos, 5 rotierende
+  Botschaften, 31 Tab-Stopps in unsichtbare Slides, kein Pause-Knopf, Unterzeile klang nach Garantie.
+- Neu: Headline bleibt, Unterzeile „IT-Betreuung für Betriebe im Münchner Osten … am anderen Ende bin
+  ich, Andreas Grundke", Belege (5,0 Google · 20 Jahre · ab 149 € netto), zwei Buttons, QR ruhig;
+  rechts Chat-Demo mit Uhrzeit des Besuchers, einmal durchgespielt. 5 Tab-Stopps, LCP = H1, CLS ≈ 0.
+- Code-Review: freigegeben (2 MEDIUM behoben). Finish-Review: Nacharbeiten eingebaut.
+- **Offen:** Freigabe/Merge durch Andreas; Laufband- und Kontaktleisten-Texte gegen Angebotsfakten
+  („Remote-Hilfe in Minuten", „Flatrate", „erreichbar. Jetzt.") – Andreas entscheidet; Foto-Shooting.
+
+Davor (27.09.2026): **sechste Kundenstimme + Sichtbarkeits-Check.**
 
 - Google-Rezension **Apartments Bauer** (26.09.2026, WLAN auf Ubiquiti im Altbau) wortgetreu
   als breite Karte oben in `#referenzen` und als Praxisbeispiel auf `/netzwerk-wlan-firewall/`
