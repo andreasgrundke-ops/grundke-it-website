@@ -1,12 +1,14 @@
 /**
  * ═══════════════════════════════════════════════════════════
  * Grundke IT-Service · main.js
- * Version: 1.1.0
+ * Version: 1.2.0
  * Autor: Andreas Grundke / Grundke IT-Service
  * Datum: 2026-06-07
- * Beschreibung: Shared JS – Nav, Slider, FAQ, Scroll
+ * Beschreibung: Shared JS – Nav, FAQ, Scroll
  * Änderung 2026-06-07: A11y – Hamburger aria-expanded/-label-Sync,
  *                       Hero-Dots aria-selected im Slider-Wechsel.
+ * Änderung 2026-10-02: Foto-Slider entfernt (initSlider); der Hero der
+ *                       Startseite laeuft jetzt ueber assets/js/hero-chat.js.
  * ═══════════════════════════════════════════════════════════
  */
 
@@ -35,70 +37,6 @@ function initHamburger() {
       setMenu(false);
     }
   });
-}
-
-/* ── Hero Slider ── */
-function initSlider() {
-  const wrap   = document.getElementById('slidesWrap');
-  if (!wrap) return;
-
-  const slides = wrap.querySelectorAll('.slide');
-  const dots   = document.querySelectorAll('.hero-dot');
-  const counter= document.getElementById('heroCounter');
-  const total  = slides.length;
-  // #4: Auto-Advance bei reduced-motion-Praeferenz aussetzen
-  const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let cur = 0, timer;
-
-  /* Hintergrundbild eines Slides erst laden, wenn es gebraucht wird.
-     Slide 1 steht inline im HTML (+ <link rel=preload>), Slides 2-5 tragen data-bg.
-     Spart beim ersten Seitenaufruf rund 500 KB auf dem Handy. */
-  function loadBg(i) {
-    const el = slides[i] && slides[i].querySelector('.slide-bg[data-bg]');
-    if (!el) return;
-    el.style.backgroundImage = "url('" + el.dataset.bg + "')";
-    el.removeAttribute('data-bg');
-  }
-
-  function goTo(n) {
-    slides[cur].classList.remove('active');
-    if (dots[cur]) { dots[cur].classList.remove('on'); dots[cur].setAttribute('aria-selected', 'false'); }
-    cur = ((n % total) + total) % total;
-    loadBg(cur);                 // aktueller Slide
-    loadBg((cur + 1) % total);   // naechster Slide im Voraus
-    slides[cur].classList.add('active');
-    if (dots[cur]) { dots[cur].classList.add('on'); dots[cur].setAttribute('aria-selected', 'true'); }
-    wrap.style.transform = `translateX(-${cur * 100}%)`;
-    if (counter) counter.innerHTML = `<em>${String(cur+1).padStart(2,'0')}</em> / ${String(total).padStart(2,'0')}`;
-  }
-
-  function resetTimer() {
-    if (reducedMotion) return; // kein Auto-Advance bei reduced-motion
-    clearInterval(timer);
-    timer = setInterval(() => goTo(cur + 1), 13000);
-  }
-
-  const btn_next = document.getElementById('sliderNext');
-  const btn_prev = document.getElementById('sliderPrev');
-  if (btn_next) btn_next.addEventListener('click', () => { goTo(cur+1); resetTimer(); });
-  if (btn_prev) btn_prev.addEventListener('click', () => { goTo(cur-1); resetTimer(); });
-
-  dots.forEach(d => d.addEventListener('click', () => { goTo(+d.dataset.i); resetTimer(); }));
-
-  // Touch swipe
-  let tx = 0;
-  wrap.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive:true });
-  wrap.addEventListener('touchend',   e => {
-    const dx = e.changedTouches[0].clientX - tx;
-    if (Math.abs(dx) > 50) { goTo(dx < 0 ? cur+1 : cur-1); resetTimer(); }
-  }, { passive:true });
-
-  // Slide 2 im Leerlauf nach dem Seitenladen vorbereiten, damit der erste
-  // Wechsel ohne sichtbaren Ladeblitz kommt - aber erst nach dem kritischen Pfad.
-  const idle = window.requestIdleCallback || function (cb) { return setTimeout(cb, 1500); };
-  window.addEventListener('load', function () { idle(function () { loadBg(1); }); });
-
-  resetTimer();
 }
 
 /* ── FAQ Accordion (Release-2 Schritt 5):
@@ -414,7 +352,6 @@ function initInstallPrompt() {
 /* ── Init ── */
 document.addEventListener('DOMContentLoaded', () => {
   initHamburger();
-  initSlider();
   initFAQ();
   initScrollNav();
   initVCard();
