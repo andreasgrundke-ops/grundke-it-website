@@ -379,9 +379,9 @@
   .hc-proof a { color:inherit; text-decoration:underline; text-decoration-color:rgba(38,189,239,.5); text-decoration-thickness:1px; text-underline-offset:.28em; transition:text-decoration-color .2s; }
   .hc-proof a:hover { text-decoration-color:var(--cyan); }
   .hc-ctas { display:flex; flex-wrap:wrap; gap:.75rem; align-items:center; }
-  .hc-call { padding:1rem 1.45rem; font-size:1rem; gap:.6rem; }
+  .hc-call { padding:.8rem 1.2rem; font-size:.93rem; gap:.55rem; }
   .hc-num { font-weight:600; padding-left:.65rem; margin-left:.1rem; border-left:1px solid rgba(255,255,255,.35); font-variant-numeric:tabular-nums; }
-  .hc-wa { display:inline-flex; align-items:center; gap:.55rem; padding:1rem 1.4rem; border-radius:8px; border:1px solid rgba(37,211,102,.5); background:rgba(37,211,102,.07); color:var(--text); font-family:var(--fb); font-weight:700; font-size:1rem; white-space:nowrap; transition:border-color .2s, background .2s, transform .15s; }
+  .hc-wa { display:inline-flex; align-items:center; gap:.55rem; padding:.8rem 1.15rem; border-radius:8px; border:1px solid rgba(37,211,102,.5); background:rgba(37,211,102,.07); color:var(--text); font-family:var(--fb); font-weight:700; font-size:.93rem; white-space:nowrap; transition:border-color .2s, background .2s, transform .15s; }
   .hc-wa svg { color:#25d366; }
   .hc-wa:hover { border-color:#25d366; background:rgba(37,211,102,.13); transform:translateY(-2px); }
   .hc-call:focus-visible, .hc-wa:focus-visible, .hc-proof a:focus-visible, .hc-qr a:focus-visible { outline:2px solid var(--cyan); outline-offset:3px; }
@@ -396,50 +396,84 @@
 
   /* Buehne rechts: Uhrzeit-Zeile, Handy, Pause-Knopf */
   .hc-stage { display:flex; flex-direction:column; align-items:center; gap:1rem; }
-  /* Abends/nachts: grosse Uhrzeit des Besuchers ueber dem Handy, der Satz darunter */
+  /* Abends/nachts ein Satz ueber dem Handy; die Uhrzeit selbst steht in der Statusleiste (keine Doppelung) */
   .hc-clock { margin:0; max-width:330px; font-size:.92rem; line-height:1.45; color:var(--text2); text-align:center; text-wrap:balance; }
   .hc-clock.is-empty { display:none; }
-  .hc-clock time { display:block; margin-bottom:.15rem; font-family:var(--fh); font-size:clamp(1.7rem, 2.6vw, 2.2rem); font-weight:700; letter-spacing:-.02em; line-height:1.1; color:var(--cyan); font-variant-numeric:tabular-nums; }
   .hc-device { position:relative; }
   .hc-phone {
-    width:clamp(270px, 24vw, 330px); aspect-ratio:9 / 18;
-    max-height:min(620px, calc(100svh - var(--nav-h) - 8rem)); min-height:500px;
+    width:clamp(270px, 24vw, 320px); aspect-ratio:9 / 19;
+    max-height:min(660px, calc(100svh - var(--nav-h) - 8rem)); min-height:500px;
     border-radius:44px; padding:11px;
     background:linear-gradient(160deg, #2b3245 0%, #161b27 38%, #0f131c 100%);
     box-shadow:0 1px 0 rgba(255,255,255,.1) inset, 0 0 0 1px rgba(255,255,255,.07), 0 44px 80px -24px rgba(0,0,0,.7), 0 18px 40px -14px rgba(0,0,40,.6);
   }
-  .hc-screen { position:relative; height:100%; display:flex; flex-direction:column; border-radius:34px; overflow:hidden; background:#0b0f18; }
+  .hc-screen { position:relative; height:100%; display:flex; flex-direction:column; border-radius:34px; overflow:hidden; background:#0b141a; }
   .hc-screen::before { content:''; position:absolute; top:10px; left:50%; width:74px; height:22px; margin-left:-37px; border-radius:12px; background:#04060a; z-index:2; }
+  /* Home-Balken wie am echten Handy */
+  .hc-screen::after { content:''; position:absolute; bottom:6px; left:50%; width:96px; height:4px; margin-left:-48px; border-radius:2px; background:rgba(233,237,239,.55); z-index:2; }
+  /* Seitentasten am Rahmen */
+  .hc-phone { position:relative; }
+  .hc-phone::before, .hc-phone::after { content:''; position:absolute; width:3px; border-radius:2px; background:#2b3245; }
+  .hc-phone::before { left:-3px; top:20%; height:9%; box-shadow:0 calc(100% + 12px) 0 #2b3245; }
+  .hc-phone::after { right:-3px; top:27%; height:13%; }
   /* Statusleiste des Handys: traegt die echte Uhrzeit des Besuchers, in allen Modi */
-  .hc-status { display:flex; align-items:center; justify-content:space-between; height:40px; padding:6px 26px 0; background:#121827; font-size:.8rem; font-weight:700; color:var(--text); font-variant-numeric:tabular-nums; }
+  .hc-status { display:flex; align-items:center; justify-content:space-between; height:40px; padding:6px 26px 0; background:#1f2c34; font-size:.8rem; font-weight:700; color:var(--text); font-variant-numeric:tabular-nums; }
   .hc-status-icons { display:flex; align-items:center; gap:6px; }
   .hc-status-icons i { display:block; background:var(--text); border-radius:1px; }
   .hc-sig { width:3px; }
   .hc-sig:nth-child(1) { height:4px; } .hc-sig:nth-child(2) { height:6px; } .hc-sig:nth-child(3) { height:8px; } .hc-sig:nth-child(4) { height:10px; }
   .hc-bat { position:relative; width:20px; height:10px; margin-left:4px; border-radius:3px !important; background:none !important; border:1.5px solid var(--text); }
   .hc-bat::after { content:''; position:absolute; inset:1.5px 5px 1.5px 1.5px; border-radius:1px; background:var(--text); }
-  .hc-head { display:flex; align-items:center; gap:.65rem; padding:6px 16px 12px; background:#121827; border-bottom:1px solid rgba(255,255,255,.06); }
-  .hc-ava { width:38px; height:38px; flex-shrink:0; border-radius:50%; display:grid; place-items:center; background:var(--blue-vi); color:#fff; font-family:var(--fh); font-weight:700; font-size:.82rem; letter-spacing:.02em; }
-  .hc-who { font-size:.9rem; font-weight:700; color:var(--text); line-height:1.25; }
-  .hc-who small { display:block; font-size:.74rem; font-weight:500; color:var(--text2); }
+  /* Kundensicht wie im Messenger: oben der Kontakt, so wie der Kunde ihn gespeichert hat */
+  .hc-head { display:flex; align-items:center; gap:.55rem; padding:6px 14px 10px 8px; background:#1f2c34; }
+  .hc-back, .hc-call-i { width:20px; height:20px; flex-shrink:0; fill:none; stroke:#aebac1; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+  .hc-call-i { margin-left:auto; width:18px; height:18px; }
+  .hc-ava { width:36px; height:36px; flex-shrink:0; border-radius:50%; display:grid; place-items:center; background:var(--blue-vi); color:#fff; font-family:var(--fh); font-weight:700; font-size:.8rem; letter-spacing:.02em; }
+  .hc-who { font-size:.9rem; font-weight:700; color:#e9edef; line-height:1.25; }
+  .hc-who small { display:block; font-size:.72rem; font-weight:500; color:#8696a0; }
+  .hc-who small.is-typing { color:#00a884; }
   /* Aeltere Nachrichten laufen oben weich aus statt hart unter der Kopfzeile abgeschnitten zu werden */
-  .hc-thread { list-style:none; flex:1; display:flex; flex-direction:column; justify-content:flex-end; gap:8px; margin:0; padding:14px 12px 16px; overflow:hidden; transition:opacity .55s ease; -webkit-mask-image:linear-gradient(to bottom, transparent 0, #000 40px); mask-image:linear-gradient(to bottom, transparent 0, #000 40px); }
+  .hc-thread { list-style:none; flex:1; display:flex; flex-direction:column; justify-content:flex-end; gap:8px; margin:0; padding:14px 12px 16px; overflow:hidden; transition:opacity .55s ease; background:radial-gradient(rgba(255,255,255,.035) 1px, transparent 1.2px) 0 0 / 18px 18px; -webkit-mask-image:linear-gradient(to bottom, transparent 0, #000 40px); mask-image:linear-gradient(to bottom, transparent 0, #000 40px); }
   .hc-thread.is-out { opacity:0; }
-  .hc-day { align-self:center; margin-bottom:2px; padding:3px 11px; border-radius:999px; background:rgba(255,255,255,.06); font-size:.72rem; color:var(--text2); }
-  .hc-msg { max-width:85%; padding:8px 12px 6px; border-radius:17px; font-size:.87rem; line-height:1.42; }
-  .hc-msg time { display:block; margin-top:2px; text-align:right; font-size:.7rem; opacity:.78; font-variant-numeric:tabular-nums; }
-  .hc-msg.is-me { align-self:flex-end; background:#262e42; color:var(--text); border-bottom-right-radius:5px; transform-origin:100% 100%; }
-  .hc-msg.is-ag { align-self:flex-start; background:var(--blue-vi); color:#fff; border-bottom-left-radius:5px; transform-origin:0 100%; }
-  .hc-typing { display:flex; gap:5px; padding:13px 14px; }
-  .hc-typing i { width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,.9); animation:hcDot 1.1s ease-in-out infinite; }
+  .hc-day { align-self:center; margin-bottom:2px; padding:3px 11px; border-radius:8px; background:#182229; font-size:.72rem; color:#8696a0; }
+  .hc-msg { max-width:84%; padding:6px 9px 5px 10px; border-radius:9px; font-size:.86rem; line-height:1.4; color:#e9edef; box-shadow:0 1px .5px rgba(0,0,0,.25); }
+  .hc-msg time { display:block; margin-top:1px; text-align:right; font-size:.68rem; color:rgba(233,237,239,.6); font-variant-numeric:tabular-nums; }
+  /* Gelesen-Haken an den Nachrichten des Kunden */
+  .hc-msg.is-me time::after { content:''; display:inline-block; width:16px; height:9px; margin-left:4px; vertical-align:-1px; background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Cpath d='M1 4.8l2.6 2.6L9.4 1.2M6.4 7.4l.4.4 6.6-6.6' fill='none' stroke='%2353bdeb' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center / contain; }
+  .hc-msg.is-me { align-self:flex-end; background:#005c4b; border-top-right-radius:2px; transform-origin:100% 100%; }
+  .hc-msg.is-ag { align-self:flex-start; background:#1f2c34; border-top-left-radius:2px; transform-origin:0 100%; }
+  .hc-typing { display:flex; gap:5px; padding:11px 13px; }
+  .hc-typing i { width:6px; height:6px; border-radius:50%; background:#aebac1; animation:hcDot 1.1s ease-in-out infinite; }
   .hc-typing i:nth-child(2) { animation-delay:.15s; }
   .hc-typing i:nth-child(3) { animation-delay:.3s; }
-  .hc-sys { align-self:center; width:90%; padding:9px 12px 10px; border-radius:12px; border:1px solid rgba(38,189,239,.28); background:rgba(38,189,239,.08); font-size:.8rem; line-height:1.4; color:var(--text); }
+  .hc-sys { align-self:center; width:90%; padding:9px 12px 10px; border-radius:8px; border:1px solid rgba(38,189,239,.22); background:#182229; font-size:.78rem; line-height:1.4; color:#e9edef; }
   .hc-sys.is-done .hc-sys-t::before { content:''; display:inline-block; width:.32em; height:.62em; margin:0 .6em .12em .15em; border:solid var(--cyan); border-width:0 2px 2px 0; transform:rotate(45deg); }
   .hc-bar { display:block; height:3px; margin-top:7px; border-radius:2px; overflow:hidden; background:rgba(255,255,255,.08); }
   .hc-bar i { display:block; height:100%; background:var(--cyan); transform:scaleX(0); transform-origin:0 50%; }
   .hc-sys.is-run .hc-bar i { animation:hcBar 2s cubic-bezier(.16,1,.3,1) forwards; }
   .hc-sys.is-done .hc-bar i { transform:scaleX(1); }
+  /* Eingabezeile und Tastatur: die Tastatur faehrt ein, waehrend der Kunde tippt */
+  .hc-compose { display:flex; align-items:center; gap:6px; padding:6px 8px 18px; background:#0b141a; }
+  .hc-field { flex:1; min-width:0; display:flex; justify-content:flex-end; align-items:center; overflow:hidden; white-space:nowrap; height:34px; padding:0 14px; border-radius:18px; background:#1f2c34; color:#e9edef; font-size:.84rem; }
+  .hc-field .hc-ph { margin-right:auto; color:#8696a0; }
+  .hc-field.is-typing::after { content:''; flex-shrink:0; width:1.5px; height:1.1em; margin-left:1px; background:#00a884; animation:hcCaret 1s steps(1) infinite; }
+  .hc-send { width:34px; height:34px; flex-shrink:0; display:grid; place-items:center; border-radius:50%; background:#00a884; }
+  .hc-send svg { width:17px; height:17px; fill:none; stroke:#0b141a; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
+  .hc-send .i-send { display:none; fill:#0b141a; stroke-width:1.4; }
+  .hc-send.has-text .i-send { display:block; }
+  .hc-send.has-text .i-mic { display:none; }
+  .hc-kb { display:grid; grid-template-rows:0fr; background:#1a2128; transition:grid-template-rows .35s cubic-bezier(.16,1,.3,1); }
+  .hc-screen.is-kb .hc-kb { grid-template-rows:1fr; }
+  .hc-screen.is-kb .hc-compose { padding-bottom:6px; }
+  .hc-kb-in { min-height:0; overflow:hidden; }
+  .hc-kb-rows { display:flex; flex-direction:column; gap:6px; padding:7px 3px 20px; }
+  .hc-kb-row { display:flex; justify-content:center; gap:3px; }
+  .hc-key { flex:1 1 0; max-width:9.5%; height:30px; display:grid; place-items:center; border-radius:5px; background:#3a434c; color:#e9edef; font-size:.72rem; box-shadow:0 1px 0 rgba(0,0,0,.45); transition:background .12s, transform .12s; }
+  .hc-key.is-fn { max-width:13%; background:#2a3138; font-size:.62rem; }
+  .hc-key.is-space { max-width:none; flex:5 1 0; }
+  .hc-key.is-ret { max-width:none; flex:1.8 1 0; background:#2a3138; font-size:.62rem; }
+  .hc-key.is-hit { background:#aebac1; color:#0b141a; transform:translateY(-2px) scale(1.12); transition:none; }
+  @keyframes hcCaret { 50% { opacity:0; } }
   .hc-in { animation:hcIn .45s cubic-bezier(.16,1,.3,1) both; }
   @keyframes hcIn { from { opacity:0; transform:translateY(12px) scale(.96); } }
   @keyframes hcDot { 0%, 60%, 100% { opacity:.35; transform:translateY(0); } 30% { opacity:1; transform:translateY(-3px); } }
@@ -454,7 +488,7 @@
   .hc-pause svg { display:none; }
   .hc-pause[data-zustand="laeuft"] .i-pause, .hc-pause[data-zustand="pause"] .i-play, .hc-pause[data-zustand="fertig"] .i-replay { display:block; }
   @media (prefers-reduced-motion: reduce) {
-    .hc-in, .hc-typing i, .hc-sys.is-run .hc-bar i { animation:none !important; }
+    .hc-in, .hc-typing i, .hc-sys.is-run .hc-bar i, .hc-field::after { animation:none !important; }
     .hc-thread { transition:none; }
   }
   /* Tablet: Handy schmaler, QR weg (Platz) */
@@ -467,11 +501,13 @@
     .hc-phone { width:clamp(250px, 30vw, 290px); }
     .hc-qr { display:none; }
   }
-  /* Tablet: neben dem Handy ist kein Platz, rechts liegt die feste Kontaktleiste -
-     Pause-Knopf mittig unter das Handy */
-  @media (min-width:768px) and (max-width:1100px) {
+  /* Schmales Tablet: neben dem Handy ist kein Platz, rechts liegt die feste Kontaktleiste -
+     Pause-Knopf mittig unter das Handy; das Handy darf hier hoeher werden, damit die
+     Kundennachricht im Endzustand ganz zu sehen ist */
+  @media (min-width:768px) and (max-width:900px) {
     .hc-device { padding-bottom:52px; }
     .hc-pause { right:auto; left:50%; bottom:0; margin-left:-20px; }
+    .hc-phone { width:clamp(280px, 36vw, 310px); }
   }
   /* Handy: eine Spalte, Chat ohne Geraeterahmen als kompakter Streifen,
      die Buttons uebernimmt die feste Kontaktleiste unten */
@@ -482,12 +518,14 @@
     .hc-ctas { display:none; }
     .hc-stage { align-items:stretch; gap:.6rem; }
     .hc-clock { text-align:left; font-size:.86rem; }
-    .hc-clock time { font-size:1.6rem; }
-    .hc-phone { width:auto; aspect-ratio:auto; height:380px; min-height:0; max-height:none; padding:0; border-radius:18px; background:none; box-shadow:none; }
+      .hc-phone { width:auto; aspect-ratio:auto; height:400px; min-height:0; max-height:none; padding:0; border-radius:18px; background:none; box-shadow:none; }
     .hc-screen { border-radius:18px; border:1px solid var(--border); }
-    .hc-screen::before { display:none; }
+    .hc-screen::before, .hc-screen::after, .hc-phone::before, .hc-phone::after { display:none; }
+    .hc-kb { display:none; }
+    .hc-compose { display:none; }
     .hc-status { height:28px; padding:6px 16px 0; font-size:.75rem; }
-    .hc-head { padding:6px 56px 12px 14px; }
+    .hc-head { padding:4px 56px 8px 8px; }
+    .hc-call-i { display:none; }
     /* Kompakter, damit die Kundennachricht im Endzustand im Streifen bleibt */
     .hc-day { display:none; }
     .hc-thread { gap:6px; padding:10px 10px 12px; }
@@ -1473,19 +1511,23 @@
       <div class="hc-device">
         <div class="hc-phone" aria-hidden="true">
           <div class="hc-screen">
-            <div class="hc-status"><time data-hc-status>09:20</time><span class="hc-status-icons"><i class="hc-sig"></i><i class="hc-sig"></i><i class="hc-sig"></i><i class="hc-sig"></i><i class="hc-bat"></i></span></div>
+            <div class="hc-status"><time data-hc-status>12:20</time><span class="hc-status-icons"><i class="hc-sig"></i><i class="hc-sig"></i><i class="hc-sig"></i><i class="hc-sig"></i><i class="hc-bat"></i></span></div>
             <div class="hc-head">
+              <svg class="hc-back" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>
               <span class="hc-ava">AG</span>
-              <span class="hc-who">Andreas Grundke<small>Beispiel aus dem Alltag</small></span>
+              <span class="hc-who">Andreas IT<small data-hc-sub>Beispiel aus dem Alltag</small></span>
+              <svg class="hc-call-i" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>
             </div>
             <ol class="hc-thread" data-hc-thread>
               <li class="hc-day">Heute</li>
-              <li class="hc-msg is-me">Hi Andreas, unser Drucker druckt nichts mehr. Morgen ist Abgabe.<time>09:08</time></li>
-              <li class="hc-msg is-ag">Bin dran. Ich schalte mich kurz auf euren Rechner.<time>09:11</time></li>
-              <li class="hc-sys is-done"><span class="hc-sys-t">Druckwarteschlange geleert</span><span class="hc-bar"><i></i></span></li>
-              <li class="hc-msg is-ag">Die Warteschlange hing. Läuft wieder.<time>09:19</time></li>
-              <li class="hc-msg is-me">Super, danke dir!<time>09:20</time></li>
+              <li class="hc-msg is-me">Unsere Kasse geht nicht, die Gäste wollen zahlen.<time>12:11</time></li>
+              <li class="hc-msg is-ag">Ich prüfe Kassennetz, Internet und Kassenserver.<time>12:13</time></li>
+              <li class="hc-sys is-done"><span class="hc-sys-t">Netz und EC-Terminal ok, Kassenserver hing</span><span class="hc-bar"><i></i></span></li>
+              <li class="hc-msg is-ag">Kassenserver neu gestartet. Ihr könnt wieder kassieren.<time>12:19</time></li>
+              <li class="hc-msg is-me">Danke, läuft wieder!<time>12:20</time></li>
             </ol>
+            <div class="hc-compose"><span class="hc-field" data-hc-field><span class="hc-ph">Nachricht</span></span><span class="hc-send" data-hc-send><svg class="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg><svg class="i-send" viewBox="0 0 24 24"><path d="M4 12l16-8-6 16-2.5-6.5z"/></svg></span></div>
+            <div class="hc-kb" data-hc-kb><div class="hc-kb-in"></div></div>
           </div>
         </div>
         <button class="hc-pause" type="button" data-hc-pause data-zustand="laeuft" aria-label="Beispiel-Chat anhalten" hidden>

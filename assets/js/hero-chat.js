@@ -1,7 +1,7 @@
 /**
  * ═══════════════════════════════════════════════════════════
  * Grundke IT-Service · hero-chat.js
- * Version: 1.1.0
+ * Version: 1.3.0
  * Autor: Andreas Grundke / Grundke IT-Service
  * Datum: 2026-10-02
  * Beschreibung: Hero „Der Chat" auf der Startseite. Im gezeichneten Handy
@@ -26,6 +26,14 @@
  *                      scheinbare Reaktionszeit); Pause waehrend des Ueberblendens
  *                      laesst das Handy nicht mehr leer; ein Zeitpunkt je Fall;
  *                      Knopf ohne aria-pressed (Beschriftung nennt die Aktion).
+ *   1.2.0 (2026-10-02) Neue Faelle nach Andreas: Kasse, E-Mail beim Anbieter,
+ *                      Buchungsseite, langsamer PC durch defekten Netzwerkspeicher;
+ *                      Uhrzeit nur noch in der Statusleiste (keine Doppelung);
+ *                      Druckerfall raus, geloester Fall (Buchungsseite) bleibt am Ende stehen.
+ *   1.3.0 (2026-10-02) Kundensicht nach Andreas: Handy gehoert dem Kunden (Kontakt
+ *                      „Andreas IT"), Messenger-Optik, Tastatur faehrt beim Tippen
+ *                      des Kunden ein, gedrueckte Tasten leuchten auf; Kopfzeile
+ *                      zeigt „schreibt …", waehrend Andreas antwortet.
  * ═══════════════════════════════════════════════════════════
  */
 (function () {
@@ -45,26 +53,31 @@
      antwort/loesung = Minuten bis zur Antwort bzw. bis zum Ergebnis (bewusst verschieden).
      nacht:false = Fall passt nicht zu einer Nachricht mitten in der Nacht. */
   var CASES = [
-    { me: 'Hi Andreas, unser Drucker druckt nichts mehr. Morgen ist Abgabe.',
-      ag: 'Bin dran. Ich schalte mich kurz auf euren Rechner.',
-      run: 'Fernwartung verbunden …', done: 'Druckwarteschlange geleert',
-      fix: 'Die Warteschlange hing. Läuft wieder.',
-      thanks: 'Super, danke dir!', antwort: 3, loesung: 8, nacht: true },
-    { me: 'Lisa kommt nicht mehr in ihr Postfach. Gleich ist ein Kundentermin.',
-      ag: 'Ich kümmere mich. Sie soll kurz am Rechner bleiben.',
-      run: 'Konto wird entsperrt …', done: 'Konto entsperrt, Zwei-Faktor neu eingerichtet',
-      fix: 'Erledigt, sie kommt wieder rein.',
-      thanks: 'Perfekt, das war knapp.', antwort: 2, loesung: 6, nacht: false },
-    { me: 'Im Besprechungsraum ist schon wieder kein WLAN.',
-      ag: 'Ich schau mir euer Netz aus der Ferne an.',
-      run: 'Access Point wird geprüft …', done: 'Access Point neu gestartet, Kanal gewechselt',
-      fix: 'Der Access Point hing. Ich behalte ihn im Blick.',
-      thanks: 'Danke, die Präsentation ist gerettet.', antwort: 6, loesung: 9, nacht: true },
+    { me: 'Unsere Kasse geht nicht, die Gäste wollen zahlen.',
+      ag: 'Ich prüfe Kassennetz, Internet und Kassenserver.',
+      run: 'Prüfe Kassennetz, Server, EC-Terminal …', done: 'Netz und EC-Terminal ok, Kassenserver hing',
+      fix: 'Kassenserver neu gestartet. Ihr könnt wieder kassieren.',
+      thanks: 'Danke, läuft wieder!', antwort: 2, loesung: 6, nacht: false },
+    { me: 'Seit heute früh kommen bei uns keine Mails an.',
+      ag: 'Ich schau, ob es am Anbieter liegt oder bei euch.',
+      run: 'Prüfe Postfach, DNS und Anbieter-Status …', done: 'Störung beim Anbieter, bei euch alles in Ordnung',
+      fix: 'Liegt beim Anbieter. Ist gemeldet, ich behalte es im Blick.',
+      thanks: 'Gut zu wissen, danke.', antwort: 4, loesung: 10, nacht: true },
     { me: 'Unser Kollege, der die IT nebenbei gemacht hat, hört Ende des Monats auf.',
       ag: 'Dann setzen wir uns nächste Woche zusammen. Ich nehme alles auf und übernehme.',
       run: 'IT-Schnellcheck wird geplant …', done: 'IT-Schnellcheck am Dienstag, 9 Uhr',
       fix: 'Danach weißt du genau, was läuft und was nicht.',
-      thanks: 'Klingt gut, bis Dienstag.', antwort: 4, loesung: 11, nacht: true }
+      thanks: 'Klingt gut, bis Dienstag.', antwort: 4, loesung: 11, nacht: true },
+    { me: 'Mein PC ist heute extrem langsam, Ordner hängen ständig.',
+      ag: 'Ich schau mir das aus der Ferne an.',
+      run: 'Analysiere PC, Netzwerk, Netzwerkspeicher …', done: 'PC in Ordnung, Netzwerkspeicher meldet Plattenfehler',
+      fix: 'Der Netzwerkspeicher ist defekt. Ersatz ist bestellt, eure Daten stelle ich noch heute wieder her.',
+      thanks: 'Gut, dass du das gleich gesehen hast.', antwort: 3, loesung: 12, nacht: true },
+    { me: 'Unsere Buchungsseite lädt nicht, Gäste rufen schon an.',
+      ag: 'Ich prüfe, ob es an der Seite oder an eurem Netz liegt.',
+      run: 'Prüfe Website, DNS und Internetzugang …', done: 'Netz in Ordnung, Zertifikat der Seite abgelaufen',
+      fix: 'Das Zertifikat war abgelaufen. Ist erneuert, die Seite läuft.',
+      thanks: 'Super, danke dir!', antwort: 3, loesung: 7, nacht: true }
   ];
   var NIGHT_REPLY = 'Guten Morgen, hab\'s gesehen. Ich kümmere mich.';
 
@@ -100,9 +113,6 @@
     clockEl.textContent = '';
     clockEl.classList.toggle('is-empty', mode === 'day');
     if (mode === 'day') return;
-    var t = document.createElement('time');
-    t.textContent = hhmm(now) + ' Uhr';
-    clockEl.appendChild(t);
     clockEl.appendChild(document.createTextNode(mode === 'night'
       ? 'Schreib einfach, ich melde mich, sobald ich wach bin.'
       : 'Bei mir gibt\'s keine Öffnungszeiten.'));
@@ -143,9 +153,73 @@
     if (node && node.parentNode) node.parentNode.removeChild(node);
   }
 
+  /* ── Eingabezeile und Tastatur (Kundensicht: der Kunde tippt) ── */
+  var screen = root.querySelector('.hc-screen');
+  var field = root.querySelector('[data-hc-field]');
+  var sendBtn = root.querySelector('[data-hc-send]');
+  var sub = root.querySelector('[data-hc-sub]');
+  var kbIn = root.querySelector('[data-hc-kb] .hc-kb-in');
+  var SUB_TEXT = sub ? sub.textContent : '';
+  var KEYS = {};
+  var KB_ROWS = [
+    'q w e r t z u i o p ü',
+    'a s d f g h j k l ö ä',
+    '⇧ y x c v b n m ⌫'
+  ];
+
+  function buildKeyboard() {
+    if (!kbIn) return;
+    var rows = el('div', 'hc-kb-rows');
+    KB_ROWS.forEach(function (r) {
+      var row = el('div', 'hc-kb-row');
+      r.split(' ').forEach(function (k) {
+        var fn = k === '⇧' || k === '⌫';
+        var key = row.appendChild(el('span', 'hc-key' + (fn ? ' is-fn' : ''), k));
+        KEYS[fn ? (k === '⇧' ? 'shift' : 'back') : k] = key;
+      });
+      rows.appendChild(row);
+    });
+    var last = el('div', 'hc-kb-row');
+    KEYS.num = last.appendChild(el('span', 'hc-key is-fn', '123'));
+    KEYS[','] = last.appendChild(el('span', 'hc-key', ','));
+    KEYS[' '] = last.appendChild(el('span', 'hc-key is-space', 'Leerzeichen'));
+    KEYS['.'] = last.appendChild(el('span', 'hc-key', '.'));
+    KEYS.ret = last.appendChild(el('span', 'hc-key is-ret', 'Senden'));
+    rows.appendChild(last);
+    kbIn.appendChild(rows);
+  }
+
+  /* Die gedrueckte Taste leuchtet kurz auf; Grossbuchstaben druecken Umschalt mit,
+     Satzzeichen ohne eigene Taste die 123-Taste */
+  function hit(ch) {
+    var low = ch.toLowerCase(), keys = [];
+    if (KEYS[low]) keys.push(KEYS[low]); else keys.push(KEYS.num);
+    if (ch !== low) keys.push(KEYS.shift);
+    keys.forEach(function (k) {
+      if (!k) return;
+      k.classList.add('is-hit');
+      setTimeout(function () { k.classList.remove('is-hit'); }, 130);
+    });
+  }
+  function setField(text) {
+    if (!field) return;
+    field.textContent = '';
+    if (text) field.appendChild(document.createTextNode(text));
+    else field.appendChild(el('span', 'hc-ph', 'Nachricht'));
+    field.classList.toggle('is-typing', !!text);
+    if (sendBtn) sendBtn.classList.toggle('has-text', !!text);
+  }
+  function tastatur(auf) { if (screen) screen.classList.toggle('is-kb', auf); }
+  function schreibt(an) {
+    if (!sub) return;
+    sub.textContent = an ? 'schreibt …' : SUB_TEXT;
+    sub.classList.toggle('is-typing', an);
+  }
+
   /* ── Statisch (reduced-motion): erster Fall, fertig ── */
   function renderStatic() {
-    var c = CASES[0], t = timesFor(c, new Date());
+    var jetzt = new Date(), nachts = dayMode(jetzt) === 'night';
+    var c = CASES.filter(function (k) { return !nachts || k.nacht; })[0], t = timesFor(c, jetzt);
     thread.textContent = '';
     thread.appendChild(el('li', 'hc-day', 'Heute'));
     thread.appendChild(msg('me', c.me, t.me));
@@ -157,6 +231,7 @@
     thread.appendChild(msg('me', c.thanks, t.thanks));
   }
 
+  buildKeyboard();
   updateClock();
   setInterval(updateClock, 30000);
 
@@ -168,39 +243,66 @@
   var zustand = 'laeuft';   // laeuft | pause | fertig
   var offscreen = false;
 
+  var TIPP_MS = 45;   // Abstand zwischen zwei Tastendruecken
+
+  /* Kunde tippt: Tastatur auf, Buchstabe fuer Buchstabe ins Feld, Senden, Tastatur zu.
+     Haengt die Schritte an s an und gibt den Zeitpunkt nach dem Senden zurueck. */
+  function tippen(s, at, text, time) {
+    s.push({ at: at, run: function () { tastatur(true); } });
+    var start = at + 350;
+    for (var i = 0; i < text.length; i++) {
+      (function (n) {
+        s.push({ at: start + n * TIPP_MS, run: function () { hit(text.charAt(n)); setField(text.slice(0, n + 1)); } });
+      })(i);
+    }
+    var ende = start + text.length * TIPP_MS + 250;
+    s.push({ at: ende, run: function () {
+      if (KEYS.ret) { KEYS.ret.classList.add('is-hit'); setTimeout(function () { KEYS.ret.classList.remove('is-hit'); }, 130); }
+      setField('');
+      add(msg('me', text, time));
+    } });
+    s.push({ at: ende + 350, run: function () { tastatur(false); } });
+    return ende + 350;
+  }
+
   function stepsFor(c, now, letzter) {
     var t = timesFor(c, now), typingNode, sysNode;
     var s = [
       { at: 0, run: function () {
         thread.textContent = '';
         thread.classList.remove('is-out');
+        setField('');
+        schreibt(false);
         add(el('li', 'hc-day', 'Heute'));
-      } },
-      { at: 450, run: function () { add(msg('me', c.me, t.me)); } },
-      { at: 1700, run: function () { typingNode = add(typing()); } },
-      { at: 3200, run: function () {
-        weg(typingNode);
-        add(msg('ag', t.night ? NIGHT_REPLY : c.ag, t.ag));
-      } },
-      { at: 4600, run: function () { sysNode = add(sys(c.run)); sysNode.classList.add('is-run'); } },
-      { at: 6700, run: function () {
-        sysNode.classList.remove('is-run');
-        sysNode.classList.add('is-done');
-        sysNode.firstChild.textContent = c.done;
-      } },
-      { at: 7700, run: function () { typingNode = add(typing()); } },
-      { at: 9100, run: function () {
-        weg(typingNode);
-        add(msg('ag', c.fix, t.fix));
-      } },
-      { at: 10500, run: function () { add(msg('me', c.thanks, t.thanks)); } }
+      } }
     ];
+    var a = tippen(s, 300, c.me, t.me) + 700;
+    s.push({ at: a, run: function () { typingNode = add(typing()); schreibt(true); } });
+    s.push({ at: a + 1500, run: function () {
+      weg(typingNode);
+      schreibt(false);
+      add(msg('ag', t.night ? NIGHT_REPLY : c.ag, t.ag));
+    } });
+    s.push({ at: a + 2700, run: function () { sysNode = add(sys(c.run)); sysNode.classList.add('is-run'); } });
+    s.push({ at: a + 4800, run: function () {
+      sysNode.classList.remove('is-run');
+      sysNode.classList.add('is-done');
+      sysNode.firstChild.textContent = c.done;
+    } });
+    s.push({ at: a + 5600, run: function () { typingNode = add(typing()); schreibt(true); } });
+    s.push({ at: a + 7000, run: function () {
+      weg(typingNode);
+      schreibt(false);
+      add(msg('ag', c.fix, t.fix));
+    } });
+    var b = tippen(s, a + 7700, c.thanks, t.thanks);
     if (letzter) {
-      s.push({ at: 11000, run: fertig });
+      s.push({ at: b + 400, run: fertig });
     } else {
-      s.push({ at: 14000, run: function () { thread.classList.add('is-out'); } });
-      s.push({ at: 14700, run: nextCase });
+      s.push({ at: b + 2600, run: function () { thread.classList.add('is-out'); } });
+      s.push({ at: b + 3300, run: nextCase });
     }
+    s.sort(function (x, y) { return x.at - y.at; });
     return s;
   }
 

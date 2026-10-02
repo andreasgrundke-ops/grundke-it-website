@@ -56,12 +56,13 @@
  *                        Buttons, style.css geaendert, Inhaltskorrekturen,
  *                        Datenschutzerklaerung ergaenzt.
  *   1.18.0 / 2026-10-02 — Hero der Startseite neu: Chat statt Foto-Slider.
+ *   1.19.0 / 2026-10-02 — Hero-Chat in Kundensicht mit Tastatur, neue Faelle.
  *                        Neue Datei assets/js/hero-chat.js (im Pre-Cache),
  *                        Slider-Code aus main.js und style.css entfernt.
  */
 
-const CACHE_NAME    = 'grundke-it-v1.18.0';
-const RUNTIME_CACHE = 'grundke-it-runtime-v19';
+const CACHE_NAME    = 'grundke-it-v1.19.0';
+const RUNTIME_CACHE = 'grundke-it-runtime-v20';
 
 /* Pre-Cache: minimaler Kern fuer Offline-First-Boot */
 const PRECACHE_URLS = [
