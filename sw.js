@@ -59,10 +59,12 @@
  *   1.19.0 / 2026-10-02 — Hero-Chat in Kundensicht mit Tastatur, neue Faelle.
  *                        Neue Datei assets/js/hero-chat.js (im Pre-Cache),
  *                        Slider-Code aus main.js und style.css entfernt.
+ *   1.20.0 / 2026-10-03 — Hero-Chat: Handy-Ansicht ohne unsichtbares Tippen,
+ *                        kein Nachholen nach gedrosselten Timern.
  */
 
-const CACHE_NAME    = 'grundke-it-v1.19.0';
-const RUNTIME_CACHE = 'grundke-it-runtime-v20';
+const CACHE_NAME    = 'grundke-it-v1.20.0';
+const RUNTIME_CACHE = 'grundke-it-runtime-v21';
 
 /* Pre-Cache: minimaler Kern fuer Offline-First-Boot */
 const PRECACHE_URLS = [

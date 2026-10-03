@@ -1,9 +1,9 @@
 /**
  * ═══════════════════════════════════════════════════════════
  * Grundke IT-Service · hero-chat.js
- * Version: 1.3.0
+ * Version: 1.4.0
  * Autor: Andreas Grundke / Grundke IT-Service
- * Datum: 2026-10-02
+ * Datum: 2026-10-03
  * Beschreibung: Hero „Der Chat" auf der Startseite. Im gezeichneten Handy
  *   laeuft ein Beispiel-Einsatz als Chat ab: Kundennachricht, Andreas tippt,
  *   Fernwartung, Ergebnis, Dank. Statusleiste und Zeitstempel tragen die echte
@@ -35,6 +35,12 @@
  *                      des Kunden ein, gedrueckte Tasten leuchten auf; Kopfzeile
  *                      zeigt „schreibt …", waehrend Andreas antwortet. Tipptempo
  *                      menschlich (ca. 115 ms je Taste, Pausen nach Wort und Satzzeichen).
+ *   1.4.0 (2026-10-03) Handy-Ansicht repariert: unter 768 px sind Eingabezeile und
+ *                      Tastatur ausgeblendet, das Tippen lief trotzdem unsichtbar
+ *                      mit (bis zu 8 s leerer Chat, dann alles auf einmal). Dort
+ *                      erscheint die Kundennachricht jetzt nach kurzer Pause.
+ *                      Ausserdem holt der Takt nach gedrosselten Timern (Scrollen
+ *                      am Handy, Energiesparen) nicht mehr mehrere Schritte auf einmal nach.
  * ═══════════════════════════════════════════════════════════
  */
 (function () {
@@ -247,6 +253,7 @@
   /* Tipptempo wie ein Mensch am Handy: ruhig genug zum Mitlesen, nach Wortende
      und Satzzeichen eine kleine Denkpause, dazu leichte Unregelmaessigkeit */
   var TIPP_MS = 115;
+  var kompakt = window.matchMedia('(max-width: 767px)');
   function tippPause(ch, n) {
     var p = TIPP_MS + (n * 37 % 5) * 14;
     if (ch === ' ') p += 90;
@@ -257,6 +264,12 @@
   /* Kunde tippt: Tastatur auf, Buchstabe fuer Buchstabe ins Feld, Senden, Tastatur zu.
      Haengt die Schritte an s an und gibt den Zeitpunkt nach dem Senden zurueck. */
   function tippen(s, at, text, time) {
+    // Schmale Ansicht: Eingabezeile und Tastatur sind per CSS weg, ein unsichtbares
+    // Tippen waere nur leere Wartezeit - die Nachricht kommt nach einer Lesepause
+    if (kompakt.matches) {
+      s.push({ at: at + 1400, run: function () { add(msg('me', text, time)); } });
+      return at + 1400;
+    }
     s.push({ at: at, run: function () { tastatur(true); } });
     var zeit = at + 450;
     for (var i = 0; i < text.length; i++) {
@@ -340,9 +353,12 @@
     setRunning();
   }
 
+  /* Gedrosselte Timer (Handy beim Scrollen, Energiesparen) duerfen nicht
+     mehrere Schritte auf einmal nachholen: hoechstens TICK_MAX je Takt zaehlen */
+  var TICK_MAX = 250;
   function tick() {
     var ts = performance.now();
-    elapsed += ts - lastTs;
+    elapsed += Math.min(ts - lastTs, TICK_MAX);
     lastTs = ts;
     while (zustand === 'laeuft' && stepIdx < steps.length && elapsed >= steps[stepIdx].at) {
       steps[stepIdx++].run();

@@ -1,13 +1,18 @@
 # STATUS – grundke-it.de Website
 <!-- CI 2026.01 · Grundke IT-Service · Standard-Statusdatei, wird von Mensch+KI gepflegt -->
 
-**Stand:** 2026-10-02 · **Status:** Live
+**Stand:** 2026-10-03 · **Status:** Live
 
 ## Was ist das
 grundke-it.de Website – siehe README/CLAUDE.md im Projekt.
 
 ## Aktueller Stand
-Letzter Arbeitsblock (02.10.2026): **Chat-Hero statt Foto-Slider** (von Andreas freigegeben, live, `sw.js` 1.19.0 / runtime v20).
+Letzter Arbeitsblock (02.10.2026): **Chat-Hero statt Foto-Slider** (von Andreas freigegeben, live).
+
+- **Fix 03.10.2026** (`hero-chat.js` 1.4.0, `sw.js` 1.20.0 / runtime v21): Am Handy lief das Tippen des
+  Kunden unsichtbar mit (Eingabezeile/Tastatur sind unter 768 px per CSS aus), bis zu 8 s leerer Chat,
+  danach alles dicht hintereinander. Jetzt kommt die Kundennachricht dort nach 1,4 s Lesepause; der Takt
+  zaehlt hoechstens 250 ms je Tick, damit gedrosselte Timer (Scrollen, Energiesparen) nichts nachholen.
 
 - Kritik des alten Sliders (impeccable, zwei Agenten): 14/32 – anonyme Stockfotos, 5 rotierende
   Botschaften, 31 Tab-Stopps in unsichtbare Slides, kein Pause-Knopf, Unterzeile klang nach Garantie.

@@ -59,7 +59,8 @@ geaendert hat, nicht wegen eines neuen Footer-Links.
   und CSS im Block „Hero „Der Chat"" in `index.html`. Slider-Code und die fuenf Unsplash-Fotos
   entfernt. Produktbeschreibung fuer impeccable in `PRODUCT.md`, Entwurfsvertrag in
   `.impeccable/surfaces/` (gitignored). Avatar „AG" wird nach dem Foto-Shooting durch ein Foto
-  ersetzt. `sw.js` 1.19.0 / runtime v20.
+  ersetzt. 03.10.2026: Handy-Ansicht (<768 px) ohne unsichtbares Tippen, Takt holt nach
+  gedrosselten Timern nicht mehr nach. `sw.js` 1.20.0 / runtime v21.
 - **Davor 23.09.2026 — Seite aus einem Guss: ein Menue (IT-Schnellcheck · IT-Service ·
   KI im Betrieb · Schulungen · Preise · Fernwartung · Kontakt · Anrufen) und ein Footer fuer
   alle Seiten, aktiver Punkt per `aria-current`, Brotkrumen, FAQ als Akkordeon, Buttons
