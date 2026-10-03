@@ -61,10 +61,13 @@
  *                        Slider-Code aus main.js und style.css entfernt.
  *   1.20.0 / 2026-10-03 — Hero-Chat: Handy-Ansicht ohne unsichtbares Tippen,
  *                        kein Nachholen nach gedrosselten Timern.
+ *   1.21.0 / 2026-10-03 — Pre-Cache mit cache:'reload' (nicht mehr aus dem
+ *                        HTTP-Cache), Runtime-Cache vor Pre-Cache lesen, damit
+ *                        Background-Updates auch ausgeliefert werden.
  */
 
-const CACHE_NAME    = 'grundke-it-v1.20.0';
-const RUNTIME_CACHE = 'grundke-it-runtime-v21';
+const CACHE_NAME    = 'grundke-it-v1.21.0';
+const RUNTIME_CACHE = 'grundke-it-runtime-v22';
 
 /* Pre-Cache: minimaler Kern fuer Offline-First-Boot */
 const PRECACHE_URLS = [
@@ -90,7 +93,9 @@ const PRECACHE_URLS = [
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(PRECACHE_URLS).catch(err => {
+      /* cache:'reload' umgeht den HTTP-Cache (max-age=600): sonst landet direkt
+         nach einem Release die alte Datei im neuen Pre-Cache */
+      .then(cache => cache.addAll(PRECACHE_URLS.map(u => new Request(u, { cache: 'reload' }))).catch(err => {
         console.warn('[SW] Pre-Cache teilweise fehlgeschlagen:', err);
       }))
       .then(() => self.skipWaiting())
@@ -138,18 +143,23 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  /* Static Assets -> Cache-First mit Background-Update */
+  /* Static Assets -> Cache-First mit Background-Update.
+     Zuerst im Runtime-Cache suchen: dorthin schreibt das Background-Update.
+     Vorher gewann immer die Pre-Cache-Kopie, Updates kamen nie an. */
   event.respondWith(
-    caches.match(req).then(cached => {
-      const networkFetch = fetch(req).then(res => {
-        if (res && res.status === 200) {
-          const copy = res.clone();
-          caches.open(RUNTIME_CACHE).then(c => c.put(req, copy));
-        }
-        return res;
-      }).catch(() => cached);
-      return cached || networkFetch;
-    })
+    caches.open(RUNTIME_CACHE)
+      .then(c => c.match(req))
+      .then(hit => hit || caches.match(req))
+      .then(cached => {
+        const networkFetch = fetch(req).then(res => {
+          if (res && res.status === 200) {
+            const copy = res.clone();
+            caches.open(RUNTIME_CACHE).then(c => c.put(req, copy));
+          }
+          return res;
+        }).catch(() => cached);
+        return cached || networkFetch;
+      })
   );
 });
 

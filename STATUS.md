@@ -13,6 +13,9 @@ Letzter Arbeitsblock (02.10.2026): **Chat-Hero statt Foto-Slider** (von Andreas 
   Kunden unsichtbar mit (Eingabezeile/Tastatur sind unter 768 px per CSS aus), bis zu 8 s leerer Chat,
   danach alles dicht hintereinander. Jetzt kommt die Kundennachricht dort nach 1,4 s Lesepause; der Takt
   zaehlt hoechstens 250 ms je Tick, damit gedrosselte Timer (Scrollen, Energiesparen) nichts nachholen.
+- **SW-Fix 03.10.2026** (`sw.js` 1.21.0 / runtime v22): Pre-Cache zog Dateien aus dem HTTP-Cache
+  (max-age=600) und gewann danach immer gegen das Background-Update - Besucher blieben bis zum
+  naechsten Release auf altem JS. Jetzt `cache:'reload'` beim Install und Runtime-Cache zuerst.
 
 - Kritik des alten Sliders (impeccable, zwei Agenten): 14/32 – anonyme Stockfotos, 5 rotierende
   Botschaften, 31 Tab-Stopps in unsichtbare Slides, kein Pause-Knopf, Unterzeile klang nach Garantie.

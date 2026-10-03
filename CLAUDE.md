@@ -60,7 +60,8 @@ geaendert hat, nicht wegen eines neuen Footer-Links.
   entfernt. Produktbeschreibung fuer impeccable in `PRODUCT.md`, Entwurfsvertrag in
   `.impeccable/surfaces/` (gitignored). Avatar „AG" wird nach dem Foto-Shooting durch ein Foto
   ersetzt. 03.10.2026: Handy-Ansicht (<768 px) ohne unsichtbares Tippen, Takt holt nach
-  gedrosselten Timern nicht mehr nach. `sw.js` 1.20.0 / runtime v21.
+  gedrosselten Timern nicht mehr nach. `sw.js` 1.21.0 / runtime v22: Pre-Cache mit `cache:'reload'`,
+  Runtime-Cache wird vor dem Pre-Cache gelesen (vorher kamen Updates statischer Dateien nie an).
 - **Davor 23.09.2026 — Seite aus einem Guss: ein Menue (IT-Schnellcheck · IT-Service ·
   KI im Betrieb · Schulungen · Preise · Fernwartung · Kontakt · Anrufen) und ein Footer fuer
   alle Seiten, aktiver Punkt per `aria-current`, Brotkrumen, FAQ als Akkordeon, Buttons
