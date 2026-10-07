@@ -1137,7 +1137,7 @@ SERVICES = [
             "paths_label": "Die vier Bereiche",
             "paths": [
                 ("Abläufe automatisieren", "Schnittstellen, Dokumente auslesen, Berichte ohne Excel-Bastelei.", "/ki-automatisierung/"),
-                ("Videoanalyse und Auswertung", "Vorhandene Kameras zählen, erkennen und protokollieren.", "/ki-videoanalyse/"),
+                ("Videoanalyse und Auswertung", "Videoüberwachung mit KI: Fahrzeuge und Kennzeichen erkennen, Vorgänge zählen.", "/ki-videoanalyse/"),
                 ("KI sicher einsetzen", "Verträge, Regeln und Schulung, damit KI datenschutzgerecht läuft.", "/ki-dsgvo/"),
                 ("Software nach Maß", "Kleine Anwendungen für Abläufe, die heute in Excel oder auf Zetteln laufen.", "/software-nach-mass/"),
             ],
@@ -1181,23 +1181,15 @@ SERVICES = [
       <p>Meldungen der Datensicherung, Fehlermails von Geräten, volle Postfächer: Eine KI liest sie, ordnet sie ein und schickt nur das Wichtige an die richtige Person, mit einem Satz, was zu tun ist.</p>
       <p>Dazu kommen Auswertungen und Monatsberichte, Zusammenfassungen langer Mails und Dokumente, Entwürfe für Angebote und Antworten und die Abstimmung von Terminen.</p>
 
-      <h2>Drei Anwendungen aus der Praxis</h2>
-      <p>Alle drei laufen. Die Kundenfälle sind anonymisiert, weil Betriebsabläufe niemanden etwas angehen außer dem Betrieb selbst.</p>
+      <h2>Zwei Beispiele aus der Praxis</h2>
+      <p>Das erste ist ein typischer Fall für Videoauswertung, das zweite läuft in meinem eigenen Betrieb.</p>
 
       <div class="ki-case">
-        <span class="ki-case-tag">Kundenprojekt · Videoauswertung</span>
+        <span class="ki-case-tag">Videoüberwachung mit KI</span>
         <h3>Eine Hofzufahrt, die sich selbst protokolliert</h3>
-        <p>Ein Betrieb im Landkreis München hatte eine vollständig aufgebaute UniFi-Protect-Anlage und trotzdem keine Antwort auf einfache Fragen: Wie viele Fahrzeuge kommen pro Woche? Wann ist am meisten los? Die Aufnahmen lagen vor, sie hätte nur jemand ansehen müssen.</p>
-        <p>Auf die vorhandenen Kameras habe ich eine Objekterkennung aufgesetzt. Fahrzeuge und Objekte werden automatisch erkannt, jedes Ereignis landet mit Zeitstempel in einer Datenbank, und eine Oberfläche zeigt daraus Verläufe und Summen. Die Erkennung läuft auf Hardware im Betrieb, die Aufnahmen verlassen das Haus nicht.</p>
-        <p class="ki-result">Statt Videomaterial zu sichten, gibt es jetzt Zahlen. Die Auswertung, für die vorher niemand Zeit hatte, steht beim Öffnen der Seite da.</p>
-      </div>
-
-      <div class="ki-case">
-        <span class="ki-case-tag">Kundenprojekt · Rechnungsstellung</span>
-        <h3>E-Rechnungen ohne Abtippen</h3>
-        <p>Die Leistungsdaten lagen als CSV-Export aus einem Vorsystem vor, die Rechnungen entstanden daraus von Hand. Jeden Monat dieselbe Strecke, jedes Mal einige Stunden, und gelegentlich ein Zahlendreher, den erst der Kunde bemerkt.</p>
-        <p>Heute liest ein Programm den Export ein, ordnet die Positionen zu und erzeugt daraus normgerechte E-Rechnungen im Format XRechnung beziehungsweise ZUGFeRD. Jede Rechnung wird gegen die Ausgangsdaten gegengeprüft, damit nichts ungesehen durchläuft.</p>
-        <p class="ki-result">Aus einem halben Arbeitstag im Monat sind ein paar Minuten geworden. Die Umstellung auf die kommende E-Rechnungspflicht ist damit nebenbei erledigt, statt kurz vor der Frist anzustehen.</p>
+        <p>Viele Betriebe haben an der Zufahrt eine Kameraanlage und sehen sich die Aufnahmen erst an, wenn etwas passiert ist. Dabei lassen sich einfache Fragen automatisch beantworten: Wie viele Fahrzeuge kommen pro Woche? Wann ist am meisten los? Stand nachts ein fremdes Fahrzeug auf dem Hof?</p>
+        <p>Auf eine vorhandene Anlage wie UniFi Protect setze ich eine Erkennung auf. Fahrzeuge werden erkannt und, wo es dafür einen Zweck gibt, auch ihre Kennzeichen, etwa um bekannte Fahrzeuge von Lieferanten von fremden zu unterscheiden. Jedes Ereignis landet mit Zeitstempel in einer Datenbank, eine Oberfläche zeigt Verläufe und Auffälligkeiten. Die Erkennung läuft auf Hardware im Betrieb, die Aufnahmen verlassen das Haus nicht.</p>
+        <p class="ki-result">Kennzeichen sind personenbezogene Daten. Erfasst wird deshalb nur, was für den Zweck nötig ist, mit Hinweisschild und festen Löschfristen, die wir vor dem Start festlegen.</p>
       </div>
 
       <div class="ki-case">
@@ -1345,14 +1337,14 @@ SERVICES = [
     },
     {
         "slug": "ki-videoanalyse", "nav": "Videoanalyse & Auswertung",
-        "title": "KI-Videoanalyse für Betriebe – Objekterkennung | Grundke IT-Service",
+        "title": "Videoüberwachung mit KI: Fahrzeuge & Kennzeichen | Grundke IT",
         "h1": "Videoanalyse und Auswertung – Kameradaten nutzbar machen",
         "label": "Kamera plus Auswertung", "service_type": "KI-gestützte Videoanalyse und Auswertung für Unternehmen",
         "published": KI_PUB_DATE, "modified": NEW_DATE, "modified_disp": NEW_DATE_DISP,
         "extra_style": KI_STYLE,
         "cta2_href": "/netzwerk-wlan-firewall/", "cta2_text": "Netzwerk & Kameratechnik",
-        "desc": ("Aus Kameraaufnahmen werden Zahlen: Objekte erkennen, Vorgänge zählen, Kennzahlen "
-                 "darstellen. Auf Basis vorhandener UniFi-Anlagen, Verarbeitung im Haus."),
+        "desc": ("Videoüberwachung mit KI: Fahrzeuge und Kennzeichen erkennen, Vorgänge zählen, Kennzahlen "
+                 "darstellen. Auf vorhandenen UniFi-Anlagen, Verarbeitung im Haus."),
         "sub": "Eine Kamera zeichnet auf. Ausgewertet wird sie selten, weil niemand die Zeit hat, Aufnahmen durchzusehen.",
         "intro": ("Die meisten Betriebe haben Kameras, und fast alle benutzen sie erst, wenn etwas "
                   "passiert ist. Dann sitzt jemand eine Stunde vor der Zeitleiste und sucht. "
@@ -1364,7 +1356,7 @@ SERVICES = [
                   "Haus dabei nicht."),
         "raw_intro": True,
         "cards": [
-            ("Objekte erkennen", "Fahrzeuge, Container, Maschinen, Paletten. Was regelmäßig vorkommt, lässt sich zuverlässig unterscheiden."),
+            ("Fahrzeuge und Kennzeichen erkennen", "Fahrzeuge, Container, Maschinen, Paletten. Wo es einen klaren Zweck gibt, werden auch Kennzeichen gelesen, etwa um bekannte Fahrzeuge von fremden zu unterscheiden."),
             ("Vorgänge zählen", "Zufahrten, Anlieferungen, Durchgänge, Standzeiten. Mit Zeitstempel und ohne dass jemand mitschreibt."),
             ("Protokoll in der Datenbank", "Jedes Ereignis wird gespeichert und bleibt auswertbar, auch wenn die Aufnahme längst gelöscht ist."),
             ("Kennzahlen auf einen Blick", "Eine Oberfläche zeigt Verläufe, Summen und Auffälligkeiten. Im Browser, auch vom Handy aus."),
@@ -1375,8 +1367,9 @@ SERVICES = [
       <h2>Was dabei erlaubt ist und was nicht</h2>
       <p>Videoauswertung im Betrieb ist kein Selbstläufer. Für die Aufnahme selbst braucht es einen Grund, der sich benennen lässt, meist der Schutz von Eigentum oder die Kontrolle betrieblicher Abläufe, und dieser Grund muss schwerer wiegen als das Interesse der Aufgenommenen. Dazu kommen Hinweisschilder, festgelegte Löschfristen, ein Eintrag im Verzeichnis der Verarbeitungstätigkeiten und, sobald Beschäftigte betroffen sind, deren Beteiligung.</p>
       <p>Die Auswertung ändert an diesen Regeln nichts, sie verschiebt aber die Bewertung. Wer Fahrzeuge und Objekte zählt, verarbeitet etwas anderes als jemand, der Personen wiedererkennt.</p>
+      <p>Kennzeichen liegen dazwischen: Über den Halter lassen sie sich einer Person zuordnen und sind deshalb personenbezogene Daten. Wer sie liest, braucht einen klar benannten Zweck, ein Hinweisschild und kurze Löschfristen; Kennzeichen, die zu keinem bekannten Fahrzeug gehören, werden nicht dauerhaft gespeichert.</p>
       <div class="ki-note">
-        <p><strong>Gesichtserkennung und die Auswertung des Verhaltens einzelner Mitarbeiter baue ich nicht.</strong> Das ist rechtlich heikel bis unzulässig, und in einem normalen Betrieb ist es auch gar nicht nötig: Für die Fragen, um die es tatsächlich geht, reicht es, Objekte zu unterscheiden und Vorgänge zu zählen.</p>
+        <p><strong>Gesichtserkennung und die Auswertung des Verhaltens einzelner Mitarbeiter baue ich nicht.</strong> Das ist rechtlich heikel bis unzulässig, und in einem normalen Betrieb ist es auch gar nicht nötig: Für die Fragen, um die es tatsächlich geht, reicht es, Objekte zu unterscheiden, Vorgänge zu zählen und, wo es einen Zweck gibt, Kennzeichen zu lesen. Kennzeichen von Mitarbeiterfahrzeugen werden nicht genutzt, um Arbeitszeiten oder Wege zu überwachen.</p>
         <p>Wo eine Datenschutz-Folgenabschätzung fällig wird, sage ich das vor der Umsetzung, statt es später zu entdecken. Die rechtliche Prüfung im Einzelfall bleibt Sache deines Datenschutzbeauftragten oder deines Anwalts. Ich sorge dafür, dass die Technik zu dieser Prüfung passt.</p>
       </div>
 
@@ -1414,8 +1407,9 @@ SERVICES = [
              "Aufnahme verhältnismäßig bleibt, Hinweisschilder vorhanden sind, Löschfristen festgelegt "
              "sind und die Verarbeitung dokumentiert ist. Sind Beschäftigte betroffen, müssen sie "
              "beteiligt werden. Die Auswertung von Objekten und Vorgängen ist dabei deutlich weniger "
-             "kritisch als das Wiedererkennen von Personen, das ich bewusst nicht baue. Die rechtliche "
-             "Prüfung im Einzelfall gehört zu deinem Datenschutzbeauftragten."),
+             "kritisch als das Wiedererkennen von Personen, das ich bewusst nicht baue. Kennzeichen sind "
+             "personenbezogene Daten; sie werden nur gelesen, wo es einen klaren Zweck gibt, und nach kurzer "
+             "Frist gelöscht. Die rechtliche Prüfung im Einzelfall gehört zu deinem Datenschutzbeauftragten."),
             ("Wie zuverlässig erkennt so ein System?",
              "Bei klar unterscheidbaren Objekten wie Fahrzeugen ist die Erkennung gut genug, um "
              "belastbare Zahlen zu liefern. Fehler gibt es trotzdem, vor allem bei schlechtem Licht, "

@@ -377,7 +377,7 @@
         <h2 class="lp-paths-h">Die vier Bereiche</h2>
         <ul>
           <li><a href="/ki-automatisierung/"><span class="lp-path-t">Abläufe automatisieren</span><span class="lp-path-d">Schnittstellen, Dokumente auslesen, Berichte ohne Excel-Bastelei.</span></a></li>
-          <li><a href="/ki-videoanalyse/"><span class="lp-path-t">Videoanalyse und Auswertung</span><span class="lp-path-d">Vorhandene Kameras zählen, erkennen und protokollieren.</span></a></li>
+          <li><a href="/ki-videoanalyse/"><span class="lp-path-t">Videoanalyse und Auswertung</span><span class="lp-path-d">Videoüberwachung mit KI: Fahrzeuge und Kennzeichen erkennen, Vorgänge zählen.</span></a></li>
           <li><a href="/ki-dsgvo/"><span class="lp-path-t">KI sicher einsetzen</span><span class="lp-path-d">Verträge, Regeln und Schulung, damit KI datenschutzgerecht läuft.</span></a></li>
           <li><a href="/software-nach-mass/"><span class="lp-path-t">Software nach Maß</span><span class="lp-path-d">Kleine Anwendungen für Abläufe, die heute in Excel oder auf Zetteln laufen.</span></a></li>
         </ul>
@@ -412,23 +412,15 @@
       <p>Meldungen der Datensicherung, Fehlermails von Geräten, volle Postfächer: Eine KI liest sie, ordnet sie ein und schickt nur das Wichtige an die richtige Person, mit einem Satz, was zu tun ist.</p>
       <p>Dazu kommen Auswertungen und Monatsberichte, Zusammenfassungen langer Mails und Dokumente, Entwürfe für Angebote und Antworten und die Abstimmung von Terminen.</p>
 
-      <h2>Drei Anwendungen aus der Praxis</h2>
-      <p>Alle drei laufen. Die Kundenfälle sind anonymisiert, weil Betriebsabläufe niemanden etwas angehen außer dem Betrieb selbst.</p>
+      <h2>Zwei Beispiele aus der Praxis</h2>
+      <p>Das erste ist ein typischer Fall für Videoauswertung, das zweite läuft in meinem eigenen Betrieb.</p>
 
       <div class="ki-case">
-        <span class="ki-case-tag">Kundenprojekt · Videoauswertung</span>
+        <span class="ki-case-tag">Videoüberwachung mit KI</span>
         <h3>Eine Hofzufahrt, die sich selbst protokolliert</h3>
-        <p>Ein Betrieb im Landkreis München hatte eine vollständig aufgebaute UniFi-Protect-Anlage und trotzdem keine Antwort auf einfache Fragen: Wie viele Fahrzeuge kommen pro Woche? Wann ist am meisten los? Die Aufnahmen lagen vor, sie hätte nur jemand ansehen müssen.</p>
-        <p>Auf die vorhandenen Kameras habe ich eine Objekterkennung aufgesetzt. Fahrzeuge und Objekte werden automatisch erkannt, jedes Ereignis landet mit Zeitstempel in einer Datenbank, und eine Oberfläche zeigt daraus Verläufe und Summen. Die Erkennung läuft auf Hardware im Betrieb, die Aufnahmen verlassen das Haus nicht.</p>
-        <p class="ki-result">Statt Videomaterial zu sichten, gibt es jetzt Zahlen. Die Auswertung, für die vorher niemand Zeit hatte, steht beim Öffnen der Seite da.</p>
-      </div>
-
-      <div class="ki-case">
-        <span class="ki-case-tag">Kundenprojekt · Rechnungsstellung</span>
-        <h3>E-Rechnungen ohne Abtippen</h3>
-        <p>Die Leistungsdaten lagen als CSV-Export aus einem Vorsystem vor, die Rechnungen entstanden daraus von Hand. Jeden Monat dieselbe Strecke, jedes Mal einige Stunden, und gelegentlich ein Zahlendreher, den erst der Kunde bemerkt.</p>
-        <p>Heute liest ein Programm den Export ein, ordnet die Positionen zu und erzeugt daraus normgerechte E-Rechnungen im Format XRechnung beziehungsweise ZUGFeRD. Jede Rechnung wird gegen die Ausgangsdaten gegengeprüft, damit nichts ungesehen durchläuft.</p>
-        <p class="ki-result">Aus einem halben Arbeitstag im Monat sind ein paar Minuten geworden. Die Umstellung auf die kommende E-Rechnungspflicht ist damit nebenbei erledigt, statt kurz vor der Frist anzustehen.</p>
+        <p>Viele Betriebe haben an der Zufahrt eine Kameraanlage und sehen sich die Aufnahmen erst an, wenn etwas passiert ist. Dabei lassen sich einfache Fragen automatisch beantworten: Wie viele Fahrzeuge kommen pro Woche? Wann ist am meisten los? Stand nachts ein fremdes Fahrzeug auf dem Hof?</p>
+        <p>Auf eine vorhandene Anlage wie UniFi Protect setze ich eine Erkennung auf. Fahrzeuge werden erkannt und, wo es dafür einen Zweck gibt, auch ihre Kennzeichen, etwa um bekannte Fahrzeuge von Lieferanten von fremden zu unterscheiden. Jedes Ereignis landet mit Zeitstempel in einer Datenbank, eine Oberfläche zeigt Verläufe und Auffälligkeiten. Die Erkennung läuft auf Hardware im Betrieb, die Aufnahmen verlassen das Haus nicht.</p>
+        <p class="ki-result">Kennzeichen sind personenbezogene Daten. Erfasst wird deshalb nur, was für den Zweck nötig ist, mit Hinweisschild und festen Löschfristen, die wir vor dem Start festlegen.</p>
       </div>
 
       <div class="ki-case">

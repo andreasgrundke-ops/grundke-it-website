@@ -77,12 +77,14 @@ niemanden ersetzen, sondern Arbeit abnehmen, die keiner gern macht.
 
 Konkrete Anwendungsfelder:
 
-- Ablaufautomatisierung: E-Rechnungen (XRechnung, ZUGFeRD) aus vorhandenen
-  CSV-Exporten oder Vorsystemen, Schnittstellen zwischen Warenwirtschaft,
+- Ablaufautomatisierung: E-Rechnungen (XRechnung, ZUGFeRD) aus Fachanwendungen
+  oder Vorsystemen, Schnittstellen zwischen Warenwirtschaft,
   Zeiterfassung und Buchhaltung (zum Beispiel Lexware Office), automatisiertes
   Auslesen von Dokumenten, wiederkehrende Auswertungen und Berichte
-- Videoanalyse: Objekterkennung auf vorhandenen Ubiquiti-UniFi-Protect-Anlagen,
-  Zählung von Vorgängen wie Zufahrten und Anlieferungen, Protokollierung in einer
+- Videoüberwachung mit KI: Erkennung von Fahrzeugen und, wo es einen klaren Zweck
+  gibt, Kennzeichen auf vorhandenen Ubiquiti-UniFi-Protect-Anlagen (Kennzeichen als
+  personenbezogene Daten mit Hinweisschild und kurzen Löschfristen), Zählung von
+  Vorgängen wie Zufahrten und Anlieferungen, Protokollierung in einer
   Datenbank, Darstellung als Kennzahl. Die Verarbeitung läuft auf Hardware im
   Betrieb; Gesichtserkennung und Verhaltensauswertung einzelner Mitarbeiter werden
   ausdrücklich nicht umgesetzt

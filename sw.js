@@ -69,10 +69,12 @@
  *                        Websites, IT-Betreuer wechseln, E-Rechnung, Digitalbonus,
  *                        Lizenzen, Ratgeber), neues Menue und Fuss, style.css
  *                        (Kontraste) und hero-chat.js geaendert.
+ *   1.22.1 / 2026-10-07 — Praxisbeispiele: Videoueberwachung mit KI (Fahrzeuge,
+ *                        Kennzeichen), Fallbeispiel E-Rechnung aus CSV entfernt.
  */
 
-const CACHE_NAME    = 'grundke-it-v1.22.0';
-const RUNTIME_CACHE = 'grundke-it-runtime-v23';
+const CACHE_NAME    = 'grundke-it-v1.22.1';
+const RUNTIME_CACHE = 'grundke-it-runtime-v24';
 
 /* Pre-Cache: minimaler Kern fuer Offline-First-Boot */
 const PRECACHE_URLS = [
