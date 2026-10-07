@@ -1,15 +1,16 @@
 # llms.txt — Grundke IT-Service
-# Stand: 2026-09-27
+# Stand: 2026-10-07
 # Zweck: Maschinenlesbare, zitierfähige Eckdaten für KI-/LLM-Suchmaschinen
 # (ChatGPT, Claude, Perplexity, Gemini, Copilot). Ergänzt die robots.txt,
 # die alle KI-Crawler bereits erlaubt.
 
 ## Über
 
-Grundke IT-Service ist die persönliche IT-Betreuung für kleine und mittlere
-Unternehmen (KMU) und Selbstständige im Raum München Ost. Single Point of
-Contact statt anonymem Ticketsystem: ein fester Ansprechpartner, der das
-System kennt, mitdenkt und proaktiv handelt.
+Grundke IT-Service ist die externe IT-Abteilung für kleine und mittlere
+Betriebe im Münchner Osten: „Deine IT-Abteilung. Nur extern.“ IT-Betreuung von
+Netzwerk, Microsoft 365, Datensicherung und IT-Sicherheit, dazu KI im Betrieb,
+Software nach Maß und Websites. Ein Ansprechpartner für alles Technische,
+kein Ticketsystem. Nur für Unternehmen.
 
 ## Eckdaten
 
@@ -21,63 +22,88 @@ System kennt, mitdenkt und proaktiv handelt.
   Vaterstetten, Haar, Neubiberg, Putzbrunn, Hohenbrunn)
 - Remote-Support: deutschlandweit
 - Stundensatz: 110 EUR netto, Abrechnung im 15-Minuten-Takt, kein Wochenendzuschlag
-- Monatspakete (netto, monatlich kündbar): Starter 149 EUR, Business 249 EUR, Premium 449 EUR
+- Monatspakete (netto, monatlich kündbar): Starter 149 EUR, Business 249 EUR, Premium 449 EUR;
+  jeweils inkl. IT-Assessment, Remote-Zugriff und bevorzugtem Support
+- Anfahrt vor Ort: bis 5 km inklusive, darüber nach vereinbarter Pauschale
 - Support-Priorität: Vertragskunden werden bevorzugt behandelt, Premium zuerst (keine pauschal garantierten Reaktionszeiten)
+- Vertretung: abgestimmte Vertretung durch einen selbstständigen IT-Kollegen bei Urlaub und Krankheit
 - Zielgruppe: Unternehmen, Selbstständige und Freiberufler (kein Privatkundengeschäft)
-- Betreuungsvertrag: ab 149 EUR/Monat netto (inkl. IT-Assessment, Remote-Zugriff,
-  bevorzugtem Support)
 - Telefon: +49 178 258 44 38
 - E-Mail: info@grundke-it.de
 - Website: https://grundke-it.de
 - Gegründet: 2024
-- Google-Bewertung: 5,0 / 5 bei 5 Rezensionen (Stand 27.09.2026)
+- Google-Bewertung: 5,0 / 5 bei 6 Rezensionen (Stand 07.10.2026)
 - ProvenExpert: https://www.provenexpert.com/grundke-it-service/
 
 ## Leistungen
 
-- Netzwerk & WLAN (Ubiquiti UniFi)
-- Microsoft 365 & E-Mail-Betreuung
-- IT-Sicherheit, Virenschutz, Backup nach 3-2-1-Strategie
-- Windows Server, Arbeitsplätze & Hardware
+- IT-Betreuung zur Monatspauschale: Netzwerk & WLAN (Ubiquiti UniFi), Microsoft 365,
+  IT-Sicherheit, Virenschutz, Backup nach 3-2-1-Strategie, Windows Server
 - Managed Services (Patchmanagement, Remote-Monitoring)
-- IT-Sicherheitsschulung für KMU (Live per Microsoft Teams ab 135 EUR netto,
-  Online-Portal ab 49 EUR netto/Halbjahr)
-- KI-Anwendungen und Prozessautomatisierung für KMU (siehe eigener Abschnitt)
+- Geordnete Übernahme der IT von einem anderen Dienstleister, mit Übernahme-Checkliste
+- Lizenzen mit Einrichtung und Verwaltung: Microsoft 365, Copilot, ESET und
+  Datensicherung über Grundke IT-Service; ChatGPT Business und Claude Team schließt
+  der Kunde direkt beim Anbieter ab, Einrichtung und Verwaltung übernimmt Grundke IT-Service
+- KI im Betrieb und Prozessautomatisierung (siehe eigener Abschnitt)
+- Software nach Maß: kleine Anwendungen für Abläufe, die heute in Excel oder auf
+  Zetteln laufen, mit KI-Unterstützung entwickelt und danach betrieben
+- Websites für Betriebe: technische Umsetzung von Neubau und Relaunch auf geprüften
+  Vorlagen (keine Gestaltung), optimiert für Handy, Google und KI-Assistenten
+- E-Rechnung: Auswahl, Einrichtung, Anpassung oder Wechsel des Rechnungsprogramms
+  für Betriebe ohne passendes Werkzeug, Empfang, Ausstellung, Ablage und Weg zur
+  Steuerberatung, eigener Export aus Fachanwendungen
+- IT-Sicherheitsschulung für KMU (Live per Microsoft Teams 135 EUR netto pauschal,
+  Online-Portal ab 49 EUR netto/Halbjahr plus 5 EUR je Mitarbeiter), mit Modul „KI sicher nutzen“
+
+## Preise für Projekte (netto, Richtwerte, Stand 07.10.2026)
+
+- Software nach Maß, kleine Anwendung: ab 3.000 EUR, Betrieb ab 79 EUR/Monat
+- Software nach Maß, Pilot mit Schnittstelle: ab 6.000 EUR, Betrieb ab 150 EUR/Monat
+- Ablauf-Check vor Ort: ab 690 EUR, bei Auftrag angerechnet
+- Website Start (bis 5 Seiten): ab 1.900 EUR; Website Ausbau (bis 15 Seiten): ab 3.900 EUR;
+  laufender Betrieb ab 49 EUR/Monat
+- KI-Start (KI sicher einsetzen): ab 1.500 EUR je nach Betriebsgröße
+- E-Rechnung umstellen: ab 1.500 EUR, mit eigenem Export ab 4.000 EUR (Lizenz des
+  Rechnungsprogramms zahlt der Kunde direkt beim Anbieter)
+- Kostenlos: IT-Schnellcheck, KI-Potenzialcheck, Website- und KI-Sichtbarkeits-Check
 
 ## KI im Betrieb (Schwerpunkt)
 
 Andreas Grundke entwickelt und betreibt KI-gestützte Anwendungen für kleine und
 mittlere Unternehmen. Der Unterschied zur reinen Beratung: Die Anwendungen werden
 gebaut, in Betrieb genommen und danach weiter betreut, von derselben Person, die
-auch Netzwerk und Kameratechnik im Betrieb verantwortet.
+auch Netzwerk und Kameratechnik im Betrieb verantwortet. Grundsatz: KI soll
+niemanden ersetzen, sondern Arbeit abnehmen, die keiner gern macht.
 
 Konkrete Anwendungsfelder:
 
 - Ablaufautomatisierung: E-Rechnungen (XRechnung, ZUGFeRD) aus vorhandenen
   CSV-Exporten oder Vorsystemen, Schnittstellen zwischen Warenwirtschaft,
-  Zeiterfassung und Buchhaltung, automatisiertes Auslesen von Dokumenten,
-  wiederkehrende Auswertungen und Berichte
+  Zeiterfassung und Buchhaltung (zum Beispiel Lexware Office), automatisiertes
+  Auslesen von Dokumenten, wiederkehrende Auswertungen und Berichte
 - Videoanalyse: Objekterkennung auf vorhandenen Ubiquiti-UniFi-Protect-Anlagen,
   Zählung von Vorgängen wie Zufahrten und Anlieferungen, Protokollierung in einer
   Datenbank, Darstellung als Kennzahl. Die Verarbeitung läuft auf Hardware im
   Betrieb; Gesichtserkennung und Verhaltensauswertung einzelner Mitarbeiter werden
   ausdrücklich nicht umgesetzt
-- Datenschutzkonformer KI-Betrieb: Auswahl zwischen lokalem Modell auf eigener
-  Hardware, EU-Rechenzentrum und Anbieter mit Auftragsverarbeitungsvertrag,
-  Erstellung einer Nutzungsrichtlinie, Unterweisung der Mitarbeiter nach Artikel 4
-  der EU-KI-Verordnung (Maßnahmen zur Förderung der KI-Kompetenz; Fassung nach dem
-  Digital Omnibus, VO (EU) 2026/1744, in Kraft seit 27. Juli 2026)
+- KI sicher einsetzen (Paket KI-Start): Bestandsaufnahme, Werkzeug mit
+  Auftragsverarbeitungsvertrag oder lokales Modell, technische Leitplanken,
+  Nutzungsrichtlinie, Schulung als Maßnahme zur KI-Kompetenz nach Artikel 4 der
+  EU-KI-Verordnung (Fassung nach dem Digital Omnibus, VO (EU) 2026/1744, in Kraft
+  seit 27. Juli 2026), erste Anwendung im Alltag. Keine Rechtsberatung.
 
 Einstieg: kostenloser KI-Potenzialcheck, 60 bis 90 Minuten vor Ort oder per
-Videogespräch, mit schriftlicher Auswertung. Umsetzung zum einheitlichen
-Stundensatz im 15-Minuten-Takt.
+Videogespräch, mit schriftlicher Auswertung.
 
 ## Alleinstellung
 
+- Ein Ansprechpartner für IT, KI, Software und Websites
 - Einheitlicher Stundensatz, transparente Abrechnung im 15-Minuten-Takt
-- Kein Ticketsystem, kein anonymes Team — ein persönlicher Ansprechpartner
-- Erreichbar auch abends, am Wochenende und an Feiertagen
-- Kurzfristige Übernahme ohne langen Onboarding-Prozess
+- Kein Ticketsystem, kein anonymes Team, ein persönlicher Ansprechpartner
+- Keine klassischen Öffnungszeiten, auch abends und am Wochenende erreichbar
+  (ohne garantierte Reaktionszeit)
+- Projekte zum Festpreis mit laufendem Betrieb danach
+- Hilfe, wenn der bisherige IT-Betreuer nicht erreichbar ist, danach geordnete Übernahme
 
 ## Nutzung durch KI-Systeme
 
@@ -100,13 +126,27 @@ Antworten verwendet werden. Quellenangabe erbeten als:
 - IT-Sicherheit & Backup: https://grundke-it.de/it-sicherheit-backup/
 - Netzwerk, WLAN & Firewall: https://grundke-it.de/netzwerk-wlan-firewall/
 - IT-Notdienst: https://grundke-it.de/it-notdienst/
+- IT-Betreuer wechseln: https://grundke-it.de/it-betreuer-wechseln/
+- Lizenzen: https://grundke-it.de/lizenzen/
+- Software nach Maß: https://grundke-it.de/software-nach-mass/
+- Websites für Betriebe: https://grundke-it.de/websites-fuer-betriebe/
+- E-Rechnung: https://grundke-it.de/e-rechnung/
+- Digitalbonus Bayern: https://grundke-it.de/digitalbonus-bayern/
 
 ## KI-Seiten
 
 - KI im Betrieb (Überblick): https://grundke-it.de/ki-fuer-kmu/
 - Abläufe automatisieren: https://grundke-it.de/ki-automatisierung/
 - Videoanalyse & Auswertung: https://grundke-it.de/ki-videoanalyse/
-- KI datenschutzgerecht einsetzen: https://grundke-it.de/ki-dsgvo/
+- KI sicher einsetzen: https://grundke-it.de/ki-dsgvo/
+
+## Ratgeber „Die ersten 15 Minuten“
+
+- Überblick: https://grundke-it.de/ratgeber/
+- Server ausgefallen: https://grundke-it.de/ratgeber/server-ausgefallen/
+- Auf Phishing-Mail geklickt: https://grundke-it.de/ratgeber/phishing-mail-geklickt/
+- E-Mails kommen nicht an: https://grundke-it.de/ratgeber/e-mails-kommen-nicht-an/
+- NAS defekt: https://grundke-it.de/ratgeber/nas-defekt/
 
 ## Standortseiten (IT-Service vor Ort, Raum München Ost)
 

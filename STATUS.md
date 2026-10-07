@@ -1,13 +1,32 @@
 # STATUS – grundke-it.de Website
 <!-- CI 2026.01 · Grundke IT-Service · Standard-Statusdatei, wird von Mensch+KI gepflegt -->
 
-**Stand:** 2026-10-03 · **Status:** Live
+**Stand:** 2026-10-07 · **Status:** Live
 
 ## Was ist das
 grundke-it.de Website – siehe README/CLAUDE.md im Projekt.
 
 ## Aktueller Stand
-Letzter Arbeitsblock (02.10.2026): **Chat-Hero statt Foto-Slider** (von Andreas freigegeben, live).
+Letzter Arbeitsblock (07.10.2026): **Konzept „Sichtbarkeit und Wachstum“ umgesetzt**, von Andreas
+freigegeben und live (ein Commit auf `main`, vorher Code- und Sicherheitsreview).
+
+- **Startseite:** Kernsatz „Deine IT-Abteilung. Nur extern.“ als H1, vier Einstiege als Chat-Paare im Hero
+  (IT-Betreuer wechseln, Software nach Maß, KI/Datenschutz/E-Rechnung, Websites). Seite gekürzt
+  (Kontaktleiste, Laufband, Flip-Karten, Zielgruppen raus), Titel wieder mit „Grasbrunn“, FAQ aus einer Liste.
+  impeccable-Kritik 14/32 → 21/32.
+- **Neue Seiten aus dem Generator** (jetzt 26): `/software-nach-mass/`, `/websites-fuer-betriebe/`,
+  `/it-betreuer-wechseln/`, `/lizenzen/`, `/e-rechnung/` (mit Hilfe bei Programmwahl und -wechsel),
+  `/digitalbonus-bayern/`, Ratgeber „Die ersten 15 Minuten“ mit vier Artikeln. `/ki-dsgvo/` heißt jetzt
+  „KI sicher einsetzen“ und enthält das Paket KI-Start. Menü: IT-Service · KI im Betrieb · Software ·
+  Websites · Preise; Fuß in fünf Spalten.
+- **Preise** der Projektseiten hängen am Schalter `SHOW_FROM_PRICES` und am Wörterbuch `PRICES` im Generator.
+- **Drei Audits** (Copy, SEO/GEO, UI 15/20) eingearbeitet: keine Zeitzusagen mehr, ChatGPT Business,
+  BMF-Schreiben zur E-Rechnung vom 15.10.2025, Digitalbonus-Haken laut Richtlinie, Skip-Link und
+  Anker-Fokus, Kontaktleiste bis 1279 px unten, Haupt-Buttons in Visitenkarten-Blau, AA-Kontraste,
+  Tabellen am Handy gestapelt. `sw.js` 1.22.0 / runtime v23. `main.js` 1.3.0.
+- **Nach dem Live-Gang:** neue URLs per IndexNow gemeldet. Offene Inhaltsfragen stehen in der internen Übergabe.
+
+Davor (02.10.2026): **Chat-Hero statt Foto-Slider** (von Andreas freigegeben, live).
 
 - **Fix 03.10.2026** (`hero-chat.js` 1.4.0, `sw.js` 1.20.0 / runtime v21): Am Handy lief das Tippen des
   Kunden unsichtbar mit (Eingabezeile/Tastatur sind unter 768 px per CSS aus), bis zu 8 s leerer Chat,
@@ -50,7 +69,7 @@ Davor (23.09.2026): **Seite aus einem Guss, Inhalte bereinigt** (Commit 462a594 
   Seiten. Vorher gab es vier Menü- und fünf Footer-Varianten, die KI-Seite wirkte angestückelt.
 - Aktiver Menüpunkt per `aria-current`, Brotkrumen, FAQ als Akkordeon, Buttons `.btn-p/.btn-g`
   überall, KI-Hub mit eigenem Einstieg, Querverweise zwischen den KI-Seiten.
-- **Inhalte nach Andreas' Vorgaben** (siehe Gehirn `angebot-fakten-website.md`): nur
+- **Inhalte nach Andreas' Vorgaben**: nur
   Geschäftskunden, keine garantierten Reaktionszeiten, planbare Monatspauschale, Anfahrt bis
   5 km inklusive, Monatsreport nur Premium, „KI datenschutzgerecht einsetzen", Art. 4 KI-VO nach
   Digital Omnibus, KI-Modul in der Schulung, Floskeln raus.
@@ -205,19 +224,15 @@ Davor (27.07.2026, Commit f331e57):
 
 ## Nächster Schritt
 - Erledigt 23.09.2026: Sitemap in der Search Console neu eingereicht, die vier KI-URLs zur
-  Indexierung beantragt (Property `https://grundke-it.de/`, Konto andreasgrundke@googlemail.com;
+  Indexierung beantragt (Property `https://grundke-it.de/`;
   alle vier waren Google bis dahin unbekannt). In ein paar Tagen unter „Seiten" nachsehen.
-- Erledigt 23.09.2026: AVV mit Hetzner besteht (Kundennr. K0408355526), Unterlagen samt TOM und
-  TÜV-Prüfbericht unter `02_GIT/infrastruktur/hetzner/Vertraege/2026-09-23_Hetzner-AVV/`.
+- Erledigt 23.09.2026: AVV mit Hetzner besteht, Unterlagen liegen intern.
 - Offen aus dem Inhalts-Audit: AGB-PDF von 2024 aktualisieren; Kombi-Paket Schulung klarstellen
   (Live-Schulung jedes Halbjahr enthalten?); Datenschutzerklärung durchgehend „wir".
 - Search Console + Bing: non-www-Property prüfen; GBP/Verzeichnisse auf non-www ziehen
   (Cowork/Browser-Arbeit).
 - Offen zur Entscheidung: Hero-Karussell → statisches Hero, Cyan-Kontrast, DSGVO-Statistik.
-- Geklaert (Andreas, 22.08.2026): **110 EUR netto ist der gewollte Website-Preis.** Wer sich
-  ueber die Website meldet, wird mit 110 EUR abgerechnet; die 90 EUR im Workspace-CLAUDE.md
-  sind der Bestandskundensatz. Beide Zahlen sind richtig, die Abweichung ist Absicht. Die
-  KI-Seiten nennen daher jetzt ebenfalls 110 EUR netto im 15-Minuten-Takt.
+- Geklaert (22.08.2026): **110 EUR netto ist der Stundensatz fuer Anfragen ueber die Website.**
 
 ## Blocker
 (keine)

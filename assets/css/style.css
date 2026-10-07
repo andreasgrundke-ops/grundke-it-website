@@ -25,7 +25,7 @@
   --blue-vi-glow:rgba(0,0,254,.25);
   --text:      #f1f5f9;
   --text2:     #94a3b8;
-  --text3:     #64748b;
+  --text3:     #8a96aa;   /* seit 07.10.2026 heller: AA auf --bg2/--bg3 (5,5/5,1:1), vorher 3,5/3,2:1 */
   --border:    #2d3748;
   --success:   #22c55e;
   --danger:    #ef4444;
@@ -128,8 +128,8 @@ button { font-family: var(--fb); cursor: pointer; }
 .sc-btn span { text-shadow: 0 1px 2px rgba(0,0,0,.25); letter-spacing: .01em; }
 .sc-btn:active { transform: scale(.96); }
 
-/* ── Mobile: Bottom-Bar ── */
-@media (max-width: 767px) {
+/* ── Mobile und Tablet: Bottom-Bar (bis 1279 px; seitlich verdeckte sie dort Text) ── */
+@media (max-width: 1279px) {
   .sticky-contact {
     left: 0; right: 0; bottom: 0;
     flex-direction: row;
@@ -152,8 +152,8 @@ button { font-family: var(--fb); cursor: pointer; }
   body.has-sticky-call { padding-bottom: calc(72px + env(safe-area-inset-bottom)); }
 }
 
-/* ── Desktop: Sidebar rechts ── */
-@media (min-width: 768px) {
+/* ── Desktop: Sidebar rechts (ab 1280 px, daneben bleibt genug Rand) ── */
+@media (min-width: 1280px) {
   .sticky-contact {
     /* Knapp unter der Nav-Leiste — damit der Hero-Slider-Pfeil rechts
        (der bei top:50% sitzt) klar sichtbar bleibt. */
@@ -182,8 +182,8 @@ button { font-family: var(--fb); cursor: pointer; }
 /* ── Per-Button-Farben: identisch zur Kontakt-Bar "Frage/Problem"
      Telefon = CI-Blau, WhatsApp = Gruen #25d366, E-Mail = Orange #d97706 ── */
 .sc-phone { background: linear-gradient(135deg, #0c4da2 0%, #0000FE 100%); }
-.sc-wa    { background: linear-gradient(135deg, #25d366 0%, #1fb557 100%); }
-.sc-mail  { background: linear-gradient(135deg, #e58800 0%, #b45309 100%); }
+.sc-wa    { background: linear-gradient(135deg, #15803d 0%, #11692f 100%); } /* AA: Weiss auf Gruen ab 5:1 (vorher 2,0-2,7:1) */
+.sc-mail  { background: linear-gradient(135deg, #b45309 0%, #92400e 100%); } /* AA: Weiss auf Orange ab 5:1 (vorher ab 2,7:1) */
 
 /* Inline-Kontakt-Buttons ausblenden — Sticky-Bar uebernimmt */
 .inline-cta { display: none !important; }
@@ -213,7 +213,7 @@ button { font-family: var(--fb); cursor: pointer; }
     transparent 100%
   );
   width: 40%;
-  animation: shimmer-sweep 12s ease-in-out 5s infinite;
+  animation: shimmer-sweep 12s ease-in-out 5s 1; /* einmal, kein Endlos-Effekt (WCAG 2.2.2) */
 }
 @media (prefers-reduced-motion: reduce) {
   .sticky-contact::after { animation: none; display: none; }
@@ -376,18 +376,19 @@ button { font-family: var(--fb); cursor: pointer; }
 .mobile-menu.open { display:flex; }
 .mobile-menu a { padding:.85rem 1rem; border-radius:8px; font-weight:600; font-size:.95rem; color:var(--text2); transition:background .2s,color .2s; }
 .mobile-menu a:hover { background:var(--bg3); color:var(--cyan); }
-.mobile-menu .m-cta { background:var(--cyan); color:#0f1117 !important; text-align:center; margin-top:.5rem; font-weight:700 !important; }
+.mobile-menu .m-cta { background:var(--blue-vi); color:#fff !important; text-align:center; margin-top:.5rem; font-weight:700 !important; }
+.mobile-menu .m-cta:hover, .mobile-menu .m-cta:focus-visible { background:#2222ff; color:#fff !important; }
 
 /* ── Buttons ── */
 .btn-p {
   display:inline-flex; align-items:center; gap:.45rem;
   padding:clamp(.7rem,.9rem,1rem) clamp(1.2rem,1.8rem,2rem);
   border-radius:8px; border:none;
-  background:var(--cyan); color:#0f1117;
+  background:var(--blue-vi); color:#fff;
   font-family:var(--fb); font-weight:700; font-size:clamp(.82rem,.9rem,1rem);
   cursor:pointer; transition:background .2s,transform .15s,box-shadow .2s; white-space:nowrap;
 }
-.btn-p:hover { background:#3dd5ff; transform:translateY(-2px); box-shadow:0 8px 24px rgba(38,189,239,.3); }
+.btn-p:hover { background:#2222ff; transform:translateY(-2px); box-shadow:0 8px 24px var(--blue-vi-glow); }
 
 .btn-g {
   display:inline-flex; align-items:center; gap:.45rem;
@@ -430,8 +431,9 @@ button { font-family: var(--fb); cursor: pointer; }
 .foot-links a { font-size:.84rem; color:var(--text2); transition:color .2s; }
 .foot-links a:hover { color:var(--cyan); }
 .foot-links a[aria-current="page"] { color:var(--cyan); font-weight:700; }
+.foot-h--next { margin-top:1.8rem; } /* zweite Ueberschrift in derselben Spalte (Ratgeber unter Standorte) */
 .foot-bottom { border-top:1px solid var(--border); padding-top:1.2rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:.5rem; font-size:.76rem; color:var(--text3); }
-.foot-ci { font-family:var(--fm); font-size:.67rem; color:#2d3748; }
+.foot-ci { font-family:var(--fm); font-size:.78rem; color:var(--text3); }
 /* Rechtliche Footer-Navigation (Impressum/Datenschutz/AGB/Barrierefreiheit) */
 .foot-legal { display:flex; flex-wrap:wrap; justify-content:center; gap:.25rem 1.4rem; padding:1.2rem 0; margin-top:1.5rem; border-top:1px solid var(--border); }
 .foot-legal a { font-size:.8rem; color:var(--text2); text-decoration:none; transition:color .2s; }
@@ -460,7 +462,7 @@ button { font-family: var(--fb); cursor: pointer; }
   :root { --nav-h:70px; }
   .nav-links { display:flex; }
   .hamburger { display:none; }
-  .foot-grid { grid-template-columns:2fr 1fr 1fr 1fr; }
+  .foot-grid { grid-template-columns:1.5fr repeat(4,1fr); gap:clamp(1.5rem,2.6vw,3rem); } /* seit 07.10.2026 fuenf Spalten: IT-Betreuung und KI/Software/Websites getrennt */
   .foot-grid > div:first-child { grid-column:auto; }
 }
 @media (min-width: 1920px) {
@@ -591,10 +593,8 @@ button { font-family: var(--fb); cursor: pointer; }
 
 /* ── Web-Review 2026-05-02: Globale Quick-Wins ────────────────────── */
 
-/* #5 Anker-Sprung-Korrektur: Sticky-Nav verdeckt Targets nicht mehr */
-section[id], h1, h2, h3 {
-  scroll-margin-top: calc(var(--nav-h) + 1rem);
-}
+/* #5 Anker-Sprung-Korrektur: seit 07.10.2026 ueber html { scroll-padding-top } am Dateiende.
+   Ein zusaetzliches scroll-margin-top hier wuerde sich dazu addieren (doppelter Abstand). */
 
 /* #16 Touch-UX: kein 300ms-iOS-Delay, kein grauer Tap-Flash */
 a, button {
@@ -636,3 +636,9 @@ a, button {
   transform: translateY(-4px);
 }
 /* ──────────────────────────────────────────────────────────────────── */
+
+/* Fokus und Sprungziele nicht unter Kopf- oder Kontaktleiste (WCAG 2.2 SC 2.4.11) */
+html { scroll-padding-top: calc(var(--nav-h) + 12px); }
+@media (max-width: 1279px) { html { scroll-padding-bottom: 88px; } }
+/* Sprungziele (Abschnitte mit tabindex=-1) bekommen Fokus nur fuer die Tab-Reihenfolge, keinen Rahmen */
+section[tabindex="-1"]:focus, main[tabindex="-1"]:focus { outline: none; }

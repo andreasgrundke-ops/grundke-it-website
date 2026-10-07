@@ -64,10 +64,15 @@
  *   1.21.0 / 2026-10-03 — Pre-Cache mit cache:'reload' (nicht mehr aus dem
  *                        HTTP-Cache), Runtime-Cache vor Pre-Cache lesen, damit
  *                        Background-Updates auch ausgeliefert werden.
+ *   1.22.0 / 2026-10-07 — Konzept „Sichtbarkeit und Wachstum“: Startseite mit
+ *                        Kernsatz und vier Einstiegen, neue Seiten (Software,
+ *                        Websites, IT-Betreuer wechseln, E-Rechnung, Digitalbonus,
+ *                        Lizenzen, Ratgeber), neues Menue und Fuss, style.css
+ *                        (Kontraste) und hero-chat.js geaendert.
  */
 
-const CACHE_NAME    = 'grundke-it-v1.21.0';
-const RUNTIME_CACHE = 'grundke-it-runtime-v22';
+const CACHE_NAME    = 'grundke-it-v1.22.0';
+const RUNTIME_CACHE = 'grundke-it-runtime-v23';
 
 /* Pre-Cache: minimaler Kern fuer Offline-First-Boot */
 const PRECACHE_URLS = [

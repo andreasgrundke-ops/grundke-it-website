@@ -1,9 +1,9 @@
 /**
  * ═══════════════════════════════════════════════════════════
  * Grundke IT-Service · hero-chat.js
- * Version: 1.4.0
+ * Version: 1.4.1
  * Autor: Andreas Grundke / Grundke IT-Service
- * Datum: 2026-10-03
+ * Datum: 2026-10-07
  * Beschreibung: Hero „Der Chat" auf der Startseite. Im gezeichneten Handy
  *   laeuft ein Beispiel-Einsatz als Chat ab: Kundennachricht, Andreas tippt,
  *   Fernwartung, Ergebnis, Dank. Statusleiste und Zeitstempel tragen die echte
@@ -41,6 +41,8 @@
  *                      erscheint die Kundennachricht jetzt nach kurzer Pause.
  *                      Ausserdem holt der Takt nach gedrosselten Timern (Scrollen
  *                      am Handy, Energiesparen) nicht mehr mehrere Schritte auf einmal nach.
+ *   1.4.1 (2026-10-07) Fall Netzwerkspeicher ohne Zeitzusage („noch heute") -
+ *                      die Website verspricht keine Reaktions- oder Loesungszeiten.
  * ═══════════════════════════════════════════════════════════
  */
 (function () {
@@ -78,7 +80,7 @@
     { me: 'Mein PC ist heute extrem langsam, Ordner hängen ständig.',
       ag: 'Ich schau mir das aus der Ferne an.',
       run: 'Analysiere PC, Netzwerk, Netzwerkspeicher …', done: 'PC in Ordnung, Netzwerkspeicher meldet Plattenfehler',
-      fix: 'Der Netzwerkspeicher ist defekt. Ersatz ist bestellt, eure Daten stelle ich noch heute wieder her.',
+      fix: 'Der Netzwerkspeicher ist defekt. Ersatz ist bestellt, bis dahin sichere ich eure Daten.',
       thanks: 'Gut, dass du das gleich gesehen hast.', antwort: 3, loesung: 12, nacht: true },
     { me: 'Unsere Buchungsseite lädt nicht, Gäste rufen schon an.',
       ag: 'Ich prüfe, ob es an der Seite oder an eurem Netz liegt.',

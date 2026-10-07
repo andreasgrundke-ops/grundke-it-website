@@ -1,14 +1,17 @@
 /**
  * ═══════════════════════════════════════════════════════════
  * Grundke IT-Service · main.js
- * Version: 1.2.0
+ * Version: 1.3.0
  * Autor: Andreas Grundke / Grundke IT-Service
- * Datum: 2026-06-07
+ * Datum: 2026-10-07
  * Beschreibung: Shared JS – Nav, FAQ, Scroll
  * Änderung 2026-06-07: A11y – Hamburger aria-expanded/-label-Sync,
  *                       Hero-Dots aria-selected im Slider-Wechsel.
  * Änderung 2026-10-02: Foto-Slider entfernt (initSlider); der Hero der
  *                       Startseite laeuft jetzt ueber assets/js/hero-chat.js.
+ * Änderung 2026-10-07: A11y aus dem UI-Audit – Skip-Link bleibt beim Browser,
+ *                       Anker-Klicks setzen Fokus und Hash (WCAG 2.4.1/2.4.3),
+ *                       Escape schliesst Mobilmenue und Fernwartung-Dropdown.
  * ═══════════════════════════════════════════════════════════
  */
 
@@ -35,6 +38,13 @@ function initHamburger() {
   document.addEventListener('click', e => {
     if (!ham.contains(e.target) && !mob.contains(e.target)) {
       setMenu(false);
+    }
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && ham.classList.contains('open')) {
+      setMenu(false);
+      ham.focus();
     }
   });
 }
@@ -109,14 +119,20 @@ function initLenis() {
   }
   requestAnimationFrame(raf);
 
-  // Anchor-Klicks mit Lenis smooth scrollen
-  document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+  // Anker-Klicks mit Lenis smooth scrollen. Der Skip-Link bleibt beim Browser,
+  // sonst landet der Fokus nach Enter wieder oben (WCAG 2.4.1). Nach dem Scrollen
+  // wandern Fokus und Hash zum Ziel, damit Tab dort weitergeht und Zurueck funktioniert.
+  document.querySelectorAll('a[href^="#"]:not(.skip-link)').forEach(function(a) {
     a.addEventListener('click', function(e) {
-      var target = document.querySelector(a.getAttribute('href'));
-      if (target) {
-        e.preventDefault();
-        lenis.scrollTo(target, { offset: -80 });
-      }
+      var hash = a.getAttribute('href');
+      if (!hash || hash.length < 2) return;
+      var target = document.getElementById(hash.slice(1));
+      if (!target) return;
+      e.preventDefault();
+      lenis.scrollTo(target, { offset: -80 });
+      if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+      target.focus({ preventScroll: true });
+      if (history.pushState) history.pushState(null, '', hash);
     });
   });
 
@@ -382,12 +398,19 @@ function toggleFernwartungDropdown(event) {
 }
 
 function initFernwartungDropdown() {
-  document.addEventListener('click', function() {
+  function closeAll(returnFocus) {
     document.querySelectorAll('.nav-dropdown--open').forEach(function(el) {
       el.classList.remove('nav-dropdown--open');
       var btn = el.querySelector('.nav-dropdown-toggle');
-      if (btn) btn.setAttribute('aria-expanded', 'false');
+      if (btn) {
+        btn.setAttribute('aria-expanded', 'false');
+        if (returnFocus) btn.focus();
+      }
     });
+  }
+  document.addEventListener('click', function() { closeAll(false); });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeAll(true);
   });
 }
 /* SW-Registrierung laeuft eigenstaendig ueber window.load */

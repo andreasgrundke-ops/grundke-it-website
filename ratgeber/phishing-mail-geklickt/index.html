@@ -3,24 +3,24 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Managed IT-Service für KMU | München Ost – Andreas Grundke IT-Service</title>
-  <meta name="description" content="Managed IT-Service für kleine &amp; mittlere Unternehmen im Raum München Ost: laufende IT-Betreuung, bevorzugter Support, ein persönlicher Ansprechpartner. Planbare Monatspakete statt teurer Ausfälle."/>
+  <title>Auf Phishing-Mail geklickt – was tun? | Grundke IT-Service</title>
+  <meta name="description" content="Auf eine Phishing-Mail geklickt, Passwort eingegeben oder Anhang geöffnet? Was in den ersten 15 Minuten zu tun ist, je nachdem was passiert ist."/>
   <meta name="author" content="Andreas Grundke"/>
   <meta name="robots" content="index, follow, max-image-preview:large"/>
-  <link rel="canonical" href="https://grundke-it.de/managed-it-service/"/>
-  <meta property="og:title" content="Managed IT-Service für kleine &amp; mittlere Unternehmen – Andreas Grundke IT-Service"/>
-  <meta property="og:description" content="Managed IT-Service für kleine &amp; mittlere Unternehmen im Raum München Ost: laufende IT-Betreuung, bevorzugter Support, ein persönlicher Ansprechpartner. Planbare Monatspakete statt teurer Ausfälle."/>
-  <meta property="og:url" content="https://grundke-it.de/managed-it-service/"/>
+  <link rel="canonical" href="https://grundke-it.de/ratgeber/phishing-mail-geklickt/"/>
+  <meta property="og:title" content="Auf eine Phishing-Mail geklickt: was jetzt zu tun ist – Andreas Grundke IT-Service"/>
+  <meta property="og:description" content="Auf eine Phishing-Mail geklickt, Passwort eingegeben oder Anhang geöffnet? Was in den ersten 15 Minuten zu tun ist, je nachdem was passiert ist."/>
+  <meta property="og:url" content="https://grundke-it.de/ratgeber/phishing-mail-geklickt/"/>
   <meta property="og:type" content="website"/>
   <meta property="og:locale" content="de_DE"/>
   <meta property="og:site_name" content="Grundke IT-Service"/>
   <meta property="og:image" content="https://grundke-it.de/assets/img/og-image.png"/>
   <meta property="og:image:width" content="1200"/>
   <meta property="og:image:height" content="630"/>
-  <meta property="og:image:alt" content="Managed IT-Service für kleine &amp; mittlere Unternehmen – Andreas Grundke IT-Service"/>
+  <meta property="og:image:alt" content="Auf eine Phishing-Mail geklickt: was jetzt zu tun ist – Andreas Grundke IT-Service"/>
   <meta name="twitter:card" content="summary_large_image"/>
-  <meta name="twitter:title" content="Managed IT-Service für kleine &amp; mittlere Unternehmen – Andreas Grundke IT-Service"/>
-  <meta name="twitter:description" content="Managed IT-Service für kleine &amp; mittlere Unternehmen im Raum München Ost: laufende IT-Betreuung, bevorzugter Support, ein persönlicher Ansprechpartner. Planbare Monatspakete statt teurer Ausfälle."/>
+  <meta name="twitter:title" content="Auf eine Phishing-Mail geklickt: was jetzt zu tun ist – Andreas Grundke IT-Service"/>
+  <meta name="twitter:description" content="Auf eine Phishing-Mail geklickt, Passwort eingegeben oder Anhang geöffnet? Was in den ersten 15 Minuten zu tun ist, je nachdem was passiert ist."/>
   <meta name="twitter:image" content="https://grundke-it.de/assets/img/og-image.png"/>
   <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-title" content="Grundke IT"/>
   <meta name="application-name" content="Grundke IT"/>
   <meta name="msapplication-TileColor" content="#0c4da2"/>
-  <link rel="stylesheet" href="../assets/css/fonts.css"/>
-  <link rel="stylesheet" href="../assets/css/style.css"/>
+  <link rel="stylesheet" href="../../assets/css/fonts.css"/>
+  <link rel="stylesheet" href="../../assets/css/style.css"/>
 
   <style>
     .lp-wrap { margin-top:var(--nav-h); padding:clamp(3rem,8vw,6rem) 0; }
@@ -74,6 +74,79 @@
     .lp-author-meta { margin-top:.7rem; font-size:.78rem; color:var(--text3); }
     .lp-author-meta a { color:var(--cyan); text-decoration:none; }
   </style>
+  <style>
+    /* Bausteine nur fuer den KI-Bereich (via extra_style, damit die uebrigen Seiten unveraendert bleiben) */
+    .lp-wrap--hero { padding-top:0; }
+    .lp-hero { background:var(--bg2); border-bottom:1px solid var(--border); padding:clamp(2.5rem,7vw,5.5rem) 0 clamp(2.5rem,6vw,4.5rem); margin-bottom:clamp(2.5rem,6vw,4rem); position:relative; overflow:hidden; }
+    .lp-hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 55% 70% at 85% 15%, rgba(12,77,162,.28), transparent 70%); pointer-events:none; }
+    .lp-hero-grid { position:relative; display:grid; gap:clamp(2rem,5vw,4rem); align-items:center; }
+    @media (min-width:1024px) { .lp-hero-grid { grid-template-columns:minmax(0,1.35fr) minmax(0,1fr); } }
+    .lp-hero-h1 { font-family:var(--fh); font-size:clamp(2.1rem,5.2vw,3.6rem); font-weight:800; line-height:1.07; letter-spacing:-.035em; color:var(--text); margin-bottom:1.1rem; text-wrap:balance; }
+    .lp-hero-accent { display:block; color:var(--cyan); }
+    .lp-hero .lp-cta-row { margin-bottom:0; }
+    .lp-paths { background:var(--bg); border:1px solid var(--border); border-radius:14px; padding:.6rem; }
+    .lp-paths-h { font-family:var(--fh); font-size:1.1rem; font-weight:700; color:var(--text); padding:.8rem .9rem .5rem; }
+    .lp-paths ul { list-style:none; margin:0; padding:0; }
+    .lp-paths li + li { border-top:1px solid var(--border); }
+    .lp-paths a { display:block; padding:.95rem .9rem; border-radius:10px; text-decoration:none; transition:background .2s; }
+    .lp-paths a:hover { background:var(--bg3); }
+    .lp-paths a:focus-visible { outline:2px solid var(--cyan); outline-offset:2px; }
+    .lp-path-t { display:block; font-family:var(--fh); font-weight:700; font-size:1rem; color:var(--text); }
+    .lp-path-t::after { content:" →"; color:var(--cyan); transition:margin .2s; }
+    .lp-paths a:hover .lp-path-t::after { margin-left:.25rem; }
+    .lp-path-d { display:block; font-size:.85rem; color:var(--text2); line-height:1.55; margin-top:.25rem; }
+    .ki-case { background:var(--bg2); border:1px solid var(--border); border-radius:14px; padding:1.5rem 1.6rem; margin:1.1rem 0; }
+    .ki-case-tag { font-family:var(--fm); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--cyan); display:block; margin-bottom:.5rem; }
+    .ki-case h3 { font-family:var(--fh); font-size:1.05rem; font-weight:800; color:var(--text); margin:0 0 .6rem; letter-spacing:-.01em; }
+    .ki-case p { font-size:.9rem; color:var(--text2); line-height:1.75; margin:0 0 .7rem; }
+    .ki-case p:last-child { margin-bottom:0; }
+    .ki-case .ki-result { font-size:.86rem; color:var(--text); background:rgba(38,189,239,.07); border-radius:8px; padding:.7rem .9rem; }
+    .ki-check { background:var(--bg2); border:1px solid var(--cyan); border-radius:16px; padding:1.8rem; margin:2.2rem 0; box-shadow:0 8px 28px rgba(38,189,239,.10); }
+    .ki-check h3 { font-family:var(--fh); font-size:1.2rem; font-weight:800; color:var(--text); margin:0 0 .7rem; }
+    .ki-check p { font-size:.92rem; color:var(--text2); line-height:1.75; margin:0 0 1rem; }
+    .ki-check ul { list-style:none; margin:0 0 1.2rem; padding:0; }
+    .ki-check li { font-size:.9rem; color:var(--text2); line-height:1.6; padding:.35rem 0 .35rem 1.5rem; position:relative; }
+    .ki-check li::before { content:""; position:absolute; left:0; top:.85rem; width:7px; height:7px; border-radius:50%; background:var(--cyan); }
+    .ki-note { background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:1.3rem 1.5rem; margin:1.8rem 0; }
+    .ki-note strong { color:var(--text); }
+    .ki-note p { font-size:.88rem; color:var(--text2); line-height:1.75; margin:0 0 .7rem; }
+    .ki-note p:last-child { margin-bottom:0; }
+    .ki-tbl-wrap { overflow-x:auto; margin:1.4rem 0; }
+    .ki-tbl { width:100%; border-collapse:collapse; font-size:.86rem; min-width:520px; }
+    .ki-tbl th { font-family:var(--fh); font-size:.78rem; letter-spacing:.03em; text-transform:uppercase; color:var(--text3); text-align:left; padding:.7rem .9rem; border-bottom:1px solid var(--border); }
+    .ki-tbl td { padding:.85rem .9rem; border-bottom:1px solid var(--border); color:var(--text2); line-height:1.65; vertical-align:top; }
+    .ki-tbl td:first-child { color:var(--text); font-weight:600; white-space:nowrap; }
+    .ki-tbl tr:last-child td { border-bottom:none; }
+    @media (max-width:600px) {
+      .ki-tbl { min-width:0; }
+      .ki-tbl thead { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+      .ki-tbl tbody, .ki-tbl tr, .ki-tbl td { display:block; width:100%; }
+      .ki-tbl tr { border-bottom:1px solid var(--border); padding:.75rem 0; }
+      .ki-tbl tr:last-child { border-bottom:none; }
+      .ki-tbl td { border-bottom:none; padding:.2rem 0; }
+      .ki-tbl td:first-child { white-space:normal; }
+      .ki-tbl td[data-label]::before { content:attr(data-label) ": "; color:var(--text); font-weight:600; }
+    }
+  </style>
+  <style>
+    .lp-steps { counter-reset:st; list-style:none; margin:1.2rem 0 1.8rem; padding:0; }
+    .lp-steps > li { counter-increment:st; position:relative; padding:.15rem 0 1.1rem 2.9rem; font-size:.93rem; color:var(--text2); line-height:1.75; }
+    .lp-steps > li::before { content:counter(st); position:absolute; left:0; top:.05rem; width:1.9rem; height:1.9rem; border-radius:50%; border:1px solid var(--cyan); color:var(--cyan); font-family:var(--fh); font-weight:700; font-size:.85rem; display:grid; place-items:center; }
+    .lp-steps > li + li::after { content:""; position:absolute; left:.95rem; top:-1.05rem; width:1px; height:1.05rem; background:var(--border); }
+    .lp-steps strong { color:var(--text); }
+    .lp-checklist { list-style:none; margin:1rem 0 1.4rem; padding:0; }
+    .lp-checklist li { position:relative; padding:.35rem 0 .35rem 1.9rem; font-size:.92rem; color:var(--text2); line-height:1.65; }
+    .lp-checklist li::before { content:""; position:absolute; left:.35rem; top:.62rem; width:.4rem; height:.75rem; border:solid var(--cyan); border-width:0 2px 2px 0; transform:rotate(45deg); }
+    .lp-checklist strong, .lp-dont strong { color:var(--text); }
+    .lp-dont { list-style:none; margin:1rem 0 1.4rem; padding:0; }
+    .lp-dont li { position:relative; padding:.35rem 0 .35rem 1.9rem; font-size:.92rem; color:var(--text2); line-height:1.65; }
+    .lp-dont li::before, .lp-dont li::after { content:""; position:absolute; left:.2rem; top:1rem; width:.85rem; height:2px; border-radius:1px; background:#e8806f; transform:rotate(45deg); }
+    .lp-dont li::after { transform:rotate(-45deg); }
+    .lp-answer { background:var(--bg2); border:1px solid var(--border); border-radius:14px; padding:1.3rem 1.5rem; margin:1.6rem 0 2rem; }
+    .lp-answer p { margin:0; color:var(--text); font-size:.98rem; line-height:1.75; }
+    .lp-answer p + p { margin-top:.7rem; color:var(--text2); font-size:.92rem; }
+    .lp-content h3 { font-family:var(--fh); font-size:1.08rem; font-weight:700; color:var(--text); margin:1.8rem 0 .6rem; }
+  </style>
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -88,8 +161,14 @@
     {
       "@type": "ListItem",
       "position": 2,
-      "name": "Managed IT-Service",
-      "item": "https://grundke-it.de/managed-it-service/"
+      "name": "Ratgeber",
+      "item": "https://grundke-it.de/ratgeber/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Phishing-Mail geklickt",
+      "item": "https://grundke-it.de/ratgeber/phishing-mail-geklickt/"
     }
   ]
 }
@@ -97,58 +176,25 @@
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Service",
-  "serviceType": "Managed IT-Service",
-  "name": "Managed IT-Service für kleine & mittlere Unternehmen",
-  "description": "Managed IT-Service für kleine & mittlere Unternehmen im Raum München Ost: laufende IT-Betreuung, bevorzugter Support, ein persönlicher Ansprechpartner. Planbare Monatspakete statt teurer Ausfälle.",
-  "provider": {
-    "@id": "https://grundke-it.de/#localbusiness"
+  "@type": "Article",
+  "headline": "Auf eine Phishing-Mail geklickt: was jetzt zu tun ist",
+  "description": "Auf eine Phishing-Mail geklickt, Passwort eingegeben oder Anhang geöffnet? Was in den ersten 15 Minuten zu tun ist, je nachdem was passiert ist.",
+  "inLanguage": "de-DE",
+  "mainEntityOfPage": "https://grundke-it.de/ratgeber/phishing-mail-geklickt/",
+  "datePublished": "2026-10-07",
+  "dateModified": "2026-10-07",
+  "author": {
+    "@type": "Person",
+    "@id": "https://grundke-it.de/#andreas",
+    "name": "Andreas Grundke",
+    "url": "https://grundke-it.de/"
   },
-  "areaServed": [
-    {
-      "@type": "City",
-      "name": "Grasbrunn"
-    },
-    {
-      "@type": "City",
-      "name": "Vaterstetten"
-    },
-    {
-      "@type": "City",
-      "name": "Haar"
-    },
-    {
-      "@type": "City",
-      "name": "Ottobrunn"
-    },
-    {
-      "@type": "City",
-      "name": "München"
-    }
-  ],
-  "offers": [
-    {
-      "@type": "Offer",
-      "name": "Starter",
-      "price": "149.00",
-      "priceCurrency": "EUR",
-      "description": "Laufende IT-Betreuung für kleine Teams."
-    },
-    {
-      "@type": "Offer",
-      "name": "Business",
-      "price": "249.00",
-      "priceCurrency": "EUR",
-      "description": "Erweiterte Betreuung mit Patchmanagement."
-    },
-    {
-      "@type": "Offer",
-      "name": "Premium",
-      "price": "449.00",
-      "priceCurrency": "EUR",
-      "description": "Rundum-Betreuung mit höchster Priorität."
-    }
-  ]
+  "publisher": {
+    "@type": "Organization",
+    "@id": "https://grundke-it.de/#localbusiness",
+    "name": "Andreas Grundke IT-Service"
+  },
+  "image": "https://grundke-it.de/assets/img/og-image.png"
 }
   </script>
   <script type="application/ld+json">
@@ -158,34 +204,26 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Was ist Managed IT-Service?",
+      "name": "Ich habe auf einen Phishing-Link geklickt, aber nichts eingegeben. Bin ich gehackt?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Managed IT-Service bedeutet, dass ich mich laufend um deine gesamte IT kümmere – Wartung, Updates, Microsoft 365, Backup und Sicherheit – zu einem festen monatlichen Preis. Statt erst beim Ausfall zu reagieren, halte ich deine Systeme proaktiv am Laufen."
+        "text": "Meistens nicht. Gefährlich wird es in der Regel erst, wenn Zugangsdaten eingegeben oder Dateien geöffnet werden. Schließ den Browser, lass einen Virenscan laufen und gib deinem IT-Betreuer Bescheid. Halte Browser und Betriebssystem aktuell, damit seltene Angriffe über Sicherheitslücken ins Leere laufen."
       }
     },
     {
       "@type": "Question",
-      "name": "Für welche Unternehmensgröße lohnt sich das?",
+      "name": "Woran erkenne ich, dass mein E-Mail-Konto gehackt wurde?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Besonders für Betriebe mit etwa 5 bis 50 Arbeitsplätzen, die keine eigene IT-Abteilung haben, aber auf funktionierende IT angewiesen sind – Handwerk, Büros, Praxen, Kanzleien und Gastronomie."
+        "text": "Typische Zeichen sind Mails im Gesendet-Ordner, die du nicht geschrieben hast, neue Weiterleitungs- oder Löschregeln, Hinweise auf Anmeldungen von fremden Orten und Kontakte, die seltsame Mails von dir bekommen. Dann sofort das Passwort von einem anderen Gerät aus ändern und alle Sitzungen beenden."
       }
     },
     {
       "@type": "Question",
-      "name": "Was kostet Managed IT-Service?",
+      "name": "Muss ich einen Phishing-Vorfall melden?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Es gibt feste Monatspakete ab 149 € (Starter), 249 € (Business) und 449 € (Premium), jeweils netto. Welches Paket passt, hängt von der Anzahl der Arbeitsplätze und dem gewünschten Umfang ab – das klären wir in einem kurzen kostenlosen Erstgespräch."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Bin ich an lange Verträge gebunden?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Nein. Die Monatspakete sind monatlich kündbar. Du behältst die Kontrolle und einen festen Ansprechpartner – kein Ticketsystem, keine Warteschleife."
+        "text": "Wenn personenbezogene Daten von Kunden oder Mitarbeitenden betroffen sein können, kann eine Meldung an die Datenschutzaufsicht innerhalb von 72 Stunden nötig sein. Ob das in deinem Fall gilt, ist eine rechtliche Frage für deinen Datenschutzbeauftragten oder Anwalt."
       }
     }
   ]
@@ -195,15 +233,15 @@
 {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  "@id": "https://grundke-it.de/managed-it-service/#webpage",
-  "url": "https://grundke-it.de/managed-it-service/",
-  "name": "Managed IT-Service für KMU | München Ost – Andreas Grundke IT-Service",
-  "description": "Managed IT-Service für kleine & mittlere Unternehmen im Raum München Ost: laufende IT-Betreuung, bevorzugter Support, ein persönlicher Ansprechpartner. Planbare Monatspakete statt teurer Ausfälle.",
+  "@id": "https://grundke-it.de/ratgeber/phishing-mail-geklickt/#webpage",
+  "url": "https://grundke-it.de/ratgeber/phishing-mail-geklickt/",
+  "name": "Auf Phishing-Mail geklickt – was tun? | Grundke IT-Service",
+  "description": "Auf eine Phishing-Mail geklickt, Passwort eingegeben oder Anhang geöffnet? Was in den ersten 15 Minuten zu tun ist, je nachdem was passiert ist.",
   "inLanguage": "de-DE",
   "isPartOf": {
     "@id": "https://grundke-it.de/#website"
   },
-  "datePublished": "2026-06-15",
+  "datePublished": "2026-10-07",
   "dateModified": "2026-10-07",
   "author": {
     "@type": "Person",
@@ -227,7 +265,7 @@
     <a href="/" class="logo" title="Grundke IT-Service – München Ost"><picture><source srcset="/assets/img/logo-grundke-it-white-480.webp" type="image/webp"><img class="logo-img" src="/assets/img/logo-grundke-it-white-480.png" alt="Grundke IT-Service" width="180" height="60" /></picture></a>
     <a class="nav-loc" href="https://maps.google.com/?cid=1934827868521304193" target="_blank" rel="noopener" aria-label="Standort auf Google Maps anzeigen"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>München Ost</a>
     <ul class="nav-links">
-      <li><a href="/#leistungen" aria-current="true">IT-Service</a></li>
+      <li><a href="/#leistungen">IT-Service</a></li>
       <li><a href="/ki-fuer-kmu/">KI im Betrieb</a></li>
       <li><a href="/software-nach-mass/">Software</a></li>
       <li><a href="/websites-fuer-betriebe/">Websites</a></li>
@@ -240,7 +278,7 @@
   </div>
 </nav>
 <div class="mobile-menu" id="mobileMenu">
-  <a href="/#leistungen" aria-current="true">IT-Service</a>
+  <a href="/#leistungen">IT-Service</a>
   <a href="/ki-fuer-kmu/">KI im Betrieb</a>
   <a href="/software-nach-mass/">Software</a>
   <a href="/websites-fuer-betriebe/">Websites</a>
@@ -256,59 +294,59 @@
 <article class="lp-wrap">
   <div class="inner">
     <div class="lp-content">
-      <nav class="lp-crumbs" aria-label="Brotkrumen"><ol><li><a href="/">Startseite</a></li><li aria-current="page">Managed IT-Service</li></ol></nav>
-      <div class="s-label">Laufende IT-Betreuung</div>
-      <h1 class="s-title">Managed IT-Service für kleine &amp; mittlere Unternehmen</h1>
-      <p class="s-sub">Deine komplette IT in einer Hand – proaktiv betreut, mit bevorzugtem Support und einem persönlichen Ansprechpartner, der zurückruft.</p>
+      <nav class="lp-crumbs" aria-label="Brotkrumen"><ol><li><a href="/">Startseite</a></li><li><a href="/ratgeber/">Ratgeber</a></li><li aria-current="page">Phishing-Mail geklickt</li></ol></nav>
+      <div class="s-label">Die ersten 15 Minuten</div>
+      <h1 class="s-title">Auf eine Phishing-Mail geklickt: was jetzt zu tun ist</h1>
+      <p class="s-sub">Ruhe bewahren hilft mehr als Löschen. Was zu tun ist, hängt davon ab, was nach dem Klick passiert ist.</p>
 
       <div class="lp-cta-row">
-        <a href="tel:+491782584438" class="btn-p">Kostenloses Erstgespräch</a>
-        <a href="/kontakt/" class="btn-g">Anfrage senden</a>
+        <a href="tel:+491782584438" class="btn-p">Anrufen · 0178 258 44 38</a>
+        <a href="/fernwartung/" class="btn-g">Fernwartung starten</a>
       </div>
 
-      <p>Die meisten kleinen Unternehmen rufen erst an, wenn die IT schon steht – und dann wird es teuer. <strong>Managed IT-Service dreht das um:</strong> Ich kümmere mich laufend um deine Rechner, Server, E-Mails und Sicherheit, bevor etwas ausfällt. Du zahlst einen festen, planbaren Monatsbetrag statt unkalkulierbarer Notfall-Rechnungen – und hast einen <strong>Single Point of Contact</strong> für alles rund um IT. Wechselst du gerade von einem anderen Dienstleister, steht der Ablauf auf der Seite <a href="/it-betreuer-wechseln/">IT-Betreuer wechseln</a>.</p>
+      <div class="lp-answer"><p>Kurz gesagt: Nichts mehr eingeben und das Fenster schließen. Hast du nur geklickt, ist meist nichts passiert. Hast du ein Passwort eingegeben, ändere es sofort von einem anderen Gerät aus. Hast du einen Anhang geöffnet, trenne den Rechner vom Netzwerk, lass ihn eingeschaltet und ruf an.</p></div>
 
-      <h2>Das steckt drin</h2>
-      <div class="lp-grid">
-        <div class="lp-card"><h3>Proaktive Wartung</h3><p>Updates, Monitoring und Pflege deiner Systeme – bevor Probleme entstehen.</p></div>
-        <div class="lp-card"><h3>Microsoft 365</h3><p>Postfächer, Teams, Lizenzen und Sicherheit zentral verwaltet.</p></div>
-        <div class="lp-card"><h3>Backup &amp; Wiederherstellung</h3><p>Automatische Datensicherung nach 3-2-1 – inklusive Test der Rücksicherung.</p></div>
-        <div class="lp-card"><h3>IT-Sicherheit</h3><p>Virenschutz, Firewall, VPN und Schutz vor Ransomware &amp; Phishing.</p></div>
-        <div class="lp-card"><h3>Bevorzugter Support</h3><p>Vertragskunden kommen vor Ad-hoc-Anfragen dran, Premium-Kunden zuerst.</p></div>
-        <div class="lp-card"><h3>Beratung &amp; Einkauf</h3><p>Hardware-Empfehlungen und Beschaffung ohne Aufschlag-Spielchen.</p></div>
-      </div>
+      <h2>Die ersten 15 Minuten</h2>
+      <ol class="lp-steps">
+        <li><strong>Nichts mehr eingeben</strong> und die Seite oder das Fenster schließen.</li>
+        <li><strong>Überlegen, was passiert ist</strong>, und dem passenden Abschnitt unten folgen: nur geklickt, Zugangsdaten eingegeben oder Anhang geöffnet.</li>
+        <li><strong>Die Mail nicht löschen</strong> und nicht beantworten. Weiterleiten nur, wenn dein IT-Betreuer darum bittet, und dann als Anlage. Mach einen Screenshot, sie ist der Beleg.</li>
+        <li><strong>Bescheid geben:</strong> deinem IT-Betreuer und, wenn Bank- oder Kartendaten betroffen sind, sofort der Bank. Karten sperrst du über den Sperr-Notruf 116 116.</li>
+        <li><strong>Kollegen warnen</strong>, falls dieselbe Mail an mehrere ging.</li>
+      </ol>
 
-      <h2>Pakete &amp; Preise</h2>
-      <p>Transparente Monatspauschalen – welches Paket passt, klären wir im kostenlosen Erstgespräch:</p>
-      <div class="lp-price-grid">
-        <div class="lp-price">
-          <div class="tier">Starter</div>
-          <div class="amount">149 €<span> / Monat zzgl. MwSt.</span></div>
-          <div class="desc">Laufende Betreuung für kleine Teams &amp; Einzelplätze.</div>
-        </div>
-        <div class="lp-price feat">
-          <div class="tier">Business</div>
-          <div class="amount">249 €<span> / Monat zzgl. MwSt.</span></div>
-          <div class="desc">Erweiterte Betreuung mit Patchmanagement.</div>
-        </div>
-        <div class="lp-price">
-          <div class="tier">Premium</div>
-          <div class="amount">449 €<span> / Monat zzgl. MwSt.</span></div>
-          <div class="desc">Rundum-Betreuung mit höchster Priorität, Virenschutz und Monatsreport.</div>
-        </div>
-      </div>
+      <h3>Nur geklickt, nichts eingegeben</h3>
+      <p>Meistens ist dann nichts passiert. Schließ den Browser, lass einen Virenscan laufen und gib deinem IT-Betreuer Bescheid. Selten nutzen solche Seiten eine Lücke im Browser aus, deshalb sollte der Browser immer aktuell sein.</p>
 
-      <div class="lp-trust">
-        <strong>Einheitlicher Stundensatz von 110 € netto, Abrechnung im 15-Minuten-Takt, keine versteckten Kosten.</strong> Kein klassischer Kundendienst, sondern ein fester persönlicher Ansprechpartner mit über 20 Jahren IT-Erfahrung – im Raum München Ost, datenschutzgerecht und auf Wunsch self-hosted.
+      <h3>Passwort oder Zugangsdaten eingegeben</h3>
+      <p>Ändere das Passwort sofort, und zwar von einem anderen Gerät aus, außerdem überall dort, wo du dasselbe Passwort benutzt. Bei Microsoft 365 sollten danach alle angemeldeten Sitzungen beendet und die Postfachregeln geprüft werden: Angreifer richten gern eine heimliche Weiterleitung ein. Prüfe auch, ob für die Zwei-Faktor-Anmeldung eine fremde Authenticator-App oder Telefonnummer eingetragen wurde. Ist die Zwei-Faktor-Anmeldung noch nicht eingerichtet, ist jetzt der Zeitpunkt.</p>
+
+      <h3>Anhang geöffnet oder Programm ausgeführt</h3>
+      <p>Trenne den Rechner vom Netzwerk: WLAN ausschalten, Netzwerkkabel ziehen. Lass ihn eingeschaltet, damit Spuren erhalten bleiben, und ruf an. Melde dich an diesem Rechner nicht mehr bei anderen Diensten an.</p>
+
+      <h2>Was du lassen solltest</h2>
+      <ul class="lp-dont">
+        <li>Die Mail löschen und hoffen, dass nichts war.</li>
+        <li>Das Passwort vom selben, möglicherweise befallenen Rechner aus ändern.</li>
+        <li>Den Rechner ausschalten und am nächsten Tag weiterarbeiten, als wäre nichts gewesen.</li>
+        <li>Aus Scham niemandem Bescheid geben. Ein früher Hinweis begrenzt den Schaden.</li>
+      </ul>
+
+      <h2>Wann du anrufen solltest</h2>
+      <p>Sobald Zugangsdaten eingegeben oder ein Anhang geöffnet wurde, und immer dann, wenn du dir nicht sicher bist. Merkst du, dass aus deinem Postfach Mails verschickt wurden, die du nicht geschrieben hast, ist das Konto wahrscheinlich übernommen.</p>
+      <div class="ki-note">
+        <p><strong>Wenn Kundendaten betroffen sein können:</strong> Dann kann eine Meldung an die Datenschutzaufsicht innerhalb von 72 Stunden nötig sein (Art. 33 DSGVO). Ist Geld geflossen oder wurden Daten abgegriffen, kommt eine Anzeige bei der Polizei in Frage, in Bayern auch online. Beides klärst du mit deinem Datenschutzbeauftragten oder Anwalt; ich helfe, die technischen Spuren dafür zu sichern.</p>
       </div>
+      <p>Die beste Vorbeugung ist ein Team, das Phishing erkennt. Dafür gibt es die <a href="/schulung/">IT-Sicherheitsschulung</a>.</p>
 
       <h2>Häufige Fragen</h2>
       <div class="faq-wrap">
-        <details class="faq-item"><summary>Was ist Managed IT-Service? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Managed IT-Service bedeutet, dass ich mich laufend um deine gesamte IT kümmere – Wartung, Updates, Microsoft 365, Backup und Sicherheit – zu einem festen monatlichen Preis. Statt erst beim Ausfall zu reagieren, halte ich deine Systeme proaktiv am Laufen.</div></details>
-        <details class="faq-item"><summary>Für welche Unternehmensgröße lohnt sich das? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Besonders für Betriebe mit etwa 5 bis 50 Arbeitsplätzen, die keine eigene IT-Abteilung haben, aber auf funktionierende IT angewiesen sind – Handwerk, Büros, Praxen, Kanzleien und Gastronomie.</div></details>
-        <details class="faq-item"><summary>Was kostet Managed IT-Service? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Es gibt feste Monatspakete ab 149 € (Starter), 249 € (Business) und 449 € (Premium), jeweils netto. Welches Paket passt, hängt von der Anzahl der Arbeitsplätze und dem gewünschten Umfang ab – das klären wir in einem kurzen kostenlosen Erstgespräch.</div></details>
-        <details class="faq-item"><summary>Bin ich an lange Verträge gebunden? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Nein. Die Monatspakete sind monatlich kündbar. Du behältst die Kontrolle und einen festen Ansprechpartner – kein Ticketsystem, keine Warteschleife.</div></details>
+        <details class="faq-item"><summary>Ich habe auf einen Phishing-Link geklickt, aber nichts eingegeben. Bin ich gehackt? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Meistens nicht. Gefährlich wird es in der Regel erst, wenn Zugangsdaten eingegeben oder Dateien geöffnet werden. Schließ den Browser, lass einen Virenscan laufen und gib deinem IT-Betreuer Bescheid. Halte Browser und Betriebssystem aktuell, damit seltene Angriffe über Sicherheitslücken ins Leere laufen.</div></details>
+        <details class="faq-item"><summary>Woran erkenne ich, dass mein E-Mail-Konto gehackt wurde? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Typische Zeichen sind Mails im Gesendet-Ordner, die du nicht geschrieben hast, neue Weiterleitungs- oder Löschregeln, Hinweise auf Anmeldungen von fremden Orten und Kontakte, die seltsame Mails von dir bekommen. Dann sofort das Passwort von einem anderen Gerät aus ändern und alle Sitzungen beenden.</div></details>
+        <details class="faq-item"><summary>Muss ich einen Phishing-Vorfall melden? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Wenn personenbezogene Daten von Kunden oder Mitarbeitenden betroffen sein können, kann eine Meldung an die Datenschutzaufsicht innerhalb von 72 Stunden nötig sein. Ob das in deinem Fall gilt, ist eine rechtliche Frage für deinen Datenschutzbeauftragten oder Anwalt.</div></details>
       </div>
+
+      <p class="lp-related">Weitere Ratgeber aus der Reihe <a href="/ratgeber/">Die ersten 15 Minuten</a>: <a href="/ratgeber/server-ausgefallen/">Server ausgefallen</a>, <a href="/ratgeber/e-mails-kommen-nicht-an/">E-Mails kommen nicht an</a>, <a href="/ratgeber/nas-defekt/">NAS defekt</a>.</p>
 
       <div class="lp-author">
         <img src="/assets/img/logo-grundke-it-badge-112.webp" alt="Logo Andreas Grundke IT-Service" width="56" height="56" loading="lazy"/>
@@ -321,7 +359,7 @@
       </div>
       <div class="lp-cta-row" style="margin-top:2.5rem;">
         <a href="tel:+491782584438" class="btn-p">Jetzt anrufen · 0178 258 44 38</a>
-        <a href="/it-service-grasbrunn/" class="btn-g">IT-Service in deiner Region</a>
+        <a href="/schulung/" class="btn-g">Schulung für dein Team</a>
       </div>
     </div>
   </div>
@@ -344,7 +382,7 @@
       <div>
         <div class="foot-h">IT-Betreuung</div>
         <ul class="foot-links">
-          <li><a href="/managed-it-service/" aria-current="page">Managed IT-Service</a></li>
+          <li><a href="/managed-it-service/">Managed IT-Service</a></li>
           <li><a href="/microsoft-365-betreuung/">Microsoft 365 Betreuung</a></li>
           <li><a href="/it-sicherheit-backup/">IT-Sicherheit &amp; Backup</a></li>
           <li><a href="/netzwerk-wlan-firewall/">Netzwerk, WLAN &amp; Firewall</a></li>
@@ -382,7 +420,7 @@
         <ul class="foot-links">
           <li><a href="/ratgeber/">Ratgeber</a></li>
           <li><a href="/ratgeber/server-ausgefallen/">Server ausgefallen</a></li>
-          <li><a href="/ratgeber/phishing-mail-geklickt/">Phishing-Mail geklickt</a></li>
+          <li><a href="/ratgeber/phishing-mail-geklickt/" aria-current="page">Phishing-Mail geklickt</a></li>
           <li><a href="/ratgeber/e-mails-kommen-nicht-an/">E-Mails kommen nicht an</a></li>
           <li><a href="/ratgeber/nas-defekt/">NAS defekt</a></li>
         </ul>
@@ -406,7 +444,7 @@
     </div>
   </div>
 </footer>
-<script src="../assets/js/main.js"></script>
+<script src="../../assets/js/main.js"></script>
 
 <div class="sticky-contact" id="stickyContact" role="navigation" aria-label="Kontakt-Optionen">
   <a href="tel:+491782584438" class="sc-btn sc-phone" aria-label="Anrufen">
