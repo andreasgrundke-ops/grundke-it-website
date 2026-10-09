@@ -1,17 +1,29 @@
 # STATUS – grundke-it.de Website
 <!-- CI 2026.01 · Grundke IT-Service · Standard-Statusdatei, wird von Mensch+KI gepflegt -->
 
-**Stand:** 2026-10-07 · **Status:** Live
+**Stand:** 2026-10-09 · **Status:** Live
 
 ## Was ist das
 grundke-it.de Website – siehe README/CLAUDE.md im Projekt.
 
 ## Aktueller Stand
-Letzter Arbeitsblock (07.10.2026): **Konzept „Sichtbarkeit und Wachstum“ umgesetzt**, von Andreas
+Letzter Arbeitsblock (09.10.2026), vier Commits, alle live geprüft:
+
+- **Startseite:** Die vier Einstiege „Worum geht's bei dir?“ im Hero sind auf allen Breiten raus,
+  dort läuft nur noch der Chat (Andreas: nichts daneben, egal auf welchem Gerät).
+- **Fernwartung:** Umschalter Windows / Linux / macOS mit Vorwahl nach Gerät und Direktlinks
+  `#windows`, `#linux`, `#mac`; neue Datei `assets/js/fernwartung.js`. Linux mit eigenem Programm aus
+  dem MSP Manager (nie auf echtem Mint getestet), macOS nur als Anleitung („noch in Erprobung“).
+  TeamViewer ist raus aus Menü, Fernwartungsseite, Notdienst- und Kontakt-FAQ und Datenschutz.
+- **Website-Preise:** neues Paket One-Pager; Richtwerte ca. 800 / 1.300 / 2.000 € statt ab 1.900 /
+  3.900 €, Preis nach Aufwand im unverbindlichen Telefonat; Betrieb optional 40 €/Monat statt ab 49 €,
+  sonst Umzug zu einem Hoster nach Wahl. Eigener Kasten `TRUST_WEBSITE`. `sw.js` 1.22.5 / runtime v28.
+
+Davor (07.10.2026): **Konzept „Sichtbarkeit und Wachstum“ umgesetzt**, von Andreas
 freigegeben und live (ein Commit auf `main`, vorher Code- und Sicherheitsreview).
 
-- **Startseite:** Kernsatz „Deine IT-Abteilung. Nur extern.“ als H1, vier Einstiege als Chat-Paare im Hero
-  (IT-Betreuer wechseln, Software nach Maß, KI/Datenschutz/E-Rechnung, Websites). Seite gekürzt
+- **Startseite:** Kernsatz „Deine IT-Abteilung. Nur extern.“ als H1 (die vier Einstiege im Hero sind
+  seit 09.10. wieder raus). Seite gekürzt
   (Kontaktleiste, Laufband, Flip-Karten, Zielgruppen raus), Titel wieder mit „Grasbrunn“, FAQ aus einer Liste.
   impeccable-Kritik 14/32 → 21/32.
 - **Neue Seiten aus dem Generator** (jetzt 26): `/software-nach-mass/`, `/websites-fuer-betriebe/`,

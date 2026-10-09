@@ -51,11 +51,16 @@ und die Quelle unter der Karte muss stimmen (`Google-Bewertung` nur, wenn sie do
 geaendert hat, nicht wegen eines neuen Footer-Links.
 
 ## Stand / offen / naechster Schritt
+- **09.10.2026 (live):** Hero nur noch mit dem Chat (vier Einstiege raus), `/fernwartung/` mit
+  Umschalter Windows/Linux/macOS, TeamViewer ueberall raus, Website-Preise neu (One-Pager ca. 800,
+  Start ca. 1.300, Ausbau ca. 2.000 €, Betrieb optional 40 €/Monat). `sw.js` 1.22.5.
 - **07.10.2026 (live):** Konzept „Sichtbarkeit und
-  Wachstum“ umgesetzt. Startseite mit Kernsatz „Deine IT-Abteilung. Nur extern.“ und vier Einstiegen,
+  Wachstum“ umgesetzt. Startseite mit Kernsatz „Deine IT-Abteilung. Nur extern.“,
   elf neue Seiten aus dem Generator (Software, Websites, IT-Betreuer wechseln, Lizenzen, E-Rechnung,
   Digitalbonus, Ratgeber mit vier Artikeln), Menue IT-Service · KI im Betrieb · Software · Websites ·
   Preise, drei Audits eingearbeitet. Preise der Projektseiten am Schalter `SHOW_FROM_PRICES`.
+- **Offen:** Linux-Fernwartung auf echtem Mint testen (oeffentlich verlinkt, nie getestet).
+  Geplant nach ATG: Musterbeispiele auf Websites/Software (Gehirn `musterbeispiele-websites-software`).
 - **Naechster Schritt:** offene Inhaltsfragen aus der internen Uebergabe mit Andreas klaeren
   (`../_intern/`), danach eigener Durchgang fuer Titel der alten Leistungsseiten und Tippflaechen.
   Details in `STATUS.md`, Fachwissen im Wiki ausserhalb des Repos (`../_intern/wiki/`, weil das
