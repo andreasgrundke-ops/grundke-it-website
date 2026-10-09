@@ -1089,6 +1089,7 @@ SERVICES = [
     },
     {
         "slug": "it-notdienst", "nav": "IT-Notdienst",
+        "modified": "2026-10-09", "modified_disp": "9. Oktober 2026",
         "title": "IT-Notdienst für Firmen im Münchner Osten | Grundke IT",
         "h1": "IT-Notdienst für Unternehmen",
         "label": "Wenn die IT steht", "service_type": "IT-Notdienst",
@@ -1103,7 +1104,7 @@ SERVICES = [
                   "Ratgeber <a href=\"/ratgeber/\">Die ersten 15 Minuten</a>."),
         "raw_intro": True,
         "cards": [
-            ("Hilfe per Fernwartung", "Über TeamViewer verbinde ich mich nach deiner Freigabe mit deinem Bildschirm und löse das Problem direkt."),
+            ("Hilfe per Fernwartung", "Über meine eigene Fernwartung verbinde ich mich mit deinem Bildschirm und löse das Problem direkt. Sie läuft verschlüsselt über meinen Server in Deutschland."),
             ("Vor-Ort-Einsatz", "Lässt sich etwas nicht aus der Ferne lösen, komme ich vorbei."),
             ("Daten- & Systemrettung", "Hilfe bei Datenverlust, defekten Festplatten und nicht startenden Systemen."),
             ("Virenbefall & Ransomware", "Bereinigung befallener Systeme und Wiederherstellung aus dem Backup."),
@@ -1117,9 +1118,10 @@ SERVICES = [
              "Ad hoc 110 Euro netto je Stunde im 15-Minuten-Takt, ohne Zuschlag für Abend oder Wochenende. "
              "Du zahlst nur die tatsächlich benötigte Zeit."),
             ("Wie funktioniert die Fernwartung?",
-             "Du lädst ein kleines Programm (TeamViewer) und nennst mir die Verbindungs-ID. Ich "
-             "verbinde mich, du siehst alles mit und kannst die Sitzung jederzeit beenden. Ohne deine "
-             "Freigabe komme ich nicht auf deinen Rechner."),
+             "Auf der Seite „Fernwartung starten“ lädst du ein kleines Programm für Windows oder Linux "
+             "herunter, die Anleitung führt dich Schritt für Schritt. Am Mac richten wir es beim ersten Mal "
+             "zusammen am Telefon ein. Du siehst alles mit, und auf Zuruf entferne ich den Zugang wieder. Die "
+             "Verbindung läuft verschlüsselt über meinen eigenen Server in Deutschland."),
             ("Hilfst du auch Privatkunden?",
              "Nein. Mein Angebot richtet sich an Unternehmen, Selbstständige und Freiberufler. "
              "Alle Preise verstehen sich zuzüglich Mehrwertsteuer."),

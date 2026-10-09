@@ -76,10 +76,12 @@
  *                        (neue Datei assets/js/fernwartung.js), TeamViewer aus dem Menue.
  *   1.22.3 / 2026-10-09 — Website-Preise: One-Pager neu, Richtwerte 800/1.300/2.000 €,
  *                        Betrieb optional 40 €/Monat.
+ *   1.22.4 / 2026-10-09 — IT-Notdienst und Kontakt: Fernwartung ueber eigenen Server
+ *                        statt TeamViewer beschrieben.
  */
 
-const CACHE_NAME    = 'grundke-it-v1.22.3';
-const RUNTIME_CACHE = 'grundke-it-runtime-v26';
+const CACHE_NAME    = 'grundke-it-v1.22.4';
+const RUNTIME_CACHE = 'grundke-it-runtime-v27';
 
 /* Pre-Cache: minimaler Kern fuer Offline-First-Boot */
 const PRECACHE_URLS = [
