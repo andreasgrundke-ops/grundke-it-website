@@ -71,9 +71,10 @@ PRICES = {
     "software_betrieb": 79,         # Betrieb und Pflege je Monat, kleine Anwendung
     "software_pilot_betrieb": 150,  # Betrieb und Pflege je Monat, Pilot
     "ablauf_check": 690,            # Ablauf-Check vor Ort, bei Auftrag angerechnet
-    "website_start": 1900,          # bis 5 Seiten
-    "website_ausbau": 3900,         # bis 15 Seiten inkl. Umzug
-    "website_betrieb": 49,          # laufender Betrieb je Monat
+    "website_onepager": 800,        # eine Landingpage (Richtwert, Andreas 09.10.2026)
+    "website_start": 1300,          # bis 5 Seiten
+    "website_ausbau": 2000,         # bis 15 Seiten inkl. Umzug
+    "website_betrieb": 40,          # laufender Betrieb je Monat, optional
     "ki_start": 1500,               # Paket KI-Start
     "erechnung": 1500,              # E-Rechnung Standardfall
     "erechnung_export": 4000,       # E-Rechnung mit eigenem Export
@@ -118,7 +119,7 @@ STYLE = """  <style>
     .lp-price.feat { border-color:var(--cyan); box-shadow:0 8px 24px rgba(38,189,239,.10); }
     .lp-price .tier { font-family:var(--fm); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--text3); }
     .lp-price .amount { font-family:var(--fh); font-size:1.8rem; font-weight:800; color:var(--text); margin:.4rem 0; }
-    .lp-price .amount span { font-size:.8rem; font-weight:500; color:var(--text3); }
+    .lp-price .amount span { display:block; margin-top:.2rem; font-size:.8rem; font-weight:500; color:var(--text3); }
     .lp-price .desc { font-size:.82rem; color:var(--text2); line-height:1.6; }
     .lp-places { display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0; }
     .lp-place { font-family:var(--fm); font-size:.78rem; background:var(--bg2); border:1px solid var(--border); border-radius:999px; padding:.35rem .9rem; color:var(--text2); text-decoration:none; }
@@ -868,10 +869,12 @@ KI_START_TEXT = (
     'der Schulung. Mehr auf der Seite <a href="/lizenzen/">Lizenzen</a>.</p>')
 
 
-def offer_from(name, min_price, desc, monthly=False):
-    """Offer mit Mindestpreis ('ab ...'), netto. Monatspreise tragen die Einheit Monat (MON)."""
+def offer_from(name, min_price, desc, monthly=False, approx=False):
+    """Offer mit Mindestpreis ('ab ...'), netto. Monatspreise tragen die Einheit Monat (MON).
+    approx=True: Richtwert ('ca. ...'), der nach Aufwand auch darunter liegen kann -> price statt minPrice."""
     spec = {"@type": "UnitPriceSpecification" if monthly else "PriceSpecification",
-            "minPrice": "{:.2f}".format(min_price), "priceCurrency": "EUR", "valueAddedTaxIncluded": False}
+            "price" if approx else "minPrice": "{:.2f}".format(min_price), "priceCurrency": "EUR",
+            "valueAddedTaxIncluded": False}
     if monthly:
         spec.update({"unitCode": "MON", "unitText": "Monat"})
     return {"@type": "Offer", "name": name, "description": desc, "priceSpecification": spec}
@@ -887,6 +890,11 @@ TRUST_DEFAULT = ("<strong>Einheitlicher Stundensatz von 110 € netto, Abrechnun
                  "Wunsch self-hosted.")
 # Fuer Projekte zum Festpreis (Software, Websites, E-Rechnung): Festpreis vorne, Stundensatz nur
 # fuer Einsaetze ausserhalb davon.
+# Websites (Andreas 09.10.2026): Preis nach Aufwand, Betrieb nur auf Wunsch
+TRUST_WEBSITE = ("<strong>Preis nach Aufwand, verbindlich im Angebot.</strong> Was eure Website kostet, klären "
+                 "wir in einem unverbindlichen Telefonat, danach bekommst du ein schriftliches Angebot. Hosting und "
+                 "Pflege übernehme ich auf Wunsch, sonst ziehe ich die fertige Seite zu einem Hoster eurer Wahl um. "
+                 "Was außerhalb des Angebots anfällt, kostet 110 € netto je Stunde im 15-Minuten-Takt.")
 TRUST_FESTPREIS = ("<strong>Festpreis für das Projekt, fester Monatsbetrag für Betrieb und Pflege.</strong> "
                    "Was außerhalb davon anfällt, kostet 110 € netto je Stunde im 15-Minuten-Takt. Du sprichst "
                    "von der ersten Frage bis zum laufenden Betrieb mit mir, Andreas Grundke.")
@@ -1815,28 +1823,35 @@ SERVICES = [
         "title": "Website erstellen lassen oder modernisieren | Grundke IT",
         "h1": "Websites für Betriebe, die gefunden werden",
         "label": "Eure Website bringt keine Anfragen?", "service_type": "Technische Umsetzung von Websites für kleine Unternehmen",
-        "published": NEW_DATE, "modified": NEW_DATE, "modified_disp": NEW_DATE_DISP,
+        "published": NEW_DATE, "modified": "2026-10-09", "modified_disp": "9. Oktober 2026",
         "extra_style": NEW_PAGE_STYLE,
-        "trust": TRUST_FESTPREIS,
+        "trust": TRUST_WEBSITE,
         "prices_h2": "Was das kostet",
-        "prices_intro": ("Richtwerte, alle Preise netto. Den Festpreis bekommst du nach dem kostenlosen Check. Zu jeder "
-                         "Website gehört der laufende Betrieb, damit sie sicher bleibt und gefunden wird."),
+        "prices_intro": ("Richtwerte, alle Preise netto. Was es bei euch tatsächlich kostet, hängt vom Aufwand ab: "
+                         "ob die Seite ganz neu entsteht oder ob ich eine bestehende übernehme und Texte, Bilder, "
+                         "Design und Technik auf den aktuellen Stand bringe. Das klären wir in einem unverbindlichen "
+                         "Telefonat."),
         "prices": [
-            ("Website Start", "ab " + eur(PRICES["website_start"]),
+            ("Website One-Pager", "ca. " + eur(PRICES["website_onepager"]),
+             "Eine einzelne Landingpage mit allem Wichtigen auf einer Seite, fürs Handy gebaut, mit Anruf- und "
+             "WhatsApp-Knopf, Impressum und Datenschutzerklärung an der richtigen Stelle.", False, EINMALIG),
+            ("Website Start", "ca. " + eur(PRICES["website_start"]),
              "Bis fünf Seiten auf geprüfter Vorlage, fürs Handy gebaut, Impressum und Datenschutzerklärung an der "
              "richtigen Stelle, strukturierte Daten, Google-Unternehmensprofil eingerichtet.", False, EINMALIG),
-            ("Website Ausbau", "ab " + eur(PRICES["website_ausbau"]),
+            ("Website Ausbau", "ca. " + eur(PRICES["website_ausbau"]),
              "Bis 15 Seiten mit eigenen Seiten je Leistung und Ort und Antworten auf häufige Kundenfragen. Umzug "
              "aus der alten Seite mit Weiterleitungen. Die Texte liefert ihr, ich sage euch, welche Fragen fehlen.",
              False, EINMALIG),
-            ("Laufender Betrieb", "ab " + eur(PRICES["website_betrieb"]),
-             "Hosting, Updates, Sicherheit, Datensicherung und ein monatlicher Bericht, wie die Seite gefunden wird.",
+            ("Laufender Betrieb", eur(PRICES["website_betrieb"]),
+             "Auf Wunsch: Hosting, Updates, Sicherheit, Datensicherung und ein monatlicher Bericht, wie die Seite "
+             "gefunden wird. Sonst ziehe ich die fertige Seite zu einem Hoster eurer Wahl um.",
              False, "/ Monat zzgl. MwSt."),
         ] if SHOW_FROM_PRICES else [],
         "offers": [
-            offer_from("Website Start", PRICES["website_start"], "Bis fünf Seiten auf geprüfter Vorlage, einmalig netto."),
-            offer_from("Website Ausbau", PRICES["website_ausbau"], "Bis 15 Seiten inklusive Umzug, einmalig netto."),
-            offer_from("Laufender Betrieb", PRICES["website_betrieb"], "Hosting, Updates, Sicherheit, Bericht; je Monat netto.", monthly=True),
+            offer_from("Website One-Pager", PRICES["website_onepager"], "Eine Landingpage, Richtwert, einmalig netto.", approx=True),
+            offer_from("Website Start", PRICES["website_start"], "Bis fünf Seiten auf geprüfter Vorlage, Richtwert, einmalig netto.", approx=True),
+            offer_from("Website Ausbau", PRICES["website_ausbau"], "Bis 15 Seiten inklusive Umzug, Richtwert, einmalig netto.", approx=True),
+            offer_from("Laufender Betrieb", PRICES["website_betrieb"], "Optional: Hosting, Updates, Sicherheit, Bericht; je Monat netto.", monthly=True, approx=True),
         ] if SHOW_FROM_PRICES else [],
         "cta2_href": "/kontakt/", "cta2_text": "Sichtbarkeits-Check anfragen",
         "desc": ("Website erstellen lassen oder modernisieren: schnell, fürs Handy gebaut, für Google und "
@@ -1885,10 +1900,12 @@ SERVICES = [
 """,
         "faqs": [
             ("Was kostet eine Website für einen kleinen Betrieb?",
-             ("Eine Website mit bis zu fünf Seiten beginnt bei rund " + eur_txt(PRICES["website_start"]) + " netto, eine größere mit eigenen "
-              "Seiten je Leistung und Ort und dem Umzug aus der alten Seite bei rund " + eur_txt(PRICES["website_ausbau"]) + ". Für Hosting, "
-              "Updates, Sicherheit und den monatlichen Sichtbarkeitsbericht kommen ab " + eur_txt(PRICES["website_betrieb"]) + " im Monat dazu. Den "
-              "Festpreis bekommst du nach dem kostenlosen Check.")
+             ("Als Richtwert: Eine einzelne Landingpage liegt bei rund " + eur_txt(PRICES["website_onepager"]) + " netto, eine Website "
+              "mit bis zu fünf Seiten bei rund " + eur_txt(PRICES["website_start"]) + ", eine größere mit eigenen Seiten je Leistung und "
+              "Ort und dem Umzug aus der alten Seite bei rund " + eur_txt(PRICES["website_ausbau"]) + ". Wie viel es genau wird, hängt "
+              "davon ab, wie viel schon da ist. Hosting, Updates und Sicherheit übernehme ich auf Wunsch für "
+              + eur_txt(PRICES["website_betrieb"]) + " im Monat, sonst ziehe ich die Seite zu einem Hoster eurer Wahl um. "
+              "Den Preis für euch klären wir in einem unverbindlichen Telefonat.")
              if SHOW_FROM_PRICES else
              ("Das hängt von der Zahl der Seiten und vom Umzug aus der alten Seite ab. Nach dem kostenlosen Check "
               "bekommst du einen Festpreis für den Aufbau und einen Monatsbetrag für den laufenden Betrieb.")),

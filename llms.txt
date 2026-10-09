@@ -55,13 +55,15 @@ kein Ticketsystem. Nur für Unternehmen.
 - IT-Sicherheitsschulung für KMU (Live per Microsoft Teams 135 EUR netto pauschal,
   Online-Portal ab 49 EUR netto/Halbjahr plus 5 EUR je Mitarbeiter), mit Modul „KI sicher nutzen“
 
-## Preise für Projekte (netto, Richtwerte, Stand 07.10.2026)
+## Preise für Projekte (netto, Richtwerte, Stand 09.10.2026)
 
 - Software nach Maß, kleine Anwendung: ab 3.000 EUR, Betrieb ab 79 EUR/Monat
 - Software nach Maß, Pilot mit Schnittstelle: ab 6.000 EUR, Betrieb ab 150 EUR/Monat
 - Ablauf-Check vor Ort: ab 690 EUR, bei Auftrag angerechnet
-- Website Start (bis 5 Seiten): ab 1.900 EUR; Website Ausbau (bis 15 Seiten): ab 3.900 EUR;
-  laufender Betrieb ab 49 EUR/Monat
+- Website One-Pager (eine Landingpage): ca. 800 EUR; Website Start (bis 5 Seiten): ca. 1.300 EUR;
+  Website Ausbau (bis 15 Seiten): ca. 2.000 EUR; je nach Aufwand, Preis im unverbindlichen
+  Telefonat. Laufender Betrieb (Hosting, Updates, Sicherheit) optional 40 EUR/Monat, sonst
+  Umzug zu einem Hoster nach Wahl des Kunden
 - KI-Start (KI sicher einsetzen): ab 1.500 EUR je nach Betriebsgröße
 - E-Rechnung umstellen: ab 1.500 EUR, mit eigenem Export ab 4.000 EUR (Lizenz des
   Rechnungsprogramms zahlt der Kunde direkt beim Anbieter)

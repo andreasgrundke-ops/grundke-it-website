@@ -74,10 +74,12 @@
  *   1.22.2 / 2026-10-09 — Hero der Startseite ohne die vier Einstiege (nur noch
  *                        der Chat), Fernwartung mit Umschalter Windows/Linux/macOS
  *                        (neue Datei assets/js/fernwartung.js), TeamViewer aus dem Menue.
+ *   1.22.3 / 2026-10-09 — Website-Preise: One-Pager neu, Richtwerte 800/1.300/2.000 €,
+ *                        Betrieb optional 40 €/Monat.
  */
 
-const CACHE_NAME    = 'grundke-it-v1.22.2';
-const RUNTIME_CACHE = 'grundke-it-runtime-v25';
+const CACHE_NAME    = 'grundke-it-v1.22.3';
+const RUNTIME_CACHE = 'grundke-it-runtime-v26';
 
 /* Pre-Cache: minimaler Kern fuer Offline-First-Boot */
 const PRECACHE_URLS = [
