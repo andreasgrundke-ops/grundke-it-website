@@ -78,10 +78,12 @@
  *                        Betrieb optional 40 €/Monat.
  *   1.22.4 / 2026-10-09 — IT-Notdienst und Kontakt: Fernwartung ueber eigenen Server
  *                        statt TeamViewer beschrieben.
+ *   1.22.5 / 2026-10-09 — Fernwartung ohne TeamViewer-Ausweichlink, Datenschutz
+ *                        nennt GitHub (RustDesk fuer den Mac) statt TeamViewer.
  */
 
-const CACHE_NAME    = 'grundke-it-v1.22.4';
-const RUNTIME_CACHE = 'grundke-it-runtime-v27';
+const CACHE_NAME    = 'grundke-it-v1.22.5';
+const RUNTIME_CACHE = 'grundke-it-runtime-v28';
 
 /* Pre-Cache: minimaler Kern fuer Offline-First-Boot */
 const PRECACHE_URLS = [
