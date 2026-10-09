@@ -71,10 +71,13 @@
  *                        (Kontraste) und hero-chat.js geaendert.
  *   1.22.1 / 2026-10-07 — Praxisbeispiele: Videoueberwachung mit KI (Fahrzeuge,
  *                        Kennzeichen), Fallbeispiel E-Rechnung aus CSV entfernt.
+ *   1.22.2 / 2026-10-09 — Hero der Startseite ohne die vier Einstiege (nur noch
+ *                        der Chat), Fernwartung mit Umschalter Windows/Linux/macOS
+ *                        (neue Datei assets/js/fernwartung.js), TeamViewer aus dem Menue.
  */
 
-const CACHE_NAME    = 'grundke-it-v1.22.1';
-const RUNTIME_CACHE = 'grundke-it-runtime-v24';
+const CACHE_NAME    = 'grundke-it-v1.22.2';
+const RUNTIME_CACHE = 'grundke-it-runtime-v25';
 
 /* Pre-Cache: minimaler Kern fuer Offline-First-Boot */
 const PRECACHE_URLS = [

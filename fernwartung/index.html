@@ -31,6 +31,8 @@
   <meta name="apple-mobile-web-app-title" content="Grundke IT"/>
   <link rel="stylesheet" href="../assets/css/fonts.css"/>
   <link rel="stylesheet" href="../assets/css/style.css"/>
+  <!-- Vor dem ersten Bild: mit JS nur die Windows-Anleitung zeigen, bis fernwartung.js umschaltet -->
+  <script>document.documentElement.classList.add('js');</script>
   <style>
     /* Aufbau wie die uebrigen Unterseiten: linksbuendige Textspalte, Eyebrow +
        s-title + s-sub aus dem globalen Stylesheet, Karten mit cyanfarbener
@@ -202,6 +204,111 @@
     }
     .fw-trust svg { color: var(--cyan); flex-shrink: 0; }
 
+    /* ── Betriebssystem-Umschalter (seit 09.10.2026) ──
+       Ohne JS stehen alle drei Anleitungen untereinander; das Skript blendet den
+       Umschalter ein, waehlt das System des Besuchers vor und zeigt nur dessen Anleitung.
+       Direktlinks zum Weitergeben: /fernwartung/#windows, #linux, #mac */
+    .fw-os { margin: 2rem 0 0; }
+    .fw-os[hidden] { display: none; }
+    .fw-os-label { margin: 0 0 .6rem; font-size: var(--fs-sm); font-weight: 600; color: var(--text2); }
+    .fw-os-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: .35rem;
+      padding: .35rem;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+    .fw-os-tab {
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .15rem;
+      min-height: 3.6rem;
+      padding: .55rem .5rem;
+      border: 1px solid transparent;
+      border-radius: 10px;
+      background: none;
+      color: var(--text2);
+      font: inherit;
+      text-align: center;
+      cursor: pointer;
+      transition: background .2s, border-color .2s, color .2s;
+    }
+    .fw-os-tab:hover { background: var(--bg3); color: var(--text); }
+    .fw-os-tab:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+    .fw-os-tab[aria-selected="true"] {
+      background: var(--cyan-dim);
+      border-color: rgba(38,189,239,.55);
+      color: var(--text);
+      box-shadow: 0 4px 14px rgba(0,0,0,.25);
+    }
+    .fw-os-name { font-family: var(--fh); font-weight: 700; font-size: 1rem; letter-spacing: -.01em; }
+    .fw-os-tab[aria-selected="true"] .fw-os-name { color: var(--cyan); }
+    .fw-os-sub { font-size: .74rem; line-height: 1.3; color: var(--text3); }
+    .fw-os-tab[aria-selected="true"] .fw-os-sub { color: var(--text2); }
+    .fw-os-auto { margin: .55rem 0 0; font-size: .78rem; color: var(--text3); }
+    .fw-os-auto[hidden] { display: none; }
+    .fw-panel[hidden] { display: none; }
+    .js .fw-panel:not(.is-tab):not(#fw-windows) { display: none; }
+    .fw-panel .fw-action { margin-top: 1.25rem; }
+    /* Ohne JS: Trennlinie zwischen den untereinanderstehenden Anleitungen */
+    .fw-panel + .fw-panel { margin-top: 3.5rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+    .fw-panel.is-tab + .fw-panel.is-tab { margin-top: 0; padding-top: 0; border-top: 0; }
+
+    /* Hinweis „noch in Erprobung" fuer den Mac */
+    .fw-badge {
+      display: inline-flex; align-items: center; gap: .4rem;
+      margin: 0 0 .9rem;
+      padding: .25rem .7rem;
+      border: 1px solid rgba(245,158,11,.4);
+      border-radius: 999px;
+      background: rgba(245,158,11,.08);
+      color: var(--warning);
+      font-size: .76rem; font-weight: 600;
+    }
+    .fw-action-text { margin: 0 0 1.1rem; font-size: var(--fs-body); color: var(--text2); line-height: var(--lh-body); }
+    .fw-action-text strong { color: var(--text); }
+
+    /* Befehlszeile fuer das Linux-Terminal mit Kopierknopf */
+    .fw-cmd {
+      display: flex; align-items: flex-start; gap: .6rem;
+      margin: .75rem 0 .6rem;
+      padding: .75rem .75rem .75rem 1rem;
+      background: #0b0e14;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+    .fw-cmd code {
+      flex: 1; min-width: 0;
+      font-family: var(--fm); font-size: .8rem; line-height: 1.6;
+      color: #e2e8f0;
+      white-space: pre-wrap; overflow-wrap: anywhere;
+    }
+    .fw-copy {
+      flex-shrink: 0;
+      display: inline-flex; align-items: center; gap: .35rem;
+      padding: .4rem .7rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg2);
+      color: var(--text2);
+      font: inherit; font-size: .78rem; font-weight: 600;
+      cursor: pointer;
+      transition: border-color .2s, color .2s;
+    }
+    .fw-copy:hover { border-color: var(--cyan); color: var(--text); }
+    .fw-copy:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+    .fw-copy[hidden] { display: none; }
+    .fw-sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+    .fw-copy.is-done { border-color: var(--success); color: var(--success); }
+    .fw-list { margin: 0 0 .6rem 1.15rem; padding: 0; font-size: var(--fs-body); color: var(--text2); line-height: var(--lh-body); }
+    .fw-list li { margin-bottom: .2rem; }
+    .fw-step kbd {
+      font-family: var(--fm); font-size: .82em;
+      padding: .05rem .35rem;
+      border: 1px solid var(--border); border-bottom-width: 2px; border-radius: 5px;
+      background: var(--bg2); color: var(--text);
+    }
+
     .fw-fallback { margin: 1.5rem 0 0; font-size: var(--fs-sm); color: var(--text3); }
     .fw-fallback a { color: var(--text2); text-decoration: underline; text-underline-offset: 3px; }
     .fw-fallback a:hover, .fw-fallback a:focus-visible { color: var(--cyan); }
@@ -250,7 +357,7 @@
       <li><a href="/software-nach-mass/">Software</a></li>
       <li><a href="/websites-fuer-betriebe/">Websites</a></li>
       <li><a href="/#preise">Preise</a></li>
-      <li class="nav-dropdown" id="fernwartungDropdown"><button class="nav-dropdown-toggle" onclick="toggleFernwartungDropdown(event)" aria-haspopup="true" aria-expanded="false">Fernwartung<svg class="nav-dropdown-arrow" xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul class="nav-dropdown-menu"><li><a href="https://www.teamviewer.com/de/download/portal/windows/" target="_blank" rel="noopener" class="nav-dropdown-item"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>TeamViewer</a></li><li><a href="/fernwartung/" aria-current="page" class="nav-dropdown-item nav-dropdown-item--highlight"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>Fernwartung starten</a></li></ul></li>
+      <li class="nav-dropdown" id="fernwartungDropdown"><button class="nav-dropdown-toggle" onclick="toggleFernwartungDropdown(event)" aria-haspopup="true" aria-expanded="false">Fernwartung<svg class="nav-dropdown-arrow" xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul class="nav-dropdown-menu"><li><a href="/fernwartung/" aria-current="page" class="nav-dropdown-item nav-dropdown-item--highlight"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>Fernwartung starten</a></li></ul></li>
       <li><a href="/kontakt/">Kontakt</a></li>
       <li><a href="tel:+491782584438" class="nav-cta"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.8a16 16 0 0 0 6 6l.94-.94a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>Jetzt anrufen</span></a></li>
     </ul>
@@ -264,7 +371,6 @@
   <a href="/websites-fuer-betriebe/">Websites</a>
   <a href="/#preise">Preise</a>
   <a href="/kontakt/">Kontakt</a>
-  <a href="https://www.teamviewer.com/de/download/portal/windows/" target="_blank" rel="noopener">Fernwartung (TeamViewer)</a>
   <a href="/fernwartung/" aria-current="page" style="color:var(--cyan);font-weight:700;">&#9889; Fernwartung starten</a>
   <a href="tel:+491782584438" class="m-cta">Jetzt anrufen · 0178 258 44 38</a>
 </div>
@@ -277,62 +383,194 @@
 
       <div class="s-label fw-rise">Hilfe per Fernwartung</div>
       <h1 class="s-title fw-rise">Fernwartung starten</h1>
-      <p class="s-sub fw-rise">Ich schalte mich direkt auf deinen Rechner und löse das Problem, während du zusiehst. Du brauchst nur einen Klick auf den Knopf – den Rest macht das Programm allein.</p>
+      <p class="s-sub fw-rise">Ich schalte mich direkt auf deinen Rechner und löse das Problem, während du zusiehst. Wähl unten dein System, dann führt dich die Anleitung Schritt für Schritt.</p>
 
-      <div class="fw-action fw-rise">
-        <a href="https://msp.grundke-it.de/dist/grundke-support.exe" class="lp-btn primary fw-dl" id="fwDownloadBtn">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M5 21h14"/></svg>
-          Fernwartung herunterladen
-        </a>
-        <p class="fw-meta">
-          <span>Windows 10 / 11</span>
-          <span>Anleitung Schritt für Schritt</span>
-          <span>Richtet den Zugang selbst ein</span>
-        </p>
+      <!-- Betriebssystem-Umschalter (seit 09.10.2026). Ohne JS bleibt er verborgen und alle
+           drei Anleitungen stehen untereinander; assets/js/fernwartung.js schaltet um. -->
+      <div class="fw-os fw-rise" data-fw-os hidden>
+        <p class="fw-os-label" id="fwOsLabel">Welches System läuft auf deinem Rechner?</p>
+        <div class="fw-os-tabs" role="tablist" aria-labelledby="fwOsLabel">
+          <button type="button" class="fw-os-tab" role="tab" id="fwTabWindows" aria-controls="fw-windows" aria-selected="true" data-os="windows"><span class="fw-os-name">Windows</span><span class="fw-os-sub">10 und 11</span></button>
+          <button type="button" class="fw-os-tab" role="tab" id="fwTabLinux" aria-controls="fw-linux" aria-selected="false" tabindex="-1" data-os="linux"><span class="fw-os-name">Linux</span><span class="fw-os-sub">Mint, Ubuntu, Debian</span></button>
+          <button type="button" class="fw-os-tab" role="tab" id="fwTabMac" aria-controls="fw-mac" aria-selected="false" tabindex="-1" data-os="mac"><span class="fw-os-name">macOS</span><span class="fw-os-sub">MacBook, iMac, Mac mini</span></button>
+        </div>
+        <p class="fw-os-auto" data-fw-os-auto hidden>Passend zu deinem Gerät vorausgewählt.</p>
       </div>
 
-      <h2>In vier Schritten</h2>
+      <!-- Windows: eigenes Programm (RustDesk + Anmeldung beim MSP Manager) -->
+      <section class="fw-panel" id="fw-windows" data-tab="fwTabWindows">
+        <div class="fw-action">
+          <a href="https://msp.grundke-it.de/dist/grundke-support.exe" class="lp-btn primary fw-dl" id="fwDownloadBtn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M5 21h14"/></svg>
+            Fernwartung herunterladen
+          </a>
+          <p class="fw-meta">
+            <span>Windows 10 / 11</span>
+            <span>Anleitung Schritt für Schritt</span>
+            <span>Richtet den Zugang selbst ein</span>
+          </p>
+        </div>
 
-      <ol class="fw-steps">
+        <h2>So geht's unter Windows</h2>
 
-        <li class="fw-step">
-          <h3>Programm herunterladen</h3>
-          <p>Klick oben auf den Knopf. Die Datei landet in deinem Downloads-Ordner.</p>
-          <div class="fw-hint">
-            <div class="fw-hint-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>Der Browser meldet „Verdächtiger Download blockiert"?</div>
-            Das ist normal – die Datei ist noch nicht signiert. Klick auf <strong>„Trotzdem herunterladen"</strong> (Chrome / Edge) beziehungsweise <strong>„Datei behalten"</strong> (Firefox).
-          </div>
-        </li>
+        <ol class="fw-steps">
 
-        <li class="fw-step">
-          <h3>Programm starten</h3>
-          <p>Öffne die heruntergeladene Datei per Doppelklick – direkt aus dem Downloads-Ordner.</p>
-          <div class="fw-hint">
-            <div class="fw-hint-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>„Der Computer wurde durch Windows geschützt"?</div>
-            Auch das ist normal. So geht es weiter:
-            <ol>
-              <li>Auf <strong>„Weitere Informationen"</strong> klicken</li>
-              <li>Dann auf <strong>„Trotzdem ausführen"</strong> klicken</li>
-            </ol>
-            <p class="fw-hint-fine">Die offizielle Code-Signierung folgt – dann entfällt diese Meldung.</p>
-          </div>
-        </li>
+          <li class="fw-step">
+            <h3>Programm herunterladen</h3>
+            <p>Klick oben auf den Knopf. Die Datei landet in deinem Downloads-Ordner.</p>
+            <div class="fw-hint">
+              <div class="fw-hint-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>Der Browser meldet „Verdächtiger Download blockiert"?</div>
+              Das ist normal – die Datei ist noch nicht signiert. Klick auf <strong>„Trotzdem herunterladen"</strong> (Chrome / Edge) beziehungsweise <strong>„Datei behalten"</strong> (Firefox).
+            </div>
+          </li>
 
-        <li class="fw-step">
-          <h3>Windows-Rückfrage mit „Ja" bestätigen</h3>
-          <p>Windows fragt einmal nach, ob das Programm Änderungen vornehmen darf. Bitte auf <strong>„Ja"</strong> klicken – danach läuft alles von selbst.</p>
-          <div class="fw-hint">
-            <div class="fw-hint-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>Warum ist das nötig?</div>
-            Damit richtet sich der Zugang sauber ein. Ohne diese Bestätigung müsstest du bei jeder Verbindung erneut zustimmen und mir ein Kennwort vorlesen.
-          </div>
-        </li>
+          <li class="fw-step">
+            <h3>Programm starten</h3>
+            <p>Öffne die heruntergeladene Datei per Doppelklick – direkt aus dem Downloads-Ordner.</p>
+            <div class="fw-hint">
+              <div class="fw-hint-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>„Der Computer wurde durch Windows geschützt"?</div>
+              Auch das ist normal. So geht es weiter:
+              <ol>
+                <li>Auf <strong>„Weitere Informationen"</strong> klicken</li>
+                <li>Dann auf <strong>„Trotzdem ausführen"</strong> klicken</li>
+              </ol>
+              <p class="fw-hint-fine">Die offizielle Code-Signierung folgt – dann entfällt diese Meldung.</p>
+            </div>
+          </li>
 
-        <li class="fw-step">
-          <h3>Fertig – ich übernehme</h3>
-          <p>Ein kleines Fenster meldet „Verbindung steht". Lass es einfach offen, du kannst es nach unten minimieren. Über <strong>„Fernwartung beenden"</strong> beendest du die Sitzung jederzeit selbst.</p>
-        </li>
+          <li class="fw-step">
+            <h3>Windows-Rückfrage mit „Ja" bestätigen</h3>
+            <p>Windows fragt einmal nach, ob das Programm Änderungen vornehmen darf. Bitte auf <strong>„Ja"</strong> klicken – danach läuft alles von selbst.</p>
+            <div class="fw-hint">
+              <div class="fw-hint-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>Warum ist das nötig?</div>
+              Damit richtet sich der Zugang sauber ein. Ohne diese Bestätigung müsstest du bei jeder Verbindung erneut zustimmen und mir ein Kennwort vorlesen.
+            </div>
+          </li>
 
-      </ol>
+          <li class="fw-step">
+            <h3>Fertig – ich übernehme</h3>
+            <p>Ein kleines Fenster meldet „Verbindung steht". Lass es einfach offen, du kannst es nach unten minimieren. Über <strong>„Fernwartung beenden"</strong> beendest du die Sitzung jederzeit selbst.</p>
+          </li>
+
+        </ol>
+
+        <p class="fw-fallback">Download klappt nicht? <a href="https://www.teamviewer.com/de/download/portal/windows/" target="_blank" rel="noopener">Alternativ TeamViewer verwenden →</a></p>
+      </section>
+
+      <!-- Linux: eigenes Programm fuer 64-Bit-Systeme mit apt (Mint, Ubuntu, Debian),
+           Quelle git-platform/agent/cmd/support-helper-linux. RustDesk bleibt danach als Dienst. -->
+      <section class="fw-panel" id="fw-linux" data-tab="fwTabLinux">
+        <div class="fw-action">
+          <a href="https://msp.grundke-it.de/dist/grundke-support-linux-amd64" class="lp-btn primary fw-dl" download>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M5 21h14"/></svg>
+            Fernwartung für Linux herunterladen
+          </a>
+          <p class="fw-meta">
+            <span>Linux Mint, Ubuntu, Debian</span>
+            <span>64-Bit</span>
+            <span>ca. 26 MB</span>
+          </p>
+        </div>
+
+        <h2>So geht's unter Linux</h2>
+
+        <ol class="fw-steps">
+
+          <li class="fw-step">
+            <h3>Programm herunterladen</h3>
+            <p>Klick oben auf den Knopf. Die Datei <strong>grundke-support-linux-amd64</strong> landet in deinem Downloads-Ordner.</p>
+          </li>
+
+          <li class="fw-step">
+            <h3>Im Terminal starten</h3>
+            <p>Öffne das Terminal mit <kbd>Strg</kbd> + <kbd>Alt</kbd> + <kbd>T</kbd>, füge diese Zeile ein und drück <kbd>Enter</kbd>:</p>
+            <div class="fw-cmd">
+              <code id="fwLinuxCmd">cd ~/Downloads &amp;&amp; chmod +x grundke-support-linux-amd64 &amp;&amp; ./grundke-support-linux-amd64</code>
+              <button type="button" class="fw-copy" data-fw-copy="fwLinuxCmd" hidden><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span>Kopieren</span></button>
+              <span class="fw-sr" role="status" data-fw-copy-status></span>
+            </div>
+            <p>Die Zeile macht die Datei startbar und führt sie aus.</p>
+          </li>
+
+          <li class="fw-step">
+            <h3>Mit deinem Passwort bestätigen</h3>
+            <p>Das System fragt einmal nach deinem Passwort, damit sich die Fernwartung einrichten kann. Es ist dasselbe, mit dem du dich am Rechner anmeldest.</p>
+          </li>
+
+          <li class="fw-step">
+            <h3>Fertig – ich übernehme</h3>
+            <p>Ein kleines Fenster meldet „Verbindung steht". Lass es einfach offen. Die Fernwartung bleibt danach für den laufenden Support installiert.</p>
+            <div class="fw-hint">
+              <div class="fw-hint-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>Ich sehe deinen Bildschirm nicht?</div>
+              Linux Mint startet von Haus aus passend. Ubuntu und Debian melden dich oft mit <strong>Wayland</strong> an, dann bleibt mein Bild schwarz. So stellst du um:
+              <ol>
+                <li>Abmelden</li>
+                <li>Am Anmeldebildschirm auf das <strong>Zahnrad</strong> unten rechts klicken</li>
+                <li><strong>„Ubuntu on Xorg"</strong> bzw. <strong>„GNOME on Xorg"</strong> wählen und wieder anmelden</li>
+              </ol>
+              <p class="fw-hint-fine">Neuere Ubuntu-Versionen (ab 25.10) bieten diesen Eintrag nicht mehr an. Dann ruf mich kurz an.</p>
+            </div>
+          </li>
+
+        </ol>
+      </section>
+
+      <!-- macOS: noch kein eigenes Programm. RustDesk von der offiziellen Seite, Freigaben von
+           Hand, danach richtet Andreas Server und Zugang ein (GIT-Agent mit Kunden-Token).
+           Auf echter Mac-Hardware noch nicht erprobt, Stand 09.10.2026. -->
+      <section class="fw-panel" id="fw-mac" data-tab="fwTabMac">
+        <div class="fw-action">
+          <p class="fw-badge"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>Neu: noch in Erprobung</p>
+          <p class="fw-action-text">Am Mac richten wir die Fernwartung beim ersten Mal <strong>zusammen am Telefon</strong> ein. Die Vorbereitung kannst du schon selbst machen.</p>
+          <a href="https://github.com/rustdesk/rustdesk/releases/latest" target="_blank" rel="noopener" class="lp-btn primary fw-dl">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+            RustDesk für macOS herunterladen
+          </a>
+          <p class="fw-meta">
+            <span>Offizielle Seite von RustDesk</span>
+            <span>Datei endet auf .dmg</span>
+          </p>
+        </div>
+
+        <h2>So geht's am Mac</h2>
+
+        <ol class="fw-steps">
+
+          <li class="fw-step">
+            <h3>Die passende Datei laden</h3>
+            <p>Auf der Seite von RustDesk stehen unter <strong>„Assets"</strong> mehrere Dateien. Du brauchst die mit <strong>.dmg</strong> am Ende:</p>
+            <ul class="fw-list">
+              <li>Mac mit Apple-Chip (M1 und neuer): Datei mit <strong>aarch64</strong> im Namen</li>
+              <li>Älterer Mac mit Intel-Prozessor: Datei mit <strong>x86_64</strong> im Namen</li>
+            </ul>
+            <p>Welchen Chip du hast, steht unter <strong>Apple-Menü → Über diesen Mac</strong>.</p>
+          </li>
+
+          <li class="fw-step">
+            <h3>Installieren und einmal öffnen</h3>
+            <p>Doppelklick auf die geladene Datei, dann <strong>RustDesk in den Ordner „Programme" ziehen</strong>. Danach RustDesk aus „Programme" starten. Fragt der Mac nach, ob du es wirklich öffnen willst: <strong>„Öffnen"</strong>.</p>
+          </li>
+
+          <li class="fw-step">
+            <h3>Zwei Freigaben einschalten</h3>
+            <p>Unter <strong>Systemeinstellungen → Datenschutz &amp; Sicherheit</strong> RustDesk an zwei Stellen einschalten:</p>
+            <ul class="fw-list">
+              <li><strong>Bildschirmaufnahme</strong> (ab macOS 15: „Bildschirm- und Systemaudioaufnahme")</li>
+              <li><strong>Bedienungshilfen</strong></li>
+            </ul>
+            <div class="fw-hint">
+              <div class="fw-hint-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>Warum ist das nötig?</div>
+              Ohne die erste Freigabe sehe ich deinen Bildschirm nicht, ohne die zweite kann ich nichts anklicken. Diese Schalter kann nur jemand am Mac selbst umlegen.
+            </div>
+          </li>
+
+          <li class="fw-step">
+            <h3>Anrufen – den Rest mache ich</h3>
+            <p>Ruf mich an. Ich verbinde RustDesk mit meinem Server und richte den Zugang ein. Dafür bekommst du von mir eine Zeile fürs Terminal mit deinem persönlichen Link.</p>
+          </li>
+
+        </ol>
+      </section>
 
       <div class="fw-help">
         <div class="fw-help-body">
@@ -344,8 +582,6 @@
           <a href="https://wa.me/491782584438" target="_blank" rel="noopener" class="lp-btn ghost">WhatsApp</a>
         </div>
       </div>
-
-      <p class="fw-fallback">Download klappt nicht? <a href="https://www.teamviewer.com/de/download/portal/windows/" target="_blank" rel="noopener">Alternativ TeamViewer verwenden →</a></p>
 
       <ul class="fw-trust">
         <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Verschlüsselte Verbindung</li>
@@ -438,6 +674,7 @@
 </footer>
 
 <script src="../assets/js/main.js"></script>
+<script src="../assets/js/fernwartung.js" defer></script>
 
 <div class="sticky-contact" id="stickyContact" role="navigation" aria-label="Kontakt-Optionen">
   <a href="tel:+491782584438" class="sc-btn sc-phone" aria-label="Anrufen">

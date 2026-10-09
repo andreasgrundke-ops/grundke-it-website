@@ -154,7 +154,6 @@ NAV_ITEMS = [
     ("Preise", "/#preise", "#preise", "preise"),
 ]
 NAV_KONTAKT = ("Kontakt", "/kontakt/", "kontakt")
-TEAMVIEWER_URL = "https://www.teamviewer.com/de/download/portal/windows/"
 # CID-Link statt Orts-URL: Die alte Adresse trug den frueheren Profilnamen
 # „IT-Service - Andreas Grundke" im Pfad. Der CID-Link bleibt bei Namensaenderungen gueltig
 # und ist derselbe wie hasMap/sameAs im Schema der Startseite.
@@ -171,11 +170,6 @@ DROPDOWN = (
     'fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" '
     'aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button>'
     '<ul class="nav-dropdown-menu">'
-    '<li><a href="' + TEAMVIEWER_URL + '" target="_blank" rel="noopener" class="nav-dropdown-item">'
-    '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" '
-    'stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
-    '<rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line>'
-    '<line x1="12" y1="17" x2="12" y2="21"></line></svg>TeamViewer</a></li>'
     '<li><a href="/fernwartung/" class="nav-dropdown-item nav-dropdown-item--highlight">'
     '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" '
     'stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
@@ -212,12 +206,11 @@ def nav_html(current=None, home=False):
 </nav>
 <div class="mobile-menu" id="mobileMenu">{mob}
   <a href="{k_href}"{k_cur}>{k_lbl}</a>
-  <a href="{tv}" target="_blank" rel="noopener">Fernwartung (TeamViewer)</a>
   <a href="/fernwartung/"{fw_cur} style="color:var(--cyan);font-weight:700;">&#9889; Fernwartung starten</a>
   <a href="tel:+491782584438" class="m-cta">Jetzt anrufen · 0178 258 44 38</a>
 </div>
 </header>""".format(maps=MAPS_URL, desk=desk, mob=mob, dropdown=dropdown, phone=PHONE_SVG, fw_cur=fw_cur,
-                     k_href=k_href, k_lbl=k_lbl, k_cur=cur(k_key), tv=TEAMVIEWER_URL)
+                     k_href=k_href, k_lbl=k_lbl, k_cur=cur(k_key))
 
 
 SECTION_PAGES = {"ki-fuer-kmu": "ki", "software-nach-mass": "software",

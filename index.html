@@ -251,27 +251,6 @@
      Klasse verlieren muessen. ── */
   .placeholder-marker { display: none !important; }
 
-  /* ── Vier Einstiege im Hero (seit 07.10.2026) ──
-     Anliegen als Nachricht des Kunden (gruen wie im Chat), Antwort als Nachricht von Andreas.
-     Die ganze Gruppe ist der Link; kein Kartenrahmen, die Blasen tragen die Form. */
-  .hc-ways { margin-top:2.2rem; }
-  .hc-ways-h { font-family:var(--fb); font-size:.95rem; font-weight:600; letter-spacing:0; color:var(--text2); margin:0 0 .9rem; }
-  .hc-ways ul { list-style:none; margin:0; padding:0; display:grid; grid-template-columns:minmax(0,1fr); gap:.6rem 1rem; }
-  @media (min-width:1100px) { .hc-ways ul { grid-template-columns:repeat(2,minmax(0,1fr)); } }
-  .hc-ways a { display:flex; flex-direction:column; gap:.4rem; height:100%; padding:.5rem; border-radius:14px; text-decoration:none; transition:background .2s; }
-  .hc-ways a:hover { background:rgba(255,255,255,.035); }
-  .hc-ways a:focus-visible { outline:2px solid var(--cyan); outline-offset:2px; }
-  .w-q { align-self:flex-end; max-width:94%; padding:.55rem .8rem; border-radius:10px 2px 10px 10px; background:#005c4b; color:#e9edef; font-size:.93rem; font-weight:600; line-height:1.4; box-shadow:0 1px .5px rgba(0,0,0,.25); }
-  .w-a { align-self:flex-start; display:inline-flex; align-items:center; gap:.4rem; padding:.45rem .8rem; border-radius:2px 10px 10px 10px; background:#1f2c34; color:#e9edef; font-size:.88rem; line-height:1.35; box-shadow:0 1px .5px rgba(0,0,0,.25); transition:box-shadow .2s; }
-  .w-a svg { width:15px; height:15px; color:var(--cyan); flex-shrink:0; transition:transform .2s; }
-  .hc-ways a:hover .w-a { box-shadow:0 0 0 1px var(--cyan); }
-  .hc-ways a:hover .w-a svg { transform:translateX(3px); }
-  @media (prefers-reduced-motion: reduce) { .hc-ways a:hover .w-a svg { transform:none; } }
-  @media (max-width:767px) {
-    .hc-ways { margin-top:1.6rem; }
-    .w-q { font-size:.9rem; }
-  }
-
   /* ── IT-Betreuung (Probleme + USP zusammengefasst) ── */
   .itb { background:var(--bg); }
   .itb-list { display:grid; grid-template-columns:minmax(0,1fr); gap:1.3rem 2.5rem; margin:2.4rem 0 3.2rem; }
@@ -1325,7 +1304,7 @@
       <li><a href="/software-nach-mass/">Software</a></li>
       <li><a href="/websites-fuer-betriebe/">Websites</a></li>
       <li><a href="#preise">Preise</a></li>
-      <li class="nav-dropdown" id="fernwartungDropdown"><button class="nav-dropdown-toggle" onclick="toggleFernwartungDropdown(event)" aria-haspopup="true" aria-expanded="false">Fernwartung<svg class="nav-dropdown-arrow" xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul class="nav-dropdown-menu"><li><a href="https://www.teamviewer.com/de/download/portal/windows/" target="_blank" rel="noopener" class="nav-dropdown-item"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>TeamViewer</a></li><li><a href="/fernwartung/" class="nav-dropdown-item nav-dropdown-item--highlight"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>Fernwartung starten</a></li></ul></li>
+      <li class="nav-dropdown" id="fernwartungDropdown"><button class="nav-dropdown-toggle" onclick="toggleFernwartungDropdown(event)" aria-haspopup="true" aria-expanded="false">Fernwartung<svg class="nav-dropdown-arrow" xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul class="nav-dropdown-menu"><li><a href="/fernwartung/" class="nav-dropdown-item nav-dropdown-item--highlight"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>Fernwartung starten</a></li></ul></li>
       <li><a href="/kontakt/">Kontakt</a></li>
       <li><a href="tel:+491782584438" class="nav-cta"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.8a16 16 0 0 0 6 6l.94-.94a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>Jetzt anrufen</span></a></li>
     </ul>
@@ -1339,7 +1318,6 @@
   <a href="/websites-fuer-betriebe/">Websites</a>
   <a href="#preise">Preise</a>
   <a href="/kontakt/">Kontakt</a>
-  <a href="https://www.teamviewer.com/de/download/portal/windows/" target="_blank" rel="noopener">Fernwartung (TeamViewer)</a>
   <a href="/fernwartung/" style="color:var(--cyan);font-weight:700;">&#9889; Fernwartung starten</a>
   <a href="tel:+491782584438" class="m-cta">Jetzt anrufen · 0178 258 44 38</a>
 </div>
@@ -1365,17 +1343,6 @@
         <a href="tel:+491782584438" class="btn-p hc-call"><svg width="18" height="18" aria-hidden="true"><use href="#ico-phone"/></svg>Anrufen <span class="hc-num">0178 258 44 38</span></a>
         <a href="https://wa.me/491782584438" target="_blank" rel="noopener" class="hc-wa"><svg width="18" height="18" aria-hidden="true"><use href="#ico-wa"/></svg>WhatsApp</a>
       </div>
-      <!-- Vier Einstiege (seit 07.10.2026): das Anliegen als Nachricht des Kunden, die Antwort
-           als Nachricht von Andreas, dieselbe Bildsprache wie der Chat rechts. -->
-      <nav class="hc-ways" aria-labelledby="ways-h">
-        <p id="ways-h" class="hc-ways-h">Worum geht's bei dir?</p>
-        <ul>
-          <li><a href="/it-betreuer-wechseln/"><span class="w-q">Dein IT-Betreuer geht nicht ran?</span><span class="w-a">Ich schon.<svg width="16" height="16" aria-hidden="true"><use href="#ico-arrow-r"/></svg></span></a></li>
-          <li><a href="/software-nach-mass/"><span class="w-q">Excel-Listen, doppelte Eingaben, Zettel: Das nervt jede Woche?</span><span class="w-a">Daraus baue ich Software.<svg width="16" height="16" aria-hidden="true"><use href="#ico-arrow-r"/></svg></span></a></li>
-          <li><a href="#ki"><span class="w-q">KI, Datenschutz, E-Rechnung: Was müssen wir tun?</span><span class="w-a">Das klären wir zusammen.<svg width="16" height="16" aria-hidden="true"><use href="#ico-arrow-r"/></svg></span></a></li>
-          <li><a href="/websites-fuer-betriebe/"><span class="w-q">Eure Website bringt keine Anfragen?</span><span class="w-a">Dann baue ich sie neu auf.<svg width="16" height="16" aria-hidden="true"><use href="#ico-arrow-r"/></svg></span></a></li>
-        </ul>
-      </nav>
     </div>
     <div class="hc-stage">
       <p class="hc-clock is-empty" data-hc-clock aria-hidden="true"></p>
@@ -1466,7 +1433,7 @@
   </div>
 </section>
 
-<!-- IT-BETREUUNG (Einstieg 1) – ersetzt seit 07.10.2026 die „Acht Situationen" und die USP-Sektion -->
+<!-- IT-BETREUUNG – ersetzt seit 07.10.2026 die „Acht Situationen" und die USP-Sektion -->
 <section class="itb section-pad" id="it-betreuung">
   <div class="inner">
     <div class="s-label">IT-Betreuung</div>
@@ -1647,7 +1614,7 @@
   </div>
 </div>
 
-<!-- KI, DATENSCHUTZ, FRISTEN (Einstiege 2 und 3, Ziel der dritten Karte im Hero) -->
+<!-- KI, DATENSCHUTZ, FRISTEN -->
 <section class="section-pad" id="ki" style="background:var(--bg);">
   <div class="inner">
     <div class="s-label">KI, Datenschutz, Fristen</div>
@@ -1684,7 +1651,7 @@
   </div>
 </section>
 
-<!-- WEBSITES (Einstieg 4) -->
+<!-- WEBSITES -->
 <section class="section-pad web-sec" id="websites">
   <div class="inner">
     <div class="web-row">
