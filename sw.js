@@ -80,10 +80,13 @@
  *                        statt TeamViewer beschrieben.
  *   1.22.5 / 2026-10-09 — Fernwartung ohne TeamViewer-Ausweichlink, Datenschutz
  *                        nennt GitHub (RustDesk fuer den Mac) statt TeamViewer.
+ *   1.23.0 / 2026-10-09 — Sofort-Reparatur: Schulungs-Knoepfe (Bausteine in style.css),
+ *                        404 mit Schriften, Kartenabstand, Fernwartung als Menuepunkt
+ *                        (main.js 1.4.0), Bilder fuer die E-Mail-Signatur.
  */
 
-const CACHE_NAME    = 'grundke-it-v1.22.5';
-const RUNTIME_CACHE = 'grundke-it-runtime-v28';
+const CACHE_NAME    = 'grundke-it-v1.23.0';
+const RUNTIME_CACHE = 'grundke-it-runtime-v29';
 
 /* Pre-Cache: minimaler Kern fuer Offline-First-Boot */
 const PRECACHE_URLS = [

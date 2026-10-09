@@ -164,19 +164,6 @@ PHONE_SVG = ('<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke
              '19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 '
              '2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.8a16 16 0 0 0 6 6l.94-.94a2 2 0 0 1 2.11-.45 '
              '12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>')
-DROPDOWN = (
-    '<li class="nav-dropdown" id="fernwartungDropdown"><button class="nav-dropdown-toggle" '
-    'onclick="toggleFernwartungDropdown(event)" aria-haspopup="true" aria-expanded="false">Fernwartung'
-    '<svg class="nav-dropdown-arrow" xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" '
-    'fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" '
-    'aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button>'
-    '<ul class="nav-dropdown-menu">'
-    '<li><a href="/fernwartung/" class="nav-dropdown-item nav-dropdown-item--highlight">'
-    '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" '
-    'stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
-    '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>Fernwartung starten</a></li></ul></li>')
-
-
 def nav_html(current=None, home=False):
     """Kompletter Seitenkopf (Desktop-Leiste + Mobilmenue).
     current = (bereich, art): bereich aus NAV_ITEMS/NAV_KONTAKT, art "page" fuer die
@@ -187,8 +174,8 @@ def nav_html(current=None, home=False):
         return ""
 
     items = [(lbl, home_href if home else href, key) for lbl, href, home_href, key in NAV_ITEMS]
-    fw_cur = cur("fernwartung")  # Fernwartungsseite: Eintrag im Dropdown und im Mobilmenue markieren
-    dropdown = DROPDOWN.replace('<a href="/fernwartung/" class=', '<a href="/fernwartung/"' + fw_cur + ' class=')
+    # Fernwartung (Andreas 09.10.2026): direkter Menuepunkt statt Dropdown mit nur einem Eintrag
+    fw_cur = cur("fernwartung")
     k_lbl, k_href, k_key = NAV_KONTAKT
     desk = "".join('\n      <li><a href="{h}"{c}>{l}</a></li>'.format(h=h, c=cur(k), l=l) for l, h, k in items)
     mob = "".join('\n  <a href="{h}"{c}>{l}</a>'.format(h=h, c=cur(k), l=l) for l, h, k in items)
@@ -198,7 +185,7 @@ def nav_html(current=None, home=False):
     <a href="/" class="logo" title="Grundke IT-Service – München Ost"><picture><source srcset="/assets/img/logo-grundke-it-white-480.webp" type="image/webp"><img class="logo-img" src="/assets/img/logo-grundke-it-white-480.png" alt="Grundke IT-Service" width="180" height="60" /></picture></a>
     <a class="nav-loc" href="{maps}" target="_blank" rel="noopener" aria-label="Standort auf Google Maps anzeigen"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>München Ost</a>
     <ul class="nav-links">{desk}
-      {dropdown}
+      <li><a href="/fernwartung/"{fw_cur}>Fernwartung starten</a></li>
       <li><a href="{k_href}"{k_cur}>{k_lbl}</a></li>
       <li><a href="tel:+491782584438" class="nav-cta">{phone}<span>Jetzt anrufen</span></a></li>
     </ul>
@@ -210,7 +197,7 @@ def nav_html(current=None, home=False):
   <a href="/fernwartung/"{fw_cur} style="color:var(--cyan);font-weight:700;">&#9889; Fernwartung starten</a>
   <a href="tel:+491782584438" class="m-cta">Jetzt anrufen · 0178 258 44 38</a>
 </div>
-</header>""".format(maps=MAPS_URL, desk=desk, mob=mob, dropdown=dropdown, phone=PHONE_SVG, fw_cur=fw_cur,
+</header>""".format(maps=MAPS_URL, desk=desk, mob=mob, phone=PHONE_SVG, fw_cur=fw_cur,
                      k_href=k_href, k_lbl=k_lbl, k_cur=cur(k_key))
 
 
@@ -855,7 +842,7 @@ NEW_STYLE = '''  <style>
     .lp-answer { background:var(--bg2); border:1px solid var(--border); border-radius:14px; padding:1.3rem 1.5rem; margin:1.6rem 0 2rem; }
     .lp-answer p { margin:0; color:var(--text); font-size:.98rem; line-height:1.75; }
     .lp-answer p + p { margin-top:.7rem; color:var(--text2); font-size:.92rem; }
-    .lp-content h3 { font-family:var(--fh); font-size:1.08rem; font-weight:700; color:var(--text); margin:1.8rem 0 .6rem; }
+    .lp-content > h3 { font-family:var(--fh); font-size:1.08rem; font-weight:700; color:var(--text); margin:1.8rem 0 .6rem; }
   </style>'''
 NEW_PAGE_STYLE = KI_STYLE + "\n" + NEW_STYLE
 KI_START_TEXT = (

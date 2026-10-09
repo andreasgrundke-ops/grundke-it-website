@@ -1,9 +1,9 @@
 /**
  * ═══════════════════════════════════════════════════════════
  * Grundke IT-Service · main.js
- * Version: 1.3.0
+ * Version: 1.4.0
  * Autor: Andreas Grundke / Grundke IT-Service
- * Datum: 2026-10-07
+ * Datum: 2026-10-09
  * Beschreibung: Shared JS – Nav, FAQ, Scroll
  * Änderung 2026-06-07: A11y – Hamburger aria-expanded/-label-Sync,
  *                       Hero-Dots aria-selected im Slider-Wechsel.
@@ -12,6 +12,7 @@
  * Änderung 2026-10-07: A11y aus dem UI-Audit – Skip-Link bleibt beim Browser,
  *                       Anker-Klicks setzen Fokus und Hash (WCAG 2.4.1/2.4.3),
  *                       Escape schliesst Mobilmenue und Fernwartung-Dropdown.
+ * Änderung 2026-10-09: Fernwartung ist direkter Menuepunkt, Dropdown-Logik entfernt.
  * ═══════════════════════════════════════════════════════════
  */
 
@@ -376,42 +377,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initInstallPrompt();
   var lenis = initLenis();
   initScrollTop(lenis);
-  initFernwartungDropdown();
 });
 
 
-/* ── Fernwartung Dropdown ── */
-function toggleFernwartungDropdown(event) {
-  event.stopPropagation();
-  const dd = document.getElementById('fernwartungDropdown');
-  if (!dd) return;
-  const isOpen = dd.classList.contains('nav-dropdown--open');
-  document.querySelectorAll('.nav-dropdown--open').forEach(function(el) {
-    el.classList.remove('nav-dropdown--open');
-    var btn = el.querySelector('.nav-dropdown-toggle');
-    if (btn) btn.setAttribute('aria-expanded', 'false');
-  });
-  if (!isOpen) {
-    dd.classList.add('nav-dropdown--open');
-    dd.querySelector('.nav-dropdown-toggle').setAttribute('aria-expanded', 'true');
-  }
-}
-
-function initFernwartungDropdown() {
-  function closeAll(returnFocus) {
-    document.querySelectorAll('.nav-dropdown--open').forEach(function(el) {
-      el.classList.remove('nav-dropdown--open');
-      var btn = el.querySelector('.nav-dropdown-toggle');
-      if (btn) {
-        btn.setAttribute('aria-expanded', 'false');
-        if (returnFocus) btn.focus();
-      }
-    });
-  }
-  document.addEventListener('click', function() { closeAll(false); });
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') closeAll(true);
-  });
-}
 /* SW-Registrierung laeuft eigenstaendig ueber window.load */
 initServiceWorker();
