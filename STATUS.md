@@ -1,13 +1,19 @@
 # STATUS – grundke-it.de Website
 <!-- CI 2026.01 · Grundke IT-Service · Standard-Statusdatei, wird von Mensch+KI gepflegt -->
 
-**Stand:** 2026-10-09 · **Status:** Live
+**Stand:** 2026-10-10 · **Status:** Live
 
 ## Was ist das
 grundke-it.de Website – siehe README/CLAUDE.md im Projekt.
 
 ## Aktueller Stand
-Letzter Arbeitsblock (09.10.2026), vier Commits, alle live geprüft:
+**Als Nächstes:** Umbau „Ein Stil, der Kümmerer, Handy zuerst“. Befund (19/32) und Spec liegen vor,
+Plan, Prüfung und Andreas' OK stehen aus. Übergabe: `../_intern/handoffs/2026-10-10-website-umbau.md`.
+Sofort-Reparatur dazu ist live (Commit 4209f1b): Schulungs-Knöpfe, 404-Schriften, Kartenabstand,
+„Fernwartung starten“ als direkter Menüpunkt, keine Erreichbarkeitszusage auf /kontakt/,
+Signatur-Bilder unter `assets/img/signatur/`. `sw.js` 1.23.0, `main.js` 1.4.0.
+
+Arbeitsblock 09.10.2026, vier Commits, alle live geprüft:
 
 - **Startseite:** Die vier Einstiege „Worum geht's bei dir?“ im Hero sind auf allen Breiten raus,
   dort läuft nur noch der Chat (Andreas: nichts daneben, egal auf welchem Gerät).

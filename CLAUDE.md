@@ -59,6 +59,9 @@ geaendert hat, nicht wegen eines neuen Footer-Links.
   elf neue Seiten aus dem Generator (Software, Websites, IT-Betreuer wechseln, Lizenzen, E-Rechnung,
   Digitalbonus, Ratgeber mit vier Artikeln), Menue IT-Service · KI im Betrieb · Software · Websites ·
   Preise, drei Audits eingearbeitet. Preise der Projektseiten am Schalter `SHOW_FROM_PRICES`.
+- **Laeuft (ab 10.10.2026):** Umbau „Ein Stil, der Kuemmerer, Handy zuerst“ – alle Unterseiten im
+  Stil der Startseite, Startseite am Handy <= 12.000 px. Spec und Uebergabe in `../_intern/specs/` und
+  `../_intern/handoffs/2026-10-10-website-umbau.md`; naechster Schritt dort §8 (Plan, Pruefung, OK).
 - **Offen:** Linux-Fernwartung auf echtem Mint testen (oeffentlich verlinkt, nie getestet).
   Geplant nach ATG: Musterbeispiele auf Websites/Software (Gehirn `musterbeispiele-websites-software`).
 - **Naechster Schritt:** offene Inhaltsfragen aus der internen Uebergabe mit Andreas klaeren
