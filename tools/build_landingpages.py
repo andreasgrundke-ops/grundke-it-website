@@ -676,6 +676,10 @@ AUTHOR_ROLE = "Fachinformatiker für Systemintegration · über 20 Jahre IT"
 # Beispiel-Chat: Absender -> (Blasen-Klasse wie im Hero-Chat der Startseite, Name fuer Screenreader)
 CHAT_SENDER = {"kunde": ("is-me", "Kunde"), "andreas": ("is-ag", "Andreas")}
 H2_SPLIT_RE = re.compile(r"\s*<h2>(.*?)</h2>\s*", re.S)
+# Marke in einem extra-Abschnitt: Text davor links, danach rechts (<!--split--> 1,3 : 1, <!--split-even--> 1 : 1),
+# optional bis <!--/split-->; was danach folgt, steht wieder unter beiden Spalten.
+SPLIT_RE = re.compile(r"<!--split(-even)?-->")
+SPLIT_END = "<!--/split-->"
 
 
 def section(content, alt=False, label="", title="", sid="", aside=False):
@@ -719,8 +723,8 @@ def page_head(s, crumbs):
     (.s-sub), Knoepfe Anrufen + WhatsApp (am Handy uebernimmt die Kontaktleiste), Belegzeile: zuerst
     die Google-Bewertungen mit Link zur Herkunft, dann ein Beleg der Seite (proof2: Symbol, Text).
     Daneben optional der Beispiel-Chat, bei Hubs darunter die Wege zu den Unterseiten. Ohne Chat und
-    ohne Wege steht der Kopf ab 1024 px in zwei Spalten (H1 + K4 links, Antwortsatz, Knoepfe und
-    Belegzeile rechts); die Reihenfolge im HTML bleibt dieselbe (erste 300 Zeichen, Handy)."""
+    ohne Wege ab 1024 px ein Raster: H1 ueber beide Spalten, darunter links K4, rechts Antwortsatz,
+    Knoepfe und Belegzeile; die Reihenfolge im HTML bleibt dieselbe (erste 300 Zeichen, Screenreader)."""
     hero = s.get("hero")
     h1 = s["h1"]
     if s.get("h1_nowrap"):
@@ -753,7 +757,7 @@ def page_head(s, crumbs):
       </ul>""".format(answer=esc(s["answer"]), tel=PHONE, phone=PHONE_DISP,
                       wa=WA(WA_SEITE.format(nav=s["nav"])), n=REVIEW_COUNT_GOOGLE, proof2=proof2)
     if two:
-        head_a = '\n      <div class="page-head-a">' + head_a.replace("\n", "\n  ") + '\n      </div>'
+        # H1 und K4 bleiben direkte Kinder (Rasterflaechen h1/kum), der Rest steht in .page-head-b (antwort)
         head_b = '\n      <div class="page-head-b">' + head_b.replace("\n", "\n  ") + '\n      </div>'
     return """<section class="sec sec--glow page-head">
   <div class="inner page-head-grid{grid}">
@@ -855,9 +859,11 @@ def prose(html_part):
     return '\n    <div class="lp-content">\n      ' + html_part.strip() + '\n    </div>'
 
 
-def split(left, right):
-    """Zwei Spalten nebeneinander ab 1024 px (darunter untereinander), z. B. Text und Preis."""
-    return '\n    <div class="sec-split">\n    <div>' + left + '\n    </div>\n    <div>' + right + '\n    </div>\n    </div>'
+def split(left, right, even=False):
+    """Zwei Spalten nebeneinander ab 1024 px (darunter untereinander), z. B. Text und Preis.
+    Standard 1,3 : 1; even=True 1 : 1 (wenn die rechte Spalte sonst deutlich laenger waere)."""
+    return '\n    <div class="sec-split{e}">\n    <div>'.format(e=" sec-split--even" if even else "") + left + \
+        '\n    </div>\n    <div>' + right + '\n    </div>\n    </div>'
 
 
 def render_shell(s, places, services, head_schema=None):
@@ -866,8 +872,9 @@ def render_shell(s, places, services, head_schema=None):
     Daten; neu sind k, answer, chat, voices (Textblatt) und die Darstellung: proof2 (zweiter Beleg im
     Kopf), h1_nowrap, intro_price (Preis neben dem Einstieg), price_line (Zeile unter den Paketen),
     row (zwei Abschnitte nebeneinander, auch der Stimmen-Abschnitt und tail_blocks), voices_h2 (eigene
-    Ueberschrift ueber den Stimmen), tail_blocks ((Titel, HTML) nach den Stimmen), "<!--split-->" in
-    einem extra-Abschnitt (Text links, Rest rechts). Ein Vertrauenskasten erscheint nur mit eigenem
+    Ueberschrift ueber den Stimmen), tail_blocks ((Titel, HTML) nach den Stimmen), "<!--split-->" bzw.
+    "<!--split-even-->" in einem extra-Abschnitt (Text links, Rest rechts, optional bis "<!--/split-->",
+    danach wieder volle Breite). Ein Vertrauenskasten erscheint nur mit eigenem
     "trust" (ohne Preise neben dem Einstieg); der allgemeine TRUST_DEFAULT gilt nur in der alten Huelle."""
     slug = s["slug"]
     h, schema = head_schema or service_head_schema(s)
@@ -882,9 +889,12 @@ def render_shell(s, places, services, head_schema=None):
     blocks = [(s.get("cards_h2", "Das steckt drin") if s.get("cards") else "",
                lead + (feat_rows(s["cards"]) if s.get("cards") else ""))]
     for title, body in extra_blocks(s.get("extra", "")):
-        if "<!--split-->" in body:
-            left, right = body.split("<!--split-->", 1)
-            body_html = split(prose(left), prose(right))
+        mark = SPLIT_RE.search(body)
+        if mark:
+            right, _end, after = body[mark.end():].partition(SPLIT_END)
+            body_html = split(prose(body[:mark.start()]), prose(right), even=bool(mark.group(1)))
+            if after.strip():
+                body_html += prose(after)   # nach <!--/split--> wieder ueber die volle Breite
         else:
             body_html = prose(body)
         if title:
@@ -936,7 +946,8 @@ def render_shell(s, places, services, head_schema=None):
 # Ortsseiten in der Generator-Huelle (seit 10.10.2026, Task 6): k (K4) und answer (Antwortsatz) und
 # voice (eine Google-Stimme ohne Ortsbezug) aus dem Textblatt §1/§3; intro und near_a von Vaterstetten,
 # Haar und Baldham mit den freigegebenen Ersatzsaetzen (Textblatt, Frage 5) statt Minuten- und
-# Rueckruf-Zusagen.
+# Rueckruf-Zusagen. Fix-Runde 1: Haar ohne die unbelegte Aussage „einer der gewerbestärksten Orte“,
+# Grasbrunn-Einstieg beginnt nicht mehr wortgleich mit dem K4 („Mein Sitz ist im Beethovenring 16 …“).
 PLACE_DATE = "2026-10-10"            # dateModified, Sitemap und „Zuletzt aktualisiert“ aller Ortsseiten
 PLACE_DATE_DISP = "10. Oktober 2026"
 PLACES = [
@@ -949,7 +960,7 @@ PLACES = [
                    "Praxen mit 5 bis 50 Arbeitsplätzen: Rechner, Server, Microsoft 365 und Datensicherung, ad hoc für "
                    "110 € netto je Stunde oder ab 149 € netto im Monat."),
         "voice": "dietz",
-        "intro": ("Mein Sitz ist im Beethovenring 16 in Neukeferloh – also direkt in der "
+        "intro": ("Ich arbeite von Neukeferloh aus, also direkt in der "
                   "Gemeinde Grasbrunn. Wenn bei dir im Büro, in der Werkstatt oder in der Praxis "
                   "die IT streikt, bin ich nicht irgendein Callcenter zwei Bundesländer entfernt, "
                   "sondern dein Nachbar mit über 20 Jahren IT-Erfahrung. Kurze Anfahrt und persönliche "
@@ -1023,8 +1034,8 @@ PLACES = [
                    "Handwerksbetrieben: Netzwerk und WLAN, Microsoft 365, Virenschutz und Datensicherung, laufend "
                    "mit Monatspauschale oder bei Bedarf im 15-Minuten-Takt."),
         "voice": "polednik",
-        "intro": ("Haar grenzt direkt an München und ist einer der gewerbestärksten Orte im Münchner "
-                  "Osten – vom Büro über die Praxis bis zum Handwerksbetrieb. Von Neukeferloh aus ist "
+        "intro": ("Haar grenzt direkt an München, und hier arbeiten ganz unterschiedliche Betriebe, "
+                  "vom Büro über die Praxis bis zum Handwerksbetrieb. Von Neukeferloh aus ist "
                   "die Anfahrt nach Haar kurz, und ich kümmere mich persönlich um deine komplette IT."),
         "near_q": "Wie schnell bist du bei einem IT-Notfall in Haar?",
         "near_a": ("Haar ist nicht weit von meinem Sitz in Neukeferloh entfernt. Viele Störungen lassen sich "
@@ -1058,12 +1069,10 @@ PLACE_CARDS = [
     ("Netzwerk & WLAN", "Stabiles WLAN und sichere Netzwerke mit professioneller UniFi-Technik.", "ico-wifi"),
     ("Backup & IT-Sicherheit", "Datensicherung nach 3-2-1-Strategie, Virenschutz und Schutz vor Ransomware.", "ico-shield"),
 ]
-# Vertrauenstext der Ortsseiten: freigegebener Ersatz (Textblatt, Frage 5) fuer „… der zurückruft“ und das
-# gekuerzte Zitat aus einer Bewertung. Steht neben dem Einstieg.
-PLACE_TRUST = ("<strong>Warum Unternehmen aus {n} mit mir arbeiten:</strong> Ein einheitlicher Stundensatz, "
-               "Abrechnung im 15-Minuten-Takt, keine versteckten Kosten und ein Ansprechpartner, der eure IT kennt. "
-               "Was Kunden über mich schreiben, steht ungekürzt bei den Kundenstimmen.")
-PLACE_PROOF2 = ("ico-clock", "Ad hoc 110 € netto/Std. im 15-Minuten-Takt")
+# Zweiter Beleg im Kopf mit dem Stundensatz: Ortsseiten, it-notdienst und die IT-Leistungsseiten ohne
+# eigenen Preisbaustein (seit Task 6, Fix-Runde 1, gleicher Wortlaut ueberall). Der fruehere Vertrauens-
+# kasten der Ortsseiten entfaellt (Fakten stehen in diesem Beleg und im Abschluss).
+PROOF_ADHOC = ("ico-clock", "Ad hoc 110 € netto/Std. im 15-Minuten-Takt")
 PLACE_NEAR_H2 = "Auch in deiner Nähe im Einsatz"
 
 
@@ -1086,8 +1095,8 @@ def place_faqs(p):
 
 def render_place(p, places, services):
     """Ortsseite in der Generator-Huelle (seit 10.10.2026): eigener <head> und LocalBusiness-Schema wie
-    bisher, Inhalt ueber render_shell. Abschnitte: Leistungen (Einstieg + Vertrauenstext, Zeilen), Stimme
-    und Nachbarorte nebeneinander, FAQ (near_q/near_a + drei gemeinsame Fragen), Abschluss."""
+    bisher, Inhalt ueber render_shell. Abschnitte: Leistungen (Einstieg, Zeilen), Stimme und Nachbarorte
+    nebeneinander, FAQ (near_q/near_a + drei gemeinsame Fragen), Abschluss."""
     slug = "it-service-" + p["slug"]
     title = "IT-Service {tn} | Andreas Grundke IT-Service".format(tn=p["title_name"])
     # Description: „schnelle Hilfe“ durch den freigegebenen Ersatz (Textblatt, Frage 5; seo-ausnahmen.json)
@@ -1131,9 +1140,9 @@ def render_place(p, places, services):
     name = esc(p["name"])
     s = {
         "slug": slug, "nav": "IT-Service " + p["name"], "h1": "IT-Service in " + esc(p["title_name"]),
-        "h1_nowrap": "IT-Service", "k": p["k"], "answer": p["answer"], "proof2": PLACE_PROOF2,
+        "h1_nowrap": "IT-Service", "k": p["k"], "answer": p["answer"], "proof2": PROOF_ADHOC,
         "intro": p["intro"], "cards_h2": "IT-Leistungen für " + name, "cards": PLACE_CARDS,
-        "trust": PLACE_TRUST.format(n=name), "voices": [p["voice"]], "tail_blocks": [near],
+        "voices": [p["voice"]], "tail_blocks": [near],
         "row": ("Was andere über mich sagen", PLACE_NEAR_H2),
         "faqs": faqs, "faq_h2": "Häufige Fragen zum IT-Service in " + name,
         "modified_disp": PLACE_DATE_DISP,
@@ -1378,7 +1387,7 @@ SERVICES = [
                    "und zusätzlicher Datensicherung im Monatspaket ab 149 € netto."),
         "voices": ["fleischmann"],
         "h1_nowrap": "Microsoft 365",
-        "proof2": ("ico-check", "Betreuung im Monatspaket ab 149 € netto"),
+        "proof2": PROOF_ADHOC,
         "intro": ("Microsoft 365 ist schnell gebucht – aber sauber eingerichtet, abgesichert und "
                   "DSGVO-konform betrieben ist es eine andere Sache. Ich übernehme die Ersteinrichtung, "
                   "die Migration von alten Postfächern oder Servern und die laufende Betreuung deiner "
@@ -1426,7 +1435,7 @@ SERVICES = [
                    "Team, das Phishing erkennt. Ich richte das ein und betreue es weiter."),
         "voices": ["fleischmann"],
         "h1_nowrap": "IT-Sicherheit",
-        "proof2": ("ico-cloud", "Datensicherung nach 3-2-1 mit Kopie außer Haus"),
+        "proof2": PROOF_ADHOC,
         "intro": ("Ein einziger verschlüsselter Server oder ein gelöschtes Verzeichnis kann ein "
                   "kleines Unternehmen tagelang lahmlegen. Ich sorge dafür, dass es gar nicht erst so "
                   "weit kommt – und dass du im Ernstfall deine Daten zurückbekommst. Dazu gehören eine "
@@ -1470,7 +1479,7 @@ SERVICES = [
         "answer": ("Als Grundke IT-Service aus Grasbrunn plane ich Netzwerk, WLAN und Firewall für Betriebe im "
                    "Münchner Osten, richte sie ein und betreue sie: UniFi-Technik, getrennte Netze für Gäste und "
                    "Betrieb und VPN fürs Home-Office."),
-        "proof2": ("ico-clock", "110 € netto/Std. im 15-Minuten-Takt"),
+        "proof2": PROOF_ADHOC,
         "intro": ("Langsames WLAN, ständige Abbrüche oder ein Netzwerk, das mit dem Betrieb gewachsen "
                   "und unübersichtlich geworden ist – das kostet täglich Zeit und Nerven. Ich plane, "
                   "richte ein und betreue Netzwerke mit professioneller UniFi-Technik: stabiles WLAN "
@@ -1525,7 +1534,7 @@ SERVICES = [
         ],
         "voices": ["polednik", "verena-k"],
         # Darstellung in der Huelle (Fix-Runde 1, 10.10.2026): Preis neben dem Einstieg statt Vertrauenskasten
-        "proof2": ("ico-clock", "Ad hoc 110 € netto/Std. im 15-Minuten-Takt"),
+        "proof2": PROOF_ADHOC,
         "intro_price": ("Ad hoc", "110 €", "Abrechnung im 15-Minuten-Takt.", False, "netto/Std. zzgl. MwSt."),
         "intro": ("Wenn die IT steht, zählt jede Minute. Viele Störungen löse ich per Fernwartung, sobald "
                   "wir telefoniert haben; bei größeren Problemen komme ich vorbei, die Wege im Münchner "
@@ -2099,7 +2108,7 @@ SERVICES = [
                    "Grundke IT-Service in Grasbrunn, mit Einrichtung, Verwaltung und Datensicherung auf einer Rechnung. "
                    "ChatGPT Business und Claude Team schließt ihr direkt beim Anbieter ab, ich richte sie ein."),
         "voices": ["verena-k"],
-        "proof2": ("ico-file-text", "Lizenzen und Betreuung auf einer Rechnung"),
+        "proof2": PROOF_ADHOC,
         "row": ("Was kosten ChatGPT oder Copilot für Unternehmen?", "Warum nicht einfach selbst online bestellen?"),
         "intro": ("Microsoft 365 kann jeder online bestellen. Was dabei fehlt, merkt man später: Konten ohne "
                   "Zwei-Faktor-Anmeldung, Lizenzen für Leute, die längst weg sind, Virenschutz, der nur auf "
@@ -2455,11 +2464,12 @@ SERVICES = [
         <li><strong>Lag dein Gesamtumsatz 2026 über 800.000 Euro?</strong> Dann musst du ab 1. Januar 2027 ausstellen, sonst ab 1. Januar 2028. Die Zahl kennt deine Steuerberatung.</li>
         <li><strong>Schreibst du Rechnungen heute in Word, Excel oder einem Programm ohne E-Rechnung?</strong> Dann ist jetzt der Zeitpunkt, umzustellen, und nicht im Dezember.</li>
       </ol>
+<!--split-even-->
       <p>Vom Ausstellen ausgenommen sind unter anderem Kleinbetragsrechnungen bis 250 Euro brutto, Fahrausweise und Kleinunternehmer. Empfangen können müssen auch sie E-Rechnungen.</p>
-<!--split-->
       <div class="ki-note">
         <p><strong>Zur Einordnung:</strong> Das ist die allgemeine Rechtslage nach dem zweiten Schreiben des Bundesfinanzministeriums zur E-Rechnung vom 15. Oktober 2025, das das erste Schreiben von 2024 ersetzt, und keine Steuerberatung. Ob und ab wann die Pflicht deinen Betrieb genau trifft, klärst du mit deiner Steuerberatung. Ich baue die Umsetzung.</p>
       </div>
+<!--/split-->
       {preise}
 """.replace("{preise}", (
             '<div class="card-box">\n        <h3>Umstellung zum Festpreis</h3>\n'
