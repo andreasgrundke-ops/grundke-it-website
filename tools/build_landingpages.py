@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 build_landingpages.py
-Version : 2.5
+Version : 2.6
 Autor   : Andreas Grundke IT-Service (Grundke IT-Service)
 Datum   : 2026-10-10
 Zweck   : Generiert aus einem gemeinsamen Template + Datenlisten die Orts- und
@@ -62,6 +62,10 @@ Aenderungen:
               Fix-Runde 1: Abbruch beim Bauen bei falschen Marken (check_markers, Reste nach dem Ersetzen) und
               bei Feldern, die ein Ratgeber-Artikel nicht darstellen kann (check_ratgeber, RATGEBER_KEYS);
               <!--more:Beschriftung-->, intro_h2 fuer den Einstieg ohne Karten, kind "ratgeber-hub" statt "hub".
+  2026-10-10  Release C1, Task 8: /schulung/ aus dem Generator (SERVICES-Eintrag statt Handseite; HAND_PAGES und
+              STATIC_URLS ohne schulung, Fusslink ueber group_of). Neue Felder: h1_em (Wort der H1 als <em>), name
+              (Name ohne Tags fuer Schema und og), meta_extra (eigene og/twitter-Werte, twitter:image:alt), intro
+              optional; Preiskarte mit Zusatzfeld (zweite Preiszeile, Leistungen, Abzeichen, Knopf).
 """
 
 import os
@@ -280,7 +284,8 @@ def nav_html(current=None, home=False):
 SECTION_PAGES = {"ki-fuer-kmu": "ki", "software-nach-mass": "software",
                  "websites-fuer-betriebe": "websites"}
 SECTION_CHILDREN = {"e-rechnung": "ki"}
-SECTION_NONE = ("digitalbonus-bayern", "ratgeber")
+# schulung (seit Task 8 Generator-Seite) markiert wie zuvor als Handseite keinen Menuepunkt
+SECTION_NONE = ("digitalbonus-bayern", "ratgeber", "schulung")
 
 
 def section_of(slug):
@@ -300,7 +305,6 @@ def section_of(slug):
 HAND_PAGES = {
     "index.html": None,
     "kontakt/index.html": ("kontakt", "page"),
-    "schulung/index.html": ("schulung", "page"),
     "fernwartung/index.html": ("fernwartung", "page"),
     "empfehlungen/index.html": None,
     "impressum/index.html": None,
@@ -390,8 +394,11 @@ def up(slug):
     return "../" * (slug.count("/") + 1)
 
 
-def head(title, desc, slug, og_title, og_desc, og_alt):
+def head(title, desc, slug, og_title, og_desc, og_alt, tw_desc=None, tw_alt=None):
+    """<head> bis einschliesslich style.css. tw_desc/tw_alt (seit Task 8, aus meta_extra): eigene
+    twitter:description und twitter:image:alt; ohne sie twitter:description = og_desc und kein Alt-Text."""
     canonical = DOMAIN + "/" + slug + "/"
+    tw_alt_html = '\n  <meta name="twitter:image:alt" content="{}"/>'.format(esc(tw_alt)) if tw_alt else ""
     return """<!DOCTYPE html>
 <html lang="de">
 <head>
@@ -414,8 +421,8 @@ def head(title, desc, slug, og_title, og_desc, og_alt):
   <meta property="og:image:alt" content="{og_alt}"/>
   <meta name="twitter:card" content="summary_large_image"/>
   <meta name="twitter:title" content="{og_title}"/>
-  <meta name="twitter:description" content="{og_desc}"/>
-  <meta name="twitter:image" content="{domain}/assets/img/og-image.png"/>
+  <meta name="twitter:description" content="{tw_desc}"/>
+  <meta name="twitter:image" content="{domain}/assets/img/og-image.png"/>{tw_alt}
   <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
@@ -431,6 +438,7 @@ def head(title, desc, slug, og_title, og_desc, og_alt):
   <link rel="stylesheet" href="{css}"/>
 """.format(title=esc(title), desc=esc(desc), canonical=canonical,
            og_title=esc(og_title), og_desc=esc(og_desc), og_alt=esc(og_alt),
+           tw_desc=esc(tw_desc or og_desc), tw_alt=tw_alt_html,
            domain=DOMAIN, up=up(slug), css=asset("css/style.css"))
 
 
@@ -464,7 +472,8 @@ def footer_html(places, services, current_path="", updated=None, home=False):
                     i=indent, t=title, l=links.replace("\n", "\n" + indent[6:]))
     def group_links(group):
         return "".join(li(sv["nav"], "/" + sv["slug"] + "/") for sv in services if group_of(sv) == group)
-    it_links = group_links("it") + li("IT-Sicherheitsschulung", "/schulung/") + li("Produktempfehlungen", "/empfehlungen/")
+    # IT-Sicherheitsschulung kommt seit Task 8 als SERVICES-Eintrag (group "it", nach lizenzen) ueber group_links
+    it_links = group_links("it") + li("Produktempfehlungen", "/empfehlungen/")
     ki_links = group_links("ki")
     ratgeber_links = group_links("ratgeber")
     place_links = "".join(li("IT-Service " + pl["name"], "/it-service-" + pl["slug"] + "/") for pl in places)
@@ -689,6 +698,11 @@ def page_head(s, crumbs):
         if s["h1_nowrap"] not in h1:
             raise SystemExit("page_head: h1_nowrap steht nicht in der H1 von " + s["slug"])
         h1 = h1.replace(s["h1_nowrap"], '<span class="nowrap">' + s["h1_nowrap"] + "</span>", 1)
+    # h1_em (Task 8, schulung): ein Wort der H1 als Akzent (<em>), Text der H1 bleibt gleich
+    if s.get("h1_em"):
+        if s["h1_em"] not in h1:
+            raise SystemExit("page_head: h1_em steht nicht in der H1 von " + s["slug"])
+        h1 = h1.replace(s["h1_em"], "<em>" + s["h1_em"] + "</em>", 1)
     # Akzentzeile der Hubs in eigener Zeile wie die H1 der Startseite (<br> <em>), Text der H1 bleibt gleich
     h1 += "<br> <em>" + hero["accent"] + "</em>" if hero else ""
     # proof2: Beleg der Seite, proof3 (optional): weiterer Beleg dahinter, z. B. der Stundensatz
@@ -755,20 +769,44 @@ def voices_html(ids):
             '\n    <p class="testi-source testi-source--link"><a href="/#bewertungen-herkunft">Woher die Stimmen kommen</a></p>')
 
 
+# Zusatzfeld einer Preiskarte (sechstes Element, dict, seit Task 8): siehe price_card
+PRICE_OPT_KEYS = {"add", "feats", "badge", "btn"}
+
+
 def price_card(pr, slug):
     """Ein Preis als .price-card (Baustein der Startseite). Eintrag wie bisher: (Stufe, Betrag,
-    Beschreibung, hervorgehoben[, Einheit]); ohne Einheit gilt der Monatspreis der Betreuungspakete.
-    Jede Einheit muss „zzgl. MwSt.“ nennen."""
+    Beschreibung, hervorgehoben[, Einheit[, Zusatz]]); ohne Einheit gilt der Monatspreis der Betreuungspakete.
+    Jede Einheit muss „zzgl. MwSt.“ nennen.
+    Zusatz (dict, seit Task 8, Schulung): "add" zweite Preiszeile unter der Einheit (z. B. Preis je Mitarbeiter,
+    ebenfalls mit „zzgl. MwSt.“), "feats" Leistungen als .price-feats, "badge" Text des Abzeichens statt „Empfohlen“,
+    "btn" (Text, href wie im HTML, also mit &amp;) Knopf .price-btn, solid bei hervorgehobener Karte, sonst out.
+    Leistungen und Knopf stehen unter der Beschreibung, abgesetzt durch .price-div. Andere Felder: Abbruch."""
     tier, amount, desc, feat = pr[:4]
     unit = pr[4] if len(pr) > 4 else "/Monat zzgl. MwSt."
+    opt = pr[5] if len(pr) > 5 else {}
     if "zzgl. MwSt." not in unit:
         raise SystemExit("price_card: Einheit ohne 'zzgl. MwSt.' auf " + slug + ": " + unit)
+    if set(opt) - PRICE_OPT_KEYS:
+        raise SystemExit("price_card: unbekannte Felder " + ", ".join(sorted(set(opt) - PRICE_OPT_KEYS)) + " auf " + slug)
+    if opt.get("add") and "zzgl. MwSt." not in opt["add"]:
+        raise SystemExit("price_card: Zusatzpreis ohne 'zzgl. MwSt.' auf " + slug + ": " + opt["add"])
     val = (esc(amount[:-2]) + '<span class="price-cur">&nbsp;€</span>') if amount.endswith(" €") else esc(amount)
+    add = '\n        <div class="price-per">{}</div>'.format(eur_nbsp(opt["add"])) if opt.get("add") else ""
+    more = ""
+    if opt.get("feats"):
+        more += ('\n        <ul class="price-feats">' + "".join(
+            '\n          <li><span class="pfy" aria-hidden="true">&#10003;</span>{}</li>'.format(esc(f))
+            for f in opt["feats"]) + '\n        </ul>')
+    if opt.get("btn"):
+        more += '\n        <a href="{h}" class="price-btn {k}">{t}</a>'.format(
+            h=opt["btn"][1], k="solid" if feat else "out", t=esc(opt["btn"][0]))
+    if more:
+        more = '\n        <hr class="price-div">' + more
     return ('\n      <div class="price-card{f}">{b}\n        <h3 class="price-name">{t}</h3>'
-            '\n        <div class="price-val">{v}</div>\n        <div class="price-per">{u}</div>'
-            '\n        <p class="price-desc">{d}</p>\n      </div>').format(
-                f=" feat" if feat else "", t=esc(tier), v=val, u=esc(unit), d=esc(desc),
-                b='\n        <div class="price-badge">Empfohlen</div>' if feat else "")
+            '\n        <div class="price-val">{v}</div>\n        <div class="price-per">{u}</div>{a}'
+            '\n        <p class="price-desc">{d}</p>{m}\n      </div>').format(
+                f=" feat" if feat else "", t=esc(tier), v=val, u=eur_nbsp(unit), d=esc(desc), a=add, m=more,
+                b='\n        <div class="price-badge">{}</div>'.format(esc(opt.get("badge", "Empfohlen"))) if feat else "")
 
 
 def prices_html(s):
@@ -879,8 +917,12 @@ def content_blocks(s):
     Einstieg (intro, Karten), extra an seinen <h2>, Stimmen, tail_blocks, row, Preise; Darstellung siehe
     render_shell."""
     slug = s["slug"]
-    intro = s["intro"] if s.get("raw_intro") else esc(s["intro"])
-    lead = prose(intro if intro.lstrip().startswith("<div") else "<p>" + intro + "</p>")
+    # intro ist seit Task 8 optional (schulung: der bisherige Vorspann ist im Kopf durch K4 und Antwortsatz ersetzt,
+    # der Abschnitt beginnt direkt mit den Zeilen)
+    intro = s.get("intro", "")
+    if intro and not s.get("raw_intro"):
+        intro = esc(intro)
+    lead = prose(intro if intro.lstrip().startswith("<div") else "<p>" + intro + "</p>") if intro else ""
     trust_box = '\n    <div class="card-box"><p>' + s["trust"] + '</p></div>' if s.get("trust") else ""
     if s.get("intro_price"):
         lead = split(lead, price_card(s["intro_price"], slug))
@@ -1264,6 +1306,47 @@ TRUST_WEBSITE = ("<strong>Preis nach Aufwand, verbindlich im Angebot.</strong> W
 TRUST_FESTPREIS = ("<strong>Festpreis für das Projekt, fester Monatsbetrag für Betrieb und Pflege.</strong> "
                    "Was außerhalb davon anfällt, kostet 110 € netto je Stunde im 15-Minuten-Takt. Du sprichst "
                    "von der ersten Frage bis zum laufenden Betrieb mit mir, Andreas Grundke.")
+
+# Schulung (Task 8, bis 10.10.2026 Handseite): Course-Knoten unveraendert aus dem JSON-LD der Handseite, inklusive
+# availability PreOrder am Portal-Angebot; Mail-Links der drei Preiskarten zeichengleich (Betreff und Text wie bisher).
+SCHULUNG_COURSE = {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    "name": "IT-Sicherheitsschulung für Mitarbeiter (KMU)",
+    "description": ("Praxisnahe IT-Sicherheits- und Datenschutz-Awareness-Schulung für kleine und mittlere Unternehmen: "
+                    "Phishing erkennen, sichere Passwörter, sicherer Umgang mit KI-Werkzeugen, richtiges Verhalten im "
+                    "Arbeitsalltag. Live per Microsoft Teams oder als Online-Portal mit Quiz und PDF-Zertifikat."),
+    "provider": {
+        "@type": "Organization",
+        "name": "Andreas Grundke IT-Service",
+        "alternateName": "Grundke IT-Service",
+        "url": "https://grundke-it.de",
+    },
+    "inLanguage": "de-DE",
+    "offers": [
+        {"@type": "Offer", "name": "Live-Schulung per Microsoft Teams", "price": "135.00", "priceCurrency": "EUR",
+         "category": "Pauschale"},
+        {"@type": "Offer", "name": "Online-Portal (Grundpauschale/Halbjahr)", "price": "49.00", "priceCurrency": "EUR",
+         "category": "Halbjahr", "availability": "https://schema.org/PreOrder"},
+    ],
+}
+_SCHULUNG_MAIL_END = ("%0A%0AMein%20Unternehmen%20%2F%20meine%20Situation%3A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich"
+                      "%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A"
+                      "---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben"
+                      "%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F).")
+MAILTO_SCHULUNG = {
+    "live": ("mailto:info@grundke-it.de?subject=Anfrage%20IT-Sicherheitsschulung%20(Live)%20%C3%BCber%20grundke-it.de"
+             "&amp;body=Hallo%20Andreas%2C%0A%0Aich%20interessiere%20mich%20f%C3%BCr%20eine%20pers%C3%B6nliche%20"
+             "IT-Sicherheitsschulung%20per%20Teams.%0A%0AAnzahl%20Teilnehmer%3A%20%0AGew%C3%BCnschter%20Termin%3A%20"
+             + _SCHULUNG_MAIL_END),
+    "portal": ("mailto:info@grundke-it.de?subject=Anfrage%20Schulungs-Portal%20%C3%BCber%20grundke-it.de"
+               "&amp;body=Hallo%20Andreas%2C%0A%0Aich%20interessiere%20mich%20f%C3%BCr%20den%20Zugang%20zum%20"
+               "Online-Schulungsportal.%0A%0AAnzahl%20Mitarbeiter%3A%20" + _SCHULUNG_MAIL_END),
+    "kombi": ("mailto:info@grundke-it.de?subject=Anfrage%20Kombi-Schulungspaket%20%C3%BCber%20grundke-it.de"
+              "&amp;body=Hallo%20Andreas%2C%0A%0Aich%20interessiere%20mich%20f%C3%BCr%20das%20Kombi-Paket%20"
+              "(Live-Schulung%20%2B%20Portal-Zugang).%0A%0AAnzahl%20Mitarbeiter%3A%20%0AGew%C3%BCnschter%20Termin%20"
+              "f%C3%BCr%20Live-Schulung%3A%20" + _SCHULUNG_MAIL_END),
+}
 
 
 SERVICES = [
@@ -2168,6 +2251,134 @@ SERVICES = [
         ],
     },
     {
+        # Task 8 (Release C1, 10.10.2026): bis dahin Handseite. Steht nach lizenzen, damit der Fusslink an derselben
+        # Stelle der Spalte IT-Betreuung bleibt (group_of). H1 mit Umbruch und <em> wie bisher (Textblatt §1, Hinweis),
+        # name ohne Tags fuer Schema und og. og:title, og:image:alt, twitter:image:alt wie bisher (meta_extra);
+        # description, og:description und twitter:description nennen das Portal „in Vorbereitung“, Preis „Ab 135 €“
+        # (Andreas 10.10.2026, seo-ausnahmen.json). K4 und Antwortsatz aus dem Textblatt (Zeile 22, Antwortsatz mit
+        # Teilnahmenachweis, Andreas 10.10.2026), keine Kundenstimme (Textblatt §3). Text, Preise, FAQ und Course-Knoten
+        # wortgleich aus der Handseite; Zahlen im deutschen Format, jeder Preis mit „zzgl. MwSt.“.
+        "slug": "schulung", "nav": "IT-Sicherheitsschulung", "group": "it",
+        "title": "IT-Sicherheitsschulung & Datenschutz – Grundke IT-Service",
+        "h1": "IT-Sicherheitsschulung<br>&amp; Datenschutz", "h1_em": "Datenschutz",
+        "name": "IT-Sicherheitsschulung & Datenschutz",
+        "service_type": "IT-Sicherheitsschulung für Mitarbeiter",
+        # published: fruehester belegter Stand der Seite (erster Commit des Repos)
+        "published": "2026-04-10", "modified": "2026-10-10", "modified_disp": "10. Oktober 2026",
+        "cta2_href": "/it-sicherheit-backup/", "cta2_text": "IT-Sicherheit & Backup",
+        "desc": ("IT-Sicherheitsschulung für KMUs: Live per Teams, Online-Portal mit Quiz und Zertifikat in Vorbereitung. "
+                 "Ab 135 € pauschal. Grundke IT-Service, München Ost."),
+        "meta_extra": {
+            "og_title": "IT-Sicherheitsschulung – Grundke IT-Service",
+            "og_desc": ("IT-Sicherheitsschulung für KMUs: Live per Teams, Online-Portal mit Quiz und Zertifikat in "
+                        "Vorbereitung. Ab 135 € pauschal."),
+            "og_alt": "Grundke IT-Service – IT-Sicherheitsschulung",
+            "tw_desc": "IT-Sicherheitsschulung für KMUs: Live per Teams, Online-Portal mit Quiz und Zertifikat in Vorbereitung.",
+            "tw_alt": "Grundke IT-Service – IT-Sicherheitsschulung",
+        },
+        "k": ("In der Schulung lernt euer Team, Phishing-Mails zu erkennen und KI-Werkzeuge zu nutzen, ohne Kundendaten "
+              "preiszugeben."),
+        "answer": ("Die IT-Sicherheitsschulung von Grundke IT-Service aus Grasbrunn läuft live per Microsoft Teams, dauert "
+                   "rund 1,5 Stunden, kostet 135 € netto pauschal und jeder Teilnehmer bekommt einen Teilnahmenachweis als "
+                   "PDF. Das Online-Portal ist in Vorbereitung und lässt sich vormerken."),
+        # Beleg der Seite aus der FAQ „Hilft die Schulung bei der DSGVO …?“
+        "proof2": ("ico-shield", "Anerkannte Maßnahme nach Art. 32 DSGVO"),
+        "cards_h2": "Was dein Team lernt",
+        "cards": [
+            ("Phishing erkennen", "Gefälschte E-Mails, Links und Anhänge identifizieren – mit echten Beispielen aus der Praxis.", "ico-mail"),
+            ("Passwort-Sicherheit", "Sichere Passwörter erstellen, Passwort-Manager nutzen, Zwei-Faktor-Authentifizierung einrichten.", "ico-key"),
+            ("Social Engineering", "Manipulationstechniken erkennen – am Telefon, per E-Mail und persönlich.", "ico-user-check"),
+            ("DSGVO-Grundlagen", "Personenbezogene Daten schützen, Meldepflichten kennen, datenschutzkonform arbeiten.", "ico-file-text"),
+            ("Sicherer Umgang mit Geräten", "Bildschirmsperre, USB-Sticks, öffentliches WLAN, Arbeiten unterwegs.", "ico-monitor"),
+            ("Notfall-Verhalten", "Was tun bei Verdacht auf einen Angriff? Richtig reagieren, richtig melden.", "ico-shield"),
+            ("KI sicher nutzen", "Was in ChatGPT, Copilot und andere KI-Werkzeuge hinein darf und was nicht, woran man falsche Antworten erkennt, was eine Nutzungsrichtlinie regelt. Zählt als Maßnahme zur KI-Kompetenz nach Artikel 4 der KI-Verordnung.", "ico-search-check"),
+        ],
+        "extra": """
+      <h2>Das Online-Portal im Detail</h2>
+      <h3>Für den Firmeninhaber</h3>
+      <ul class="lp-checklist">
+        <li>Eigener Admin-Zugang</li>
+        <li>Mitarbeiter einladen und verwalten</li>
+        <li>Teilnahmeliste mit Bestätigung herunterladen</li>
+        <li>Nachweis für Versicherung und Auditierung</li>
+      </ul>
+      <h3>Für die Mitarbeiter</h3>
+      <ul class="lp-checklist">
+        <li>Schulung im eigenen Tempo durcharbeiten</li>
+        <li>Verständlich, praxisnah, kein IT-Fachwissen nötig</li>
+        <li>Freiwilliges Quiz am Ende</li>
+        <li>PDF-Zertifikat als Teilnahmenachweis</li>
+      </ul>
+""",
+        # Hinweis zum Portal direkt ueber den Preiskarten (wie bisher in der Naehe der Preise)
+        "prices_intro": ("<strong>Das Online-Portal ist in Vorbereitung.</strong> Portal und Kombi-Paket kannst du schon "
+                         "vormerken, ich melde mich, sobald es startet. Die Live-Schulung ist schon buchbar."),
+        "prices": [
+            ("Live-Schulung", "135 €",
+             "Interaktive Schulung mit Präsentation, echten Beispielen und Raum für Fragen. Direkt auf dein Unternehmen "
+             "zugeschnitten – für Teams jeder Größe.", False, "pauschal (1,5h) · danach 110 €/h, zzgl. MwSt.",
+             {"feats": ["1:1 oder Gruppenformat per Microsoft Teams", "Phishing, Passwörter, Social Engineering, DSGVO",
+                        "Empfohlene Dauer: 1,5 Stunden", "Unterlagen als PDF zum Nachschlagen"],
+              "btn": ("Schulung anfragen", MAILTO_SCHULUNG["live"])}),
+            ("Online-Portal (in Vorbereitung)", "49 €",
+             "Deine Mitarbeiter arbeiten die Schulung eigenständig durch – wann und wo sie wollen. Inhalte werden "
+             "mindestens halbjährlich an aktuelle Bedrohungen angepasst.", False, "Grundpauschale / Halbjahr, zzgl. MwSt.",
+             {"add": "+ 5 € pro Mitarbeiter / Halbjahr, zzgl. MwSt.",
+              "feats": ["Eigener Firmenzugang mit Mitarbeiterverwaltung", "Inhalte mindestens alle 6 Monate aktualisiert",
+                        "Quiz + PDF-Zertifikat pro Teilnehmer", "Teilnahmeliste als Nachweis für den Inhaber"],
+              "btn": ("Portal vormerken", MAILTO_SCHULUNG["portal"])}),
+            ("Kombi-Paket (in Vorbereitung)", "ab 165 €",
+             "Die Live-Schulung bringt alle auf denselben Stand, das Portal frischt das Wissen danach jedes Halbjahr auf.",
+             True, "/ Halbjahr (statt 184 €), zzgl. MwSt.",
+             {"add": "Inkl. Live-Schulung + Portal + 4,50 €/Mitarbeiter, zzgl. MwSt.", "badge": "Beste Wahl",
+              "feats": ["Live-Schulung per Teams (1,5h)", "Portal-Zugang für alle Mitarbeiter",
+                        "Quiz, Zertifikate & Teilnahmeliste", "10% Rabatt auf den Gesamtpreis"],
+              "btn": ("Kombi-Paket vormerken", MAILTO_SCHULUNG["kombi"])}),
+        ],
+        # Rechenbeispiel (bisher Kasten unter den Preisen) und der Satz aus dem frueheren Abschluss „Noch Fragen?“
+        "prices_after": ('      <p><strong>Rechenbeispiel:</strong> Firma mit 8 Mitarbeitern → Live-Schulung '
+                         '<strong>135&nbsp;€</strong> + Portal-Halbjahr <strong>49&nbsp;€ + 40&nbsp;€ (8×5&nbsp;€)</strong> = '
+                         '<strong>224&nbsp;€</strong> für ein komplett geschultes Team mit Zertifikat. Mit Kombi-Rabatt nur '
+                         '<strong>201&nbsp;€</strong>. Alle Preise zzgl. MwSt.</p>\n'
+                         '      <p><strong>Noch Fragen?</strong> Schreib mir – ich berate dich gerne, welche Variante für '
+                         'dein Team passt.</p>\n'),
+        "extra_schema": [SCHULUNG_COURSE],
+        "faq_h2": "Häufige Fragen zur IT-Sicherheitsschulung",
+        "faqs": [
+            ("Was kostet eine IT-Sicherheitsschulung?",
+             "Die Live-Schulung per Microsoft Teams kostet 135 € pauschal für rund 1,5 Stunden (jede weitere Stunde "
+             "110 €). Das Online-Portal kostet 49 € Grundpauschale pro Halbjahr plus 5 € je Mitarbeiter und Halbjahr. "
+             "Das Kombi-Paket aus Live-Schulung und Portal startet bei 165 € pro Halbjahr. Alle Preise verstehen sich "
+             "zzgl. MwSt."),
+            ("Wie läuft die Live-Schulung ab?",
+             "Die Live-Schulung findet interaktiv per Microsoft Teams statt und dauert rund 1,5 Stunden. Inhalte sind "
+             "unter anderem Phishing erkennen, sichere Passwörter, Social Engineering, DSGVO-Grundlagen und der sichere "
+             "Umgang mit KI-Werkzeugen – mit echten Beispielen und Raum für Fragen. Die Unterlagen erhältst du "
+             "anschließend als PDF zum Nachschlagen."),
+            ("Bekommen die Mitarbeiter einen Nachweis?",
+             "Ja. Jeder Teilnehmer erhält ein PDF-Zertifikat als Teilnahmenachweis. Über das Online-Portal lädst du als "
+             "Inhaber zusätzlich eine Teilnahmeliste herunter – ein verwertbarer Nachweis für Versicherung und "
+             "Auditierung."),
+            ("Für wen ist die Schulung geeignet?",
+             "Für kleine und mittlere Unternehmen, Handwerksbetriebe, Praxen, Kanzleien und Büros. Die Inhalte sind "
+             "verständlich und praxisnah aufbereitet – ein IT-Fachwissen ist nicht nötig."),
+            ("Wie aktuell sind die Schulungsinhalte?",
+             "Die Inhalte des Online-Portals werden mindestens alle sechs Monate an aktuelle Bedrohungen angepasst, "
+             "damit dein Team über neue Betrugsmaschen und Angriffswege informiert bleibt."),
+            ("Findet die Schulung online oder vor Ort statt?",
+             "Die Live-Schulung findet online per Microsoft Teams statt – so sind alle Teilnehmer ortsunabhängig dabei, "
+             "auch aus dem Home-Office. Das Online-Portal bearbeiten deine Mitarbeiter ebenfalls ortsunabhängig im "
+             "Browser, wann und wo es ihnen passt."),
+            ("Wie lange dauert eine Schulung?",
+             "Die Live-Schulung dauert rund 1,5 Stunden. Die Inhalte im Online-Portal bearbeiten deine Mitarbeiter im "
+             "eigenen Tempo – jederzeit unterbrechbar und ohne Zeitdruck."),
+            ("Hilft die Schulung bei der DSGVO und anderen Compliance-Pflichten?",
+             "Ja. Die Sensibilisierung der Mitarbeiter ist eine anerkannte organisatorische Maßnahme nach Art. 32 DSGVO "
+             "und ein häufig geforderter Baustein für Cyber-Versicherungen und Audits. Mit dem PDF-Zertifikat und der "
+             "Teilnahmeliste hast du den Nachweis schriftlich in der Hand."),
+        ],
+    },
+    {
         "slug": "software-nach-mass", "nav": "Software nach Maß", "group": "ki",
         "title": "Software entwickeln lassen für kleine Betriebe | Grundke IT",
         "h1": "Software nach Maß für kleine Betriebe",
@@ -2938,15 +3149,27 @@ def related_html(slug, services):
     return ""
 
 
+# meta_extra eines SERVICES-Eintrags (Task 8): og:title, og:description, og:image:alt, twitter:description,
+# twitter:image:alt (head: og_title/og_desc/og_alt/tw_desc/tw_alt)
+META_EXTRA_KEYS = {"og_title", "og_desc", "og_alt", "tw_desc", "tw_alt"}
+
+
 def service_head_schema(s):
     """<head> und JSON-LD einer Leistungsseite (gemeinsam fuer bisherige Huelle und render_shell)."""
     slug = s["slug"]
     # Voller Titel fuer OG und Schema: beim Hub steht der zweite Teil als Akzentzeile
-    # im Einstieg, inhaltlich bleibt die Ueberschrift dieselbe wie vorher.
-    h1_full = (s["h1"] + " – " + s["hero"]["accent"] if s.get("hero") else s["h1"]).replace("&amp;", "&")
-    og_title = h1_full + " – Andreas Grundke IT-Service"
-    h = head(s["title"], s["desc"], slug, og_title, s["desc"],
-             h1_full + " – Andreas Grundke IT-Service")
+    # im Einstieg, inhaltlich bleibt die Ueberschrift dieselbe wie vorher. "name" (Task 8): eigener Name ohne
+    # Tags, wenn die H1 Markup traegt (schulung: <br>).
+    h1_full = s["name"] if s.get("name") else (
+        s["h1"] + " – " + s["hero"]["accent"] if s.get("hero") else s["h1"]).replace("&amp;", "&")
+    # meta_extra (Task 8): og/twitter-Werte, die von der Regel abweichen (schulung: Werte der frueheren Handseite)
+    mx = s.get("meta_extra", {})
+    if set(mx) - META_EXTRA_KEYS:
+        raise SystemExit("service_head_schema: unbekannte meta_extra-Felder "
+                         + ", ".join(sorted(set(mx) - META_EXTRA_KEYS)) + " auf " + slug)
+    og_title = mx.get("og_title", h1_full + " – Andreas Grundke IT-Service")
+    h = head(s["title"], s["desc"], slug, og_title, mx.get("og_desc", s["desc"]),
+             mx.get("og_alt", h1_full + " – Andreas Grundke IT-Service"), mx.get("tw_desc"), mx.get("tw_alt"))
 
     service_schema = {
         "@context": "https://schema.org",
@@ -3266,9 +3489,8 @@ def sync_home():
 STATIC_URLS = [   # (Pfad, Prioritaet, lastmod) -- lastmod der Startseite = ihr dateModified
     ("/", "1.0", HOME_DATE),
     ("/kontakt/", "0.7", "2026-09-23"),
-    ("/schulung/", "0.8", "2026-05-01"),
     ("/empfehlungen/", "0.7", "2026-05-01"),
-]
+]   # /schulung/ steht seit Task 8 ueber SERVICES in der Sitemap
 
 
 def write_sitemap(places, services):

@@ -4,14 +4,12 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>IT-Sicherheitsschulung &amp; Datenschutz – Grundke IT-Service</title>
-  <meta name="description" content="IT-Sicherheitsschulung für KMUs: Live per Teams oder als Online-Portal mit Quiz und Zertifikat. Ab €135 pauschal. Grundke IT-Service, München Ost."/>
+  <meta name="description" content="IT-Sicherheitsschulung für KMUs: Live per Teams, Online-Portal mit Quiz und Zertifikat in Vorbereitung. Ab 135 € pauschal. Grundke IT-Service, München Ost."/>
   <meta name="author" content="Andreas Grundke"/>
   <meta name="robots" content="index, follow, max-image-preview:large"/>
   <link rel="canonical" href="https://grundke-it.de/schulung/"/>
-
-  <!-- Open Graph -->
   <meta property="og:title" content="IT-Sicherheitsschulung – Grundke IT-Service"/>
-  <meta property="og:description" content="IT-Sicherheitsschulung für KMUs: Live per Teams oder als Online-Portal mit Quiz und Zertifikat. Ab 135 € pauschal."/>
+  <meta property="og:description" content="IT-Sicherheitsschulung für KMUs: Live per Teams, Online-Portal mit Quiz und Zertifikat in Vorbereitung. Ab 135 € pauschal."/>
   <meta property="og:url" content="https://grundke-it.de/schulung/"/>
   <meta property="og:type" content="website"/>
   <meta property="og:locale" content="de_DE"/>
@@ -20,11 +18,9 @@
   <meta property="og:image:width" content="1200"/>
   <meta property="og:image:height" content="630"/>
   <meta property="og:image:alt" content="Grundke IT-Service – IT-Sicherheitsschulung"/>
-
-  <!-- Twitter / X Card -->
   <meta name="twitter:card" content="summary_large_image"/>
   <meta name="twitter:title" content="IT-Sicherheitsschulung – Grundke IT-Service"/>
-  <meta name="twitter:description" content="IT-Sicherheitsschulung für KMUs: Live per Teams oder Online-Portal mit Quiz und Zertifikat."/>
+  <meta name="twitter:description" content="IT-Sicherheitsschulung für KMUs: Live per Teams, Online-Portal mit Quiz und Zertifikat in Vorbereitung."/>
   <meta name="twitter:image" content="https://grundke-it.de/assets/img/og-image.png"/>
   <meta name="twitter:image:alt" content="Grundke IT-Service – IT-Sicherheitsschulung"/>
   <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
@@ -33,48 +29,21 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
   <link rel="manifest" href="/site.webmanifest"/>
   <meta name="theme-color" content="#0c4da2"/>
-  <meta name="apple-mobile-web-app-capable" content="yes"/>
-  <meta name="mobile-web-app-capable" content="yes"/>
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
   <meta name="apple-mobile-web-app-title" content="Grundke IT"/>
   <meta name="application-name" content="Grundke IT"/>
   <meta name="msapplication-TileColor" content="#0c4da2"/>
-  <meta name="msapplication-TileImage" content="/android-chrome-192x192.png"/>
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/Manrope-latin.woff2"/>
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/SpaceGrotesk-latin.woff2"/>
   <link rel="stylesheet" href="../assets/css/fonts.css"/>
   <link rel="stylesheet" href="/assets/css/style.css?v=2026.10.c"/>
+
   <style>
-    .page-wrap { margin-top:var(--nav-h); padding:clamp(3rem,8vw,5rem) 0; }
-    .page-content { max-width:960px; }
-    .page-content h1 { font-family:var(--fh); font-size:clamp(1.8rem,4vw,2.8rem); font-weight:800; color:var(--text); letter-spacing:-.04em; line-height:1.1; margin-bottom:.5rem; }
-    .page-content h1 em { font-style:normal; color:var(--cyan); }
-    .page-sub { font-size:clamp(.9rem,1.5vw,1.05rem); color:var(--text2); max-width:600px; line-height:1.7; margin-bottom:3rem; }
-    .schulung-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr)); gap:1.5rem; margin-bottom:3rem; }
-    .sch-card { background:var(--bg2); border:1px solid var(--border); border-radius:16px; padding:2rem; transition:border-color .2s,transform .2s; }
-    .sch-card:hover { border-color:var(--accent); transform:translateY(-4px); }
-    .sch-card.feat { border-color:var(--cyan); box-shadow:0 0 0 1px var(--cyan),0 16px 48px rgba(38,189,239,.08); }
-    .sch-badge { position:absolute; top:-12px; left:50%; transform:translateX(-50%); background:var(--cyan); color:#0f1117; font-family:var(--fm); font-size:.67rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; padding:.22rem .9rem; border-radius:20px; white-space:nowrap; }
-    .sch-head { display:flex; align-items:center; gap:.7rem; margin-bottom:1.3rem; }
-    .sch-ico { width:40px; height:40px; flex-shrink:0; display:flex; align-items:center; justify-content:center; background:rgba(12,77,162,.18); border:1px solid rgba(12,77,162,.3); border-radius:10px; color:var(--cyan); }
-    .sch-tier { font-family:var(--fm); font-size:.67rem; letter-spacing:.1em; text-transform:uppercase; color:var(--text3); }
-    .sch-name { font-family:var(--fh); font-size:1.05rem; font-weight:800; color:var(--text); }
-    .sch-desc { font-size:.86rem; color:var(--text2); line-height:1.7; margin-bottom:1.2rem; }
-    .sch-feats { list-style:none; display:flex; flex-direction:column; gap:.5rem; margin-bottom:1.5rem; }
-    .sch-feats li { display:flex; align-items:flex-start; gap:.55rem; font-size:.84rem; color:var(--text2); }
-    .sch-price { display:flex; align-items:baseline; gap:.5rem; margin-bottom:.3rem; }
-    .sch-price-val { font-family:var(--fm); font-size:2rem; font-weight:600; color:var(--cyan); letter-spacing:-.04em; line-height:1; }
-    .sch-price-val sup { font-size:.9rem; }
-    .sch-price-note { font-size:.78rem; color:var(--text3); }
-    .sch-price-sub { font-size:.82rem; color:var(--text2); margin-bottom:1.3rem; }
-    .page-content h2 { font-family:var(--fh); font-size:1.3rem; font-weight:700; color:var(--text); margin:3rem 0 1.2rem; }
-    .topics-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr)); gap:1rem; margin-bottom:3rem; }
-    .topic { background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:1.3rem; }
-    .topic-name { font-family:var(--fh); font-size:.9rem; font-weight:700; color:var(--text); margin-bottom:.3rem; }
-    .topic-desc { font-size:.8rem; color:var(--text2); line-height:1.6; }
-    .calc-box { background:var(--bg2); border:1px solid var(--border); border-radius:var(--r); padding:1.5rem; font-size:.86rem; color:var(--text2); line-height:1.7; margin-bottom:2rem; }
-    .calc-box strong { color:var(--text); }
-    .sch-faq { margin-bottom:3rem; }
-    .sch-faq h3 { font-family:var(--fh); font-size:1rem; font-weight:700; color:var(--text); margin:1.5rem 0 .4rem; }
-    .sch-faq p { font-size:.88rem; color:var(--text2); line-height:1.7; margin:0; padding-bottom:1.1rem; border-bottom:1px solid var(--border); }
+    .lp-content > p, .lp-content > div { max-width:68ch; }
+    .lp-content p { font-size:1.0667rem; color:var(--text2); line-height:1.75; margin:0 0 1rem; }
+    .lp-content p:last-child { margin-bottom:0; }
+    .lp-content strong { color:var(--text); }
+    .lp-content p a, .lp-content li a { color:var(--cyan); }
+    .lp-related { margin-top:2rem; }
   </style>
   <script type="application/ld+json">
 {
@@ -90,12 +59,145 @@
     {
       "@type": "ListItem",
       "position": 2,
-      "name": "Schulung",
+      "name": "IT-Sicherheitsschulung",
       "item": "https://grundke-it.de/schulung/"
     }
   ]
 }
-</script>
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "serviceType": "IT-Sicherheitsschulung für Mitarbeiter",
+  "name": "IT-Sicherheitsschulung & Datenschutz",
+  "description": "IT-Sicherheitsschulung für KMUs: Live per Teams, Online-Portal mit Quiz und Zertifikat in Vorbereitung. Ab 135 € pauschal. Grundke IT-Service, München Ost.",
+  "provider": {
+    "@id": "https://grundke-it.de/#localbusiness"
+  },
+  "areaServed": [
+    {
+      "@type": "City",
+      "name": "Grasbrunn"
+    },
+    {
+      "@type": "City",
+      "name": "Vaterstetten"
+    },
+    {
+      "@type": "City",
+      "name": "Haar"
+    },
+    {
+      "@type": "City",
+      "name": "Ottobrunn"
+    },
+    {
+      "@type": "City",
+      "name": "München"
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Was kostet eine IT-Sicherheitsschulung?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Die Live-Schulung per Microsoft Teams kostet 135 € pauschal für rund 1,5 Stunden (jede weitere Stunde 110 €). Das Online-Portal kostet 49 € Grundpauschale pro Halbjahr plus 5 € je Mitarbeiter und Halbjahr. Das Kombi-Paket aus Live-Schulung und Portal startet bei 165 € pro Halbjahr. Alle Preise verstehen sich zzgl. MwSt."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Wie läuft die Live-Schulung ab?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Die Live-Schulung findet interaktiv per Microsoft Teams statt und dauert rund 1,5 Stunden. Inhalte sind unter anderem Phishing erkennen, sichere Passwörter, Social Engineering, DSGVO-Grundlagen und der sichere Umgang mit KI-Werkzeugen – mit echten Beispielen und Raum für Fragen. Die Unterlagen erhältst du anschließend als PDF zum Nachschlagen."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Bekommen die Mitarbeiter einen Nachweis?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ja. Jeder Teilnehmer erhält ein PDF-Zertifikat als Teilnahmenachweis. Über das Online-Portal lädst du als Inhaber zusätzlich eine Teilnahmeliste herunter – ein verwertbarer Nachweis für Versicherung und Auditierung."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Für wen ist die Schulung geeignet?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Für kleine und mittlere Unternehmen, Handwerksbetriebe, Praxen, Kanzleien und Büros. Die Inhalte sind verständlich und praxisnah aufbereitet – ein IT-Fachwissen ist nicht nötig."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Wie aktuell sind die Schulungsinhalte?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Die Inhalte des Online-Portals werden mindestens alle sechs Monate an aktuelle Bedrohungen angepasst, damit dein Team über neue Betrugsmaschen und Angriffswege informiert bleibt."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Findet die Schulung online oder vor Ort statt?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Die Live-Schulung findet online per Microsoft Teams statt – so sind alle Teilnehmer ortsunabhängig dabei, auch aus dem Home-Office. Das Online-Portal bearbeiten deine Mitarbeiter ebenfalls ortsunabhängig im Browser, wann und wo es ihnen passt."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Wie lange dauert eine Schulung?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Die Live-Schulung dauert rund 1,5 Stunden. Die Inhalte im Online-Portal bearbeiten deine Mitarbeiter im eigenen Tempo – jederzeit unterbrechbar und ohne Zeitdruck."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Hilft die Schulung bei der DSGVO und anderen Compliance-Pflichten?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ja. Die Sensibilisierung der Mitarbeiter ist eine anerkannte organisatorische Maßnahme nach Art. 32 DSGVO und ein häufig geforderter Baustein für Cyber-Versicherungen und Audits. Mit dem PDF-Zertifikat und der Teilnahmeliste hast du den Nachweis schriftlich in der Hand."
+      }
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://grundke-it.de/schulung/#webpage",
+  "url": "https://grundke-it.de/schulung/",
+  "name": "IT-Sicherheitsschulung & Datenschutz – Grundke IT-Service",
+  "description": "IT-Sicherheitsschulung für KMUs: Live per Teams, Online-Portal mit Quiz und Zertifikat in Vorbereitung. Ab 135 € pauschal. Grundke IT-Service, München Ost.",
+  "inLanguage": "de-DE",
+  "isPartOf": {
+    "@id": "https://grundke-it.de/#website"
+  },
+  "datePublished": "2026-04-10",
+  "dateModified": "2026-10-10",
+  "author": {
+    "@type": "Person",
+    "@id": "https://grundke-it.de/#andreas",
+    "name": "Andreas Grundke",
+    "url": "https://grundke-it.de/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "@id": "https://grundke-it.de/#localbusiness",
+    "name": "Andreas Grundke IT-Service"
+  }
+}
+  </script>
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -110,27 +212,24 @@
   },
   "inLanguage": "de-DE",
   "offers": [
-    {"@type": "Offer", "name": "Live-Schulung per Microsoft Teams", "price": "135.00", "priceCurrency": "EUR", "category": "Pauschale"},
-    {"@type": "Offer", "name": "Online-Portal (Grundpauschale/Halbjahr)", "price": "49.00", "priceCurrency": "EUR", "category": "Halbjahr", "availability": "https://schema.org/PreOrder"}
+    {
+      "@type": "Offer",
+      "name": "Live-Schulung per Microsoft Teams",
+      "price": "135.00",
+      "priceCurrency": "EUR",
+      "category": "Pauschale"
+    },
+    {
+      "@type": "Offer",
+      "name": "Online-Portal (Grundpauschale/Halbjahr)",
+      "price": "49.00",
+      "priceCurrency": "EUR",
+      "category": "Halbjahr",
+      "availability": "https://schema.org/PreOrder"
+    }
   ]
 }
-</script>
-  <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {"@type": "Question", "name": "Was kostet eine IT-Sicherheitsschulung?", "acceptedAnswer": {"@type": "Answer", "text": "Die Live-Schulung per Microsoft Teams kostet 135 € pauschal für rund 1,5 Stunden (jede weitere Stunde 110 €). Das Online-Portal kostet 49 € Grundpauschale pro Halbjahr plus 5 € je Mitarbeiter und Halbjahr. Das Kombi-Paket aus Live-Schulung und Portal startet bei 165 € pro Halbjahr. Alle Preise verstehen sich zzgl. MwSt."}},
-    {"@type": "Question", "name": "Wie läuft die Live-Schulung ab?", "acceptedAnswer": {"@type": "Answer", "text": "Die Live-Schulung findet interaktiv per Microsoft Teams statt und dauert rund 1,5 Stunden. Inhalte sind unter anderem Phishing erkennen, sichere Passwörter, Social Engineering, DSGVO-Grundlagen und der sichere Umgang mit KI-Werkzeugen – mit echten Beispielen und Raum für Fragen. Die Unterlagen erhältst du anschließend als PDF zum Nachschlagen."}},
-    {"@type": "Question", "name": "Bekommen die Mitarbeiter einen Nachweis?", "acceptedAnswer": {"@type": "Answer", "text": "Ja. Jeder Teilnehmer erhält ein PDF-Zertifikat als Teilnahmenachweis. Über das Online-Portal lädst du als Inhaber zusätzlich eine Teilnahmeliste herunter – ein verwertbarer Nachweis für Versicherung und Auditierung."}},
-    {"@type": "Question", "name": "Für wen ist die Schulung geeignet?", "acceptedAnswer": {"@type": "Answer", "text": "Für kleine und mittlere Unternehmen, Handwerksbetriebe, Praxen, Kanzleien und Büros. Die Inhalte sind verständlich und praxisnah aufbereitet – ein IT-Fachwissen ist nicht nötig."}},
-    {"@type": "Question", "name": "Wie aktuell sind die Schulungsinhalte?", "acceptedAnswer": {"@type": "Answer", "text": "Die Inhalte des Online-Portals werden mindestens alle sechs Monate an aktuelle Bedrohungen angepasst, damit dein Team über neue Betrugsmaschen und Angriffswege informiert bleibt."}},
-    {"@type": "Question", "name": "Findet die Schulung online oder vor Ort statt?", "acceptedAnswer": {"@type": "Answer", "text": "Die Live-Schulung findet online per Microsoft Teams statt – so sind alle Teilnehmer ortsunabhängig dabei, auch aus dem Home-Office. Das Online-Portal bearbeiten deine Mitarbeiter ebenfalls ortsunabhängig im Browser, wann und wo es ihnen passt."}},
-    {"@type": "Question", "name": "Wie lange dauert eine Schulung?", "acceptedAnswer": {"@type": "Answer", "text": "Die Live-Schulung dauert rund 1,5 Stunden. Die Inhalte im Online-Portal bearbeiten deine Mitarbeiter im eigenen Tempo – jederzeit unterbrechbar und ohne Zeitdruck."}},
-    {"@type": "Question", "name": "Hilft die Schulung bei der DSGVO und anderen Compliance-Pflichten?", "acceptedAnswer": {"@type": "Answer", "text": "Ja. Die Sensibilisierung der Mitarbeiter ist eine anerkannte organisatorische Maßnahme nach Art. 32 DSGVO und ein häufig geforderter Baustein für Cyber-Versicherungen und Audits. Mit dem PDF-Zertifikat und der Teilnahmeliste hast du den Nachweis schriftlich in der Hand."}}
-  ]
-}
-</script>
+  </script>
 </head>
 <body class="has-sticky-call">
 <a class="skip-link" href="#main">Zum Inhalt springen</a>
@@ -187,188 +286,161 @@
 </header>
 
 <main id="main">
-<article class="page-wrap">
-  <div class="inner">
-    <div class="page-content">
-      <h1>IT-Sicherheitsschulung<br>&amp; <em>Datenschutz</em></h1>
-      <p class="page-sub">Die größte Schwachstelle sitzt vor dem Bildschirm. Sensibilisiere dein Team – als Live-Schulung, über unser Online-Portal oder beides kombiniert.</p>
-
-      <!-- Schulungs-Pakete -->
-      <div class="schulung-grid">
-
-        <!-- Live-Schulung -->
-        <div class="sch-card">
-          <div class="sch-head">
-            <div class="sch-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-            <div>
-              <div class="sch-tier">Persönlich per Teams</div>
-              <div class="sch-name">Live-Schulung</div>
-            </div>
-          </div>
-          <p class="sch-desc">Interaktive Schulung mit Präsentation, echten Beispielen und Raum für Fragen. Direkt auf dein Unternehmen zugeschnitten – für Teams jeder Größe.</p>
-          <ul class="sch-feats">
-            <li><span class="pfy">&#10003;</span>1:1 oder Gruppenformat per Microsoft Teams</li>
-            <li><span class="pfy">&#10003;</span>Phishing, Passwörter, Social Engineering, DSGVO</li>
-            <li><span class="pfy">&#10003;</span>Empfohlene Dauer: 1,5 Stunden</li>
-            <li><span class="pfy">&#10003;</span>Unterlagen als PDF zum Nachschlagen</li>
-          </ul>
-          <div class="sch-price">
-            <span class="sch-price-val"><sup>€</sup>135</span>
-            <span class="sch-price-note">pauschal (1,5h) · danach €110/h</span>
-          </div>
-          <a href="mailto:info@grundke-it.de?subject=Anfrage%20IT-Sicherheitsschulung%20(Live)%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0Aich%20interessiere%20mich%20f%C3%BCr%20eine%20pers%C3%B6nliche%20IT-Sicherheitsschulung%20per%20Teams.%0A%0AAnzahl%20Teilnehmer%3A%20%0AGew%C3%BCnschter%20Termin%3A%20%0A%0AMein%20Unternehmen%20%2F%20meine%20Situation%3A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F)." class="price-btn out" style="display:block;width:100%;text-align:center;">Schulung anfragen</a>
+<section class="sec sec--glow page-head">
+  <div class="inner page-head-grid">
+    <div class="page-head-copy page-head-copy--two">
+      <nav class="lp-crumbs" aria-label="Brotkrumen"><ol><li><a href="/">Startseite</a></li><li aria-current="page">IT-Sicherheitsschulung</li></ol></nav>
+      <h1 class="page-h1">IT-Sicherheitsschulung<br>&amp; <em>Datenschutz</em></h1>
+      <p class="page-k">In der Schulung lernt euer Team, Phishing-Mails zu erkennen und KI-Werkzeuge zu nutzen, ohne Kundendaten preiszugeben.</p>
+      <div class="page-head-b">
+        <p class="s-sub measure">Die IT-Sicherheitsschulung von Grundke IT-Service aus Grasbrunn läuft live per Microsoft Teams, dauert rund 1,5 Stunden, kostet 135 € netto pauschal und jeder Teilnehmer bekommt einen Teilnahmenachweis als PDF. Das Online-Portal ist in Vorbereitung und lässt sich vormerken.</p>
+        <div class="hc-ctas">
+          <a href="tel:+491782584438" class="btn-p hc-call"><svg width="18" height="18" aria-hidden="true"><use href="#ico-phone"/></svg>Anrufen <span class="hc-num">0178 258 44 38</span></a>
+          <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20komme%20%C3%BCber%20deine%20Seite%20%E2%80%9EIT-Sicherheitsschulung%E2%80%9C." target="_blank" rel="noopener" class="hc-wa"><svg width="18" height="18" aria-hidden="true"><use href="#ico-wa"/></svg>WhatsApp</a>
         </div>
-
-        <!-- Online-Portal -->
-        <div class="sch-card">
-          <div class="sch-head">
-            <div class="sch-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg></div>
-            <div>
-              <div class="sch-tier">In Vorbereitung</div>
-              <div class="sch-name">Online-Portal</div>
-            </div>
-          </div>
-          <p class="sch-desc">Deine Mitarbeiter arbeiten die Schulung eigenständig durch – wann und wo sie wollen. Inhalte werden mindestens halbjährlich an aktuelle Bedrohungen angepasst.</p>
-          <ul class="sch-feats">
-            <li><span class="pfy">&#10003;</span>Eigener Firmenzugang mit Mitarbeiterverwaltung</li>
-            <li><span class="pfy">&#10003;</span>Inhalte mindestens alle 6 Monate aktualisiert</li>
-            <li><span class="pfy">&#10003;</span>Quiz + PDF-Zertifikat pro Teilnehmer</li>
-            <li><span class="pfy">&#10003;</span>Teilnahmeliste als Nachweis für den Inhaber</li>
-          </ul>
-          <div class="sch-price">
-            <span class="sch-price-val"><sup>€</sup>49</span>
-            <span class="sch-price-note">Grundpauschale / Halbjahr</span>
-          </div>
-          <div class="sch-price-sub">+ <strong style="color:var(--cyan);">€5</strong> pro Mitarbeiter / Halbjahr</div>
-          <a href="mailto:info@grundke-it.de?subject=Anfrage%20Schulungs-Portal%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0Aich%20interessiere%20mich%20f%C3%BCr%20den%20Zugang%20zum%20Online-Schulungsportal.%0A%0AAnzahl%20Mitarbeiter%3A%20%0A%0AMein%20Unternehmen%20%2F%20meine%20Situation%3A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F)." class="price-btn out" style="display:block;width:100%;text-align:center;">Portal vormerken</a>
-        </div>
-
-        <!-- Kombi -->
-        <div class="sch-card feat" style="position:relative;">
-          <div class="sch-badge">Beste Wahl</div>
-          <div class="sch-head">
-            <div class="sch-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 2 10 5-10 5L2 7z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></div>
-            <div>
-              <div class="sch-tier">Live + Portal (in Vorbereitung)</div>
-              <div class="sch-name">Kombi-Paket</div>
-            </div>
-          </div>
-          <p class="sch-desc">Die Live-Schulung bringt alle auf denselben Stand, das Portal frischt das Wissen danach jedes Halbjahr auf.</p>
-          <ul class="sch-feats">
-            <li><span class="pfy">&#10003;</span>Live-Schulung per Teams (1,5h)</li>
-            <li><span class="pfy">&#10003;</span>Portal-Zugang für alle Mitarbeiter</li>
-            <li><span class="pfy">&#10003;</span>Quiz, Zertifikate &amp; Teilnahmeliste</li>
-            <li><span class="pfy">&#10003;</span>10% Rabatt auf den Gesamtpreis</li>
-          </ul>
-          <div class="sch-price">
-            <span class="sch-price-val"><sup>€</sup>165</span>
-            <span class="sch-price-note">ab / Halbjahr (statt €184)</span>
-          </div>
-          <div class="sch-price-sub">Inkl. Live-Schulung + Portal + <strong style="color:var(--cyan);">€4,50</strong>/Mitarbeiter</div>
-          <a href="mailto:info@grundke-it.de?subject=Anfrage%20Kombi-Schulungspaket%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0Aich%20interessiere%20mich%20f%C3%BCr%20das%20Kombi-Paket%20(Live-Schulung%20%2B%20Portal-Zugang).%0A%0AAnzahl%20Mitarbeiter%3A%20%0AGew%C3%BCnschter%20Termin%20f%C3%BCr%20Live-Schulung%3A%20%0A%0AMein%20Unternehmen%20%2F%20meine%20Situation%3A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F)." class="price-btn solid" style="display:block;width:100%;text-align:center;">Kombi-Paket vormerken</a>
-        </div>
+        <ul class="hc-proof">
+          <li><svg class="is-star" aria-hidden="true"><use href="#ico-star"/></svg><a href="/#bewertungen-herkunft" data-proof>5,0 bei 5 Google-Bewertungen</a></li>
+          <li><svg aria-hidden="true"><use href="#ico-shield"/></svg>Anerkannte Maßnahme nach Art. 32 DSGVO</li>
+        </ul>
       </div>
-
-      <p class="sch-note" style="margin:0 0 1.2rem;font-size:.92rem;color:var(--text2);"><strong style="color:var(--text);">Das Online-Portal ist in Vorbereitung.</strong> Portal und Kombi-Paket kannst du schon vormerken, ich melde mich, sobald es startet. Die Live-Schulung ist schon buchbar.</p>
-      <!-- Rechenbeispiel -->
-      <div class="calc-box">
-        <strong>Rechenbeispiel:</strong> Firma mit 8 Mitarbeitern → Live-Schulung <strong>€135</strong> + Portal-Halbjahr <strong>€49 + 40 (8×€5)</strong> = <strong>€224</strong> für ein komplett geschultes Team mit Zertifikat. Mit Kombi-Rabatt nur <strong>€201</strong>.
-        <br><span style="color:var(--text3);font-size:.78rem;">Alle Preise zzgl. MwSt.</span>
-      </div>
-
-      <!-- Schulungsinhalte -->
-      <h2>Was dein Team lernt</h2>
-      <div class="topics-grid">
-        <div class="topic">
-          <div class="topic-name">Phishing erkennen</div>
-          <p class="topic-desc">Gefälschte E-Mails, Links und Anhänge identifizieren – mit echten Beispielen aus der Praxis.</p>
-        </div>
-        <div class="topic">
-          <div class="topic-name">Passwort-Sicherheit</div>
-          <p class="topic-desc">Sichere Passwörter erstellen, Passwort-Manager nutzen, Zwei-Faktor-Authentifizierung einrichten.</p>
-        </div>
-        <div class="topic">
-          <div class="topic-name">Social Engineering</div>
-          <p class="topic-desc">Manipulationstechniken erkennen – am Telefon, per E-Mail und persönlich.</p>
-        </div>
-        <div class="topic">
-          <div class="topic-name">DSGVO-Grundlagen</div>
-          <p class="topic-desc">Personenbezogene Daten schützen, Meldepflichten kennen, datenschutzkonform arbeiten.</p>
-        </div>
-        <div class="topic">
-          <div class="topic-name">Sicherer Umgang mit Geräten</div>
-          <p class="topic-desc">Bildschirmsperre, USB-Sticks, öffentliches WLAN, Arbeiten unterwegs.</p>
-        </div>
-        <div class="topic">
-          <div class="topic-name">Notfall-Verhalten</div>
-          <p class="topic-desc">Was tun bei Verdacht auf einen Angriff? Richtig reagieren, richtig melden.</p>
-        </div>
-        <div class="topic">
-          <div class="topic-name">KI sicher nutzen</div>
-          <p class="topic-desc">Was in ChatGPT, Copilot und andere KI-Werkzeuge hinein darf und was nicht, woran man falsche Antworten erkennt, was eine Nutzungsrichtlinie regelt. Zählt als Maßnahme zur KI-Kompetenz nach Artikel 4 der KI-Verordnung.</p>
-        </div>
-      </div>
-
-      <!-- Online-Portal Details -->
-      <h2>Das Online-Portal im Detail</h2>
-      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:2rem;margin-bottom:3rem;">
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:1.5rem;">
-          <div>
-            <div style="font-family:var(--fh);font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:.5rem;">Für den Firmeninhaber</div>
-            <ul style="list-style:none;display:flex;flex-direction:column;gap:.4rem;">
-              <li style="display:flex;align-items:flex-start;gap:.5rem;font-size:.84rem;color:var(--text2);"><span class="pfy">&#10003;</span>Eigener Admin-Zugang</li>
-              <li style="display:flex;align-items:flex-start;gap:.5rem;font-size:.84rem;color:var(--text2);"><span class="pfy">&#10003;</span>Mitarbeiter einladen und verwalten</li>
-              <li style="display:flex;align-items:flex-start;gap:.5rem;font-size:.84rem;color:var(--text2);"><span class="pfy">&#10003;</span>Teilnahmeliste mit Bestätigung herunterladen</li>
-              <li style="display:flex;align-items:flex-start;gap:.5rem;font-size:.84rem;color:var(--text2);"><span class="pfy">&#10003;</span>Nachweis für Versicherung und Auditierung</li>
-            </ul>
-          </div>
-          <div>
-            <div style="font-family:var(--fh);font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:.5rem;">Für die Mitarbeiter</div>
-            <ul style="list-style:none;display:flex;flex-direction:column;gap:.4rem;">
-              <li style="display:flex;align-items:flex-start;gap:.5rem;font-size:.84rem;color:var(--text2);"><span class="pfy">&#10003;</span>Schulung im eigenen Tempo durcharbeiten</li>
-              <li style="display:flex;align-items:flex-start;gap:.5rem;font-size:.84rem;color:var(--text2);"><span class="pfy">&#10003;</span>Verständlich, praxisnah, kein IT-Fachwissen nötig</li>
-              <li style="display:flex;align-items:flex-start;gap:.5rem;font-size:.84rem;color:var(--text2);"><span class="pfy">&#10003;</span>Freiwilliges Quiz am Ende</li>
-              <li style="display:flex;align-items:flex-start;gap:.5rem;font-size:.84rem;color:var(--text2);"><span class="pfy">&#10003;</span>PDF-Zertifikat als Teilnahmenachweis</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <!-- FAQ -->
-      <h2>Häufige Fragen zur IT-Sicherheitsschulung</h2>
-      <div class="sch-faq">
-        <h3>Was kostet eine IT-Sicherheitsschulung?</h3>
-        <p>Die Live-Schulung per Microsoft Teams kostet 135 € pauschal für rund 1,5 Stunden (jede weitere Stunde 110 €). Das Online-Portal kostet 49 € Grundpauschale pro Halbjahr plus 5 € je Mitarbeiter und Halbjahr. Das Kombi-Paket aus Live-Schulung und Portal startet bei 165 € pro Halbjahr. Alle Preise verstehen sich zzgl. MwSt.</p>
-        <h3>Wie läuft die Live-Schulung ab?</h3>
-        <p>Die Live-Schulung findet interaktiv per Microsoft Teams statt und dauert rund 1,5 Stunden. Inhalte sind unter anderem Phishing erkennen, sichere Passwörter, Social Engineering, DSGVO-Grundlagen und der sichere Umgang mit KI-Werkzeugen – mit echten Beispielen und Raum für Fragen. Die Unterlagen erhältst du anschließend als PDF zum Nachschlagen.</p>
-        <h3>Bekommen die Mitarbeiter einen Nachweis?</h3>
-        <p>Ja. Jeder Teilnehmer erhält ein PDF-Zertifikat als Teilnahmenachweis. Über das Online-Portal lädst du als Inhaber zusätzlich eine Teilnahmeliste herunter – ein verwertbarer Nachweis für Versicherung und Auditierung.</p>
-        <h3>Für wen ist die Schulung geeignet?</h3>
-        <p>Für kleine und mittlere Unternehmen, Handwerksbetriebe, Praxen, Kanzleien und Büros. Die Inhalte sind verständlich und praxisnah aufbereitet – ein IT-Fachwissen ist nicht nötig.</p>
-        <h3>Wie aktuell sind die Schulungsinhalte?</h3>
-        <p>Die Inhalte des Online-Portals werden mindestens alle sechs Monate an aktuelle Bedrohungen angepasst, damit dein Team über neue Betrugsmaschen und Angriffswege informiert bleibt.</p>
-        <h3>Findet die Schulung online oder vor Ort statt?</h3>
-        <p>Die Live-Schulung findet online per Microsoft Teams statt – so sind alle Teilnehmer ortsunabhängig dabei, auch aus dem Home-Office. Das Online-Portal bearbeiten deine Mitarbeiter ebenfalls ortsunabhängig im Browser, wann und wo es ihnen passt.</p>
-        <h3>Wie lange dauert eine Schulung?</h3>
-        <p>Die Live-Schulung dauert rund 1,5 Stunden. Die Inhalte im Online-Portal bearbeiten deine Mitarbeiter im eigenen Tempo – jederzeit unterbrechbar und ohne Zeitdruck.</p>
-        <h3>Hilft die Schulung bei der DSGVO und anderen Compliance-Pflichten?</h3>
-        <p>Ja. Die Sensibilisierung der Mitarbeiter ist eine anerkannte organisatorische Maßnahme nach Art. 32 DSGVO und ein häufig geforderter Baustein für Cyber-Versicherungen und Audits. Mit dem PDF-Zertifikat und der Teilnahmeliste hast du den Nachweis schriftlich in der Hand.</p>
-      </div>
-
-      <!-- CTA -->
-      <div style="text-align:center;padding:2rem 0;">
-        <div style="font-family:var(--fh);font-size:1.3rem;font-weight:800;color:var(--text);margin-bottom:.5rem;">Noch Fragen?</div>
-        <p style="font-size:.9rem;color:var(--text2);margin-bottom:1.5rem;">Schreib mir – ich berate dich gerne, welche Variante für dein Team passt.</p>
-        <div style="display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap;">
-          <a href="tel:+491782584438" class="btn-p">Anrufen</a>
-          <a href="https://wa.me/491782584438" target="_blank" rel="noopener" class="btn-wa" style="padding:clamp(.7rem,.9rem,1rem) clamp(1.2rem,1.8rem,2rem);font-size:clamp(.82rem,.9rem,1rem);">WhatsApp</a>
-          <a href="mailto:info@grundke-it.de?subject=Anfrage%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0AMein%20Anliegen%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F)." class="btn-email">E-Mail</a>
-        </div>
-      </div>
-
     </div>
   </div>
-</article>
+</section>
+
+<section class="sec sec--alt">
+  <div class="inner">
+    <h2 class="s-title">Was dein Team lernt</h2>
+    <ul class="feat-rows">
+      <li><span class="feat-ico" aria-hidden="true"><svg><use href="#ico-mail"/></svg></span><div><h3>Phishing erkennen</h3><p>Gefälschte E-Mails, Links und Anhänge identifizieren – mit echten Beispielen aus der Praxis.</p></div></li>
+      <li><span class="feat-ico" aria-hidden="true"><svg><use href="#ico-key"/></svg></span><div><h3>Passwort-Sicherheit</h3><p>Sichere Passwörter erstellen, Passwort-Manager nutzen, Zwei-Faktor-Authentifizierung einrichten.</p></div></li>
+      <li><span class="feat-ico" aria-hidden="true"><svg><use href="#ico-user-check"/></svg></span><div><h3>Social Engineering</h3><p>Manipulationstechniken erkennen – am Telefon, per E-Mail und persönlich.</p></div></li>
+      <li><span class="feat-ico" aria-hidden="true"><svg><use href="#ico-file-text"/></svg></span><div><h3>DSGVO-Grundlagen</h3><p>Personenbezogene Daten schützen, Meldepflichten kennen, datenschutzkonform arbeiten.</p></div></li>
+      <li><span class="feat-ico" aria-hidden="true"><svg><use href="#ico-monitor"/></svg></span><div><h3>Sicherer Umgang mit Geräten</h3><p>Bildschirmsperre, USB-Sticks, öffentliches WLAN, Arbeiten unterwegs.</p></div></li>
+      <li><span class="feat-ico" aria-hidden="true"><svg><use href="#ico-shield"/></svg></span><div><h3>Notfall-Verhalten</h3><p>Was tun bei Verdacht auf einen Angriff? Richtig reagieren, richtig melden.</p></div></li>
+      <li><span class="feat-ico" aria-hidden="true"><svg><use href="#ico-search-check"/></svg></span><div><h3>KI sicher nutzen</h3><p>Was in ChatGPT, Copilot und andere KI-Werkzeuge hinein darf und was nicht, woran man falsche Antworten erkennt, was eine Nutzungsrichtlinie regelt. Zählt als Maßnahme zur KI-Kompetenz nach Artikel 4 der KI-Verordnung.</p></div></li>
+    </ul>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="inner">
+    <h2 class="s-title">Das Online-Portal im Detail</h2>
+    <div class="lp-content">
+      <h3>Für den Firmeninhaber</h3>
+      <ul class="lp-checklist">
+        <li>Eigener Admin-Zugang</li>
+        <li>Mitarbeiter einladen und verwalten</li>
+        <li>Teilnahmeliste mit Bestätigung herunterladen</li>
+        <li>Nachweis für Versicherung und Auditierung</li>
+      </ul>
+      <h3>Für die Mitarbeiter</h3>
+      <ul class="lp-checklist">
+        <li>Schulung im eigenen Tempo durcharbeiten</li>
+        <li>Verständlich, praxisnah, kein IT-Fachwissen nötig</li>
+        <li>Freiwilliges Quiz am Ende</li>
+        <li>PDF-Zertifikat als Teilnahmenachweis</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec--alt">
+  <div class="inner">
+    <h2 class="s-title">Pakete &amp; Preise</h2>
+    <p class="s-sub measure"><strong>Das Online-Portal ist in Vorbereitung.</strong> Portal und Kombi-Paket kannst du schon vormerken, ich melde mich, sobald es startet. Die Live-Schulung ist schon buchbar.</p>
+    <div class="price-grid price-grid--3">
+      <div class="price-card">
+        <h3 class="price-name">Live-Schulung</h3>
+        <div class="price-val">135<span class="price-cur">&nbsp;€</span></div>
+        <div class="price-per">pauschal (1,5h) · danach 110&nbsp;€/h, zzgl. MwSt.</div>
+        <p class="price-desc">Interaktive Schulung mit Präsentation, echten Beispielen und Raum für Fragen. Direkt auf dein Unternehmen zugeschnitten – für Teams jeder Größe.</p>
+        <hr class="price-div">
+        <ul class="price-feats">
+          <li><span class="pfy" aria-hidden="true">&#10003;</span>1:1 oder Gruppenformat per Microsoft Teams</li>
+          <li><span class="pfy" aria-hidden="true">&#10003;</span>Phishing, Passwörter, Social Engineering, DSGVO</li>
+          <li><span class="pfy" aria-hidden="true">&#10003;</span>Empfohlene Dauer: 1,5 Stunden</li>
+          <li><span class="pfy" aria-hidden="true">&#10003;</span>Unterlagen als PDF zum Nachschlagen</li>
+        </ul>
+        <a href="mailto:info@grundke-it.de?subject=Anfrage%20IT-Sicherheitsschulung%20(Live)%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0Aich%20interessiere%20mich%20f%C3%BCr%20eine%20pers%C3%B6nliche%20IT-Sicherheitsschulung%20per%20Teams.%0A%0AAnzahl%20Teilnehmer%3A%20%0AGew%C3%BCnschter%20Termin%3A%20%0A%0AMein%20Unternehmen%20%2F%20meine%20Situation%3A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F)." class="price-btn out">Schulung anfragen</a>
+      </div>
+      <div class="price-card">
+        <h3 class="price-name">Online-Portal (in Vorbereitung)</h3>
+        <div class="price-val">49<span class="price-cur">&nbsp;€</span></div>
+        <div class="price-per">Grundpauschale / Halbjahr, zzgl. MwSt.</div>
+        <div class="price-per">+ 5&nbsp;€ pro Mitarbeiter / Halbjahr, zzgl. MwSt.</div>
+        <p class="price-desc">Deine Mitarbeiter arbeiten die Schulung eigenständig durch – wann und wo sie wollen. Inhalte werden mindestens halbjährlich an aktuelle Bedrohungen angepasst.</p>
+        <hr class="price-div">
+        <ul class="price-feats">
+          <li><span class="pfy" aria-hidden="true">&#10003;</span>Eigener Firmenzugang mit Mitarbeiterverwaltung</li>
+          <li><span class="pfy" aria-hidden="true">&#10003;</span>Inhalte mindestens alle 6 Monate aktualisiert</li>
+          <li><span class="pfy" aria-hidden="true">&#10003;</span>Quiz + PDF-Zertifikat pro Teilnehmer</li>
+          <li><span class="pfy" aria-hidden="true">&#10003;</span>Teilnahmeliste als Nachweis für den Inhaber</li>
+        </ul>
+        <a href="mailto:info@grundke-it.de?subject=Anfrage%20Schulungs-Portal%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0Aich%20interessiere%20mich%20f%C3%BCr%20den%20Zugang%20zum%20Online-Schulungsportal.%0A%0AAnzahl%20Mitarbeiter%3A%20%0A%0AMein%20Unternehmen%20%2F%20meine%20Situation%3A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F)." class="price-btn out">Portal vormerken</a>
+      </div>
+      <div class="price-card feat">
+        <div class="price-badge">Beste Wahl</div>
+        <h3 class="price-name">Kombi-Paket (in Vorbereitung)</h3>
+        <div class="price-val">ab 165<span class="price-cur">&nbsp;€</span></div>
+        <div class="price-per">/ Halbjahr (statt 184&nbsp;€), zzgl. MwSt.</div>
+        <div class="price-per">Inkl. Live-Schulung + Portal + 4,50&nbsp;€/Mitarbeiter, zzgl. MwSt.</div>
+        <p class="price-desc">Die Live-Schulung bringt alle auf denselben Stand, das Portal frischt das Wissen danach jedes Halbjahr auf.</p>
+        <hr class="price-div">
+        <ul class="price-feats">
+          <li><span class="pfy" aria-hidden="true">&#10003;</span>Live-Schulung per Teams (1,5h)</li>
+          <li><span class="pfy" aria-hidden="true">&#10003;</span>Portal-Zugang für alle Mitarbeiter</li>
+          <li><span class="pfy" aria-hidden="true">&#10003;</span>Quiz, Zertifikate &amp; Teilnahmeliste</li>
+          <li><span class="pfy" aria-hidden="true">&#10003;</span>10% Rabatt auf den Gesamtpreis</li>
+        </ul>
+        <a href="mailto:info@grundke-it.de?subject=Anfrage%20Kombi-Schulungspaket%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0Aich%20interessiere%20mich%20f%C3%BCr%20das%20Kombi-Paket%20(Live-Schulung%20%2B%20Portal-Zugang).%0A%0AAnzahl%20Mitarbeiter%3A%20%0AGew%C3%BCnschter%20Termin%20f%C3%BCr%20Live-Schulung%3A%20%0A%0AMein%20Unternehmen%20%2F%20meine%20Situation%3A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F)." class="price-btn solid">Kombi-Paket vormerken</a>
+      </div>
+    </div>
+    <div class="lp-content">
+      <p><strong>Rechenbeispiel:</strong> Firma mit 8 Mitarbeitern → Live-Schulung <strong>135&nbsp;€</strong> + Portal-Halbjahr <strong>49&nbsp;€ + 40&nbsp;€ (8×5&nbsp;€)</strong> = <strong>224&nbsp;€</strong> für ein komplett geschultes Team mit Zertifikat. Mit Kombi-Rabatt nur <strong>201&nbsp;€</strong>. Alle Preise zzgl. MwSt.</p>
+      <p><strong>Noch Fragen?</strong> Schreib mir – ich berate dich gerne, welche Variante für dein Team passt.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec--aside">
+  <div class="inner">
+    <h2 class="s-title">Häufige Fragen zur IT-Sicherheitsschulung</h2>
+    <div class="sec-aside-body">
+      <div class="faq-wrap">
+        <details class="faq-item"><summary>Was kostet eine IT-Sicherheitsschulung? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Die Live-Schulung per Microsoft Teams kostet 135 € pauschal für rund 1,5 Stunden (jede weitere Stunde 110 €). Das Online-Portal kostet 49 € Grundpauschale pro Halbjahr plus 5 € je Mitarbeiter und Halbjahr. Das Kombi-Paket aus Live-Schulung und Portal startet bei 165 € pro Halbjahr. Alle Preise verstehen sich zzgl. MwSt.</div></details>
+        <details class="faq-item"><summary>Wie läuft die Live-Schulung ab? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Die Live-Schulung findet interaktiv per Microsoft Teams statt und dauert rund 1,5 Stunden. Inhalte sind unter anderem Phishing erkennen, sichere Passwörter, Social Engineering, DSGVO-Grundlagen und der sichere Umgang mit KI-Werkzeugen – mit echten Beispielen und Raum für Fragen. Die Unterlagen erhältst du anschließend als PDF zum Nachschlagen.</div></details>
+        <details class="faq-item"><summary>Bekommen die Mitarbeiter einen Nachweis? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Ja. Jeder Teilnehmer erhält ein PDF-Zertifikat als Teilnahmenachweis. Über das Online-Portal lädst du als Inhaber zusätzlich eine Teilnahmeliste herunter – ein verwertbarer Nachweis für Versicherung und Auditierung.</div></details>
+        <details class="faq-item"><summary>Für wen ist die Schulung geeignet? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Für kleine und mittlere Unternehmen, Handwerksbetriebe, Praxen, Kanzleien und Büros. Die Inhalte sind verständlich und praxisnah aufbereitet – ein IT-Fachwissen ist nicht nötig.</div></details>
+        <details class="faq-item"><summary>Wie aktuell sind die Schulungsinhalte? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Die Inhalte des Online-Portals werden mindestens alle sechs Monate an aktuelle Bedrohungen angepasst, damit dein Team über neue Betrugsmaschen und Angriffswege informiert bleibt.</div></details>
+        <details class="faq-item"><summary>Findet die Schulung online oder vor Ort statt? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Die Live-Schulung findet online per Microsoft Teams statt – so sind alle Teilnehmer ortsunabhängig dabei, auch aus dem Home-Office. Das Online-Portal bearbeiten deine Mitarbeiter ebenfalls ortsunabhängig im Browser, wann und wo es ihnen passt.</div></details>
+        <details class="faq-item"><summary>Wie lange dauert eine Schulung? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Die Live-Schulung dauert rund 1,5 Stunden. Die Inhalte im Online-Portal bearbeiten deine Mitarbeiter im eigenen Tempo – jederzeit unterbrechbar und ohne Zeitdruck.</div></details>
+        <details class="faq-item"><summary>Hilft die Schulung bei der DSGVO und anderen Compliance-Pflichten? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Ja. Die Sensibilisierung der Mitarbeiter ist eine anerkannte organisatorische Maßnahme nach Art. 32 DSGVO und ein häufig geforderter Baustein für Cyber-Versicherungen und Audits. Mit dem PDF-Zertifikat und der Teilnahmeliste hast du den Nachweis schriftlich in der Hand.</div></details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-sec">
+  <div class="inner">
+    <h2 class="cta-h">Problem? <em>Ich bin dran.</em></h2>
+    <p class="cta-sub">Ruf an, schreib auf WhatsApp oder per Mail. Am anderen Ende bin ich, Andreas Grundke. Gerne per Du.</p>
+    <div class="cta-btns inline-cta-mobile">
+      <a href="tel:+491782584438" class="btn-tel"><svg width="20" height="20" aria-hidden="true"><use href="#ico-phone"/></svg> 0178 258 44 38</a>
+      <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20komme%20%C3%BCber%20deine%20Seite%20%E2%80%9EIT-Sicherheitsschulung%E2%80%9C." target="_blank" rel="noopener" class="btn-wa"><svg width="20" height="20" aria-hidden="true"><use href="#ico-wa"/></svg> WhatsApp</a>
+      <a href="mailto:info@grundke-it.de?subject=Anfrage%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0AMein%20Anliegen%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F)." class="btn-email"><svg width="20" height="20" aria-hidden="true"><use href="#ico-mail"/></svg> E-Mail schreiben</a>
+    </div>
+    <div class="hc-qr cta-qr">
+      <a href="/kontakt/" title="Alle Kontaktwege"><img src="/assets/img/qr-tree.png" alt="QR-Code: Kontaktseite aufs Handy holen" width="88" height="88"/></a>
+      <p><strong>Scan mich. Dann reden wir.</strong>Alle Kontaktwege direkt aufs Handy.</p>
+    </div>
+    <p class="cta-next"><a href="/it-sicherheit-backup/">IT-Sicherheit &amp; Backup<svg width="16" height="16" aria-hidden="true"><use href="#ico-arrow-r"/></svg></a></p>
+    <div class="cta-author">
+      <span class="ava" aria-hidden="true">AG</span>
+      <p><strong>Andreas Grundke</strong> · Fachinformatiker für Systemintegration · über 20 Jahre IT<br><span class="cta-date">Zuletzt aktualisiert: 10. Oktober 2026</span></p>
+    </div>
+  </div>
+</section>
+
 </main>
 
 <footer class="site-footer">
@@ -452,13 +524,12 @@
 </footer>
 <script src="/assets/js/main.js?v=2026.10.c"></script>
 
-<!-- Sticky Contact Bar — Mobile: Bottom-Leiste · Desktop: Sidebar rechts -->
 <div class="sticky-contact" id="stickyContact" role="navigation" aria-label="Kontakt-Optionen">
   <a href="tel:+491782584438" class="sc-btn sc-phone" aria-label="Anrufen">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
     <span>Anrufen</span>
   </a>
-  <a href="https://wa.me/491782584438" target="_blank" rel="noopener" class="sc-btn sc-wa" aria-label="WhatsApp">
+  <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20habe%20deine%20Nummer%20von%20deiner%20Website." target="_blank" rel="noopener" class="sc-btn sc-wa" aria-label="WhatsApp">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 0 0 .611.611l4.458-1.495A11.96 11.96 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75c-2.278 0-4.381-.733-6.093-1.975l-.426-.307-2.645.887.887-2.645-.307-.426A9.72 9.72 0 0 1 2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75z"/></svg>
     <span>WhatsApp</span>
   </a>
