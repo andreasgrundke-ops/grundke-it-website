@@ -1,4 +1,4 @@
-"""Statische Pruefungen (Spec §9: AK1, AK2, AK7, AK8, AK9, AK14).
+"""Statische Pruefungen (Spec §9: AK1, AK2, AK7, AK8, AK9, AK13, AK14).
 Aufruf: python tools/checks/check_static.py [--only AK1,AK9]   Exit 1 bei Fehler."""
 import hashlib, html, json, re, sys
 from pathlib import Path
@@ -160,6 +160,21 @@ def ak14():
     return errs
 
 
+def ak13():
+    errs = []
+    for p in pages():
+        for ref in re.findall(r'href="([^"]*style\.css[^"]*)"|src="([^"]*main\.js[^"]*)"', read(p)):
+            r = ref[0] or ref[1]
+            if "?v=" not in r:
+                errs.append(f"{rel(p)}: {r} ohne Version")
+    # Pre-Cache des Service Workers muss dieselbe Version tragen wie die Seiten
+    vers = {v for p in pages() for v in re.findall(r'(?:style\.css|main\.js)\?v=([\w.-]+)"', read(p))}
+    sw = re.search(r"const ASSET_VER\s*=\s*'([^']+)'", read(ROOT / "sw.js"))
+    if not sw or vers != {sw.group(1)}:
+        errs.append(f"sw.js: ASSET_VER {sw.group(1) if sw else 'fehlt'} passt nicht zu den Seiten {sorted(vers)}")
+    return errs
+
+
 def write_legal_baseline():
     out = {}
     for p in legal_pages():
@@ -169,6 +184,7 @@ def write_legal_baseline():
 
 
 CHECKS = {"AK1": ak1, "AK2": ak2, "AK7": ak7, "AK8": ak8, "AK9": ak9, "AK14": ak14}
+CHECKS["AK13"] = ak13
 
 if __name__ == "__main__":
     if "--legal-baseline" in sys.argv:
