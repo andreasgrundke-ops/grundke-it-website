@@ -1,6 +1,6 @@
 """Statische Pruefungen (Spec §9: AK1, AK2, AK2b, AK7, AK8, AK9, AK9b, AK11a, AK13, AK14).
 Aufruf: python tools/checks/check_static.py [--only AK1,AK9]   Exit 1 bei Fehler."""
-import hashlib, html, json, re, sys
+import hashlib, html, json, re, subprocess, sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -317,6 +317,38 @@ def legal_text(page_html):
     return text_of(col)
 
 
+# AK14 seit Task 9 (Fix-Runde 1): legal_hash.json speichert nur Hashes. Verglichen wird deshalb der Text des Stands der
+# Vorher-Messung (Commit 865b00a, dessen legal_text() genau diese Hashes ergibt) mit dem Text jetzt, beide nach
+# legal_norm(). Die Hashes bleiben die Pruefung, dass die Basis die gemessene ist; keine neue Baseline.
+LEGAL_BASE_COMMIT = "865b00a"
+# Nur diese Zeichen zaehlen nicht zum Rechtstext: weiches Trennzeichen (U+00AD, H1 der Huelle), Emoji-Variantenwahl
+# (U+FE0F) und Bildzeichen U+1F300-U+1FAFF (AGB-Symbol, jetzt SVG). ©, ®, ™, Pfeile, § und Striche bleiben Text.
+LEGAL_DROP_RE = re.compile("[\u00ad\ufe0f\U0001F300-\U0001FAFF]")
+
+
+def legal_norm(t):
+    """Text ohne LEGAL_DROP_RE; Leerraum danach wieder einfach (ein entferntes Symbol vor einem Wort hinterliesse
+    sonst ein fuehrendes oder doppeltes Leerzeichen)."""
+    return re.sub(r"\s+", " ", LEGAL_DROP_RE.sub("", t)).strip()
+
+
+def legal_diff(before, now):
+    """None, wenn beide Texte nach legal_norm() gleich sind, sonst die erste Abweichung mit Kontext."""
+    a, b = legal_norm(before), legal_norm(now)
+    if a == b:
+        return None
+    i = next((k for k in range(min(len(a), len(b))) if a[k] != b[k]), min(len(a), len(b)))
+    return f"erste Abweichung bei Zeichen {i}: vorher {a[max(0, i - 30):i + 30]!r} jetzt {b[max(0, i - 30):i + 30]!r}"
+
+
+def legal_base_html(rel_path):
+    """Seite im Stand LEGAL_BASE_COMMIT (git show)."""
+    out = subprocess.run(["git", "-C", str(ROOT), "show", LEGAL_BASE_COMMIT + ":" + rel_path], capture_output=True)
+    if out.returncode:
+        raise RuntimeError(out.stderr.decode("utf-8", "replace").strip())
+    return out.stdout.decode("utf-8")
+
+
 def ak14():
     errs = []
     home = text_of(read(ROOT / "index.html"))
@@ -329,9 +361,18 @@ def ak14():
     if base.exists():
         old = json.loads(base.read_text(encoding="utf-8"))
         for p in legal_pages():
-            h = hashlib.sha256(legal_text(read(p)).encode()).hexdigest()
-            if old.get(rel(p)) != h:
-                errs.append(f"{rel(p)}: Rechtstext geaendert")
+            try:
+                before = legal_text(legal_base_html(rel(p)))
+            except RuntimeError as e:
+                errs.append(f"{rel(p)}: Basis {LEGAL_BASE_COMMIT} nicht lesbar ({e})")
+                continue
+            # (a) Konsistenz: die Basis ist der gemessene Stand (roher Hash wie in legal_hash.json)
+            if old.get(rel(p)) != hashlib.sha256(before.encode()).hexdigest():
+                errs.append(f"{rel(p)}: Basis {LEGAL_BASE_COMMIT} passt nicht zu legal_hash.json")
+            # (b) Gleichheit: Rechtstext jetzt = Basis, nach legal_norm()
+            diff = legal_diff(before, legal_text(read(p)))
+            if diff:
+                errs.append(f"{rel(p)}: Rechtstext geaendert, {diff}")
     fw = read(ROOT / "fernwartung/index.html")
     for need in ("https://msp.grundke-it.de/dist/grundke-support.exe", "https://msp.grundke-it.de/dist/grundke-support-linux-amd64"):
         if need not in fw:
