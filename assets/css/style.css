@@ -733,6 +733,23 @@ blockquote.testi-txt { margin-top:0; margin-left:0; margin-right:0; }
 .chips > * { font-family:var(--fm); font-size:.78rem; background:var(--bg2); border:1px solid var(--border); border-radius:999px; padding:.35rem .9rem; color:var(--text2); text-decoration:none; }
 .chips > a:hover { border-color:var(--cyan); color:var(--cyan); }
 .chips > .here, .chips > [aria-current] { border-color:var(--cyan); color:var(--cyan); }
+
+/* Aufklappbarer Zusatz (seit 10.10.2026): <details class="more"><summary>…</summary>…</details>.
+   Der Inhalt steht im HTML und ist ohne JS lesbar (Crawler, KI-Suche); zu ist nur die Ansicht. */
+.more { margin-top:1.4rem; border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+.more > summary { list-style:none; display:flex; align-items:center; justify-content:space-between; gap:1rem; min-height:48px; padding:.65rem 0; font-weight:700; font-size:1rem; line-height:1.4; color:var(--text); cursor:pointer; }
+.more > summary::-webkit-details-marker { display:none; }
+.more > summary::marker { content:''; }
+.more > summary::after { content:''; flex-shrink:0; width:.5rem; height:.5rem; margin-right:.35rem; border:solid var(--cyan); border-width:0 2px 2px 0; transform:translateY(-25%) rotate(45deg); transition:transform .2s; }
+.more[open] > summary::after { transform:translateY(25%) rotate(-135deg); }
+.more > summary:hover { color:var(--cyan); }
+.more > summary:focus-visible { outline:2px solid var(--cyan); outline-offset:3px; border-radius:4px; }
+.more[open] { padding-bottom:1rem; }
+
+/* Sprungziel ohne eigene Flaeche (alte Anker, die in einem anderen Abschnitt weiterleben) */
+.anchor { display:block; height:0; }
+/* Nur fuer Screenreader (z. B. "enthalten" in Tabellen mit Haken) */
+.sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
 /* ══════════════════════════════════════════════════════════════════════════════════ */
 
 

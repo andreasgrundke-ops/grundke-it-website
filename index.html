@@ -69,7 +69,7 @@
         "name":"Andreas Grundke IT-Service",
         "alternateName":"Grundke IT-Service",
         "slogan":"Deine IT-Abteilung. Nur extern.",
-        "description":"IT, KI, Software und Websites für kleine und mittlere Betriebe im Münchner Osten. Ein Ansprechpartner für alles Technische, aus Grasbrunn-Neukeferloh.",
+        "description":"IT, KI, Software und Websites für kleine und mittlere Betriebe im Münchner Osten. Andreas Grundke kümmert sich um die IT seiner Kunden, damit sie in Ruhe arbeiten, und kennt ihre Systeme schon, wenn es brennt. Ein Ansprechpartner für alles Technische, aus Grasbrunn-Neukeferloh.",
         "url":"https://grundke-it.de",
         "foundingDate":"2024",
         "numberOfEmployees":{"@type":"QuantitativeValue","value":1},
@@ -235,7 +235,7 @@
     "about":{"@id":"https://grundke-it.de/#localbusiness"},
     "primaryImageOfPage":"https://grundke-it.de/assets/img/og-image.png",
     "datePublished":"2026-04-10",
-    "dateModified":"2026-10-07",
+    "dateModified":"2026-10-10",
     "author":{"@id":"https://grundke-it.de/#andreas"},
     "publisher":{"@id":"https://grundke-it.de/#localbusiness"}
   }
@@ -1242,6 +1242,192 @@
     .kih-cta { display:flex; flex-wrap:wrap; gap:.9rem; }
     @media (max-width:560px) { .kih-cta .btn-p, .kih-cta .btn-g { width:100%; justify-content:center; } }
 
+  /* ═══════════════════════════════════════════════
+     Startseite Release A (seit 10.10.2026): Kuemmerer-Botschaft, Handy zuerst.
+     Reihenfolge Spec §5. Flaechen wechseln bg / bg2 ab Abschnitt 2.
+  ═══════════════════════════════════════════════ */
+  /* Handy: Abschnitte enger (Spec E5: Startseite bei 390 px hoechstens 12.000 px,
+     #schnellcheck bis 4.000 px, #preise bis 5.000 px) */
+  @media (max-width:767px) {
+    main > .section-pad { padding:2rem 0; }
+    main .s-label { margin-bottom:.6rem; }
+    main .s-title { margin-bottom:.7rem; }
+    main .s-sub { line-height:1.6; }
+    .hc-proof { gap:.4rem 1.1rem; }
+  }
+
+  /* Hero: K1 (.page-k) und Wer/Was/Wo statt der alten Unterzeile */
+  .hc-k { max-width:34rem; margin:0 0 .55rem; }
+  .hc-wer { font-size:.95rem; line-height:1.5; color:var(--text2); margin:0 0 1.4rem; }
+  .hc-wer strong { color:var(--text); font-weight:600; }
+  @media (max-width:767px) { .hc-inner { padding-top:1.6rem; padding-bottom:1.6rem; } .hc-wer { margin-bottom:1.1rem; } }
+
+  /* 2 Typische Anrufe: Zitat + K2, Vergleich aufklappbar, Chips zu den IT-Leistungen */
+  .itb-list { margin:1.8rem 0 2.2rem; }
+  .itb-k { display:grid; grid-template-columns:minmax(0,1fr); gap:.9rem 3.5rem; align-items:start; }
+  @media (min-width:1024px) { .itb-k { grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr); } }
+  .itb-k .usp-quote { margin:0; }
+  .itb-k2 { margin:0; max-width:62ch; font-size:1.0667rem; line-height:1.7; color:var(--text); }
+  .itb-vgl { max-width:640px; }
+  .itb-leist { margin-top:1.6rem; }
+  .itb-leist-h { margin:0; max-width:62ch; font-size:.92rem; line-height:1.6; color:var(--text2); }
+  .itb-leist .chips { margin:.7rem 0 0; }
+  .itb-leist .chips > a { font-family:var(--fb); font-size:.86rem; font-weight:600; color:var(--text); padding:.4rem .8rem; }
+  @media (max-width:767px) {
+    /* Anrufe am Handy als Absatz mit fettem Einstieg (Run-in): dieselben Texte, eine Zeile weniger je Anruf */
+    .itb-list { gap:.85rem; margin:1.2rem 0 1.3rem; }
+    .itb-vgl { margin-top:1.1rem; }
+    .itb-leist { margin-top:1.2rem; }
+    .itb-list > div { padding-top:.75rem; }
+    .itb-list dt, .itb-list dd { display:inline; }
+    .itb-list dt { margin:0 .3rem 0 0; font-size:.98rem; line-height:1.6; }
+    .itb-list dd { font-size:.92rem; line-height:1.7; }
+    .itb-leist-h { font-size:.88rem; }
+    .itb-leist .chips { gap:.4rem; }
+    .itb-leist .chips > a { padding:.3rem .7rem; line-height:1.35; }
+  }
+
+  /* 3 Stimmen: zwei sichtbar, Rest in der Wischleiste (ab 1024 px als Raster).
+     Die lange Stimme (testi-card--long) blaettert am Handy absatzweise: ein Absatz je Seite,
+     jede Seite ist ein Rastpunkt der Leiste. So bleibt sie vollstaendig, ohne die Leiste hoch zu machen. */
+  .testimonials .testi-txt { font-size:1rem; margin-bottom:.8rem; }
+  .testimonials .testi-card { padding:1.25rem 1.25rem 1.2rem; }
+  .testimonials .stars { margin-bottom:.55rem; }
+  .testi-top { display:grid; grid-template-columns:minmax(0,1fr); gap:.9rem; margin-top:1.3rem; }
+  @media (min-width:900px) { .testi-top { grid-template-columns:minmax(0,1.55fr) minmax(0,1fr); gap:1.5rem; } }
+  /* Am Handy stehen die zwei sichtbaren Stimmen als Zitat ohne Kartenrahmen, getrennt durch eine Linie */
+  @media (max-width:899px) {
+    .testi-top { gap:1.1rem; }
+    .testi-top > .testi-card { padding:0; background:none; border:none; border-radius:0; }
+    .testi-top > .testi-card::before { content:none; }
+    .testi-top > .testi-card + .testi-card { padding-top:1.1rem; border-top:1px solid var(--border); }
+    .testi-top .testi-txt { color:var(--text); }
+  }
+  .testi-row-h { margin:1.3rem 0 .6rem; font-size:.95rem; color:var(--text2); }
+  .testi-row { --card-w:min(84vw, 340px); --card-pad:1.25rem; display:flex; align-items:stretch; gap:1rem; overflow-x:auto; scroll-snap-type:x mandatory; overscroll-behavior-x:contain; padding:0 0 .5rem; }
+  .testi-row > .testi-card { flex:0 0 var(--card-w); scroll-snap-align:start; }
+  .testi-row:focus-visible { outline:2px solid var(--cyan); outline-offset:4px; border-radius:10px; }
+  .testi-row::-webkit-scrollbar { height:5px; }
+  .testimonials .testi-source { margin-top:1.1rem; }
+  @media (max-width:1023px) {
+    /* Die lange Karte selbst ist kein Rastpunkt (breiter als die Leiste, der Browser liesse sonst
+       freies Scrollen in ihr zu); rasten sollen ihre Absaetze */
+    .testi-row > .testi-card--long { flex:0 0 auto; scroll-snap-align:none; }
+    .testi-card--long .testi-txt { display:grid; grid-auto-flow:column; grid-auto-columns:calc(var(--card-w) - 2 * var(--card-pad)); column-gap:calc(2 * var(--card-pad) + 1rem); }
+    .testi-card--long .testi-txt p, .testi-card--long .testi-txt p + p { margin:0; }
+    .testi-card--long .testi-txt p { scroll-snap-align:start; scroll-margin-left:var(--card-pad); }
+    .testi-card--long figcaption { text-align:right; }
+  }
+  @media (min-width:1024px) {
+    .testi-row { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1.5rem; overflow:visible; padding:0; }
+    .testi-row > .testi-card--long { grid-column:1 / -1; }
+    .testi-card--long .testi-txt { columns:2; column-gap:3rem; max-width:none; }
+    .testi-card--long .testi-txt p { break-inside:avoid; }
+  }
+
+  /* 4 Praxis: am Handy ohne grosses Symbol */
+  .praxis { background:var(--bg); }
+  @media (max-width:700px) {
+    .praxis-icon { display:none; }
+    .praxis-card { padding:1.25rem 1.2rem; }
+    .praxis-card h3 { margin-bottom:.7rem; }
+    .praxis-text { line-height:1.65; }
+    .praxis-text p { margin-bottom:.6rem; }
+    .praxis-text p.praxis-rule { margin:.8rem 0 .8rem; padding:.65rem .85rem; }
+    .praxis-cta { margin-top:0; padding:.7rem 1.2rem; }
+  }
+
+  /* 5 Schnellcheck: am Handy kompakter, Knoepfe volle Breite */
+  .sc-card .sc-title { margin-bottom:.4rem; }
+  .sc-more { margin-bottom:1.6rem; }
+  .sc-more .sc-grid { margin:.4rem 0 .4rem; }
+  .sc-promise { margin-bottom:1.6rem; }
+  .sc-promise span { font-family:var(--fb); font-size:.86rem; }
+  /* Fliesstext im Aufklapper 16 px (AK4) */
+  .sc-checklist li, .sc-deliverable-list li { font-size:1.0667rem; }
+  .sc-block-p { margin:0 0 1rem; font-size:1.0667rem; line-height:1.65; color:var(--text2); }
+  @media (max-width:767px) {
+    .sc-icon { display:none; }
+    .sc-card { padding:1.3rem 1.2rem; margin-top:1.2rem; }
+    .sc-promise { grid-template-columns:repeat(2,minmax(0,1fr)); gap:.45rem; margin-bottom:1.2rem; }
+    .sc-promise span { padding:.5rem .6rem; font-size:.84rem; line-height:1.35; }
+    .sc-cta-row { gap:.6rem; }
+    .sc-cta-row .sc-cta, .sc-cta-row .sc-wa { width:100%; justify-content:center; }
+    .sc-cta-row .sc-cta { padding:.9rem 1rem; font-size:.92rem; }
+    .sc-steps { margin-top:1.4rem; }
+    .sc-steps ol { gap:.8rem; }
+  }
+
+  /* 6 Preise: drei Pakete kompakt, Tabelle aller Leistungen, ad hoc als Zeile */
+  .pricing { background:var(--bg); }
+  .pkg-hint { margin:.3rem 0 0; max-width:62ch; font-size:1.0667rem; line-height:1.6; color:var(--text2); }
+  .pkg-grid { display:grid; grid-template-columns:minmax(0,1fr); gap:1.6rem 1.2rem; margin-top:1.8rem; }
+  @media (min-width:900px) { .pkg-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } }
+  .pkg-grid .price-card { display:flex; flex-direction:column; padding:1.35rem 1.3rem 1.3rem; }
+  .pkg-head { display:flex; align-items:flex-end; justify-content:space-between; gap:1rem; }
+  .pkg-head .price-name { margin:0; }
+  .pkg-price { text-align:right; }
+  .pkg-price .price-per { margin:.25rem 0 0; }
+  .pkg-grid .price-note { margin:.45rem 0 .9rem; }
+  .pkg-grid .price-feats { gap:.45rem; margin:0 0 1.2rem; }
+  .pkg-grid .price-feats li { align-items:center; font-size:1.0667rem; color:var(--text); }
+  svg.pfy { width:15px; height:15px; color:var(--success); flex-shrink:0; }
+  .pkg-btns { display:flex; gap:.6rem; margin-top:auto; }
+  .pkg-btns .price-btn { display:inline-flex; align-items:center; justify-content:center; gap:.5rem; width:auto; flex:1 1 auto; min-height:46px; padding:.7rem 1rem; }
+  .pkg-btns .pkg-mail { flex:0 0 50px; padding:0; }
+  .pkg-more { margin-top:1.6rem; }
+  .pkg-table-wrap { overflow-x:auto; }
+  .pkg-table { width:100%; border-collapse:collapse; font-size:.95rem; }
+  .pkg-table th, .pkg-table td { padding:.55rem .35rem; border-bottom:1px solid var(--border); text-align:center; color:var(--text); }
+  .pkg-table th[scope="row"] { text-align:left; font-weight:500; color:var(--text2); }
+  .pkg-table thead th { font-family:var(--fm); font-size:.72rem; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--text3); }
+  .pkg-table .pfn { color:var(--text3); }
+  .pkg-adhoc { margin-top:1.4rem; padding:1.1rem 1.2rem; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:.9rem 1.5rem; background:var(--bg3); border:1px solid var(--border); border-radius:var(--r); }
+  .pkg-adhoc p { margin:0; max-width:54ch; font-size:1.0667rem; line-height:1.6; color:var(--text2); }
+  .pkg-adhoc strong { color:var(--text); }
+  .pkg-adhoc .price-per { font-size:inherit; color:inherit; }
+  .pkg-adhoc .pkg-btns { margin:0; flex:1 1 260px; max-width:360px; }
+  .pkg-why { margin-top:1rem; padding:1.1rem 1.2rem; display:flex; gap:.9rem; align-items:flex-start; border:1px solid var(--border); border-radius:var(--r); }
+  .pkg-why svg { flex-shrink:0; margin-top:3px; color:var(--cyan); }
+  .pkg-why p { margin:0; font-size:1.0667rem; line-height:1.7; color:var(--text2); }
+  .pkg-why strong { color:var(--text); }
+  .pkg-monthly { margin:1.2rem 0 0; max-width:72ch; font-size:1.0667rem; line-height:1.7; color:var(--text2); }
+  .pkg-monthly strong { color:var(--text); }
+
+  /* 7 K3 "Darum kümmere ich mich auch" */
+  .k3-block { background:var(--bg2); }
+  .k3-grid { margin-top:1.6rem; }
+  .k3-card h3 { font-size:1.2rem; }
+  .k3-card h3 a { display:inline-flex; align-items:center; gap:.45rem; color:var(--text); text-decoration:none; }
+  .k3-card .card-more a { white-space:nowrap; }
+  .k3-card h3 a:hover { color:var(--cyan); }
+  .k3-card h3 a:focus-visible { outline:2px solid var(--cyan); outline-offset:3px; border-radius:4px; }
+  .k3-arrow { width:16px; height:16px; color:var(--cyan); transition:transform .2s; }
+  .k3-card h3 a:hover .k3-arrow { transform:translateX(3px); }
+  .k3-card .card-more { margin-top:.8rem; font-size:1.0667rem; }
+  .k3-school { margin:1.4rem 0 0; max-width:68ch; font-size:1.0667rem; line-height:1.7; color:var(--text2); }
+  .k3-school a { color:var(--cyan); }
+
+  /* 8 FAQ */
+  .faq { background:var(--bg); }
+  .faq .faq-wrap { margin-top:1.8rem; }
+  .faq-rest { max-width:820px; margin-top:1.2rem; }
+  .faq-rest .faq-wrap { margin-top:.2rem; }
+  .faq-more { margin-top:1.4rem; }
+  .faq-more p { font-size:1.0667rem; }
+
+  /* 10 Abschluss */
+  .cta-sec .cta-sub { font-size:1.0667rem; }
+
+  /* 9 Einsatzgebiet: Orte als Chips, Details aufklappbar */
+  .geo-chips { margin-top:1.3rem; }
+  .geo-chips > a { color:var(--text); border-color:rgba(38,189,239,.4); }
+  .geo-more { max-width:820px; }
+  .geo-remote p { margin:0 0 .5rem; max-width:68ch; font-size:1.0667rem; line-height:1.7; color:var(--text2); }
+  .geo-remote-h strong { color:var(--text); }
+  .geo-text { margin:.9rem 0 .4rem; padding:1.1rem 1.2rem; font-size:1.0667rem; line-height:1.75; color:var(--text2); background:var(--bg3); border:1px solid var(--border); border-radius:var(--r); }
+  .geo-text strong { color:var(--text); }
+
   </style>
 </head>
 <body class="has-sticky-call">
@@ -1332,16 +1518,17 @@
   <div class="hc-inner">
     <div class="hc-copy">
       <h1 id="hero-h1" class="hc-h1">Deine IT-Abteilung.<br> <em>Nur extern.</em></h1>
-      <p class="hc-sub">IT, KI, Software und Websites für Betriebe im Münchner Osten. Kein Ticketsystem, keine Hotline: Du rufst an oder schreibst, und am anderen Ende bin ich, <strong>Andreas Grundke</strong>.</p>
+      <p class="page-k hc-k">Ich kümmere mich um eure IT, damit ihr in Ruhe arbeitet. Und wenn es brennt, kenne ich eure Systeme schon.</p>
+      <p class="hc-wer"><strong>Andreas Grundke</strong> · IT-Service für Betriebe im Münchner Osten</p>
       <ul class="hc-proof">
-        <li><svg class="is-star" aria-hidden="true"><use href="#ico-star"/></svg><a href="#referenzen">5,0 bei 5 Google-Bewertungen</a></li>
+        <li><svg class="is-star" aria-hidden="true"><use href="#ico-star"/></svg><a href="#referenzen" data-proof>5,0 bei 5 Google-Bewertungen</a></li>
         <li><svg aria-hidden="true"><use href="#ico-user-check"/></svg>Über 20 Jahre IT-Erfahrung</li>
         <li><svg aria-hidden="true"><use href="#ico-check"/></svg>Monatspauschale ab 149&nbsp;€ netto</li>
         <li><svg aria-hidden="true"><use href="#ico-clock"/></svg>Ad hoc 110&nbsp;€ netto/Std. im 15-Minuten-Takt</li>
       </ul>
       <div class="hc-ctas">
         <a href="tel:+491782584438" class="btn-p hc-call"><svg width="18" height="18" aria-hidden="true"><use href="#ico-phone"/></svg>Anrufen <span class="hc-num">0178 258 44 38</span></a>
-        <a href="https://wa.me/491782584438" target="_blank" rel="noopener" class="hc-wa"><svg width="18" height="18" aria-hidden="true"><use href="#ico-wa"/></svg>WhatsApp</a>
+        <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20komme%20%C3%BCber%20deine%20Startseite." target="_blank" rel="noopener" class="hc-wa" data-wa="hero"><svg width="18" height="18" aria-hidden="true"><use href="#ico-wa"/></svg>WhatsApp</a>
       </div>
     </div>
     <div class="hc-stage">
@@ -1378,62 +1565,8 @@
   </div>
 </section>
 
-<!-- KUNDENSTIMMEN -->
-<section class="testimonials section-pad" id="referenzen">
-  <div class="inner">
-    <div class="s-label">Was Kunden sagen</div>
-    <h2 class="s-title">Was andere über mich sagen</h2>
-    <div class="testi-grid">
-      <figure class="testi-card testi-wide testi-lead">
-        <div class="testi-wide-quote">
-          <div class="stars"><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg></div>
-          <blockquote class="testi-txt">
-            <p>„Andy hat das WLAN in unserem Haus modernisiert und auf Ubiquiti umgestellt, damit unsere Gäste eine bessere Internetverbindung genießen können. Die Zusammenarbeit hat sehr viel Spaß gemacht – auch wenn wir aufgrund des älteren Gebäudes die eine oder andere Hürde zu bewältigen hatten.</p>
-            <p>Besonders beeindruckt hat uns Andys hoher Anspruch an die Qualität seiner Arbeit. Dazu kommt seine herzliche und unkomplizierte Art, die die Zusammenarbeit auch menschlich sehr angenehm gemacht hat.</p>
-            <p>Über den eigentlichen Auftrag hinaus hat Andy uns wertvolle Tipps zum Einsatz von KI gegeben und hilfreiche Analysen erstellt, für die wir ihm sehr dankbar sind.</p>
-            <p>Rundum eine tolle Erfahrung. Ich kann Andy mit bestem Gewissen weiterempfehlen!“</p>
-          </blockquote>
-        </div>
-        <figcaption class="testi-wide-who">
-          <div class="testi-who">Apartments Bauer</div><div class="testi-role">Google-Bewertung</div>
-          <div class="testi-ctx">WLAN-Modernisierung auf Ubiquiti im Altbau</div>
-        </figcaption>
-      </figure>
-      <div class="testi-card">
-        <div class="stars"><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg></div>
-        <p class="testi-txt">„Ich bin sehr zufrieden mit der Arbeit der Firma. Die Umsetzung erfolgte schnell, zuverlässig und in sehr guter Qualität. Alle meine Anliegen wurden professionell gelöst. Klare Empfehlung!“</p>
-        <div class="testi-who">Christian Fleischmann</div><div class="testi-role">Google-Bewertung</div>
-      </div>
-      <div class="testi-card">
-        <div class="stars"><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg></div>
-        <p class="testi-txt">„Sehr guter Service...perfekte Zusammenarbeit! Jederzeit wieder!“</p>
-        <div class="testi-who">Sebastian Dietz</div><div class="testi-role">Google-Bewertung</div>
-      </div>
-      <div class="testi-card">
-        <div class="stars"><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg></div>
-        <p class="testi-txt">„Sehr nette und kompetente Unterstützung! Empfehle ich uneingeschränkt.“</p>
-        <div class="testi-who">Verena K.</div><div class="testi-role">Google-Bewertung</div>
-      </div>
-      <div class="testi-card">
-        <div class="stars"><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg></div>
-        <p class="testi-txt">„Man merkt gar nicht, dass man selber überhaupt keine Ahnung hat. Perfekt“</p>
-        <div class="testi-who">Martina Polednik</div><div class="testi-role">Google-Bewertung</div>
-      </div>
-      <div class="testi-card testi-wide">
-        <div class="testi-wide-quote">
-          <div class="stars"><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg><svg><use href="#ico-star"/></svg></div>
-          <p class="testi-txt">„Ich kann Grundke IT Service uneingeschränkt empfehlen. Andreas zeichnet sich durch eine äußerst zeitnahe und zuverlässige Betreuung aus. Er ist fachlich hervorragend aufgestellt und setzt gezielt moderne Technologien wie Künstliche Intelligenz ein, um optimale Lösungen zu erarbeiten. Ich fühle mich in allen IT-Angelegenheiten bestens betreut und schätze die professionelle Zusammenarbeit sehr.“</p>
-        </div>
-        <div class="testi-wide-who">
-          <div class="testi-who">Janine Blumenschein</div><div class="testi-role">Steuerberatung</div>
-        </div>
-      </div>
-    </div>
-    <p class="testi-source" id="bewertungen-herkunft"><strong>Woher die Stimmen kommen:</strong> Fünf stammen aus meinem Google-Unternehmensprofil, eine hat mir eine Kundin direkt geschickt. Ich gebe sie wörtlich und ungekürzt wieder. Hier stehen nur Stimmen von Betrieben und Menschen, für die ich gearbeitet habe. Die Bewertungen bei Google prüft Google nach eigenen Regeln; ändern oder löschen kann ich sie dort nicht. Alle Google-Bewertungen stehen im <a href="https://maps.google.com/?cid=1934827868521304193" target="_blank" rel="noopener">Google-Profil</a>.</p>
-  </div>
-</section>
-
-<!-- IT-BETREUUNG – ersetzt seit 07.10.2026 die „Acht Situationen" und die USP-Sektion -->
+<!-- IT-BETREUUNG: Typische Anrufe + K2 (seit 10.10.2026 statt der Haken-Liste), Vergleich aufklappbar,
+     Chips zu den IT-Leistungsseiten (ersetzen den Abschnitt „Leistungen“, Anker #leistungen bleibt) -->
 <section class="itb section-pad" id="it-betreuung">
   <div class="inner">
     <div class="s-label">IT-Betreuung</div>
@@ -1445,78 +1578,186 @@
       <div><dt>„Der Server ist abgestürzt.“</dt><dd>Kein Zugriff auf Dateien, keine Mails. Ist er noch erreichbar, sehe ich ihn mir per Fernwartung an und sage dir, was los ist. <a href="/ratgeber/server-ausgefallen/">Was du bis dahin tun kannst</a></dd></div>
       <div><dt>„Es ist 16:30 Uhr, mein IT-Dienstleister hat schon zu.“</dt><dd>Ich habe keine klassischen Öffnungszeiten. Ruf an oder schreib per WhatsApp, auch abends und am Wochenende. Vertragskunden gehen vor.</dd></div>
     </dl>
-    <div class="usp-grid">
-      <div>
-        <blockquote class="usp-quote">„Kein Gehalt. Kein Obstkorb. Kein Onboarding.<br>Dafür einer, der dein System kennt.“</blockquote>
-        <ul class="usp-list">
-          <li><span class="u-chk" aria-hidden="true"><svg width="11" height="11"><use href="#ico-check"/></svg></span>Telefon, WhatsApp, E-Mail: die Wege, die du schon kennst</li>
-          <li><span class="u-chk" aria-hidden="true"><svg width="11" height="11"><use href="#ico-check"/></svg></span>Fernwartung eingerichtet: viele Probleme lösen sich ohne Anfahrt</li>
-          <li><span class="u-chk" aria-hidden="true"><svg width="11" height="11"><use href="#ico-check"/></svg></span>Ich lerne dein System, du musst nicht jedes Mal neu erklären</li>
-          <li><span class="u-chk" aria-hidden="true"><svg width="11" height="11"><use href="#ico-check"/></svg></span>Ich melde mich, wenn Updates, Sicherung oder Laufzeiten etwas verlangen</li>
-          <li><span class="u-chk" aria-hidden="true"><svg width="11" height="11"><use href="#ico-check"/></svg></span>KI, Software und Websites aus derselben Hand</li>
-          <li><span class="u-chk" aria-hidden="true"><svg width="11" height="11"><use href="#ico-check"/></svg></span>Abgestimmte Vertretung bei Urlaub und Krankheit</li>
-        </ul>
-      </div>
-      <div class="compare-box">
-        <div class="compare-hd"><span class="bh">Großes Systemhaus</span><span class="mh">vs</span><span class="gh">Du mit Grundke IT</span></div>
-        <div class="c-row"><span class="c-bad">Ticketsystem</span><span class="c-mid" aria-hidden="true">→</span><span class="c-good">Direkter Kontakt</span></div>
-        <div class="c-row"><span class="c-bad">Wechselnde Techniker</span><span class="c-mid" aria-hidden="true">→</span><span class="c-good">Ich rufe selbst zurück</span></div>
-        <div class="c-row"><span class="c-bad">Anonymes Team</span><span class="c-mid" aria-hidden="true">→</span><span class="c-good">Ein Ansprechpartner</span></div>
-        <div class="c-row"><span class="c-bad">Stundensatz unklar</span><span class="c-mid" aria-hidden="true">→</span><span class="c-good">110 € netto je Stunde</span></div>
-        <div class="c-row"><span class="c-bad">Wochenendzuschlag</span><span class="c-mid" aria-hidden="true">→</span><span class="c-good">Kein Aufschlag</span></div>
-        <div class="c-row"><span class="c-bad">Neue Person jedes Mal</span><span class="c-mid" aria-hidden="true">→</span><span class="c-good">Kennt deine Anlage</span></div>
+    <div class="itb-k">
+      <blockquote class="usp-quote">„Kein Gehalt. Kein Obstkorb. Kein Onboarding.<br>Dafür einer, der dein System kennt.“</blockquote>
+      <p class="itb-k2">Ich habe eure Zugänge, kenne eure Geräte und weiß, wie bei euch gearbeitet wird. Wenn abends der Server steht oder am Samstag die Kasse, muss niemand erst herausfinden, wer zuständig ist. Und vorher kümmere ich mich je nach Paket um Updates, Datensicherung und Virenschutz, damit es seltener brennt.</p>
+    </div>
+    <details class="more itb-vgl">
+      <summary>Großes Systemhaus oder Grundke IT: der Vergleich</summary>
+        <div class="compare-box">
+          <div class="compare-hd"><span class="bh">Großes Systemhaus</span><span class="mh">vs</span><span class="gh">Du mit Grundke IT</span></div>
+          <div class="c-row"><span class="c-bad">Ticketsystem</span><span class="c-mid" aria-hidden="true">→</span><span class="c-good">Direkter Kontakt</span></div>
+          <div class="c-row"><span class="c-bad">Wechselnde Techniker</span><span class="c-mid" aria-hidden="true">→</span><span class="c-good">Antwort von mir selbst</span></div>
+          <div class="c-row"><span class="c-bad">Anonymes Team</span><span class="c-mid" aria-hidden="true">→</span><span class="c-good">Ein Ansprechpartner</span></div>
+          <div class="c-row"><span class="c-bad">Stundensatz unklar</span><span class="c-mid" aria-hidden="true">→</span><span class="c-good">110 € netto je Stunde</span></div>
+          <div class="c-row"><span class="c-bad">Wochenendzuschlag</span><span class="c-mid" aria-hidden="true">→</span><span class="c-good">Kein Aufschlag</span></div>
+          <div class="c-row"><span class="c-bad">Neue Person jedes Mal</span><span class="c-mid" aria-hidden="true">→</span><span class="c-good">Kennt deine Anlage</span></div>
+        </div>
+    </details>
+    <div class="itb-leist">
+      <span id="leistungen" class="anchor"></span>
+      <p class="itb-leist-h">Abgeleitet aus 496 realen Einsätzen bei kleinen Betrieben, im Handwerk, in Gastronomie, Hotels und Praxen:</p>
+      <div class="chips">
+        <a href="/managed-it-service/">Managed IT-Service</a>
+        <a href="/microsoft-365-betreuung/">Microsoft 365 Betreuung</a>
+        <a href="/it-sicherheit-backup/">IT-Sicherheit &amp; Backup</a>
+        <a href="/netzwerk-wlan-firewall/">Netzwerk, WLAN &amp; Firewall</a>
+        <a href="/it-notdienst/">IT-Notdienst</a>
+        <a href="/it-betreuer-wechseln/">IT-Betreuer wechseln</a>
+        <a href="/lizenzen/">Lizenzen</a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- IT-SCHNELLCHECK (Lead-Magnet, Task 2 Release 1) -->
+<!-- KUNDENSTIMMEN -->
+<section class="testimonials section-pad" id="referenzen">
+  <div class="inner">
+    <div class="s-label">Was Kunden sagen</div>
+    <h2 class="s-title">Was andere über mich sagen</h2>
+    <!-- HOME_REVIEWS:START (generiert aus REVIEWS in tools/build_landingpages.py) -->
+    <div class="testi-top">
+      <figure class="testi-card">
+        <div class="stars" role="img" aria-label="5 von 5 Sternen"><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg></div>
+        <blockquote class="testi-txt">
+          <p>„Ich kann Grundke IT Service uneingeschränkt empfehlen. Andreas zeichnet sich durch eine äußerst zeitnahe und zuverlässige Betreuung aus. Er ist fachlich hervorragend aufgestellt und setzt gezielt moderne Technologien wie Künstliche Intelligenz ein, um optimale Lösungen zu erarbeiten. Ich fühle mich in allen IT-Angelegenheiten bestens betreut und schätze die professionelle Zusammenarbeit sehr.“</p>
+        </blockquote>
+        <figcaption>
+          <div class="testi-who">Janine Blumenschein</div>
+          <div class="testi-role">Steuerberatung · direkt übermittelt</div>
+        </figcaption>
+      </figure>
+      <figure class="testi-card">
+        <div class="stars" role="img" aria-label="5 von 5 Sternen"><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg></div>
+        <blockquote class="testi-txt">
+          <p>„Man merkt gar nicht, dass man selber überhaupt keine Ahnung hat. Perfekt“</p>
+        </blockquote>
+        <figcaption>
+          <div class="testi-who">Martina Polednik</div>
+          <div class="testi-role">Google-Bewertung</div>
+        </figcaption>
+      </figure>
+    </div>
+    <p class="testi-row-h">4 weitere Stimmen<span class="testi-pos" data-testi-pos aria-hidden="true"></span></p>
+    <div class="testi-row" tabindex="0" role="region" aria-label="Weitere Kundenstimmen">
+      <figure class="testi-card testi-card--long">
+        <div class="stars" role="img" aria-label="5 von 5 Sternen"><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg></div>
+        <blockquote class="testi-txt">
+          <p>„Andy hat das WLAN in unserem Haus modernisiert und auf Ubiquiti umgestellt, damit unsere Gäste eine bessere Internetverbindung genießen können. Die Zusammenarbeit hat sehr viel Spaß gemacht – auch wenn wir aufgrund des älteren Gebäudes die eine oder andere Hürde zu bewältigen hatten.</p>
+          <p>Besonders beeindruckt hat uns Andys hoher Anspruch an die Qualität seiner Arbeit. Dazu kommt seine herzliche und unkomplizierte Art, die die Zusammenarbeit auch menschlich sehr angenehm gemacht hat.</p>
+          <p>Über den eigentlichen Auftrag hinaus hat Andy uns wertvolle Tipps zum Einsatz von KI gegeben und hilfreiche Analysen erstellt, für die wir ihm sehr dankbar sind.</p>
+          <p>Rundum eine tolle Erfahrung. Ich kann Andy mit bestem Gewissen weiterempfehlen!“</p>
+        </blockquote>
+        <figcaption>
+          <div class="testi-who">Apartments Bauer</div>
+          <div class="testi-role">Google-Bewertung</div>
+          <div class="testi-ctx">WLAN-Modernisierung auf Ubiquiti im Altbau</div>
+        </figcaption>
+      </figure>
+      <figure class="testi-card">
+        <div class="stars" role="img" aria-label="5 von 5 Sternen"><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg></div>
+        <blockquote class="testi-txt">
+          <p>„Ich bin sehr zufrieden mit der Arbeit der Firma. Die Umsetzung erfolgte schnell, zuverlässig und in sehr guter Qualität. Alle meine Anliegen wurden professionell gelöst. Klare Empfehlung!“</p>
+        </blockquote>
+        <figcaption>
+          <div class="testi-who">Christian Fleischmann</div>
+          <div class="testi-role">Google-Bewertung</div>
+        </figcaption>
+      </figure>
+      <figure class="testi-card">
+        <div class="stars" role="img" aria-label="5 von 5 Sternen"><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg></div>
+        <blockquote class="testi-txt">
+          <p>„Sehr guter Service...perfekte Zusammenarbeit! Jederzeit wieder!“</p>
+        </blockquote>
+        <figcaption>
+          <div class="testi-who">Sebastian Dietz</div>
+          <div class="testi-role">Google-Bewertung</div>
+        </figcaption>
+      </figure>
+      <figure class="testi-card">
+        <div class="stars" role="img" aria-label="5 von 5 Sternen"><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg></div>
+        <blockquote class="testi-txt">
+          <p>„Sehr nette und kompetente Unterstützung! Empfehle ich uneingeschränkt.“</p>
+        </blockquote>
+        <figcaption>
+          <div class="testi-who">Verena K.</div>
+          <div class="testi-role">Google-Bewertung</div>
+        </figcaption>
+      </figure>
+    </div>
+    <!-- HOME_REVIEWS:END -->
+    <p class="testi-source" id="bewertungen-herkunft"><strong>Woher die Stimmen kommen:</strong> Fünf stammen aus meinem Google-Unternehmensprofil, eine hat mir eine Kundin direkt geschickt. Ich gebe sie wörtlich und ungekürzt wieder. Hier stehen nur Stimmen von Betrieben und Menschen, für die ich gearbeitet habe. Die Bewertungen bei Google prüft Google nach eigenen Regeln; ändern oder löschen kann ich sie dort nicht. Alle Google-Bewertungen stehen im <a href="https://maps.google.com/?cid=1934827868521304193" target="_blank" rel="noopener">Google-Profil</a>.</p>
+  </div>
+</section>
+
+<!-- AUS DER PRAXIS - Story-Block, seit 10.10.2026 gekuerzt mit Bruecke zum Schnellcheck -->
+<section class="praxis section-pad" id="praxis">
+  <div class="inner">
+    <div class="praxis-card">
+      <div class="praxis-icon"><svg><use href="#ico-alert-octagon"/></svg></div>
+      <div class="praxis-body">
+        <div class="praxis-tag">Aus der Praxis</div>
+        <h3>„Ich muss <em>heute noch</em> fertig werden!“</h3>
+        <div class="praxis-text">
+          <p>Ein Kunde ruft an: Sein Rechner startet plötzlich nicht mehr. Er muss heute noch ein wichtiges Projekt abgeben. Keine Datensicherung. Festplatte fest verbaut.</p>
+          <p>Wir haben es an dem Tag gelöst – mit viel Aufwand und ohne Garantie, dass es klappt.</p>
+          <p class="praxis-rule"><strong>Die Regel ist einfach:</strong> Wenn dein Rechner heute kaputtgeht, musst du morgen weiterarbeiten können. Beim Schnellcheck sehe ich nach, ob das bei euch so ist.</p>
+          <a href="#schnellcheck" class="praxis-cta">Zum IT-Schnellcheck <svg aria-hidden="true"><use href="#ico-arrow-r"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- IT-SCHNELLCHECK (Lead-Magnet). Seit 10.10.2026: Checkliste und Bericht-Vorschau aufklappbar
+     (IDs und data-info bleiben, main.js findet die Info-Knoepfe weiter), WhatsApp vorbefuellt -->
 <section class="schnellcheck section-pad" id="schnellcheck">
   <div class="inner">
     <div class="s-label">Bevor wir reden – schauen wir uns deine IT an</div>
     <h2 class="s-title">Kostenloser IT-Schnellcheck</h2>
-    <p class="s-sub">Kein Verkaufsgespräch. Kein Druck. Du bekommst etwas Konkretes in der Hand – einen schriftlichen Bericht zum Behalten.</p>
+    <p class="s-sub">Beim Schnellcheck lerne ich eure Systeme kennen, bevor es brennt.</p>
 
     <div class="sc-card">
-      <div class="sc-icon"><svg><use href="#ico-search-check"/></svg></div>
+      <div class="sc-icon"><svg aria-hidden="true"><use href="#ico-search-check"/></svg></div>
       <p class="sc-title">30–45 Minuten. Vor Ort. <em>Du behältst den Bericht.</em></p>
-      <p class="sc-sub">Bevor ich dir irgendwas verkaufe, schau ich's mir an. 30 bis 45 Minuten bei dir vor Ort. Danach bekommst du einen schriftlichen Kurz-Bericht mit den wichtigsten Handlungsempfehlungen – per Mail, in deinem Namen, zum Behalten.</p>
+      <details class="more sc-more">
+        <summary>Was ich mir ansehe und was im Bericht steht</summary>
+        <div class="sc-grid">
 
-      <div class="sc-grid">
+          <!-- Was ich mir anschaue -->
+          <div class="sc-block">
+            <h3><svg><use href="#ico-list"/></svg> Was ich mir anschaue</h3>
+            <ul class="sc-checklist" id="sc-checklist">
+              <li><svg class="sc-chk"><use href="#ico-check"/></svg><span class="sc-label">Netzwerk &amp; WLAN</span><button type="button" class="info-btn" data-info="netzwerk" aria-label="Mehr Infos zu Netzwerk &amp; WLAN"><svg><use href="#ico-info"/></svg></button></li>
+              <li><svg class="sc-chk"><use href="#ico-check"/></svg><span class="sc-label">Arbeitsplätze &amp; Server</span><button type="button" class="info-btn" data-info="clients" aria-label="Mehr Infos zu Arbeitsplätze &amp; Server"><svg><use href="#ico-info"/></svg></button></li>
+              <li><svg class="sc-chk"><use href="#ico-check"/></svg><span class="sc-label">Microsoft 365 / E-Mail</span><button type="button" class="info-btn" data-info="m365" aria-label="Mehr Infos zu Microsoft 365"><svg><use href="#ico-info"/></svg></button></li>
+              <li><svg class="sc-chk"><use href="#ico-check"/></svg><span class="sc-label">Virenschutz &amp; Firewall</span><button type="button" class="info-btn" data-info="security" aria-label="Mehr Infos zu Virenschutz &amp; Firewall"><svg><use href="#ico-info"/></svg></button></li>
+              <li><svg class="sc-chk"><use href="#ico-check"/></svg><span class="sc-label">Datensicherung (Backup)</span><button type="button" class="info-btn" data-info="backup" aria-label="Mehr Infos zu Backup"><svg><use href="#ico-info"/></svg></button></li>
+              <li><svg class="sc-chk"><use href="#ico-check"/></svg><span class="sc-label">Router &amp; Internet-Anschluss</span><button type="button" class="info-btn" data-info="router" aria-label="Mehr Infos zu Router"><svg><use href="#ico-info"/></svg></button></li>
+              <li><svg class="sc-chk"><use href="#ico-check"/></svg><span class="sc-label">Drucker, Kameras, Peripherie</span><button type="button" class="info-btn" data-info="peripherie" aria-label="Mehr Infos zu Peripherie"><svg><use href="#ico-info"/></svg></button></li>
+              <li><svg class="sc-chk"><use href="#ico-check"/></svg><span class="sc-label">Software-Aktualität (EOL, BSI)</span><button type="button" class="info-btn" data-info="eol" aria-label="Mehr Infos zu EOL/BSI"><svg><use href="#ico-info"/></svg></button></li>
+              <li><svg class="sc-chk"><use href="#ico-check"/></svg><span class="sc-label">Benutzer, Passwörter, Doku</span><button type="button" class="info-btn" data-info="doku" aria-label="Mehr Infos zu Benutzer und Doku"><svg><use href="#ico-info"/></svg></button></li>
+            </ul>
+          </div>
 
-        <!-- Was ich mir anschaue -->
-        <div class="sc-block">
-          <h3><svg><use href="#ico-list"/></svg> Was ich mir anschaue</h3>
-          <ul class="sc-checklist" id="sc-checklist">
-            <li><svg class="sc-chk"><use href="#ico-check"/></svg><span class="sc-label">Netzwerk &amp; WLAN</span><button type="button" class="info-btn" data-info="netzwerk" aria-label="Mehr Infos zu Netzwerk &amp; WLAN"><svg><use href="#ico-info"/></svg></button></li>
-            <li><svg class="sc-chk"><use href="#ico-check"/></svg><span class="sc-label">Arbeitsplätze &amp; Server</span><button type="button" class="info-btn" data-info="clients" aria-label="Mehr Infos zu Arbeitsplätze &amp; Server"><svg><use href="#ico-info"/></svg></button></li>
-            <li><svg class="sc-chk"><use href="#ico-check"/></svg><span class="sc-label">Microsoft 365 / E-Mail</span><button type="button" class="info-btn" data-info="m365" aria-label="Mehr Infos zu Microsoft 365"><svg><use href="#ico-info"/></svg></button></li>
-            <li><svg class="sc-chk"><use href="#ico-check"/></svg><span class="sc-label">Virenschutz &amp; Firewall</span><button type="button" class="info-btn" data-info="security" aria-label="Mehr Infos zu Virenschutz &amp; Firewall"><svg><use href="#ico-info"/></svg></button></li>
-            <li><svg class="sc-chk"><use href="#ico-check"/></svg><span class="sc-label">Datensicherung (Backup)</span><button type="button" class="info-btn" data-info="backup" aria-label="Mehr Infos zu Backup"><svg><use href="#ico-info"/></svg></button></li>
-            <li><svg class="sc-chk"><use href="#ico-check"/></svg><span class="sc-label">Router &amp; Internet-Anschluss</span><button type="button" class="info-btn" data-info="router" aria-label="Mehr Infos zu Router"><svg><use href="#ico-info"/></svg></button></li>
-            <li><svg class="sc-chk"><use href="#ico-check"/></svg><span class="sc-label">Drucker, Kameras, Peripherie</span><button type="button" class="info-btn" data-info="peripherie" aria-label="Mehr Infos zu Peripherie"><svg><use href="#ico-info"/></svg></button></li>
-            <li><svg class="sc-chk"><use href="#ico-check"/></svg><span class="sc-label">Software-Aktualität (EOL, BSI)</span><button type="button" class="info-btn" data-info="eol" aria-label="Mehr Infos zu EOL/BSI"><svg><use href="#ico-info"/></svg></button></li>
-            <li><svg class="sc-chk"><use href="#ico-check"/></svg><span class="sc-label">Benutzer, Passwörter, Doku</span><button type="button" class="info-btn" data-info="doku" aria-label="Mehr Infos zu Benutzer und Doku"><svg><use href="#ico-info"/></svg></button></li>
-          </ul>
+          <!-- Was du danach in der Hand hast -->
+          <div class="sc-block">
+            <h3><svg><use href="#ico-file-text"/></svg> Was du danach in der Hand hast</h3>
+            <p class="sc-block-p">Einen schriftlichen Kurz-Bericht (4–6 Seiten PDF) mit:</p>
+            <ul class="sc-deliverable-list">
+              <li>Bestandsaufnahme deiner IT in Stichpunkten</li>
+              <li>3 bis 5 konkrete Handlungsempfehlungen – priorisiert nach Dringlichkeit</li>
+              <li>Ampel-Bewertung je Bereich (grün / gelb / rot)</li>
+              <li>Offene Punkte, um die du dich kümmern solltest</li>
+              <li>Unverbindliche Grob-Kostenschätzung, falls was ansteht</li>
+            </ul>
+            <button type="button" class="sc-preview-btn" id="sc-preview-btn" aria-haspopup="dialog">
+              <svg><use href="#ico-file-text"/></svg> Blick in einen Beispiel-Bericht
+            </button>
+          </div>
+
         </div>
-
-        <!-- Was du danach in der Hand hast -->
-        <div class="sc-block">
-          <h3><svg><use href="#ico-file-text"/></svg> Was du danach in der Hand hast</h3>
-          <p style="font-size:.85rem;color:var(--text2);line-height:1.65;margin-bottom:1rem;">Einen schriftlichen Kurz-Bericht (4–6 Seiten PDF) mit:</p>
-          <ul class="sc-deliverable-list">
-            <li>Bestandsaufnahme deiner IT in Stichpunkten</li>
-            <li>3 bis 5 konkrete Handlungsempfehlungen – priorisiert nach Dringlichkeit</li>
-            <li>Ampel-Bewertung je Bereich (grün / gelb / rot)</li>
-            <li>Offene Punkte, um die du dich kümmern solltest</li>
-            <li>Unverbindliche Grob-Kostenschätzung, falls was ansteht</li>
-          </ul>
-          <button type="button" class="sc-preview-btn" id="sc-preview-btn" aria-haspopup="dialog">
-            <svg><use href="#ico-file-text"/></svg> Blick in einen Beispiel-Bericht
-          </button>
-        </div>
-
-      </div>
+      </details>
 
       <!-- Versprechen -->
       <div class="sc-promise">
@@ -1529,8 +1770,9 @@
       <!-- CTA -->
       <div class="sc-cta-row">
         <a href="tel:+491782584438" class="sc-cta">
-          Termin vereinbaren · 0178 258 44 38 <svg><use href="#ico-arrow-r"/></svg>
+          Termin vereinbaren · 0178 258 44 38 <svg aria-hidden="true"><use href="#ico-arrow-r"/></svg>
         </a>
+        <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20komme%20%C3%BCber%20den%20IT-Schnellcheck%20auf%20deiner%20Website." target="_blank" rel="noopener" class="hc-wa sc-wa" data-wa="schnellcheck"><svg width="18" height="18" aria-hidden="true"><use href="#ico-wa"/></svg>WhatsApp</a>
         <p class="sc-hint"><a href="mailto:info@grundke-it.de?subject=IT-Schnellcheck%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0Aich%20interessiere%20mich%20f%C3%BCr%20den%20kostenlosen%20IT-Schnellcheck.%0A%0AMein%20Unternehmen%20%2F%20meine%20Situation%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F).">Lieber per Mail anfragen</a>. Der Schnellcheck ist auch die Basis für den monatlichen IT-Report im <a href="#preise">Premium-Paket</a>.</p>
       </div>
     </div>
@@ -1614,370 +1856,223 @@
   </div>
 </div>
 
-<!-- KI, DATENSCHUTZ, FRISTEN -->
-<section class="section-pad" id="ki" style="background:var(--bg);">
-  <div class="inner">
-    <div class="s-label">KI, Datenschutz, Fristen</div>
-    <h2 class="s-title">KI im Betrieb.<br>Sauber eingeführt.</h2>
-    <p class="s-sub">KI soll bei euch niemanden ersetzen. Sie soll die Arbeit wegnehmen, die keiner gern macht: Daten von einem Programm ins andere kopieren, Rechnungen abtippen, Spam aussortieren. Ich fange bei den Leuten an, die mit dem Ablauf arbeiten: Was nervt euch jede Woche? Das bauen wir zuerst weg.</p>
-
-    <div class="kih-grid">
-      <div class="kih-card">
-        <span class="kih-tag">Videoüberwachung mit KI</span>
-        <h3>Die Kamera erkennt Fahrzeuge</h3>
-        <p>Auf eine vorhandene Kameraanlage setze ich eine Erkennung: Fahrzeuge und, wo es einen Zweck dafür gibt, auch Kennzeichen werden erkannt, jedes Ereignis landet mit Zeitstempel in einer Datenbank. Niemand muss mehr Videomaterial sichten. <a href="/ki-videoanalyse/">Mehr zur Videoauswertung</a></p>
-      </div>
-      <div class="kih-card">
-        <span class="kih-tag">Aus meinem eigenen Betrieb</span>
-        <h3>Programme, die miteinander reden</h3>
-        <p>Meine Kundenverwaltung legt Kunden, Angebots- und Rechnungsentwürfe über die Schnittstelle direkt in Lexware Office an. Nichts wird zweimal getippt. Das geht bei vielen Auftrags- und Rechnungsprogrammen. <a href="/software-nach-mass/">Mehr zu Software nach Maß</a></p>
-      </div>
-      <div class="kih-card">
-        <span class="kih-tag">Datenschutz und Fristen</span>
-        <h3>Erst klären, dann bauen</h3>
-        <p>Wo das Modell läuft, wird vor der Umsetzung entschieden: im Haus, in einem EU-Rechenzentrum oder bei einem Anbieter mit Auftragsverarbeitungsvertrag. Dazu eine Nutzungsrichtlinie und die Fristen, die gerade drücken: E-Rechnung ab 2027 oder 2028 und Maßnahmen zur KI-Kompetenz nach Artikel 4 der KI-Verordnung.</p>
-      </div>
-    </div>
-    <p class="kih-more">Mehr dazu: <a href="/ki-dsgvo/">KI sicher einsetzen</a> · <a href="/e-rechnung/">E-Rechnung 2027/2028</a> · <a href="/software-nach-mass/">Software nach Maß</a> · <a href="/digitalbonus-bayern/">Digitalbonus Bayern</a></p>
-
-    <div class="kih-box">
-      <h3>Kostenloser KI-Potenzialcheck</h3>
-      <p>60 bis 90 Minuten, bei dir im Betrieb oder per Videogespräch. Wir gehen durch, was regelmäßig Zeit kostet. Danach bekommst du schriftlich, was sich automatisieren lässt, was es bringt und was rechtlich zu beachten ist. Das Papier gehört dir, auch wenn wir nicht weiterarbeiten.</p>
-      <div class="kih-cta">
-        <a href="tel:+491782584438" class="btn-p"><svg width="16" height="16" aria-hidden="true"><use href="#ico-phone"/></svg>Potenzialcheck vereinbaren</a>
-        <a href="/ki-fuer-kmu/" class="btn-g">Was damit möglich ist</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- WEBSITES -->
-<section class="section-pad web-sec" id="websites">
-  <div class="inner">
-    <div class="web-row">
-      <div>
-        <div class="s-label">Websites</div>
-        <h2 class="s-title">Eure Website soll<br>Anfragen bringen.</h2>
-        <p class="s-sub">Ich baue Websites technisch neu auf: fürs Handy, schnell, bei Google auffindbar und für ChatGPT und Co. lesbar aufgebaut. Die Optik kommt aus geprüften Vorlagen, gestaltet wird nicht. Wie schnell und aufgeräumt das ist, siehst du gerade: Diese Seite habe ich selbst so gebaut.</p>
-      </div>
-      <div class="web-cta">
-        <p><strong>Kostenloser Website- und KI-Sichtbarkeits-Check</strong>Wie schnell lädt eure Seite am Handy, wird sie bei Google gefunden, nennen KI-Assistenten euren Betrieb? Ihr bekommt einen kurzen Bericht.</p>
-        <a href="/websites-fuer-betriebe/" class="btn-p">Zum Website-Check <svg width="16" height="16" aria-hidden="true"><use href="#ico-arrow-r"/></svg></a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- LEISTUNGEN – seit 07.10.2026 eine Darstellung statt zwei (Kacheln und Themenbereiche zusammengefasst) -->
-<section class="services section-pad" id="leistungen">
-  <div class="inner">
-    <div class="s-label">Was ich für dich tue</div>
-    <h2 class="s-title">Leistungen</h2>
-    <p class="s-sub">Abgeleitet aus 496 realen Einsätzen bei kleinen Betrieben, im Handwerk, in Gastronomie, Hotels und Praxen. Das landet täglich bei mir auf dem Tisch.</p>
-
-    <div class="leist-grid">
-      <div class="leist-group">
-        <div class="leist-head"><svg><use href="#ico-shield"/></svg><span>IT-Betrieb &amp; Sicherheit</span></div>
-        <ul class="leist-list">
-          <li>Microsoft 365: Lizenzen, Einrichtung, Zwei-Faktor-Anmeldung</li>
-          <li>Virenschutz (ESET) und Datensicherung mit Kopie außer Haus</li>
-          <li>Updates und Überwachung der Geräte</li>
-          <li>Server und Netzwerkspeicher (NAS)</li>
-        </ul>
-        <a href="/managed-it-service/" class="leist-link">Laufende IT-Betreuung <svg><use href="#ico-arrow-r"/></svg></a>
-      </div>
-
-      <div class="leist-group">
-        <div class="leist-head"><svg><use href="#ico-network"/></svg><span>Netzwerk &amp; Internet</span></div>
-        <ul class="leist-list">
-          <li>WLAN- und Netzwerk-Planung mit Ubiquiti UniFi</li>
-          <li>Firewall und VPN für sicheres mobiles Arbeiten</li>
-          <li>Gäste-WLAN für Hotel, Gastronomie und Praxis</li>
-          <li>Videoüberwachung mit UniFi-Kameras</li>
-        </ul>
-        <a href="/netzwerk-wlan-firewall/" class="leist-link">Netzwerk, WLAN &amp; Firewall <svg><use href="#ico-arrow-r"/></svg></a>
-      </div>
-
-      <div class="leist-group">
-        <div class="leist-head"><svg><use href="#ico-cpu"/></svg><span>KI, Software &amp; Websites</span></div>
-        <ul class="leist-list">
-          <li>KI datenschutzgerecht einführen</li>
-          <li>Software nach Maß für eure Abläufe</li>
-          <li>E-Rechnung und Schnittstellen zwischen Programmen</li>
-          <li>Websites technisch neu aufbauen und betreiben</li>
-        </ul>
-        <a href="/ki-fuer-kmu/" class="leist-link">KI im Betrieb <svg><use href="#ico-arrow-r"/></svg></a>
-      </div>
-
-      <div class="leist-group">
-        <div class="leist-head"><svg><use href="#ico-briefcase"/></svg><span>IT-Projekte &amp; Beratung</span></div>
-        <ul class="leist-list">
-          <li>Kostenloser IT-Schnellcheck (30–45 Minuten)</li>
-          <li>Bestandsaufnahme und Risikoanalyse</li>
-          <li>Umstieg auf Windows 11, Microsoft 365 oder neue Server</li>
-          <li>Ablösung veralteter Router und Firewalls</li>
-          <li>IT-Dokumentation für den Notfall</li>
-        </ul>
-        <a href="#schnellcheck" class="leist-link">Zum IT-Schnellcheck <svg><use href="#ico-arrow-r"/></svg></a>
-      </div>
-
-      <div class="leist-group">
-        <div class="leist-head"><svg><use href="#ico-graduation"/></svg><span>Schulung &amp; Awareness</span></div>
-        <ul class="leist-list">
-          <li>IT-Sicherheitsschulung für Mitarbeitende</li>
-          <li>Phishing erkennen, sicher reagieren</li>
-          <li>ChatGPT, Copilot und andere KI-Werkzeuge sicher nutzen</li>
-        </ul>
-        <a href="/schulung/" class="leist-link">Zum Schulungsangebot <svg><use href="#ico-arrow-r"/></svg></a>
-      </div>
-
-      <div class="leist-group leist-group-highlight">
-        <div class="leist-head"><svg><use href="#ico-clock"/></svg><span>Vor Ort &amp; Fernwartung</span></div>
-        <ul class="leist-list">
-          <li>Vor-Ort-Einsätze im Münchner Osten (Anfahrt bis 5 km inklusive, darüber nach vereinbarter Pauschale)</li>
-          <li>Fernwartung im 15-Minuten-Takt</li>
-          <li>Keine festen Öffnungszeiten, auch abends und am Wochenende</li>
-          <li>Ein Ansprechpartner für alle IT-Themen</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- AUS DER PRAXIS - Story-Block (Task 5 Release 1) -->
-<section class="praxis section-pad" id="praxis">
-  <div class="inner">
-    <div class="praxis-card">
-      <div class="praxis-icon"><svg><use href="#ico-alert-octagon"/></svg></div>
-      <div class="praxis-body">
-        <div class="praxis-tag">Aus der Praxis</div>
-        <h3>„Ich muss <em>heute noch</em> fertig werden!“</h3>
-        <div class="praxis-text">
-          <p>Ein Kunde ruft an: Sein Rechner startet plötzlich nicht mehr. Er arbeitet für seine eigenen Kunden und muss heute noch ein wichtiges Projekt abgeben. Keine Datensicherung. Festplatte fest verbaut. Nicht austauschbar.</p>
-          <p>Wir haben es an dem Tag gelöst – mit viel Aufwand und ohne Garantie, dass es klappt. Solche Situationen wünscht sich niemand. Und sie sind auch komplett vermeidbar.</p>
-          <p class="praxis-rule"><strong>Die Regel ist einfach:</strong> Wenn dein Rechner heute kaputtgeht, musst du morgen weiterarbeiten können. Dafür braucht es keine teure Lösung – aber eine, die funktioniert, automatisch läuft und regelmäßig getestet wird.</p>
-          <a href="#schnellcheck" class="praxis-cta">Lass uns drüber reden <svg><use href="#ico-arrow-r"/></svg></a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- IT-SICHERHEITSSCHULUNG (Teaser, Pakete und Buchung auf /schulung/) -->
-<section class="section-pad" id="schulung" style="background:var(--bg);">
-  <div class="inner">
-    <div class="web-row">
-      <div>
-        <div class="s-label">Schulung</div>
-        <h2 class="s-title">IT-Sicherheitsschulung<br>für dein Team</h2>
-        <p class="s-sub">Die meisten Angriffe beginnen mit einer E-Mail, die jemand im Team öffnet. In der Schulung lernen deine Leute, solche Mails zu erkennen, sichere Passwörter zu nutzen und KI-Werkzeuge einzusetzen, ohne Kundendaten preiszugeben. Mit Teilnahmenachweis.</p>
-      </div>
-      <div class="web-cta">
-        <ul class="sch-mini">
-          <li><strong>Live per Teams</strong>1,5 Stunden, 135&nbsp;€ netto pauschal</li>
-          <li><strong>Online-Portal (in Vorbereitung)</strong>geplant ab 49&nbsp;€ netto im Halbjahr, plus 5&nbsp;€ je Mitarbeiter</li>
-        </ul>
-        <a href="/schulung/" class="btn-p">Schulung ansehen <svg width="16" height="16" aria-hidden="true"><use href="#ico-arrow-r"/></svg></a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- PREISE -->
+<!-- PREISE (seit 10.10.2026 kompakt: Business zuerst, je Paket Preis und drei Unterschiede, alle Leistungen
+     aufklappbar, ohne Vertrag als Zeile, "Warum ein Paket?", "Monatlich dazu" mit Preisen aus PRICES) -->
 <section class="pricing section-pad" id="preise">
   <div class="inner">
     <div class="s-label">Transparent &amp; fair</div>
     <h2 class="s-title">Preise</h2>
-    <p class="s-sub">Keine versteckten Kosten, keine Überraschungen. Vom Einzeleinsatz bis zur Vollbetreuung – du entscheidest, wie viel Planungssicherheit du willst.</p>
-    <p style="font-size:.84rem;color:var(--text3);margin-top:-.5rem;margin-bottom:.5rem;">Paketpreise richten sich nach der Systemgröße (Anzahl Arbeitsplätze, Server, Komplexität). Die Preise gelten als Richtwerte für kleine Umgebungen bis ca. 10 Arbeitsplätze.</p>
-    <div class="price-grid" style="grid-template-columns:repeat(4,1fr);">
-
-      <!-- Ad-hoc / Feuerlöscher -->
-      <div class="price-card">
-        <div class="price-tier">Ohne Vertrag</div>
-        <div class="price-name">Ad-hoc</div>
-        <div class="price-val"><sup>€</sup>110</div>
-        <div class="price-per">/Stunde zzgl. MwSt.</div>
-        <div class="price-note">angefangene Viertelstunde</div>
-        <hr class="price-div"/>
-        <ul class="price-feats">
-          <li><span class="pfy">✓</span>Hilfe per Telefon &amp; Fernwartung</li>
-          <li><span class="pfy">✓</span>Abrechnung im 15-Min-Takt</li>
-          <li><span class="pfy">✓</span>Kein Wochenendzuschlag</li>
-          <li><span class="pfn">–</span>IT-Assessment &amp; Risiko-Report</li>
-          <li><span class="pfn">–</span>Remote-Zugriff eingerichtet</li>
-          <li><span class="pfn">–</span>Remote-Support inkl.</li>
-          <li><span class="pfn">–</span>Priorisiert im Support</li>
-          <li><span class="pfn">–</span>Patchmanagement</li>
-          <li><span class="pfn">–</span>ESET Virenschutz inkl.</li>
-          <li><span class="pfn">–</span>Monatlicher IT-Report</li>
-        </ul>
-        <a href="tel:+491782584438" class="price-btn out">Jetzt anrufen</a>
-      </div>
-
-      <!-- Starter -->
-      <div class="price-card">
-        <div class="price-tier">Einstieg</div>
-        <div class="price-name">Starter</div>
-        <div class="price-val"><sup>€</sup>149</div>
-        <div class="price-per">/Monat zzgl. MwSt.</div>
-        <div class="price-note">monatlich kündbar</div>
-        <hr class="price-div"/>
-        <ul class="price-feats">
-          <li><span class="pfy">✓</span>Hilfe per Telefon &amp; Fernwartung</li>
-          <li><span class="pfy">✓</span>Abrechnung im 15-Min-Takt</li>
-          <li><span class="pfy">✓</span>Kein Wochenendzuschlag</li>
-          <li><span class="pfy">✓</span>IT-Assessment &amp; Risiko-Report</li>
-          <li><span class="pfy">✓</span>Remote-Zugriff eingerichtet</li>
-          <li><span class="pfy">✓</span>1h Remote-Support/Monat inkl.</li>
-          <li><span class="pfy">✓</span>Priorisiert im Support</li>
-          <li><span class="pfn">–</span>Patchmanagement</li>
-          <li><span class="pfn">–</span>ESET Virenschutz inkl.</li>
-          <li><span class="pfn">–</span>Monatlicher IT-Report</li>
-        </ul>
-        <a href="mailto:info@grundke-it.de?subject=Paketanfrage%20Starter%20(%E2%82%AC149%2FMonat)%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0Aich%20interessiere%20mich%20f%C3%BCr%20das%20Paket%3A%20Starter%20(%E2%82%AC149%2FMonat)%0A%0AMein%20Unternehmen%20%2F%20meine%20Situation%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F)." class="price-btn out">Paket anfragen</a>
-      </div>
-
-      <!-- Business -->
+    <p class="s-sub">Keine versteckten Kosten, keine Überraschungen.</p>
+    <p class="pkg-hint">Paketpreise richten sich nach der Systemgröße (Anzahl Arbeitsplätze, Server, Komplexität). Die Preise gelten als Richtwerte für kleine Umgebungen bis ca. 10 Arbeitsplätze.</p>
+    <div class="pkg-grid">
       <div class="price-card feat">
         <div class="price-badge">Empfohlen</div>
         <div class="price-tier">Mit Patchmanagement</div>
-        <div class="price-name">Business</div>
-        <div class="price-val"><sup>€</sup>249</div>
-        <div class="price-per">/Monat zzgl. MwSt.</div>
+        <div class="pkg-head">
+          <h3 class="price-name">Business</h3>
+          <div class="pkg-price"><div class="price-val"><sup>€</sup>249</div><div class="price-per">/Monat zzgl. MwSt.</div></div>
+        </div>
         <div class="price-note">monatlich kündbar</div>
-        <hr class="price-div"/>
         <ul class="price-feats">
-          <li><span class="pfy">✓</span>Hilfe per Telefon &amp; Fernwartung</li>
-          <li><span class="pfy">✓</span>Abrechnung im 15-Min-Takt</li>
-          <li><span class="pfy">✓</span>Kein Wochenendzuschlag</li>
-          <li><span class="pfy">✓</span>IT-Assessment &amp; Risiko-Report</li>
-          <li><span class="pfy">✓</span>Remote-Zugriff eingerichtet</li>
-          <li><span class="pfy">✓</span>2h Remote-Support/Monat inkl.</li>
-          <li><span class="pfy">✓</span>Priorisiert im Support</li>
-          <li><span class="pfy">✓</span>Patchmanagement</li>
-          <li><span class="pfn">–</span>ESET Virenschutz inkl.</li>
-          <li><span class="pfn">–</span>Monatlicher IT-Report</li>
+          <li><svg class="pfy" aria-hidden="true"><use href="#ico-check"/></svg>2h Remote-Support/Monat inkl.</li>
+          <li><svg class="pfy" aria-hidden="true"><use href="#ico-check"/></svg>Patchmanagement</li>
+          <li><svg class="pfy" aria-hidden="true"><use href="#ico-check"/></svg>Priorisiert im Support</li>
         </ul>
-        <a href="mailto:info@grundke-it.de?subject=Paketanfrage%20Business%20(%E2%82%AC249%2FMonat)%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0Aich%20interessiere%20mich%20f%C3%BCr%20das%20Paket%3A%20Business%20(%E2%82%AC249%2FMonat)%0A%0AMein%20Unternehmen%20%2F%20meine%20Situation%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F)." class="price-btn solid">Paket anfragen</a>
+        <div class="pkg-btns">
+          <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20komme%20%C3%BCber%20deine%20Preise%20und%20interessiere%20mich%20f%C3%BCr%20das%20Paket%20Business." target="_blank" rel="noopener" class="price-btn solid" data-wa="preise-business"><svg width="16" height="16" aria-hidden="true"><use href="#ico-wa"/></svg>Paket anfragen</a>
+          <a href="mailto:info@grundke-it.de?subject=Paketanfrage%20Business%20(%E2%82%AC249%2FMonat)%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0Aich%20interessiere%20mich%20f%C3%BCr%20das%20Paket%3A%20Business%20(%E2%82%AC249%2FMonat)%0A%0AMein%20Unternehmen%20%2F%20meine%20Situation%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F)." class="price-btn out pkg-mail" aria-label="Paket Business per E-Mail anfragen" title="Per E-Mail anfragen"><svg width="18" height="18" aria-hidden="true"><use href="#ico-mail"/></svg></a>
+        </div>
       </div>
-
-      <!-- Premium -->
+      <div class="price-card">
+        <div class="price-tier">Einstieg</div>
+        <div class="pkg-head">
+          <h3 class="price-name">Starter</h3>
+          <div class="pkg-price"><div class="price-val"><sup>€</sup>149</div><div class="price-per">/Monat zzgl. MwSt.</div></div>
+        </div>
+        <div class="price-note">monatlich kündbar</div>
+        <ul class="price-feats">
+          <li><svg class="pfy" aria-hidden="true"><use href="#ico-check"/></svg>1h Remote-Support/Monat inkl.</li>
+          <li><svg class="pfy" aria-hidden="true"><use href="#ico-check"/></svg>IT-Assessment &amp; Risiko-Report</li>
+          <li><svg class="pfy" aria-hidden="true"><use href="#ico-check"/></svg>Priorisiert im Support</li>
+        </ul>
+        <div class="pkg-btns">
+          <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20komme%20%C3%BCber%20deine%20Preise%20und%20interessiere%20mich%20f%C3%BCr%20das%20Paket%20Starter." target="_blank" rel="noopener" class="price-btn out" data-wa="preise-starter"><svg width="16" height="16" aria-hidden="true"><use href="#ico-wa"/></svg>Paket anfragen</a>
+          <a href="mailto:info@grundke-it.de?subject=Paketanfrage%20Starter%20(%E2%82%AC149%2FMonat)%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0Aich%20interessiere%20mich%20f%C3%BCr%20das%20Paket%3A%20Starter%20(%E2%82%AC149%2FMonat)%0A%0AMein%20Unternehmen%20%2F%20meine%20Situation%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F)." class="price-btn out pkg-mail" aria-label="Paket Starter per E-Mail anfragen" title="Per E-Mail anfragen"><svg width="18" height="18" aria-hidden="true"><use href="#ico-mail"/></svg></a>
+        </div>
+      </div>
       <div class="price-card">
         <div class="price-tier">Vollbetreuung</div>
-        <div class="price-name">Premium</div>
-        <div class="price-val"><sup>€</sup>449</div>
-        <div class="price-per">/Monat zzgl. MwSt.</div>
+        <div class="pkg-head">
+          <h3 class="price-name">Premium</h3>
+          <div class="pkg-price"><div class="price-val"><sup>€</sup>449</div><div class="price-per">/Monat zzgl. MwSt.</div></div>
+        </div>
         <div class="price-note">monatlich kündbar</div>
-        <hr class="price-div"/>
         <ul class="price-feats">
-          <li><span class="pfy">✓</span>Hilfe per Telefon &amp; Fernwartung</li>
-          <li><span class="pfy">✓</span>Abrechnung im 15-Min-Takt</li>
-          <li><span class="pfy">✓</span>Kein Wochenendzuschlag</li>
-          <li><span class="pfy">✓</span>IT-Assessment &amp; Risiko-Report</li>
-          <li><span class="pfy">✓</span>Remote-Zugriff eingerichtet</li>
-          <li><span class="pfy">✓</span>4h Remote-Support/Monat inkl.</li>
-          <li><span class="pfy">✓</span>Priorisiert im Support</li>
-          <li><span class="pfy">✓</span>Patchmanagement</li>
-          <li><span class="pfy">✓</span>ESET Virenschutz inkl.</li>
-          <li><span class="pfy">✓</span>Monatlicher IT-Report</li>
+          <li><svg class="pfy" aria-hidden="true"><use href="#ico-check"/></svg>4h Remote-Support/Monat inkl.</li>
+          <li><svg class="pfy" aria-hidden="true"><use href="#ico-check"/></svg>ESET Virenschutz inkl.</li>
+          <li><svg class="pfy" aria-hidden="true"><use href="#ico-check"/></svg>Monatlicher IT-Report</li>
         </ul>
-        <a href="mailto:info@grundke-it.de?subject=Paketanfrage%20Premium%20(%E2%82%AC449%2FMonat)%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0Aich%20interessiere%20mich%20f%C3%BCr%20das%20Paket%3A%20Premium%20(%E2%82%AC449%2FMonat)%0A%0AMein%20Unternehmen%20%2F%20meine%20Situation%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F)." class="price-btn out">Paket anfragen</a>
+        <div class="pkg-btns">
+          <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20komme%20%C3%BCber%20deine%20Preise%20und%20interessiere%20mich%20f%C3%BCr%20das%20Paket%20Premium." target="_blank" rel="noopener" class="price-btn out" data-wa="preise-premium"><svg width="16" height="16" aria-hidden="true"><use href="#ico-wa"/></svg>Paket anfragen</a>
+          <a href="mailto:info@grundke-it.de?subject=Paketanfrage%20Premium%20(%E2%82%AC449%2FMonat)%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0Aich%20interessiere%20mich%20f%C3%BCr%20das%20Paket%3A%20Premium%20(%E2%82%AC449%2FMonat)%0A%0AMein%20Unternehmen%20%2F%20meine%20Situation%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F)." class="price-btn out pkg-mail" aria-label="Paket Premium per E-Mail anfragen" title="Per E-Mail anfragen"><svg width="18" height="18" aria-hidden="true"><use href="#ico-mail"/></svg></a>
+        </div>
       </div>
     </div>
-
-    <!-- Hinweis Priorisierung -->
-    <div style="margin-top:1.5rem;padding:1.2rem 1.5rem;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);display:flex;align-items:flex-start;gap:1rem;">
-      <svg width="20" height="20" style="flex-shrink:0;color:var(--cyan);margin-top:2px;"><use href="#ico-zap"/></svg>
-      <p style="font-size:.84rem;color:var(--text2);line-height:1.7;margin:0;"><strong style="color:var(--text);">Warum ein Paket?</strong> Paketkunden werden im Support immer bevorzugt behandelt. Ohne Paket helfe ich gerne – aber Vertragskunden gehen vor. Wer planbare, verlässliche IT-Betreuung möchte, fährt mit einem Paket besser.</p>
+    <details class="more pkg-more">
+      <summary>Alle Leistungen der Pakete</summary>
+      <div class="pkg-table-wrap">
+        <table class="pkg-table">
+          <thead><tr><th scope="col">Leistung</th><th scope="col">Starter</th><th scope="col">Business</th><th scope="col">Premium</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Hilfe per Telefon &amp; Fernwartung</th><td><svg class="pfy" aria-hidden="true"><use href="#ico-check"/></svg><span class="sr-only">enthalten</span></td><td><svg class="pfy" aria-hidden="true"><use href="#ico-check"/></svg><span class="sr-only">enthalten</span></td><td><svg class="pfy" aria-hidden="true"><use href="#ico-check"/></svg><span class="sr-only">enthalten</span></td></tr>
+            <tr><th scope="row">Abrechnung im 15-Min-Takt</th><td><svg class="pfy" aria-hidden="true"><use href="#ico-check"/></svg><span class="sr-only">enthalten</span></td><td><svg class="pfy" aria-hidden="true"><use href="#ico-check"/></svg><span class="sr-only">enthalten</span></td><td><svg class="pfy" aria-hidden="true"><use href="#ico-check"/></svg><span class="sr-only">enthalten</span></td></tr>
+            <tr><th scope="row">Kein Wochenendzuschlag</th><td><svg class="pfy" aria-hidden="true"><use href="#ico-check"/></svg><span class="sr-only">enthalten</span></td><td><svg class="pfy" aria-hidden="true"><use href="#ico-check"/></svg><span class="sr-only">enthalten</span></td><td><svg class="pfy" aria-hidden="true"><use href="#ico-check"/></svg><span class="sr-only">enthalten</span></td></tr>
+            <tr><th scope="row">IT-Assessment &amp; Risiko-Report</th><td><svg class="pfy" aria-hidden="true"><use href="#ico-check"/></svg><span class="sr-only">enthalten</span></td><td><svg class="pfy" aria-hidden="true"><use href="#ico-check"/></svg><span class="sr-only">enthalten</span></td><td><svg class="pfy" aria-hidden="true"><use href="#ico-check"/></svg><span class="sr-only">enthalten</span></td></tr>
+            <tr><th scope="row">Remote-Zugriff eingerichtet</th><td><svg class="pfy" aria-hidden="true"><use href="#ico-check"/></svg><span class="sr-only">enthalten</span></td><td><svg class="pfy" aria-hidden="true"><use href="#ico-check"/></svg><span class="sr-only">enthalten</span></td><td><svg class="pfy" aria-hidden="true"><use href="#ico-check"/></svg><span class="sr-only">enthalten</span></td></tr>
+            <tr><th scope="row">Remote-Support/Monat inkl.</th><td><span>1h</span></td><td><span>2h</span></td><td><span>4h</span></td></tr>
+            <tr><th scope="row">Priorisiert im Support</th><td><svg class="pfy" aria-hidden="true"><use href="#ico-check"/></svg><span class="sr-only">enthalten</span></td><td><svg class="pfy" aria-hidden="true"><use href="#ico-check"/></svg><span class="sr-only">enthalten</span></td><td><svg class="pfy" aria-hidden="true"><use href="#ico-check"/></svg><span class="sr-only">enthalten</span></td></tr>
+            <tr><th scope="row">Patchmanagement</th><td><span class="pfn" aria-hidden="true">–</span><span class="sr-only">nicht enthalten</span></td><td><svg class="pfy" aria-hidden="true"><use href="#ico-check"/></svg><span class="sr-only">enthalten</span></td><td><svg class="pfy" aria-hidden="true"><use href="#ico-check"/></svg><span class="sr-only">enthalten</span></td></tr>
+            <tr><th scope="row">ESET Virenschutz inkl.</th><td><span class="pfn" aria-hidden="true">–</span><span class="sr-only">nicht enthalten</span></td><td><span class="pfn" aria-hidden="true">–</span><span class="sr-only">nicht enthalten</span></td><td><svg class="pfy" aria-hidden="true"><use href="#ico-check"/></svg><span class="sr-only">enthalten</span></td></tr>
+            <tr><th scope="row">Monatlicher IT-Report</th><td><span class="pfn" aria-hidden="true">–</span><span class="sr-only">nicht enthalten</span></td><td><span class="pfn" aria-hidden="true">–</span><span class="sr-only">nicht enthalten</span></td><td><svg class="pfy" aria-hidden="true"><use href="#ico-check"/></svg><span class="sr-only">enthalten</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </details>
+    <div class="pkg-adhoc">
+      <p><strong>Ohne Vertrag (ad hoc):</strong> 110&nbsp;€ <span class="price-per">/Stunde zzgl. MwSt.</span>, angefangene Viertelstunde, kein Wochenendzuschlag.</p>
+      <div class="pkg-btns">
+        <a href="tel:+491782584438" class="price-btn out"><svg width="16" height="16" aria-hidden="true"><use href="#ico-phone"/></svg>Anrufen</a>
+        <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20komme%20%C3%BCber%20deine%20Preise%20und%20brauche%20Hilfe%20ohne%20Vertrag." target="_blank" rel="noopener" class="price-btn out" data-wa="preise-adhoc"><svg width="16" height="16" aria-hidden="true"><use href="#ico-wa"/></svg>WhatsApp</a>
+      </div>
     </div>
+    <div class="pkg-why">
+      <svg width="20" height="20" aria-hidden="true"><use href="#ico-zap"/></svg>
+      <p><strong>Warum ein Paket?</strong> Paketkunden werden im Support immer bevorzugt behandelt. Ohne Paket helfe ich gerne – aber Vertragskunden gehen vor. Wer planbare, verlässliche IT-Betreuung möchte, fährt mit einem Paket besser.</p>
+    </div>
+    <p class="pkg-monthly"><strong>Monatlich dazu, wenn ihr es braucht:</strong> Website-Betrieb <span data-price="website_betrieb">40 €</span> netto im Monat, Betrieb einer eigenen Anwendung ab <span data-price="software_betrieb">80 €</span> netto im Monat, Microsoft 365, ESET und Datensicherung auf einer Rechnung von mir. Alle Preise zzgl. MwSt.</p>
   </div>
 </section>
 
-<!-- FAQ (Texte zeichengleich mit dem FAQPage-Schema unten, beides aus einer Liste erzeugt) -->
+<!-- K3 "Darum kümmere ich mich auch" (seit 10.10.2026): KI, Software, Websites und Schulung in einem Block.
+     Ersetzt die Abschnitte #ki, #websites, #schulung; die Anker bleiben (Section-ID und zwei <span>).
+     Potenzialcheck und Website-Check stehen auf ihren Seiten (/ki-fuer-kmu/, /websites-fuer-betriebe/). -->
+<section class="section-pad k3-block" id="ki">
+  <div class="inner">
+    <h2 class="s-title">Darum kümmere ich mich auch</h2>
+    <p class="s-sub">Weil ich eure Abläufe kenne, sehe ich, wo Zettel, doppelte Eingaben oder eine alte Website Zeit kosten. Darum kümmere ich mich auch.</p>
+    <div class="card-grid k3-grid">
+      <article class="card k3-card">
+        <h3><a href="/ki-fuer-kmu/">KI im Betrieb<svg class="k3-arrow" aria-hidden="true"><use href="#ico-arrow-r"/></svg></a></h3>
+        <p>Daten, die heute jemand abtippt, Auswertungen aus Kamera oder Kasse, KI-Werkzeuge mit Vertrag und Regeln. Dazu E-Rechnung und Digitalbonus Bayern.</p>
+        <p class="card-more">Auch: <a href="/ki-dsgvo/">KI sicher einsetzen</a> · <a href="/ki-videoanalyse/">Videoanalyse</a> · <a href="/e-rechnung/">E-Rechnung</a> · <a href="/digitalbonus-bayern/">Digitalbonus Bayern</a></p>
+      </article>
+      <article class="card k3-card">
+        <h3><a href="/software-nach-mass/">Software nach Maß<svg class="k3-arrow" aria-hidden="true"><use href="#ico-arrow-r"/></svg></a></h3>
+        <p>Aus Excel-Listen und Zetteln wird eine kleine Anwendung im Browser. Festpreis für den Bau, Betrieb ab <span data-price="software_betrieb">80 €</span> netto im Monat.</p>
+      </article>
+      <article class="card k3-card">
+        <span id="websites" class="anchor"></span>
+        <h3><a href="/websites-fuer-betriebe/">Websites<svg class="k3-arrow" aria-hidden="true"><use href="#ico-arrow-r"/></svg></a></h3>
+        <p>Fürs Handy gebaut, für Google und KI-Assistenten lesbar, die Optik aus geprüften Vorlagen. Betrieb auf Wunsch <span data-price="website_betrieb">40 €</span> netto im Monat.</p>
+      </article>
+    </div>
+    <p class="k3-school"><span id="schulung" class="anchor"></span>Für euer Team: die <a href="/schulung/">IT-Sicherheitsschulung</a>, live per Teams. Das Online-Portal ist in Vorbereitung.</p>
+  </div>
+</section>
+
+<!-- FAQ: Fragen, Antworten und FAQPage-Schema kommen aus HOME_FAQS (sync_home); 6 in der Liste,
+     der Rest unter "Weitere Fragen" (im HTML, ohne JS lesbar) -->
 <section class="faq section-pad" id="faq">
   <div class="inner">
     <div class="s-label">FAQ</div>
     <h2 class="s-title">Häufige Fragen</h2>
+    <!-- HOME_FAQ:START (generiert aus HOME_FAQS in tools/build_landingpages.py) -->
     <div class="faq-wrap">
-      <details class="faq-item"><summary>Welche IT-Services gibt es in Grasbrunn und Ottobrunn? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Ich bin die externe IT-Abteilung für kleine Betriebe: Netzwerk, WLAN, Microsoft 365, IT-Sicherheit, Datensicherung, Kassen und Kameras, dazu KI im Betrieb, Software nach Maß und Websites. Vor Ort in Grasbrunn, Ottobrunn, Vaterstetten, Haar, Neubiberg und Umgebung.</div></details>
       <details class="faq-item"><summary>Was kostet eine IT-Betreuung für meinen Betrieb? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Ohne Vertrag 110 € netto je Stunde im 15-Minuten-Takt, ohne Wochenendzuschlag. Vor Ort ist die Anfahrt bis 5 km inklusive, darüber gilt eine vereinbarte Pauschale. Mit Betreuungsvertrag ab 149 € netto im Monat, inklusive IT-Assessment, Fernwartung und bevorzugtem Support.</div></details>
       <details class="faq-item"><summary>Wie schnell bist du bei einem IT-Notfall erreichbar? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Feste Reaktionszeiten sage ich nicht zu. Vertragskunden werden bevorzugt behandelt, Premium-Kunden zuerst. Ohne Vertrag melde ich mich, sobald ich kann, und viele Störungen lassen sich dann per Fernwartung lösen.</div></details>
       <details class="faq-item"><summary>Was unterscheidet dich von einem großen IT-Systemhaus? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Kein Ticketsystem und kein wechselndes Team. Du hast einen festen Ansprechpartner, mich. Ich kenne deine Umgebung und sage dir, was demnächst ansteht, bevor es zum Problem wird.</div></details>
       <details class="faq-item"><summary>Was passiert, wenn du im Urlaub oder krank bist? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Für Urlaub und Krankheit gibt es eine abgestimmte Vertretung: einen selbstständigen IT-Kollegen, der im Notfall einspringt.</div></details>
-      <details class="faq-item"><summary>Kannst du auch bei KI und Automatisierung helfen? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Ja, das ist inzwischen einer meiner Schwerpunkte. Ich baue Anwendungen, die wiederkehrende Arbeit übernehmen: Schnittstellen zwischen Programmen, Auswertungen von Kameraaufnahmen, Daten, die heute jemand abtippt. Dazu kommt die Frage, welche KI-Werkzeuge im Betrieb überhaupt benutzt werden dürfen und wo die Daten dabei landen. Bei der E-Rechnung helfe ich, ein passendes Programm zu finden und umzustellen. In der eigenen Firma setze ich das seit über einem halben Jahr täglich ein, die ersten Kundenanwendungen entstehen gerade. Mehr unter <a href="/ki-fuer-kmu/">KI im Betrieb</a> und <a href="/e-rechnung/">E-Rechnung</a>.</div></details>
-      <details class="faq-item"><summary>Baust du auch Software und Websites? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Ja. Kleine Anwendungen für Abläufe, die heute in Excel oder auf Zetteln laufen, und Websites, die am Handy schnell laden, bei Google gefunden werden und für KI-Assistenten lesbar aufgebaut sind. Beides zum Festpreis, mit einem Monatsbetrag für Betrieb und Pflege. Gestaltet wird nicht: Die Optik kommt aus geprüften Vorlagen, ich setze technisch um. Mehr unter <a href="/software-nach-mass/">Software nach Maß</a> und <a href="/websites-fuer-betriebe/">Websites für Betriebe</a>.</div></details>
-      <details class="faq-item"><summary>Welche Region betreust du? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Vor Ort bin ich in Grasbrunn, Ottobrunn, Vaterstetten, Haar, Neubiberg, Putzbrunn und Hohenbrunn, etwa 25 km im Umkreis. Remote helfe ich deutschlandweit. Für Einsätze vor Ort bleibe ich bewusst im Münchner Osten: Auf der anderen Seite Münchens stehe ich im Stau, und das hilft dir nicht.</div></details>
-      <details class="faq-item"><summary>Mein WLAN funktioniert nicht mehr – was kann ich tun? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Ruf mich an oder schreib auf WhatsApp. Viele WLAN-Probleme lassen sich per Fernwartung lösen: Ich greife auf deinen Router oder Rechner zu und behebe den Fehler, ohne dass ich vorbeikommen muss. Ist Hardware kaputt, komme ich vorbei. Einsatzgebiet: Grasbrunn, Ottobrunn, Vaterstetten, Haar, Neubiberg und Umgebung München Ost.</div></details>
       <details class="faq-item"><summary>Mein IT-Betreuer ist nicht mehr erreichbar – wer hilft mir kurzfristig? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Das ist einer der häufigsten Gründe, warum Betriebe bei mir anrufen. Zuerst kümmere ich mich um das, was gerade nicht läuft, danach kommt die geordnete Übernahme: Zugänge, Datensicherung, Dokumentation. Wie das abläuft, steht unter <a href="/it-betreuer-wechseln/">IT-Betreuer wechseln</a>. Ruf an: 0178 258 44 38.</div></details>
-      <details class="faq-item"><summary>Gibt es IT-Support auch abends, am Wochenende oder an Feiertagen? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Ja, ich habe keine klassischen Öffnungszeiten. Schreib mir auf WhatsApp oder ruf an, wann das Problem auftritt. Vertragskunden werden bevorzugt behandelt. Alle anderen bekommen eine Antwort, sobald ich kann, auch außerhalb der üblichen Bürozeiten.</div></details>
-      <details class="faq-item"><summary>Kann ich IT-Support auch remote bekommen ohne dass jemand vorbeikommt? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Ja, das ist mein Alltag. Per Fernwartung greife ich auf deinen Rechner, dein Netzwerk oder deine Server zu und löse das Problem live, du siehst dabei zu oder arbeitest weiter. Remote helfe ich deutschlandweit.</div></details>
-      <details class="faq-item"><summary>Was kostet ein einmaliger IT-Notfall-Einsatz? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">110 € netto je Stunde, abgerechnet im 15-Minuten-Takt. Kein Mindestbetrag, kein Wochenendzuschlag, keine versteckten Kosten. Vor Ort ist die Anfahrt bis 5 km inklusive. Du bekommst nach dem Einsatz eine transparente Rechnung mit genauen Zeiten.</div></details>
+      <details class="faq-item"><summary>Welche Region betreust du? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Vor Ort bin ich in Grasbrunn, Ottobrunn, Vaterstetten, Haar, Neubiberg, Putzbrunn und Hohenbrunn, etwa 25 km im Umkreis. Remote helfe ich deutschlandweit. Für Einsätze vor Ort bleibe ich bewusst im Münchner Osten: Auf der anderen Seite Münchens stehe ich im Stau, und das hilft dir nicht.</div></details>
     </div>
+    <details class="more faq-rest">
+      <summary>Weitere Fragen</summary>
+      <div class="faq-wrap">
+        <details class="faq-item"><summary>Welche IT-Services gibt es in Grasbrunn und Ottobrunn? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Ich bin die externe IT-Abteilung für kleine Betriebe: Netzwerk, WLAN, Microsoft 365, IT-Sicherheit, Datensicherung, Kassen und Kameras, dazu KI im Betrieb, Software nach Maß und Websites. Vor Ort in Grasbrunn, Ottobrunn, Vaterstetten, Haar, Neubiberg und Umgebung.</div></details>
+        <details class="faq-item"><summary>Kannst du auch bei KI und Automatisierung helfen? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Ja, das ist inzwischen einer meiner Schwerpunkte. Ich baue Anwendungen, die wiederkehrende Arbeit übernehmen: Schnittstellen zwischen Programmen, Auswertungen von Kameraaufnahmen, Daten, die heute jemand abtippt. Dazu kommt die Frage, welche KI-Werkzeuge im Betrieb überhaupt benutzt werden dürfen und wo die Daten dabei landen. Bei der E-Rechnung helfe ich, ein passendes Programm zu finden und umzustellen. In der eigenen Firma setze ich das seit über einem halben Jahr täglich ein, die ersten Kundenanwendungen entstehen gerade. Mehr unter <a href="/ki-fuer-kmu/">KI im Betrieb</a> und <a href="/e-rechnung/">E-Rechnung</a>.</div></details>
+        <details class="faq-item"><summary>Baust du auch Software und Websites? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Ja. Kleine Anwendungen für Abläufe, die heute in Excel oder auf Zetteln laufen, und Websites, die am Handy schnell laden, bei Google gefunden werden und für KI-Assistenten lesbar aufgebaut sind. Beides zum Festpreis, mit einem Monatsbetrag für Betrieb und Pflege. Gestaltet wird nicht: Die Optik kommt aus geprüften Vorlagen, ich setze technisch um. Mehr unter <a href="/software-nach-mass/">Software nach Maß</a> und <a href="/websites-fuer-betriebe/">Websites für Betriebe</a>.</div></details>
+        <details class="faq-item"><summary>Mein WLAN funktioniert nicht mehr – was kann ich tun? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Ruf mich an oder schreib auf WhatsApp. Viele WLAN-Probleme lassen sich per Fernwartung lösen: Ich greife auf deinen Router oder Rechner zu und behebe den Fehler, ohne dass ich vorbeikommen muss. Ist Hardware kaputt, komme ich vorbei. Einsatzgebiet: Grasbrunn, Ottobrunn, Vaterstetten, Haar, Neubiberg und Umgebung München Ost.</div></details>
+        <details class="faq-item"><summary>Gibt es IT-Support auch abends, am Wochenende oder an Feiertagen? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Ja, ich habe keine klassischen Öffnungszeiten. Schreib mir auf WhatsApp oder ruf an, wann das Problem auftritt. Vertragskunden werden bevorzugt behandelt. Alle anderen bekommen eine Antwort, sobald ich kann, auch außerhalb der üblichen Bürozeiten.</div></details>
+        <details class="faq-item"><summary>Kann ich IT-Support auch remote bekommen ohne dass jemand vorbeikommt? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Ja, das ist mein Alltag. Per Fernwartung greife ich auf deinen Rechner, dein Netzwerk oder deine Server zu und löse das Problem live, du siehst dabei zu oder arbeitest weiter. Remote helfe ich deutschlandweit.</div></details>
+        <details class="faq-item"><summary>Was kostet ein einmaliger IT-Notfall-Einsatz? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">110 € netto je Stunde, abgerechnet im 15-Minuten-Takt. Kein Mindestbetrag, kein Wochenendzuschlag, keine versteckten Kosten. Vor Ort ist die Anfahrt bis 5 km inklusive. Du bekommst nach dem Einsatz eine transparente Rechnung mit genauen Zeiten.</div></details>
+      </div>
+    </details>
+    <!-- HOME_FAQ:END -->
     <div class="faq-more">
       <div>
         <strong>Deine Frage war nicht dabei?</strong>
         <p>Frag einfach per WhatsApp oder ruf an.</p>
       </div>
-      <a href="https://wa.me/491782584438" target="_blank" rel="noopener" class="btn-wa"><svg width="16" height="16" aria-hidden="true"><use href="#ico-wa"/></svg> Frage per WhatsApp</a>
+      <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20meine%20Frage%20war%20in%20deinen%20FAQ%20nicht%20dabei%3A" target="_blank" rel="noopener" class="btn-wa" data-wa="faq"><svg width="16" height="16" aria-hidden="true"><use href="#ico-wa"/></svg> Frage per WhatsApp</a>
     </div>
   </div>
 </section>
 
-<!-- SERVICEGEBIET – SEO + LLM -->
-<section class="section-pad" id="einsatzgebiet" style="background:var(--bg);">
+<!-- EINSATZGEBIET – SEO + LLM. Seit 10.10.2026: Orte als Chips (mit Ortsseite verlinkt, wo es eine gibt),
+     Remote-Hilfe und GEO-Absatz (Orte, PLZ, Kontakt, Preise; Text unveraendert) aufklappbar, ohne JS lesbar -->
+<section class="section-pad" id="einsatzgebiet" style="background:var(--bg2);">
   <div class="inner">
     <div class="s-label">Wo ich helfe</div>
     <h2 class="s-title">IT-Support vor Ort &amp; remote –<br>München Ost und darüber hinaus.</h2>
     <p class="s-sub">Kurze Wege im Münchner Osten. Remote bin ich deutschlandweit für dich da.</p>
-
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:1.5rem;margin-top:2.5rem;">
-      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:1.8rem;">
-        <div style="font-family:var(--fm);font-size:.68rem;color:var(--cyan);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1rem;">Vor-Ort-Einsatz · ~25 km Radius</div>
-        <div style="font-family:var(--fh);font-size:1rem;font-weight:700;color:var(--text);margin-bottom:.8rem;">Schnell bei dir – ohne Stau</div>
-        <p style="font-size:.85rem;color:var(--text2);line-height:1.7;margin-bottom:1rem;">Grasbrunn · Ottobrunn · Vaterstetten · Haar · Neubiberg · Putzbrunn · Hohenbrunn · Baldham · Parsdorf · Zorneding · Eglharting</p>
-        <p style="font-size:.78rem;color:var(--text3);line-height:1.6;">Von Neukeferloh aus sind Grasbrunn, Haar und Vaterstetten nur ein paar Minuten entfernt.</p>
-      </div>
-      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:1.8rem;">
-        <div style="font-family:var(--fm);font-size:.68rem;color:var(--cyan);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1rem;">Remote-Support · Deutschlandweit</div>
-        <div style="font-family:var(--fh);font-size:1rem;font-weight:700;color:var(--text);margin-bottom:.8rem;">Ohne Anfahrt</div>
-        <p style="font-size:.85rem;color:var(--text2);line-height:1.7;margin-bottom:1rem;">PC, Server, Netzwerk, Microsoft 365, Outlook, Drucker, Software-Probleme – ich greife remote auf dein System zu und löse das Problem live. Egal wo du bist.</p>
-        <p style="font-size:.78rem;color:var(--text3);line-height:1.6;">Viele Probleme lassen sich so lösen, ohne dass ich vorbeikommen muss.</p>
-      </div>
+    <div class="chips geo-chips">
+      <a href="/it-service-grasbrunn/">Grasbrunn</a>
+      <span>Ottobrunn</span>
+      <a href="/it-service-vaterstetten/">Vaterstetten</a>
+      <a href="/it-service-haar/">Haar</a>
+      <span>Neubiberg</span>
+      <a href="/it-service-putzbrunn/">Putzbrunn</a>
+      <span>Hohenbrunn</span>
+      <a href="/it-service-baldham/">Baldham</a>
+      <span>Parsdorf</span>
+      <a href="/it-service-zorneding/">Zorneding</a>
+      <span>Eglharting</span>
     </div>
-
-    <!-- Einsatzgebiet in einem Absatz: Orte mit PLZ, Kontakt, Preise -->
-    <div style="margin-top:2rem;padding:1.5rem;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);">
-      <p style="font-size:.82rem;color:var(--text3);line-height:1.8;">
-        <strong style="color:var(--text2);">IT-Support in der Region München Ost:</strong>
+    <details class="more geo-more">
+      <summary>Orte mit Postleitzahl, Remote-Hilfe und Kontakt</summary>
+      <div class="geo-remote">
+        <p class="geo-remote-h">Remote-Support · Deutschlandweit: <strong>Ohne Anfahrt</strong></p>
+        <p>PC, Server, Netzwerk, Microsoft 365, Outlook, Drucker, Software-Probleme – ich greife remote auf dein System zu und löse das Problem live. Egal wo du bist.</p>
+        <p>Viele Probleme lassen sich so lösen, ohne dass ich vorbeikommen muss.</p>
+      </div>
+      <p class="geo-text">
+        <strong>IT-Support in der Region München Ost:</strong>
         Andreas Grundke bietet IT-Betreuung, IT-Notfallhilfe, KI im Betrieb, Software nach Maß und Websites für Handwerksbetriebe, Gastronomie, Hotels, Praxen, Kanzleien und kleine Unternehmen in folgenden Orten an:
         Grasbrunn (PLZ 85630), Ottobrunn (PLZ 85521), Vaterstetten (PLZ 85591), Haar (PLZ 85540), Neubiberg (PLZ 85579), Putzbrunn (PLZ 85640), Hohenbrunn (PLZ 85662), Baldham, Parsdorf, Zorneding, Eglharting und Umgebung.
         Erreichbar per Telefon (0178 258 44 38), WhatsApp und E-Mail (info@grundke-it.de), auch abends, am Wochenende und an Feiertagen, ohne garantierte Reaktionszeit.
         Stundensatz: 110 € netto, 15-Minuten-Takt, kein Wochenendzuschlag.
         Betreuungspakete ab 149 € netto im Monat. Angebot ausschließlich für Unternehmen.
       </p>
-    </div>
+    </details>
   </div>
 </section>
 
-<!-- CTA -->
+<!-- ABSCHLUSS K5 (seit 10.10.2026 ohne Zeitzusage, QR fuehrt zur Kontaktseite) -->
 <section class="cta-sec" id="kontakt">
   <div class="inner">
     <h2 class="cta-h">Problem? <em>Ich bin dran.</em></h2>
-    <p class="cta-sub">Ruf an, schreib auf WhatsApp oder per Mail – ich meld mich so schnell wie möglich. Gerne per Du.</p>
+    <p class="cta-sub">Ruf an, schreib auf WhatsApp oder per Mail. Am anderen Ende bin ich, Andreas Grundke. Gerne per Du.</p>
     <div class="cta-btns inline-cta-mobile">
       <a href="tel:+491782584438" class="btn-tel"><svg width="20" height="20"><use href="#ico-phone"/></svg> 0178 258 44 38</a>
-      <a href="https://wa.me/491782584438" target="_blank" rel="noopener" class="btn-wa"><svg width="20" height="20"><use href="#ico-wa"/></svg> WhatsApp</a>
+      <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20habe%20ein%20IT-Problem%20und%20komme%20%C3%BCber%20deine%20Website." target="_blank" rel="noopener" class="btn-wa" data-wa="abschluss"><svg width="20" height="20"><use href="#ico-wa"/></svg> WhatsApp</a>
       <a href="mailto:info@grundke-it.de?subject=Anfrage%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0AMein%20Anliegen%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F)." class="btn-email" style="padding:1rem 2rem;font-size:.95rem;"><svg width="20" height="20"><use href="#ico-mail"/></svg> E-Mail schreiben</a>
     </div>
     <div class="hc-qr cta-qr">
-      <a href="/kontakt/" title="Alle Kontaktwege"><img src="assets/img/qr-tree.png" alt="QR-Code: Kontaktseite aufs Handy holen" width="88" height="88" loading="lazy"/></a>
+      <a href="/kontakt/" title="Alle Kontaktwege"><img src="/assets/img/qr-tree.png" alt="QR-Code: Kontaktseite aufs Handy holen" width="88" height="88" loading="lazy"/></a>
       <p><strong>Scan mich. Dann reden wir.</strong>Alle Kontaktwege direkt aufs Handy.</p>
     </div>
-    <p class="cta-region">Einsatzgebiet: Grasbrunn · Ottobrunn · Vaterstetten · Haar · Neubiberg · München Ost · ~25 km Radius</p>
   </div>
 </section>
-
 </main>
 
 <!-- SCROLL-TO-TOP -->
@@ -1994,7 +2089,7 @@
         <p class="foot-desc">Deine IT-Abteilung. Nur extern.<br>IT, KI, Software und Websites für Betriebe im Münchner Osten.<br>Angebot für Unternehmen, alle Preise zzgl. MwSt.</p>
         <address class="foot-contact" style="font-style:normal;">
           <a href="tel:+491782584438">☎ 0178 258 44 38</a>
-          <a href="https://wa.me/491782584438" target="_blank" rel="noopener">WhatsApp schreiben</a>
+          <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20komme%20%C3%BCber%20deine%20Website." target="_blank" rel="noopener">WhatsApp schreiben</a>
           <a href="mailto:info@grundke-it.de?subject=Anfrage%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0AMein%20Anliegen%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F).">info@grundke-it.de</a>
           <a href="https://grundke-it.de">www.grundke-it.de</a>
         </address>
@@ -2061,7 +2156,7 @@
         <a href="/barrierefreiheit/">Barrierefreiheit</a>
       </nav>
       <span>© 2026 Grundke IT-Service · Andreas Grundke · Beethovenring 16 · 85630 Grasbrunn</span>
-      <span>Zuletzt aktualisiert: 07.10.2026</span>
+      <span>Zuletzt aktualisiert: 10.10.2026</span>
       <span class="foot-ci">CI 2026.01 · grundke-it.de</span>
     </div>
   </div>
@@ -2078,14 +2173,6 @@
     "@id": "https://grundke-it.de/#website"
   },
   "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "Welche IT-Services gibt es in Grasbrunn und Ottobrunn?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Ich bin die externe IT-Abteilung für kleine Betriebe: Netzwerk, WLAN, Microsoft 365, IT-Sicherheit, Datensicherung, Kassen und Kameras, dazu KI im Betrieb, Software nach Maß und Websites. Vor Ort in Grasbrunn, Ottobrunn, Vaterstetten, Haar, Neubiberg und Umgebung."
-      }
-    },
     {
       "@type": "Question",
       "name": "Was kostet eine IT-Betreuung für meinen Betrieb?",
@@ -2120,6 +2207,30 @@
     },
     {
       "@type": "Question",
+      "name": "Mein IT-Betreuer ist nicht mehr erreichbar – wer hilft mir kurzfristig?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Das ist einer der häufigsten Gründe, warum Betriebe bei mir anrufen. Zuerst kümmere ich mich um das, was gerade nicht läuft, danach kommt die geordnete Übernahme: Zugänge, Datensicherung, Dokumentation. Wie das abläuft, steht unter IT-Betreuer wechseln. Ruf an: 0178 258 44 38."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Welche Region betreust du?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Vor Ort bin ich in Grasbrunn, Ottobrunn, Vaterstetten, Haar, Neubiberg, Putzbrunn und Hohenbrunn, etwa 25 km im Umkreis. Remote helfe ich deutschlandweit. Für Einsätze vor Ort bleibe ich bewusst im Münchner Osten: Auf der anderen Seite Münchens stehe ich im Stau, und das hilft dir nicht."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Welche IT-Services gibt es in Grasbrunn und Ottobrunn?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ich bin die externe IT-Abteilung für kleine Betriebe: Netzwerk, WLAN, Microsoft 365, IT-Sicherheit, Datensicherung, Kassen und Kameras, dazu KI im Betrieb, Software nach Maß und Websites. Vor Ort in Grasbrunn, Ottobrunn, Vaterstetten, Haar, Neubiberg und Umgebung."
+      }
+    },
+    {
+      "@type": "Question",
       "name": "Kannst du auch bei KI und Automatisierung helfen?",
       "acceptedAnswer": {
         "@type": "Answer",
@@ -2136,26 +2247,10 @@
     },
     {
       "@type": "Question",
-      "name": "Welche Region betreust du?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Vor Ort bin ich in Grasbrunn, Ottobrunn, Vaterstetten, Haar, Neubiberg, Putzbrunn und Hohenbrunn, etwa 25 km im Umkreis. Remote helfe ich deutschlandweit. Für Einsätze vor Ort bleibe ich bewusst im Münchner Osten: Auf der anderen Seite Münchens stehe ich im Stau, und das hilft dir nicht."
-      }
-    },
-    {
-      "@type": "Question",
       "name": "Mein WLAN funktioniert nicht mehr – was kann ich tun?",
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "Ruf mich an oder schreib auf WhatsApp. Viele WLAN-Probleme lassen sich per Fernwartung lösen: Ich greife auf deinen Router oder Rechner zu und behebe den Fehler, ohne dass ich vorbeikommen muss. Ist Hardware kaputt, komme ich vorbei. Einsatzgebiet: Grasbrunn, Ottobrunn, Vaterstetten, Haar, Neubiberg und Umgebung München Ost."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Mein IT-Betreuer ist nicht mehr erreichbar – wer hilft mir kurzfristig?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Das ist einer der häufigsten Gründe, warum Betriebe bei mir anrufen. Zuerst kümmere ich mich um das, was gerade nicht läuft, danach kommt die geordnete Übernahme: Zugänge, Datensicherung, Dokumentation. Wie das abläuft, steht unter IT-Betreuer wechseln. Ruf an: 0178 258 44 38."
       }
     },
     {
@@ -2242,7 +2337,7 @@
     </svg>
     <span>Anrufen</span>
   </a>
-  <a href="https://wa.me/491782584438" target="_blank" rel="noopener" class="sc-btn sc-wa" aria-label="WhatsApp">
+  <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20habe%20deine%20Nummer%20von%20deiner%20Website." target="_blank" rel="noopener" class="sc-btn sc-wa" data-wa="kontaktleiste" aria-label="WhatsApp">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
       <path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 0 0 .611.611l4.458-1.495A11.96 11.96 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75c-2.278 0-4.381-.733-6.093-1.975l-.426-.307-2.645.887.887-2.645-.307-.426A9.72 9.72 0 0 1 2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75z"/>

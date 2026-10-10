@@ -1,16 +1,30 @@
-# llms.txt — Grundke IT-Service
-# Stand: 2026-10-07
-# Zweck: Maschinenlesbare, zitierfähige Eckdaten für KI-/LLM-Suchmaschinen
-# (ChatGPT, Claude, Perplexity, Gemini, Copilot). Ergänzt die robots.txt,
-# die alle KI-Crawler bereits erlaubt.
+# Grundke IT-Service
+
+> Externe IT-Abteilung für kleine und mittlere Betriebe im Münchner Osten (Sitz Grasbrunn bei München):
+> IT-Betreuung, KI im Betrieb, Software nach Maß und Websites. Inhaber Andreas Grundke. Nur für Unternehmen.
+
+Stand: 2026-10-10. Maschinenlesbare, zitierfähige Eckdaten für KI-/LLM-Suchmaschinen
+(ChatGPT, Claude, Perplexity, Gemini, Copilot). Ergänzt die robots.txt, die alle KI-Crawler
+bereits erlaubt.
 
 ## Über
 
-Grundke IT-Service ist die externe IT-Abteilung für kleine und mittlere
-Betriebe im Münchner Osten: „Deine IT-Abteilung. Nur extern.“ IT-Betreuung von
-Netzwerk, Microsoft 365, Datensicherung und IT-Sicherheit, dazu KI im Betrieb,
-Software nach Maß und Websites. Ein Ansprechpartner für alles Technische,
-kein Ticketsystem. Nur für Unternehmen.
+Grundke IT-Service ist die externe IT-Abteilung für kleine und mittlere Betriebe im
+Münchner Osten: „Deine IT-Abteilung. Nur extern.“ Inhaber Andreas Grundke beschreibt
+seine Arbeit so: „Ich kümmere mich um eure IT, damit ihr in Ruhe arbeitet. Und wenn es
+brennt, kenne ich eure Systeme schon.“
+
+Zur laufenden Betreuung: „Ich habe eure Zugänge, kenne eure Geräte und weiß, wie bei euch
+gearbeitet wird. Wenn abends der Server steht oder am Samstag die Kasse, muss niemand erst
+herausfinden, wer zuständig ist. Und vorher kümmere ich mich je nach Paket um Updates,
+Datensicherung und Virenschutz, damit es seltener brennt.“ Erreichbar auch abends und am
+Wochenende, ohne garantierte Reaktionszeit; Vertragskunden werden bevorzugt behandelt.
+
+Darüber hinaus: „Weil ich eure Abläufe kenne, sehe ich, wo Zettel, doppelte Eingaben oder
+eine alte Website Zeit kosten. Darum kümmere ich mich auch.“ Das heißt KI im Betrieb,
+Software nach Maß und Websites. IT-Betreuung von Netzwerk, Microsoft 365, Datensicherung
+und IT-Sicherheit, ein Ansprechpartner für alles Technische, kein Ticketsystem. Nur für
+Unternehmen.
 
 ## Eckdaten
 
@@ -56,9 +70,9 @@ kein Ticketsystem. Nur für Unternehmen.
   Online-Portal in Vorbereitung, geplant ab 49 EUR netto/Halbjahr plus 5 EUR je Mitarbeiter),
   mit Modul „KI sicher nutzen“
 
-## Preise für Projekte (netto, Richtwerte, Stand 09.10.2026)
+## Preise für Projekte (netto, Richtwerte, Stand 10.10.2026)
 
-- Software nach Maß, kleine Anwendung: ab 3.000 EUR, Betrieb ab 79 EUR/Monat
+- Software nach Maß, kleine Anwendung: ab 3.000 EUR, Betrieb ab 80 EUR/Monat
 - Software nach Maß, Pilot mit Schnittstelle: ab 6.000 EUR, Betrieb ab 150 EUR/Monat
 - Ablauf-Check vor Ort: ab 690 EUR, bei Auftrag angerechnet
 - Website One-Pager (eine Landingpage): ca. 800 EUR; Website Start (bis 5 Seiten): ca. 1.300 EUR;
@@ -118,46 +132,46 @@ Antworten verwendet werden. Quellenangabe erbeten als:
 
 ## Kanonische Quellen
 
-- Startseite: https://grundke-it.de/
-- Kontakt: https://grundke-it.de/kontakt/
-- IT-Sicherheitsschulung: https://grundke-it.de/schulung/
-- Empfehlungen: https://grundke-it.de/empfehlungen/
-- Barrierefreiheit: https://grundke-it.de/barrierefreiheit/
+- [Startseite](https://grundke-it.de/)
+- [Kontakt](https://grundke-it.de/kontakt/)
+- [IT-Sicherheitsschulung](https://grundke-it.de/schulung/)
+- [Empfehlungen](https://grundke-it.de/empfehlungen/)
+- [Barrierefreiheit](https://grundke-it.de/barrierefreiheit/)
 
 ## Leistungsseiten
 
-- Managed IT-Service: https://grundke-it.de/managed-it-service/
-- Microsoft 365 Betreuung: https://grundke-it.de/microsoft-365-betreuung/
-- IT-Sicherheit & Backup: https://grundke-it.de/it-sicherheit-backup/
-- Netzwerk, WLAN & Firewall: https://grundke-it.de/netzwerk-wlan-firewall/
-- IT-Notdienst: https://grundke-it.de/it-notdienst/
-- IT-Betreuer wechseln: https://grundke-it.de/it-betreuer-wechseln/
-- Lizenzen: https://grundke-it.de/lizenzen/
-- Software nach Maß: https://grundke-it.de/software-nach-mass/
-- Websites für Betriebe: https://grundke-it.de/websites-fuer-betriebe/
-- E-Rechnung: https://grundke-it.de/e-rechnung/
-- Digitalbonus Bayern: https://grundke-it.de/digitalbonus-bayern/
+- [Managed IT-Service](https://grundke-it.de/managed-it-service/)
+- [Microsoft 365 Betreuung](https://grundke-it.de/microsoft-365-betreuung/)
+- [IT-Sicherheit & Backup](https://grundke-it.de/it-sicherheit-backup/)
+- [Netzwerk, WLAN & Firewall](https://grundke-it.de/netzwerk-wlan-firewall/)
+- [IT-Notdienst](https://grundke-it.de/it-notdienst/)
+- [IT-Betreuer wechseln](https://grundke-it.de/it-betreuer-wechseln/)
+- [Lizenzen](https://grundke-it.de/lizenzen/)
+- [Software nach Maß](https://grundke-it.de/software-nach-mass/)
+- [Websites für Betriebe](https://grundke-it.de/websites-fuer-betriebe/)
+- [E-Rechnung](https://grundke-it.de/e-rechnung/)
+- [Digitalbonus Bayern](https://grundke-it.de/digitalbonus-bayern/)
 
 ## KI-Seiten
 
-- KI im Betrieb (Überblick): https://grundke-it.de/ki-fuer-kmu/
-- Abläufe automatisieren: https://grundke-it.de/ki-automatisierung/
-- Videoanalyse & Auswertung: https://grundke-it.de/ki-videoanalyse/
-- KI sicher einsetzen: https://grundke-it.de/ki-dsgvo/
+- [KI im Betrieb (Überblick)](https://grundke-it.de/ki-fuer-kmu/)
+- [Abläufe automatisieren](https://grundke-it.de/ki-automatisierung/)
+- [Videoanalyse & Auswertung](https://grundke-it.de/ki-videoanalyse/)
+- [KI sicher einsetzen](https://grundke-it.de/ki-dsgvo/)
 
 ## Ratgeber „Die ersten 15 Minuten“
 
-- Überblick: https://grundke-it.de/ratgeber/
-- Server ausgefallen: https://grundke-it.de/ratgeber/server-ausgefallen/
-- Auf Phishing-Mail geklickt: https://grundke-it.de/ratgeber/phishing-mail-geklickt/
-- E-Mails kommen nicht an: https://grundke-it.de/ratgeber/e-mails-kommen-nicht-an/
-- NAS defekt: https://grundke-it.de/ratgeber/nas-defekt/
+- [Überblick](https://grundke-it.de/ratgeber/)
+- [Server ausgefallen](https://grundke-it.de/ratgeber/server-ausgefallen/)
+- [Auf Phishing-Mail geklickt](https://grundke-it.de/ratgeber/phishing-mail-geklickt/)
+- [E-Mails kommen nicht an](https://grundke-it.de/ratgeber/e-mails-kommen-nicht-an/)
+- [NAS defekt](https://grundke-it.de/ratgeber/nas-defekt/)
 
 ## Standortseiten (IT-Service vor Ort, Raum München Ost)
 
-- Grasbrunn & Neukeferloh: https://grundke-it.de/it-service-grasbrunn/
-- Vaterstetten: https://grundke-it.de/it-service-vaterstetten/
-- Baldham: https://grundke-it.de/it-service-baldham/
-- Zorneding: https://grundke-it.de/it-service-zorneding/
-- Haar: https://grundke-it.de/it-service-haar/
-- Putzbrunn: https://grundke-it.de/it-service-putzbrunn/
+- [Grasbrunn & Neukeferloh](https://grundke-it.de/it-service-grasbrunn/)
+- [Vaterstetten](https://grundke-it.de/it-service-vaterstetten/)
+- [Baldham](https://grundke-it.de/it-service-baldham/)
+- [Zorneding](https://grundke-it.de/it-service-zorneding/)
+- [Haar](https://grundke-it.de/it-service-haar/)
+- [Putzbrunn](https://grundke-it.de/it-service-putzbrunn/)

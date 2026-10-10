@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 build_landingpages.py
-Version : 2.1
+Version : 2.2
 Autor   : Andreas Grundke IT-Service (Grundke IT-Service)
 Datum   : 2026-10-10
 Zweck   : Generiert aus einem gemeinsamen Template + Datenlisten die Orts- und
@@ -19,6 +19,9 @@ Ablauf:
 
   5. Der gemeinsame Seitenkopf (nav_html) wird auch in die Startseite und die
      handgebauten Seiten (HAND_PAGES) geschrieben -> ein Menue fuer die ganze Site.
+  6. sync_home() schreibt in die Startseite: Kundenstimmen (REVIEWS) samt review[] im
+     Schema, FAQ (HOME_FAQS) samt FAQPage-Schema, WhatsApp-Links (data-wa), Preise
+     (data-price), Bewertungszahl der Belegzeile (data-proof) und das Seitendatum.
 
 Aufruf: python tools/build_landingpages.py
 
@@ -37,11 +40,16 @@ Aenderungen:
               aller Seiten (auch Startseite und Handseiten ueber sync_shared), ICON_SPRITE vor
               dem Kopf, REVIEW_COUNT_GOOGLE, Fuss mit aufklappbaren Spalten (<details>) und
               fester Rechtszeile, Fliesstext .lp-content p auf 16 px, Autor-Link unterstrichen.
+  2026-10-10  Release A Startseite: REVIEWS und HOME_FAQS als einzige Quelle, sync_home(),
+              WhatsApp mit vorbefuelltem Satz je Einstieg (WA, WA_TEXT; auch Kontaktleiste
+              und Fuss), Software-Betrieb ab 80 € (vorher 79 €), HOME_DATE fuer die Startseite.
 """
 
 import os
 import json
 import re
+import html as htmllib
+import urllib.parse
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DOMAIN = "https://grundke-it.de"
@@ -73,6 +81,34 @@ ASSET_VER = "2026.10.a"
 # Bewertungen im Google-Unternehmensprofil (Stand 10.10.2026). Eine weitere Stimme kam
 # direkt und zaehlt hier nicht mit. Einzige Quelle fuer die Zahl auf allen Seiten.
 REVIEW_COUNT_GOOGLE = 5
+# Startseite: Stand fuer WebPage.dateModified, Sitemap und 'Zuletzt aktualisiert' im Fuss
+# (sync_home). Nur hochsetzen, wenn sich der Inhalt der Startseite wirklich aendert.
+HOME_DATE = "2026-10-10"
+HOME_DATE_DISP = "10.10.2026"
+
+# WhatsApp mit vorbefuelltem Satz je Einstieg (Textblatt §4, seit 10.10.2026): Am Satz ist
+# erkennbar, ueber welchen Knopf eine Anfrage kam, ohne Tracking-Skript. Auf der Startseite
+# setzt sync_home() das href jedes <a data-wa="schluessel">; Kontaktleiste (STICKY) und Fuss
+# nutzen WA() direkt. Neue Einstiege nur hier eintragen.
+WA_NUMBER = "491782584438"
+WA_TEXT = {
+    "hero": "Hallo Andreas, ich komme über deine Startseite.",
+    "schnellcheck": "Hallo Andreas, ich komme über den IT-Schnellcheck auf deiner Website.",
+    "preise-starter": "Hallo Andreas, ich komme über deine Preise und interessiere mich für das Paket Starter.",
+    "preise-business": "Hallo Andreas, ich komme über deine Preise und interessiere mich für das Paket Business.",
+    "preise-premium": "Hallo Andreas, ich komme über deine Preise und interessiere mich für das Paket Premium.",
+    "preise-adhoc": "Hallo Andreas, ich komme über deine Preise und brauche Hilfe ohne Vertrag.",
+    "kontaktleiste": "Hallo Andreas, ich habe deine Nummer von deiner Website.",
+    "faq": "Hallo Andreas, meine Frage war in deinen FAQ nicht dabei:",
+    "abschluss": "Hallo Andreas, ich habe ein IT-Problem und komme über deine Website.",
+    "fuss": "Hallo Andreas, ich komme über deine Website.",
+}
+
+
+def WA(text):
+    """'Hallo Andreas, …' -> 'https://wa.me/491782584438?text=Hallo%20Andreas%2C%20…' (UTF-8, alles ausser
+    Buchstaben, Ziffern und -._~ kodiert, wie die Tabelle im Textblatt)."""
+    return "https://wa.me/" + WA_NUMBER + "?text=" + urllib.parse.quote(text, safe="")
 
 
 def asset(path):
@@ -87,7 +123,7 @@ PRICES = {
     "software_klein": 3000,         # kleine Anwendung, einmalig
     "software_pilot": 6000,         # Pilot mit Schnittstelle, einmalig
     "software_pilot_bis": 14000,    # obere Grenze, wie sie in der FAQ steht
-    "software_betrieb": 79,         # Betrieb und Pflege je Monat, kleine Anwendung
+    "software_betrieb": 80,         # Betrieb und Pflege je Monat, kleine Anwendung (bis 10.10.2026: 79)
     "software_pilot_betrieb": 150,  # Betrieb und Pflege je Monat, Pilot
     "ablauf_check": 690,            # Ablauf-Check vor Ort, bei Auftrag angerechnet
     "website_onepager": 800,        # eine Landingpage (Richtwert, Andreas 09.10.2026)
@@ -323,7 +359,7 @@ STICKY = """<div class="sticky-contact" id="stickyContact" role="navigation" ari
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
     <span>Anrufen</span>
   </a>
-  <a href="https://wa.me/491782584438" target="_blank" rel="noopener" class="sc-btn sc-wa" aria-label="WhatsApp">
+  <a href="__WA_KONTAKTLEISTE__" target="_blank" rel="noopener" class="sc-btn sc-wa" aria-label="WhatsApp">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 0 0 .611.611l4.458-1.495A11.96 11.96 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75c-2.278 0-4.381-.733-6.093-1.975l-.426-.307-2.645.887.887-2.645-.307-.426A9.72 9.72 0 0 1 2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75z"/></svg>
     <span>WhatsApp</span>
   </a>
@@ -331,7 +367,7 @@ STICKY = """<div class="sticky-contact" id="stickyContact" role="navigation" ari
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
     <span>E-Mail</span>
   </a>
-</div>"""
+</div>""".replace("__WA_KONTAKTLEISTE__", WA(WA_TEXT["kontaktleiste"]))
 
 
 def esc(t):
@@ -438,7 +474,7 @@ def footer_html(places, services, current_path="", updated=None, home=False):
         <p class="foot-desc">Deine IT-Abteilung. Nur extern.<br>IT, KI, Software und Websites für Betriebe im Münchner Osten.<br>Angebot für Unternehmen, alle Preise zzgl. MwSt.</p>
         <address class="foot-contact" style="font-style:normal;">
           <a href="tel:+491782584438">☎ 0178 258 44 38</a>
-          <a href="https://wa.me/491782584438" target="_blank" rel="noopener">WhatsApp schreiben</a>
+          <a href="{wa}" target="_blank" rel="noopener">WhatsApp schreiben</a>
           <a href="{mailto}">info@grundke-it.de</a>
           <a href="https://grundke-it.de">www.grundke-it.de</a>
         </address>
@@ -453,7 +489,7 @@ def footer_html(places, services, current_path="", updated=None, home=False):
       <span class="foot-ci">CI 2026.01 · grundke-it.de</span>
     </div>
   </div>
-</footer>""".format(mailto=MAILTO_PREFILLED,
+</footer>""".format(mailto=MAILTO_PREFILLED, wa=WA(WA_TEXT["fuss"]),
                      col_it=col("IT-Betreuung", it_links),
                      col_ki=col("KI, Software &amp; Websites", ki_links),
                      col_places=col("Standorte", place_links, "        "),
@@ -2629,11 +2665,267 @@ def render_service(s, places, services):
 
 
 # --------------------------------------------------------------------------- #
+#  Startseite: Kundenstimmen, FAQ, WhatsApp, Preise (sync_home, seit 10.10.2026) #
+# --------------------------------------------------------------------------- #
+# REVIEWS: Kundenstimmen woertlich und ungekuerzt (Regel kundenstimmen-quellen), einzige Quelle
+# fuer die Karten der Startseite und fuer review[]/reviewBody/reviewCount im Schema; Unterseiten
+# holen ihre Stimmen ab Release B ebenfalls hier. source: "Google-Bewertung" oder "direkt" (die
+# Karte zeigt dann Rolle + "direkt übermittelt", nie "Google"). Per Skript aus index.html
+# (Stand 83f8e74) uebernommen, nicht abgetippt.
+# HOME_FAQS: (Frage, Antwort-HTML) der Startseite, Reihenfolge laut Textblatt. Sichtbares
+# Akkordeon und FAQPage-Schema (Antwort ohne Tags) kommen aus dieser Liste; die ersten
+# HOME_FAQ_SHOWN stehen in der Liste, der Rest unter "Weitere Fragen" (im HTML, ohne JS lesbar).
+REVIEWS = [
+    {
+        'id': 'bauer',
+        'name': 'Apartments Bauer',
+        'who': 'Apartments Bauer',
+        'role': '',
+        'source': 'Google-Bewertung',
+        'author_type': 'Organization',
+        'paragraphs': [
+            'Andy hat das WLAN in unserem Haus modernisiert und auf Ubiquiti umgestellt, damit unsere Gäste eine bessere Internetverbindung genießen können. Die Zusammenarbeit hat sehr viel Spaß gemacht – auch wenn wir aufgrund des älteren Gebäudes die eine oder andere Hürde zu bewältigen hatten.',
+            'Besonders beeindruckt hat uns Andys hoher Anspruch an die Qualität seiner Arbeit. Dazu kommt seine herzliche und unkomplizierte Art, die die Zusammenarbeit auch menschlich sehr angenehm gemacht hat.',
+            'Über den eigentlichen Auftrag hinaus hat Andy uns wertvolle Tipps zum Einsatz von KI gegeben und hilfreiche Analysen erstellt, für die wir ihm sehr dankbar sind.',
+            'Rundum eine tolle Erfahrung. Ich kann Andy mit bestem Gewissen weiterempfehlen!',
+        ],
+        'date': '2026-09-26',
+        'ctx': 'WLAN-Modernisierung auf Ubiquiti im Altbau',
+    },
+    {
+        'id': 'fleischmann',
+        'name': 'Christian Fleischmann',
+        'who': 'Christian Fleischmann',
+        'role': '',
+        'source': 'Google-Bewertung',
+        'author_type': 'Person',
+        'paragraphs': [
+            'Ich bin sehr zufrieden mit der Arbeit der Firma. Die Umsetzung erfolgte schnell, zuverlässig und in sehr guter Qualität. Alle meine Anliegen wurden professionell gelöst. Klare Empfehlung!',
+        ],
+    },
+    {
+        'id': 'dietz',
+        'name': 'Sebastian Dietz',
+        'who': 'Sebastian Dietz',
+        'role': '',
+        'source': 'Google-Bewertung',
+        'author_type': 'Person',
+        'paragraphs': [
+            'Sehr guter Service...perfekte Zusammenarbeit! Jederzeit wieder!',
+        ],
+    },
+    {
+        'id': 'verena-k',
+        'name': 'Verena K.',
+        'who': 'Verena K.',
+        'role': '',
+        'source': 'Google-Bewertung',
+        'author_type': 'Person',
+        'paragraphs': [
+            'Sehr nette und kompetente Unterstützung! Empfehle ich uneingeschränkt.',
+        ],
+    },
+    {
+        'id': 'polednik',
+        'name': 'Martina Polednik',
+        'who': 'Martina Polednik',
+        'role': '',
+        'source': 'Google-Bewertung',
+        'author_type': 'Person',
+        'paragraphs': [
+            'Man merkt gar nicht, dass man selber überhaupt keine Ahnung hat. Perfekt',
+        ],
+    },
+    {
+        'id': 'blumenschein',
+        'name': 'Janine Blumenschein',
+        'who': 'Janine Blumenschein',
+        'role': 'Steuerberatung',
+        'source': 'direkt',
+        'author_type': 'Person',
+        'paragraphs': [
+            'Ich kann Grundke IT Service uneingeschränkt empfehlen. Andreas zeichnet sich durch eine äußerst zeitnahe und zuverlässige Betreuung aus. Er ist fachlich hervorragend aufgestellt und setzt gezielt moderne Technologien wie Künstliche Intelligenz ein, um optimale Lösungen zu erarbeiten. Ich fühle mich in allen IT-Angelegenheiten bestens betreut und schätze die professionelle Zusammenarbeit sehr.',
+        ],
+    },
+]
+
+HOME_FAQS = [
+    ('Was kostet eine IT-Betreuung für meinen Betrieb?',
+     'Ohne Vertrag 110 € netto je Stunde im 15-Minuten-Takt, ohne Wochenendzuschlag. Vor Ort ist die Anfahrt bis 5 km inklusive, darüber gilt eine vereinbarte Pauschale. Mit Betreuungsvertrag ab 149 € netto im Monat, inklusive IT-Assessment, Fernwartung und bevorzugtem Support.'),
+    ('Wie schnell bist du bei einem IT-Notfall erreichbar?',
+     'Feste Reaktionszeiten sage ich nicht zu. Vertragskunden werden bevorzugt behandelt, Premium-Kunden zuerst. Ohne Vertrag melde ich mich, sobald ich kann, und viele Störungen lassen sich dann per Fernwartung lösen.'),
+    ('Was unterscheidet dich von einem großen IT-Systemhaus?',
+     'Kein Ticketsystem und kein wechselndes Team. Du hast einen festen Ansprechpartner, mich. Ich kenne deine Umgebung und sage dir, was demnächst ansteht, bevor es zum Problem wird.'),
+    ('Was passiert, wenn du im Urlaub oder krank bist?',
+     'Für Urlaub und Krankheit gibt es eine abgestimmte Vertretung: einen selbstständigen IT-Kollegen, der im Notfall einspringt.'),
+    ('Mein IT-Betreuer ist nicht mehr erreichbar – wer hilft mir kurzfristig?',
+     'Das ist einer der häufigsten Gründe, warum Betriebe bei mir anrufen. Zuerst kümmere ich mich um das, was gerade nicht läuft, danach kommt die geordnete Übernahme: Zugänge, Datensicherung, Dokumentation. Wie das abläuft, steht unter <a href="/it-betreuer-wechseln/">IT-Betreuer wechseln</a>. Ruf an: 0178 258 44 38.'),
+    ('Welche Region betreust du?',
+     'Vor Ort bin ich in Grasbrunn, Ottobrunn, Vaterstetten, Haar, Neubiberg, Putzbrunn und Hohenbrunn, etwa 25 km im Umkreis. Remote helfe ich deutschlandweit. Für Einsätze vor Ort bleibe ich bewusst im Münchner Osten: Auf der anderen Seite Münchens stehe ich im Stau, und das hilft dir nicht.'),
+    ('Welche IT-Services gibt es in Grasbrunn und Ottobrunn?',
+     'Ich bin die externe IT-Abteilung für kleine Betriebe: Netzwerk, WLAN, Microsoft 365, IT-Sicherheit, Datensicherung, Kassen und Kameras, dazu KI im Betrieb, Software nach Maß und Websites. Vor Ort in Grasbrunn, Ottobrunn, Vaterstetten, Haar, Neubiberg und Umgebung.'),
+    ('Kannst du auch bei KI und Automatisierung helfen?',
+     'Ja, das ist inzwischen einer meiner Schwerpunkte. Ich baue Anwendungen, die wiederkehrende Arbeit übernehmen: Schnittstellen zwischen Programmen, Auswertungen von Kameraaufnahmen, Daten, die heute jemand abtippt. Dazu kommt die Frage, welche KI-Werkzeuge im Betrieb überhaupt benutzt werden dürfen und wo die Daten dabei landen. Bei der E-Rechnung helfe ich, ein passendes Programm zu finden und umzustellen. In der eigenen Firma setze ich das seit über einem halben Jahr täglich ein, die ersten Kundenanwendungen entstehen gerade. Mehr unter <a href="/ki-fuer-kmu/">KI im Betrieb</a> und <a href="/e-rechnung/">E-Rechnung</a>.'),
+    ('Baust du auch Software und Websites?',
+     'Ja. Kleine Anwendungen für Abläufe, die heute in Excel oder auf Zetteln laufen, und Websites, die am Handy schnell laden, bei Google gefunden werden und für KI-Assistenten lesbar aufgebaut sind. Beides zum Festpreis, mit einem Monatsbetrag für Betrieb und Pflege. Gestaltet wird nicht: Die Optik kommt aus geprüften Vorlagen, ich setze technisch um. Mehr unter <a href="/software-nach-mass/">Software nach Maß</a> und <a href="/websites-fuer-betriebe/">Websites für Betriebe</a>.'),
+    ('Mein WLAN funktioniert nicht mehr – was kann ich tun?',
+     'Ruf mich an oder schreib auf WhatsApp. Viele WLAN-Probleme lassen sich per Fernwartung lösen: Ich greife auf deinen Router oder Rechner zu und behebe den Fehler, ohne dass ich vorbeikommen muss. Ist Hardware kaputt, komme ich vorbei. Einsatzgebiet: Grasbrunn, Ottobrunn, Vaterstetten, Haar, Neubiberg und Umgebung München Ost.'),
+    ('Gibt es IT-Support auch abends, am Wochenende oder an Feiertagen?',
+     'Ja, ich habe keine klassischen Öffnungszeiten. Schreib mir auf WhatsApp oder ruf an, wann das Problem auftritt. Vertragskunden werden bevorzugt behandelt. Alle anderen bekommen eine Antwort, sobald ich kann, auch außerhalb der üblichen Bürozeiten.'),
+    ('Kann ich IT-Support auch remote bekommen ohne dass jemand vorbeikommt?',
+     'Ja, das ist mein Alltag. Per Fernwartung greife ich auf deinen Rechner, dein Netzwerk oder deine Server zu und löse das Problem live, du siehst dabei zu oder arbeitest weiter. Remote helfe ich deutschlandweit.'),
+    ('Was kostet ein einmaliger IT-Notfall-Einsatz?',
+     '110 € netto je Stunde, abgerechnet im 15-Minuten-Takt. Kein Mindestbetrag, kein Wochenendzuschlag, keine versteckten Kosten. Vor Ort ist die Anfahrt bis 5 km inklusive. Du bekommst nach dem Einsatz eine transparente Rechnung mit genauen Zeiten.'),
+]
+
+HOME_FAQ_SHOWN = 6
+HOME_VOICES_SHOWN = ("blumenschein", "polednik")   # sichtbar; der Rest steht in der Wischleiste
+
+HOME_REVIEWS_RE = re.compile(r"(<!-- HOME_REVIEWS:START[^>]*-->\n).*?([ \t]*<!-- HOME_REVIEWS:END -->)", re.S)
+HOME_FAQ_RE = re.compile(r"(<!-- HOME_FAQ:START[^>]*-->\n).*?([ \t]*<!-- HOME_FAQ:END -->)", re.S)
+FAQPAGE_RE = re.compile(r'  <script type="application/ld\+json">\n\{\n  "@context": "https://schema.org",\n'
+                        r'  "@type": "FAQPage",.*?\n  </script>', re.S)
+REVIEW_ARRAY_RE = re.compile(r'("review":\[\n).*?(\n        \])', re.S)
+REVIEW_COUNT_RE = re.compile(r'"reviewCount":"\d+"')
+PROOF_RE = re.compile(r'(<a\b[^>]*\bdata-proof\b[^>]*>)5,0 bei \d+ Google-Bewertungen(</a>)')
+WA_LINK_RE = re.compile(r'<a\b[^>]*\bdata-wa="([\w-]+)"[^>]*>')
+PRICE_SPAN_RE = re.compile(r'(<span data-price="(\w+)">)[^<]*(</span>)')
+HOME_MODIFIED_RE = re.compile(r'("dateModified":")[0-9-]+(")')
+STARS = ('<div class="stars" role="img" aria-label="5 von 5 Sternen">'
+         + '<svg aria-hidden="true"><use href="#ico-star"/></svg>' * 5 + '</div>')
+
+
+def review_label(r):
+    """Quelle auf der Karte: 'Google-Bewertung' nur bei Google, sonst Rolle + 'direkt übermittelt'."""
+    if r["source"] == "Google-Bewertung":
+        return "Google-Bewertung"
+    return (r["role"] + " · " if r["role"] else "") + "direkt übermittelt"
+
+
+def voice_card(r, ind="      "):
+    """Eine Stimme als <figure class="testi-card">, Text woertlich mit „…“ um das ganze Zitat."""
+    ps = r["paragraphs"]
+    body = "".join("\n{i}    <p>{a}{t}{z}</p>".format(i=ind, t=esc(t), a="„" if k == 0 else "",
+                                                     z="“" if k == len(ps) - 1 else "")
+                   for k, t in enumerate(ps))
+    ctx = '\n{i}    <div class="testi-ctx">{c}</div>'.format(i=ind, c=esc(r["ctx"])) if r.get("ctx") else ""
+    cls = "testi-card testi-card--long" if len(ps) > 2 else "testi-card"
+    return ('{i}<figure class="{cls}">\n{i}  {stars}\n{i}  <blockquote class="testi-txt">{body}\n{i}  </blockquote>\n'
+            '{i}  <figcaption>\n{i}    <div class="testi-who">{who}</div>\n{i}    <div class="testi-role">{lbl}</div>{ctx}\n'
+            '{i}  </figcaption>\n{i}</figure>').format(i=ind, cls=cls, stars=STARS, body=body, who=esc(r["who"]),
+                                                     lbl=esc(review_label(r)), ctx=ctx)
+
+
+def home_reviews_html():
+    """Startseite: zwei Stimmen sichtbar (HOME_VOICES_SHOWN), der Rest vollstaendig in der Wischleiste."""
+    by_id = {r["id"]: r for r in REVIEWS}
+    shown = [by_id[i] for i in HOME_VOICES_SHOWN]
+    rest = [r for r in REVIEWS if r["id"] not in HOME_VOICES_SHOWN]
+    return ('    <div class="testi-top">\n{top}\n    </div>\n'
+            '    <p class="testi-row-h">{n} weitere Stimmen<span class="testi-pos" data-testi-pos aria-hidden="true"></span></p>\n'
+            '    <div class="testi-row" tabindex="0" role="region" aria-label="Weitere Kundenstimmen">\n{row}\n    </div>').format(
+                top="\n".join(voice_card(r) for r in shown), n=len(rest), row="\n".join(voice_card(r) for r in rest))
+
+
+def faq_item(q, a, ind):
+    return ('{i}<details class="faq-item"><summary>{q} <span class="faq-ico" aria-hidden="true">+</span></summary>'
+            '<div class="faq-a">{a}</div></details>').format(i=ind, q=esc(q), a=a)
+
+
+def home_faq_html():
+    """Sichtbares FAQ der Startseite: HOME_FAQ_SHOWN Fragen, der Rest unter "Weitere Fragen"."""
+    top = "\n".join(faq_item(q, a, "      ") for q, a in HOME_FAQS[:HOME_FAQ_SHOWN])
+    rest = "\n".join(faq_item(q, a, "        ") for q, a in HOME_FAQS[HOME_FAQ_SHOWN:])
+    return ('    <div class="faq-wrap">\n{top}\n    </div>\n'
+            '    <details class="more faq-rest">\n      <summary>Weitere Fragen</summary>\n'
+            '      <div class="faq-wrap">\n{rest}\n      </div>\n    </details>').format(top=top, rest=rest)
+
+
+def plain(answer_html):
+    """Antwort-HTML -> Text fuers Schema (Tags weg, Entities aufgeloest)."""
+    return htmllib.unescape(re.sub(r"<[^>]+>", "", answer_html))
+
+
+def home_faq_schema():
+    return schema_script({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "@id": DOMAIN + "/#faqpage",
+        "inLanguage": "de-DE",
+        "isPartOf": {"@id": WEBSITE_ID},
+        "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": plain(a)}}
+                       for q, a in HOME_FAQS],
+    })
+
+
+def home_review_json():
+    """review[] im LocalBusiness-Knoten, im kompakten Format des handgeschriebenen Schemas."""
+    def js(v):
+        return json.dumps(v, ensure_ascii=False)
+    out = []
+    for r in REVIEWS:
+        date = '\n            "datePublished":{},'.format(js(r["date"])) if r.get("date") else ""
+        out.append('          {{\n            "@type":"Review",\n'
+                   '            "reviewRating":{{"@type":"Rating","ratingValue":"5","bestRating":"5"}},\n'
+                   '            "author":{{"@type":{t},"name":{n}}},{d}\n'
+                   '            "reviewBody":{b}\n          }}'.format(t=js(r["author_type"]), n=js(r["name"]), d=date,
+                                                                    b=js("\n\n".join(r["paragraphs"]))))
+    return ",\n".join(out)
+
+
+def sync_home():
+    """Schreibt die generierten Teile der Startseite (siehe Kopf, Punkt 6). Zeilenenden der Datei bleiben."""
+    path = os.path.join(ROOT, "index.html")
+    with open(path, encoding="utf-8", newline="") as f:
+        raw = f.read()
+    nl = "\r\n" if "\r\n" in raw else "\n"
+    s = raw.replace("\r\n", "\n")
+
+    def one(rx, repl, text, what):
+        new, n = rx.subn(repl, text)
+        if n != 1:
+            raise SystemExit("sync_home: " + what + " " + str(n) + "x gefunden statt 1x")
+        return new
+
+    def wa_href(m):
+        key = m.group(1)
+        if key not in WA_TEXT:
+            raise SystemExit("sync_home: unbekannter WhatsApp-Einstieg data-wa=" + key)
+        return re.sub(r'href="[^"]*"', lambda _m: 'href="' + WA(WA_TEXT[key]) + '"', m.group(0), count=1)
+
+    def price(m):
+        if m.group(2) not in PRICES:
+            raise SystemExit("sync_home: unbekannter Preis data-price=" + m.group(2))
+        return m.group(1) + eur(PRICES[m.group(2)]) + m.group(3)
+
+    s = one(HOME_REVIEWS_RE, lambda m: m.group(1) + home_reviews_html() + "\n" + m.group(2), s, "HOME_REVIEWS-Marken")
+    s = one(HOME_FAQ_RE, lambda m: m.group(1) + home_faq_html() + "\n" + m.group(2), s, "HOME_FAQ-Marken")
+    s = one(FAQPAGE_RE, lambda m: home_faq_schema(), s, "FAQPage-Schema")
+    s = one(REVIEW_ARRAY_RE, lambda m: m.group(1) + home_review_json() + m.group(2), s, "review[] im Schema")
+    s = one(REVIEW_COUNT_RE, lambda m: '"reviewCount":"{}"'.format(len(REVIEWS)), s, "reviewCount")
+    s = one(PROOF_RE, lambda m: m.group(1) + "5,0 bei {} Google-Bewertungen".format(REVIEW_COUNT_GOOGLE) + m.group(2),
+            s, "Belegzeile data-proof")
+    s = one(HOME_MODIFIED_RE, lambda m: m.group(1) + HOME_DATE + m.group(2), s, "dateModified")
+    s = one(UPDATED_RE, lambda m: "<span>Zuletzt aktualisiert: " + HOME_DATE_DISP + "</span>", s,
+            "'Zuletzt aktualisiert' im Fuss")
+    s = WA_LINK_RE.sub(wa_href, s)
+    s = PRICE_SPAN_RE.sub(price, s)
+    n_google = sum(r["source"] == "Google-Bewertung" for r in REVIEWS)
+    if n_google != REVIEW_COUNT_GOOGLE:
+        print("  Hinweis: REVIEWS hat {} Google-Stimmen, REVIEW_COUNT_GOOGLE = {}".format(n_google, REVIEW_COUNT_GOOGLE))
+    s = s.replace("\n", nl)
+    if s != raw:
+        with open(path, "w", encoding="utf-8", newline="") as f:
+            f.write(s)
+        print("  Startseite aktualisiert (sync_home)")
+
+
+# --------------------------------------------------------------------------- #
 #  Sitemap                                                                     #
 # --------------------------------------------------------------------------- #
 
 STATIC_URLS = [   # (Pfad, Prioritaet, lastmod) -- lastmod der Startseite = ihr dateModified
-    ("/", "1.0", NEW_DATE),
+    ("/", "1.0", HOME_DATE),
     ("/kontakt/", "0.7", "2026-09-23"),
     ("/schulung/", "0.8", "2026-05-01"),
     ("/empfehlungen/", "0.7", "2026-05-01"),
@@ -2696,6 +2988,7 @@ def main():
         print("  -", w)
     print("sitemap.xml aktualisiert")
     sync_shared(PLACES, SERVICES)
+    sync_home()
 
 
 if __name__ == "__main__":

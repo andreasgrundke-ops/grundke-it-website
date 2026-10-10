@@ -1,7 +1,7 @@
 /**
  * ═══════════════════════════════════════════════════════════
  * Grundke IT-Service · main.js
- * Version: 1.5.0
+ * Version: 1.6.0
  * Autor: Andreas Grundke / Grundke IT-Service
  * Datum: 2026-10-10
  * Beschreibung: Shared JS – Nav, FAQ, Scroll
@@ -15,6 +15,8 @@
  * Änderung 2026-10-09: Fernwartung ist direkter Menuepunkt, Dropdown-Logik entfernt.
  * Änderung 2026-10-10: Fuss-Spalten am Handy zugeklappt (initFooter), Flip-Karten-Code
  *                       entfernt (keine .flip-wrap mehr im Markup).
+ *                       1.6.0: Position in der Wischleiste der Kundenstimmen
+ *                       (initTestiRow, Startseite).
  * ═══════════════════════════════════════════════════════════
  */
 
@@ -331,6 +333,33 @@ function initFooter() {
   else if (mq.addListener) mq.addListener(apply); // Safari < 14
 }
 
+/* ── Startseite: Wischleiste der Kundenstimmen (seit 2026-10-10)
+   Ohne JS steht nur "4 weitere Stimmen" da. Mit JS kommt die Position dazu
+   ("· 2 von 4"), solange die Leiste wirklich seitlich scrollt (am Handy). */
+function initTestiRow() {
+  document.querySelectorAll('.testi-row').forEach(row => {
+    const pos = row.parentElement.querySelector('[data-testi-pos]');
+    const cards = Array.from(row.querySelectorAll('.testi-card'));
+    if (!pos || cards.length < 2) return;
+
+    function update() {
+      if (row.scrollWidth <= row.clientWidth + 1) { pos.textContent = ''; return; }
+      const start = row.getBoundingClientRect().left;
+      let idx = 0;
+      cards.forEach((card, k) => {
+        if (card.getBoundingClientRect().left - start <= 8) idx = k;
+      });
+      // Am Ende der Leiste kann die letzte Karte nicht ganz nach links rutschen
+      if (row.scrollLeft + row.clientWidth >= row.scrollWidth - 2) idx = cards.length - 1;
+      pos.textContent = ' · ' + (idx + 1) + ' von ' + cards.length;
+    }
+
+    row.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  });
+}
+
 /* ── Service Worker Registration (Release-2 PWA-Setup)
    Registriert den SW unter Scope "/", sodass die ganze Site
    als PWA installierbar wird (Add-to-Home, Offline-Cache).
@@ -392,6 +421,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initVCard();
   initSchnellcheck();
   initFooter();
+  initTestiRow();
   initInstallPrompt();
   var lenis = initLenis();
   initScrollTop(lenis);
