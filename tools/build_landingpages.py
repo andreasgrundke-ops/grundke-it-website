@@ -425,6 +425,8 @@ def head(title, desc, slug, og_title, og_desc, og_alt):
   <meta name="apple-mobile-web-app-title" content="Grundke IT"/>
   <meta name="application-name" content="Grundke IT"/>
   <meta name="msapplication-TileColor" content="#0c4da2"/>
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="{up}assets/fonts/Manrope-latin.woff2"/>
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="{up}assets/fonts/SpaceGrotesk-latin.woff2"/>
   <link rel="stylesheet" href="{up}assets/css/fonts.css"/>
   <link rel="stylesheet" href="{css}"/>
 """.format(title=esc(title), desc=esc(desc), canonical=canonical,
