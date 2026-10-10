@@ -66,6 +66,10 @@ Aenderungen:
               STATIC_URLS ohne schulung, Fusslink ueber group_of). Neue Felder: h1_em (Wort der H1 als <em>), name
               (Name ohne Tags fuer Schema und og), meta_extra (eigene og/twitter-Werte, twitter:image:alt), intro
               optional; Preiskarte mit Zusatzfeld (zweite Preiszeile, Leistungen, Abzeichen, Knopf).
+  2026-10-10  Release C1, Task 9: sync_shared setzt den Abschluss K5 auch auf die Handseiten (HAND_CLOSING, CLOSING_RE:
+              vorhandenen <section class="cta-sec"> ersetzen, sonst vor </main> einfuegen; Startseite und empfehlungen
+              ausgenommen) und den Font-Preload aus head() in deren Kopf (preload_fonts, idempotent). closing() mit
+              Autorzeile ohne Datum (mod_disp None) und Knoepfen auch am Handy, wenn die Seite keine Kontaktleiste hat.
 """
 
 import os
@@ -322,6 +326,39 @@ SPRITE_RE = re.compile(r'<svg[^>]*\bid="icon-sprite"[^>]*>.*?</svg>', re.S)
 # style.css/main.js in jeder Schreibweise (relativ, ../, absolut, mit oder ohne ?v=)
 STYLE_CSS_RE = re.compile(r'href="(?:\.\./)*/?assets/css/style\.css(?:\?v=[^"]*)?"')
 MAIN_JS_RE = re.compile(r'src="(?:\.\./)*/?assets/js/main\.js(?:\?v=[^"]*)?"')
+# Abschluss K5 auf den Handseiten (seit Task 9, Release C1): sync_shared ersetzt einen vorhandenen Abschluss
+# (CLOSING_RE) oder setzt ihn vor </main>. Pfad -> (Seitenname fuer den WhatsApp-Satz nach Textblatt §4, None:
+# allgemeiner Abschluss-Satz; Datum der Autorzeile, None: ohne „Zuletzt aktualisiert“). Kontakt traegt das Datum
+# seiner Textaenderung, Fernwartung das der letzten Anleitung (09.10.2026); Rechtsseiten fuehren ihren Stand im
+# Text, die 404 hat keinen. Nicht hier: Startseite (eigener Abschluss) und empfehlungen (Task 10).
+HAND_CLOSING = {
+    "kontakt/index.html": ("Kontakt", "10. Oktober 2026"),
+    "fernwartung/index.html": ("Fernwartung", "9. Oktober 2026"),
+    "impressum/index.html": (None, None),
+    "datenschutz/index.html": (None, None),
+    "agb/index.html": (None, None),
+    "barrierefreiheit/index.html": (None, None),
+    "404.html": (None, None),
+}
+CLOSING_RE = re.compile(r'<section class="cta-sec".*?</section>', re.S)
+# Font-Preload wie in head() der Generator-Seiten, vor dem fonts.css-Link der Handseite und mit dessen Pfad
+# (../assets/… oder /assets/… bei der 404), damit die URL der des @font-face in fonts.css entspricht
+FONTS_CSS_RE = re.compile(r'( *)<link rel="stylesheet" href="((?:\.\./)*|/)assets/css/fonts\.css"/?>')
+FONT_PRELOAD_RE = re.compile(r'<link rel="preload" as="font"[^>]*Manrope-latin\.woff2')
+FONT_PRELOADS = ("Manrope-latin.woff2", "SpaceGrotesk-latin.woff2")
+
+
+def preload_fonts(html, nl):
+    """Setzt die beiden Font-Preloads vor fonts.css (Layout-Sprung beim ersten Aufruf, Release B). Steht der
+    Preload schon da (Startseite, zweiter Lauf), bleibt die Seite unveraendert."""
+    if FONT_PRELOAD_RE.search(html):
+        return html
+    m = FONTS_CSS_RE.search(html)
+    if not m:
+        raise SystemExit("preload_fonts: fonts.css-Link fehlt")
+    links = "".join('{i}<link rel="preload" as="font" type="font/woff2" crossorigin href="{p}assets/fonts/{f}"/>{nl}'
+                    .format(i=m.group(1), p=m.group(2), f=f, nl=nl) for f in FONT_PRELOADS)
+    return html[:m.start()] + links + html[m.start():]
 
 
 def sync_shared(places, services):
@@ -357,6 +394,19 @@ def sync_shared(places, services):
             else:
                 html_new = html_new.replace('<header class="site-header">',
                                             sprite + nl + '<header class="site-header">', 1)
+            html_new = preload_fonts(html_new, nl)
+        if rel in HAND_CLOSING:
+            name, mod = HAND_CLOSING[rel]
+            wa = WA(WA_SEITE.format(nav=name)) if name else None
+            # ohne Kontaktleiste (Rechtsseiten, 404) bleiben die Knoepfe des Abschlusses auch am Handy sichtbar
+            sticky = 'class="sticky-contact"' in html_new
+            block = closing(mod, wa, sticky=sticky).replace("\n", nl)
+            if CLOSING_RE.search(html_new):
+                html_new = CLOSING_RE.sub(lambda _m: block, html_new, count=1)
+            elif "</main>" in html_new:
+                html_new = html_new.replace("</main>", block + nl + "</main>", 1)
+            else:
+                raise SystemExit("Abschluss: weder cta-sec noch </main> in " + rel)
         if html_new != html:
             with open(path, "w", encoding="utf-8", newline="") as f:
                 f.write(html_new)
@@ -823,19 +873,22 @@ def prices_html(s):
     return '\n    <div class="{g}">{c}\n    </div>'.format(g=grid, c="".join(cards))
 
 
-def closing(mod_disp, wa=None, next_link=None):
+def closing(mod_disp, wa=None, next_link=None, sticky=True):
     """Abschluss K5 wie auf der Startseite (Knoepfe ab 768 px, am Handy die Kontaktleiste; QR zur
     Kontaktseite ab 1025 px) mit kompakter Autorzeile und dem Datum der Seite. wa: WhatsApp-Link
-    (Satz der Seite), next_link: (href, Text) als Weg zur passenden naechsten Seite."""
+    (Satz der Seite), next_link: (href, Text) als Weg zur passenden naechsten Seite.
+    Seit Task 9 (Handseiten): mod_disp None = Autorzeile ohne Datum; sticky=False fuer Seiten ohne Kontaktleiste,
+    dort bleiben die Knoepfe auch am Handy sichtbar."""
     nxt = ""
     if next_link:
         nxt = ('\n    <p class="cta-next"><a href="{h}">{t}<svg width="16" height="16" aria-hidden="true">'
                '<use href="#ico-arrow-r"/></svg></a></p>').format(h=next_link[0], t=esc(next_link[1]))
+    date = '<br><span class="cta-date">Zuletzt aktualisiert: {}</span>'.format(mod_disp) if mod_disp else ""
     return """<section class="cta-sec">
   <div class="inner">
     <h2 class="cta-h">Problem? <em>Ich bin dran.</em></h2>
     <p class="cta-sub">Ruf an, schreib auf WhatsApp oder per Mail. Am anderen Ende bin ich, Andreas Grundke. Gerne per Du.</p>
-    <div class="cta-btns inline-cta-mobile">
+    <div class="cta-btns{mob}">
       <a href="tel:{tel}" class="btn-tel"><svg width="20" height="20" aria-hidden="true"><use href="#ico-phone"/></svg> {phone}</a>
       <a href="{wa}" target="_blank" rel="noopener" class="btn-wa"><svg width="20" height="20" aria-hidden="true"><use href="#ico-wa"/></svg> WhatsApp</a>
       <a href="{mailto}" class="btn-email"><svg width="20" height="20" aria-hidden="true"><use href="#ico-mail"/></svg> E-Mail schreiben</a>
@@ -846,11 +899,11 @@ def closing(mod_disp, wa=None, next_link=None):
     </div>{nxt}
     <div class="cta-author">
       <span class="ava" aria-hidden="true">AG</span>
-      <p><strong>Andreas Grundke</strong> · {role}<br><span class="cta-date">Zuletzt aktualisiert: {mod}</span></p>
+      <p><strong>Andreas Grundke</strong> · {role}{date}</p>
     </div>
   </div>
 </section>""".format(tel=PHONE, phone=PHONE_DISP, wa=wa or WA(WA_TEXT["abschluss"]), mailto=MAILTO_PREFILLED,
-                     nxt=nxt, role=AUTHOR_ROLE, mod=mod_disp)
+                     nxt=nxt, role=AUTHOR_ROLE, date=date, mob=" inline-cta-mobile" if sticky else "")
 
 
 def extra_blocks(extra):
@@ -3517,7 +3570,7 @@ def sync_home():
 
 STATIC_URLS = [   # (Pfad, Prioritaet, lastmod) -- lastmod der Startseite = ihr dateModified
     ("/", "1.0", HOME_DATE),
-    ("/kontakt/", "0.7", "2026-09-23"),
+    ("/kontakt/", "0.7", "2026-10-10"),   # Task 9: Erreichbarkeit, Untertitel und FAQ nach Textblatt-Anhang
     ("/empfehlungen/", "0.7", "2026-05-01"),
 ]   # /schulung/ steht seit Task 8 ueber SERVICES in der Sitemap
 
