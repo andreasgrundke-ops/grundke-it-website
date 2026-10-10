@@ -214,6 +214,8 @@
        Direktlinks zum Weitergeben: /fernwartung/#windows, #linux, #mac */
     .fw-os { margin: 2rem 0 0; }
     .fw-os[hidden] { display: none; }
+    /* Mit JS den Platz des Umschalters vor dem Skript schon freihalten (sonst rutscht die Anleitung um ~170 px, CLS) */
+    .js .fw-os[hidden] { display: block; visibility: hidden; }
     .fw-os-label { margin: 0 0 .6rem; font-size: var(--fs-sm); font-weight: 600; color: var(--text2); }
     .fw-os-tabs {
       display: grid;
