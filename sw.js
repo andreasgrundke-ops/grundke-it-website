@@ -17,6 +17,12 @@
  * den Suffix erhoehen, dann werden alte Caches beim activate
  * geloescht.
  *
+ * Asset-Version (seit 2026-10-10): style.css und main.js tragen
+ * auf allen Seiten ?v=ASSET_VER (Konstante im Generator
+ * tools/build_landingpages.py). Der Pre-Cache nutzt dieselben
+ * URLs. Neue Seiten fragen damit neue URLs an, die am alten
+ * Cache vorbeilaufen: kein neues HTML mit altem CSS.
+ *
  * Aenderungshistorie:
  *   1.0.0 / 2026-04-11 — Initial Release-2 PWA-Setup
  *   1.1.0 / 2026-08-01 — Cache-Versionen erhoeht. Ohne das behielt jeder
@@ -88,6 +94,7 @@
 
 const CACHE_NAME    = 'grundke-it-v1.23.1';
 const RUNTIME_CACHE = 'grundke-it-runtime-v30';
+const ASSET_VER     = '2026.10.a';   // muss ASSET_VER im Generator entsprechen
 
 /* Pre-Cache: minimaler Kern fuer Offline-First-Boot */
 const PRECACHE_URLS = [
@@ -95,9 +102,9 @@ const PRECACHE_URLS = [
   '/index.html',
   '/404.html',
   '/site.webmanifest',
-  '/assets/css/style.css',
+  '/assets/css/style.css?v=' + ASSET_VER,
   '/assets/css/fonts.css',
-  '/assets/js/main.js',
+  '/assets/js/main.js?v=' + ASSET_VER,
   '/assets/js/hero-chat.js',
   '/assets/js/lenis.min.js',
   '/assets/img/logo-grundke-it-white.png',

@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 """
 build_landingpages.py
-Version : 2.0
+Version : 2.1
 Autor   : Andreas Grundke IT-Service (Grundke IT-Service)
-Datum   : 2026-10-07
+Datum   : 2026-10-10
 Zweck   : Generiert aus einem gemeinsamen Template + Datenlisten die Orts- und
           Leistungs-Landingpages fuer grundke-it.de (statisches HTML, GitHub Pages)
           und aktualisiert die sitemap.xml.
@@ -33,6 +33,10 @@ Aenderungen:
               Bereichen, Preis-Schalter SHOW_FROM_PRICES/PRICES, Offer-Schema mit Mindestpreis,
               Service.provider als @id-Verweis, Tabellen am Handy gestapelt, Hero-H1 mit
               Leerzeichen vor der Akzentzeile, Zeitzusagen aus Orts- und Notdienstseiten entfernt.
+  2026-10-10  Website-Umbau Release A (Expand): ASSET_VER/asset() fuer style.css und main.js
+              aller Seiten (auch Startseite und Handseiten ueber sync_shared), ICON_SPRITE vor
+              dem Kopf, REVIEW_COUNT_GOOGLE, Fuss mit aufklappbaren Spalten (<details>) und
+              fester Rechtszeile, Fliesstext .lp-content p auf 16 px, Autor-Link unterstrichen.
 """
 
 import os
@@ -59,6 +63,21 @@ KI_PUB_DATE = "2026-08-22"      # datePublished der KI-Seiten
 # Lizenzen, Ratgeber) und die dafuer inhaltlich erweiterten Seiten tragen dieses Datum.
 NEW_DATE = "2026-10-07"
 NEW_DATE_DISP = "7. Oktober 2026"
+
+# Asset-Version (seit 10.10.2026): haengt als ?v= an style.css und main.js ALLER Seiten
+# (generierte Seiten, Startseite und Handseiten ueber sync_shared) und steht gleichlautend
+# als ASSET_VER im Pre-Cache von sw.js. Bei JEDEM Release erhoehen, zusammen mit
+# CACHE_NAME/RUNTIME_CACHE in sw.js. Neue URLs laufen am alten Cache des Service Workers
+# vorbei, ein wiederkehrender Besucher bekommt nie neues HTML mit altem CSS.
+ASSET_VER = "2026.10.a"
+# Bewertungen im Google-Unternehmensprofil (Stand 10.10.2026). Eine weitere Stimme kam
+# direkt und zaehlt hier nicht mit. Einzige Quelle fuer die Zahl auf allen Seiten.
+REVIEW_COUNT_GOOGLE = 5
+
+
+def asset(path):
+    """'css/style.css' -> '/assets/css/style.css?v=<ASSET_VER>' (absolut, auf jeder Seitentiefe gleich)."""
+    return "/assets/" + path + "?v=" + ASSET_VER
 
 # „ab"-Preise (netto) fuer Projekte auf den Seiten Software, Websites, E-Rechnung und KI.
 # Auf False gesetzt verschwinden alle Projektpreise samt Offer-Schema und Preissaetzen in den
@@ -103,7 +122,7 @@ STYLE = """  <style>
     .lp-crumbs a:hover { color:var(--cyan); }
     .lp-crumbs [aria-current] { color:var(--text); }
     .lp-content h2 { font-family:var(--fh); font-size:clamp(1.3rem,3vw,1.8rem); font-weight:800; color:var(--text); letter-spacing:-.02em; margin:2.6rem 0 1rem; }
-    .lp-content p { font-size:.95rem; color:var(--text2); line-height:1.8; margin-bottom:1rem; }
+    .lp-content p { font-size:1.0667rem; color:var(--text2); line-height:1.8; margin-bottom:1rem; }
     .lp-content strong { color:var(--text); }
     .lp-cta-row { display:flex; flex-wrap:wrap; gap:1rem; margin:2rem 0; }
     .lp-content .faq-wrap { margin-top:1.2rem; }
@@ -132,7 +151,7 @@ STYLE = """  <style>
     .lp-author-name { font-family:var(--fh); font-weight:800; color:var(--text); font-size:1rem; }
     .lp-author-role { display:block; font-size:.8rem; color:var(--text3); margin:.1rem 0 .6rem; }
     .lp-author-meta { margin-top:.7rem; font-size:.78rem; color:var(--text3); }
-    .lp-author-meta a { color:var(--cyan); text-decoration:none; }
+    .lp-author-meta a { color:var(--cyan); text-decoration:underline; text-underline-offset:.2em; }
   </style>"""
 
 # --- Navigation: EINE Quelle fuer alle Seiten (seit 2026-09-23) ------------- #
@@ -164,6 +183,23 @@ PHONE_SVG = ('<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke
              '19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 '
              '2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.8a16 16 0 0 0 6 6l.94-.94a2 2 0 0 1 2.11-.45 '
              '12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>')
+
+# Icon-Sprite fuer alle Seiten (seit 10.10.2026): die acht Symbole, die die gemeinsamen
+# Bausteine brauchen (Belegzeile, Knoepfe, Sterne). Pfade 1:1 aus dem Sprite der Startseite.
+# page() und sync_shared() setzen es direkt vor den <header>. Die Startseite bekommt es nicht:
+# ihr eigenes Sprite enthaelt dieselben Symbole, ein zweites ergaebe doppelte IDs.
+ICON_SPRITE = ('<svg xmlns="http://www.w3.org/2000/svg" id="icon-sprite" style="display:none" aria-hidden="true">\n'
+               '  <symbol id="ico-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></symbol>\n'
+               '  <symbol id="ico-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.8a16 16 0 0 0 6 6l.94-.94a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>\n'
+               '  <symbol id="ico-wa" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></symbol>\n'
+               '  <symbol id="ico-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>\n'
+               '  <symbol id="ico-arrow-r" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>\n'
+               '  <symbol id="ico-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></symbol>\n'
+               '  <symbol id="ico-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>\n'
+               '  <symbol id="ico-user-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="m16 11 2 2 4-4"/></symbol>\n'
+               '</svg>')
+
+
 def nav_html(current=None, home=False):
     """Kompletter Seitenkopf (Desktop-Leiste + Mobilmenue).
     current = (bereich, art): bereich aus NAV_ITEMS/NAV_KONTAKT, art "page" fuer die
@@ -238,10 +274,16 @@ HEADER_RE = re.compile(r'<header class="site-header">.*?</header>', re.S)
 
 FOOTER_RE = re.compile(r'<footer class="site-footer">.*?</footer>', re.S)
 UPDATED_RE = re.compile(r'<span>Zuletzt aktualisiert: ([^<]+)</span>')
+SPRITE_RE = re.compile(r'<svg[^>]*\bid="icon-sprite"[^>]*>.*?</svg>', re.S)
+# style.css/main.js in jeder Schreibweise (relativ, ../, absolut, mit oder ohne ?v=)
+STYLE_CSS_RE = re.compile(r'href="(?:\.\./)*/?assets/css/style\.css(?:\?v=[^"]*)?"')
+MAIN_JS_RE = re.compile(r'src="(?:\.\./)*/?assets/js/main\.js(?:\?v=[^"]*)?"')
 
 
 def sync_shared(places, services):
-    """Schreibt den gemeinsamen Header und Footer in die handgebauten Seiten.
+    """Schreibt den gemeinsamen Header und Footer in die handgebauten Seiten, setzt dort
+    style.css/main.js auf die versionierte Form (ASSET_VER) und das Icon-Sprite vor den
+    Header (nicht auf der Startseite, siehe ICON_SPRITE).
     Ein vorhandenes 'Zuletzt aktualisiert' im Fuss (Startseite) bleibt erhalten."""
     for rel, current in HAND_PAGES.items():
         path = os.path.join(ROOT, rel)
@@ -257,10 +299,20 @@ def sync_shared(places, services):
                   (FOOTER_RE, footer_html(places, services, page_path,
                                           upd.group(1) if upd else None, home))]
         html_new = html
+        nl = "\r\n" if "\r\n" in html else "\n"
         for rx, block in blocks:
-            if "\r\n" in html:  # Zeilenenden der Datei beibehalten (404.html ist CRLF)
-                block = block.replace("\n", "\r\n")
+            # Zeilenenden der Datei beibehalten (404.html war CRLF)
+            block = block.replace("\n", nl)
             html_new = rx.sub(lambda _m, b=block: b, html_new, count=1)
+        html_new = STYLE_CSS_RE.sub(lambda _m: 'href="' + asset("css/style.css") + '"', html_new)
+        html_new = MAIN_JS_RE.sub(lambda _m: 'src="' + asset("js/main.js") + '"', html_new)
+        if not home:
+            sprite = ICON_SPRITE.replace("\n", nl)
+            if SPRITE_RE.search(html_new):
+                html_new = SPRITE_RE.sub(lambda _m: sprite, html_new, count=1)
+            else:
+                html_new = html_new.replace('<header class="site-header">',
+                                            sprite + nl + '<header class="site-header">', 1)
         if html_new != html:
             with open(path, "w", encoding="utf-8", newline="") as f:
                 f.write(html_new)
@@ -334,10 +386,10 @@ def head(title, desc, slug, og_title, og_desc, og_alt):
   <meta name="application-name" content="Grundke IT"/>
   <meta name="msapplication-TileColor" content="#0c4da2"/>
   <link rel="stylesheet" href="{up}assets/css/fonts.css"/>
-  <link rel="stylesheet" href="{up}assets/css/style.css"/>
+  <link rel="stylesheet" href="{css}"/>
 """.format(title=esc(title), desc=esc(desc), canonical=canonical,
            og_title=esc(og_title), og_desc=esc(og_desc), og_alt=esc(og_alt),
-           domain=DOMAIN, up=up(slug))
+           domain=DOMAIN, up=up(slug), css=asset("css/style.css"))
 
 
 MAILTO_PREFILLED = "mailto:info@grundke-it.de?subject=Anfrage%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0AMein%20Anliegen%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F)."
@@ -354,21 +406,29 @@ def group_of(sv):
 
 def footer_html(places, services, current_path="", updated=None, home=False):
     """Gemeinsamer Fuss fuer ALLE Seiten (seit 2026-09-23; vorher fuenf Varianten).
-    Aufbau wie auf der Startseite: Marke/Kontakt · Leistungen · Standorte · Rechtliches.
+    Aufbau: Marke/Kontakt · IT-Betreuung · KI, Software & Websites · Standorte + Ratgeber ·
+    Kontakt; darunter eine feste Zeile mit Impressum, Datenschutz, AGB, Barrierefreiheit.
+    Seit 2026-10-10 sind die Spalten 2-5 <details>: ohne JS offen, am Handy klappt
+    main.js (initFooter) sie zu. Die Rechtszeile klappt nie zu.
     current_path markiert den Link der aktuellen Seite (aria-current), updated zeigt
     optional 'Zuletzt aktualisiert' (nur die Startseite fuehrt das im Fuss)."""
+    def cur(href):
+        return ' aria-current="page"' if href == current_path else ""
     def li(label, href):
-        cur = ' aria-current="page"' if href == current_path else ""
-        return '\n          <li><a href="{h}"{c}>{l}</a></li>'.format(h=href, c=cur, l=esc(label))
+        return '\n          <li><a href="{h}"{c}>{l}</a></li>'.format(h=href, c=cur(href), l=esc(label))
+    def col(title, links, indent="      "):
+        return ('\n{i}<details class="foot-col" open><summary class="foot-h">{t}</summary>'
+                '\n{i}  <ul class="foot-links">{l}\n{i}  </ul>\n{i}</details>').format(
+                    i=indent, t=title, l=links.replace("\n", "\n" + indent[6:]))
     def group_links(group):
         return "".join(li(sv["nav"], "/" + sv["slug"] + "/") for sv in services if group_of(sv) == group)
     it_links = group_links("it") + li("IT-Sicherheitsschulung", "/schulung/") + li("Produktempfehlungen", "/empfehlungen/")
     ki_links = group_links("ki")
     ratgeber_links = group_links("ratgeber")
     place_links = "".join(li("IT-Service " + pl["name"], "/it-service-" + pl["slug"] + "/") for pl in places)
-    legal_links = (li("So arbeite ich", "#ablauf" if home else "/#ablauf")
-                   + li("Kontakt", "/kontakt/") + li("Fernwartung starten", "/fernwartung/")
-                   + "".join(li(l, h) for l, h in LEGAL_LINKS))
+    contact_links = (li("So arbeite ich", "#ablauf" if home else "/#ablauf")
+                     + li("Kontakt", "/kontakt/") + li("Fernwartung starten", "/fernwartung/"))
+    legal_html = "".join('\n        <a href="{h}"{c}>{l}</a>'.format(h=h, c=cur(h), l=l) for l, h in LEGAL_LINKS)
     updated_html = '\n      <span>Zuletzt aktualisiert: {}</span>'.format(updated) if updated else ""
     return """<footer class="site-footer">
   <div class="inner">
@@ -382,39 +442,24 @@ def footer_html(places, services, current_path="", updated=None, home=False):
           <a href="{mailto}">info@grundke-it.de</a>
           <a href="https://grundke-it.de">www.grundke-it.de</a>
         </address>
-      </div>
-      <div>
-        <div class="foot-h">IT-Betreuung</div>
-        <ul class="foot-links">{it_links}
-        </ul>
-      </div>
-      <div>
-        <div class="foot-h">KI, Software &amp; Websites</div>
-        <ul class="foot-links">{ki_links}
-        </ul>
-      </div>
-      <div>
-        <div class="foot-h">Standorte</div>
-        <ul class="foot-links">{place_links}
-        </ul>
-        <div class="foot-h foot-h--next">Ratgeber</div>
-        <ul class="foot-links">{ratgeber_links}
-        </ul>
-      </div>
-      <div>
-        <div class="foot-h">Kontakt &amp; Rechtliches</div>
-        <ul class="foot-links">{legal_links}
-        </ul>
-      </div>
+      </div>{col_it}{col_ki}
+      <div class="foot-pair">{col_places}{col_ratgeber}
+      </div>{col_contact}
     </div>
     <div class="foot-bottom">
+      <nav class="foot-legal" aria-label="Rechtliches">{legal}
+      </nav>
       <span>© 2026 Grundke IT-Service · Andreas Grundke · Beethovenring 16 · 85630 Grasbrunn</span>{updated}
       <span class="foot-ci">CI 2026.01 · grundke-it.de</span>
     </div>
   </div>
-</footer>""".format(mailto=MAILTO_PREFILLED, it_links=it_links, ki_links=ki_links,
-                     ratgeber_links=ratgeber_links, place_links=place_links,
-                     legal_links=legal_links, updated=updated_html)
+</footer>""".format(mailto=MAILTO_PREFILLED,
+                     col_it=col("IT-Betreuung", it_links),
+                     col_ki=col("KI, Software &amp; Websites", ki_links),
+                     col_places=col("Standorte", place_links, "        "),
+                     col_ratgeber=col("Ratgeber", ratgeber_links, "        "),
+                     col_contact=col("Kontakt", contact_links),
+                     legal=legal_html, updated=updated_html)
 
 
 KI_HUB = ("KI im Betrieb", "ki-fuer-kmu")
@@ -526,12 +571,13 @@ def page(head_html, schema_blocks, main_html, places, services, extra_style="", 
     parts.append("</head>")
     parts.append('<body class="has-sticky-call">')
     parts.append('<a class="skip-link" href="#main">Zum Inhalt springen</a>')
+    parts.append(ICON_SPRITE)
     parts.append(nav_html(section_of(slug)))
     parts.append('\n<main id="main">')
     parts.append(main_html)
     parts.append("</main>\n")
     parts.append(footer_html(places, services, "/" + slug + "/"))
-    parts.append('<script src="' + up(slug) + 'assets/js/main.js"></script>\n')
+    parts.append('<script src="' + asset("js/main.js") + '"></script>\n')
     parts.append(STICKY)
     parts.append("</body>\n</html>\n")
     return "\n".join(parts)

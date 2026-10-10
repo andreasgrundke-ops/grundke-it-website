@@ -1,9 +1,9 @@
 /**
  * ═══════════════════════════════════════════════════════════
  * Grundke IT-Service · main.js
- * Version: 1.4.0
+ * Version: 1.5.0
  * Autor: Andreas Grundke / Grundke IT-Service
- * Datum: 2026-10-09
+ * Datum: 2026-10-10
  * Beschreibung: Shared JS – Nav, FAQ, Scroll
  * Änderung 2026-06-07: A11y – Hamburger aria-expanded/-label-Sync,
  *                       Hero-Dots aria-selected im Slider-Wechsel.
@@ -13,6 +13,8 @@
  *                       Anker-Klicks setzen Fokus und Hash (WCAG 2.4.1/2.4.3),
  *                       Escape schliesst Mobilmenue und Fernwartung-Dropdown.
  * Änderung 2026-10-09: Fernwartung ist direkter Menuepunkt, Dropdown-Logik entfernt.
+ * Änderung 2026-10-10: Fuss-Spalten am Handy zugeklappt (initFooter), Flip-Karten-Code
+ *                       entfernt (keine .flip-wrap mehr im Markup).
  * ═══════════════════════════════════════════════════════════
  */
 
@@ -299,18 +301,34 @@ function initScrollTop(lenis) {
   });
 }
 
-/* ── Flip-Cards (Release-2 Schritt 4.5)
-   Tap-Toggle fuer .flip-wrap <button>-Elemente. Synchronisiert
-   aria-expanded und .flipped-Klasse fuer A11y + CSS-Trigger.
-   Hover-Effekt auf Pointer-Devices laeuft rein per CSS. */
-function initFlipCards() {
-  document.querySelectorAll('.flip-wrap').forEach(card => {
-    card.addEventListener('click', () => {
-      const isOpen = card.getAttribute('aria-expanded') === 'true';
-      card.setAttribute('aria-expanded', String(!isOpen));
-      card.classList.toggle('flipped', !isOpen);
+/* ── Fuss: Spalten am Handy zugeklappt (seit 2026-10-10)
+   Die Spalten sind <details class="foot-col" open>: ohne JS bleibt alles offen
+   (Crawler, Blocker). Unter 768 px klappt das Skript sie zu, ab 768 px wieder auf
+   (auch beim Drehen des Tablets). Ab 768 px sind die Koepfe reine Ueberschriften:
+   kein Zuklappen per Klick, nicht in der Tab-Reihenfolge. */
+function initFooter() {
+  const cols = document.querySelectorAll('.site-footer details.foot-col');
+  if (!cols.length || !window.matchMedia) return;
+  const mq = window.matchMedia('(max-width: 767px)');
+
+  function apply() {
+    cols.forEach(col => {
+      col.open = !mq.matches;
+      const head = col.querySelector('summary');
+      if (!head) return;
+      if (mq.matches) head.removeAttribute('tabindex');
+      else head.setAttribute('tabindex', '-1');
     });
+  }
+
+  cols.forEach(col => {
+    const head = col.querySelector('summary');
+    if (head) head.addEventListener('click', e => { if (!mq.matches) e.preventDefault(); });
   });
+
+  apply();
+  if (mq.addEventListener) mq.addEventListener('change', apply);
+  else if (mq.addListener) mq.addListener(apply); // Safari < 14
 }
 
 /* ── Service Worker Registration (Release-2 PWA-Setup)
@@ -373,7 +391,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollNav();
   initVCard();
   initSchnellcheck();
-  initFlipCards();
+  initFooter();
   initInstallPrompt();
   var lenis = initLenis();
   initScrollTop(lenis);
