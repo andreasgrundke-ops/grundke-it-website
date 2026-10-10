@@ -32,120 +32,15 @@
   <meta name="application-name" content="Grundke IT"/>
   <meta name="msapplication-TileColor" content="#0c4da2"/>
   <link rel="stylesheet" href="../assets/css/fonts.css"/>
-  <link rel="stylesheet" href="/assets/css/style.css?v=2026.10.b"/>
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026.10.c"/>
 
   <style>
-    .lp-wrap { margin-top:var(--nav-h); padding:clamp(3rem,8vw,6rem) 0; }
-    .lp-content { max-width:880px; }
-    .lp-crumbs ol { display:flex; flex-wrap:wrap; gap:.35rem; list-style:none; margin:0 0 1.4rem; padding:0; font-size:.8rem; color:var(--text3); }
-    .lp-crumbs li + li::before { content:"/"; margin-right:.35rem; color:var(--border); }
-    .lp-crumbs a { color:var(--text2); text-decoration:none; }
-    .lp-crumbs a:hover { color:var(--cyan); }
-    .lp-crumbs [aria-current] { color:var(--text); }
-    .lp-content h2 { font-family:var(--fh); font-size:clamp(1.3rem,3vw,1.8rem); font-weight:800; color:var(--text); letter-spacing:-.02em; margin:2.6rem 0 1rem; }
-    .lp-content p { font-size:1.0667rem; color:var(--text2); line-height:1.8; margin-bottom:1rem; }
+    .lp-content > p, .lp-content > div { max-width:68ch; }
+    .lp-content p { font-size:1.0667rem; color:var(--text2); line-height:1.75; margin:0 0 1rem; }
+    .lp-content p:last-child { margin-bottom:0; }
     .lp-content strong { color:var(--text); }
-    .lp-cta-row { display:flex; flex-wrap:wrap; gap:1rem; margin:2rem 0; }
-    .lp-content .faq-wrap { margin-top:1.2rem; }
+    .lp-content p a, .lp-content li a { color:var(--cyan); }
     .lp-related { margin-top:2rem; }
-    .lp-content p a { color:var(--cyan); text-underline-offset:.2em; }
-    @media (max-width:560px) { .lp-cta-row .btn-p, .lp-cta-row .btn-g { width:100%; justify-content:center; } }
-    .lp-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1rem; margin:1.5rem 0; }
-    .lp-card { background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:1.3rem; }
-    .lp-card h3 { font-family:var(--fh); font-size:1rem; font-weight:700; color:var(--text); margin-bottom:.4rem; }
-    .lp-card p { font-size:.85rem; color:var(--text2); line-height:1.6; margin:0; }
-    .lp-price-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1rem; margin:1.5rem 0; }
-    .lp-price { background:var(--bg2); border:1px solid var(--border); border-radius:14px; padding:1.5rem; text-align:center; }
-    .lp-price.feat { border-color:var(--cyan); box-shadow:0 8px 24px rgba(38,189,239,.10); }
-    .lp-price .tier { font-family:var(--fm); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--text3); }
-    .lp-price .amount { font-family:var(--fh); font-size:1.8rem; font-weight:800; color:var(--text); margin:.4rem 0; }
-    .lp-price .amount span { display:block; margin-top:.2rem; font-size:.8rem; font-weight:500; color:var(--text3); }
-    .lp-price .desc { font-size:.82rem; color:var(--text2); line-height:1.6; }
-    .lp-places { display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0; }
-    .lp-place { font-family:var(--fm); font-size:.78rem; background:var(--bg2); border:1px solid var(--border); border-radius:999px; padding:.35rem .9rem; color:var(--text2); text-decoration:none; }
-    .lp-place:hover { border-color:var(--cyan); color:var(--cyan); }
-    .lp-place.here { border-color:var(--cyan); color:var(--cyan); }
-    .lp-trust { background:var(--bg2); border:1px solid var(--border); border-radius:16px; padding:1.6rem; margin:2rem 0; font-size:.9rem; color:var(--text2); line-height:1.7; }
-    .lp-author { display:flex; gap:1.1rem; align-items:flex-start; background:var(--bg2); border:1px solid var(--border); border-radius:14px; padding:1.4rem 1.5rem; margin:2.5rem 0 1rem; }
-    .lp-author img { width:56px; height:56px; border-radius:50%; flex-shrink:0; background:var(--bg); object-fit:contain; border:1px solid var(--border); }
-    .lp-author-body { font-size:.88rem; color:var(--text2); line-height:1.7; }
-    .lp-author-name { font-family:var(--fh); font-weight:800; color:var(--text); font-size:1rem; }
-    .lp-author-role { display:block; font-size:.8rem; color:var(--text3); margin:.1rem 0 .6rem; }
-    .lp-author-meta { margin-top:.7rem; font-size:.78rem; color:var(--text3); }
-    .lp-author-meta a { color:var(--cyan); text-decoration:underline; text-underline-offset:.2em; }
-  </style>
-  <style>
-    /* Bausteine nur fuer den KI-Bereich (via extra_style, damit die uebrigen Seiten unveraendert bleiben) */
-    .lp-wrap--hero { padding-top:0; }
-    .lp-hero { background:var(--bg2); border-bottom:1px solid var(--border); padding:clamp(2.5rem,7vw,5.5rem) 0 clamp(2.5rem,6vw,4.5rem); margin-bottom:clamp(2.5rem,6vw,4rem); position:relative; overflow:hidden; }
-    .lp-hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 55% 70% at 85% 15%, rgba(12,77,162,.28), transparent 70%); pointer-events:none; }
-    .lp-hero-grid { position:relative; display:grid; gap:clamp(2rem,5vw,4rem); align-items:center; }
-    @media (min-width:1024px) { .lp-hero-grid { grid-template-columns:minmax(0,1.35fr) minmax(0,1fr); } }
-    .lp-hero-h1 { font-family:var(--fh); font-size:clamp(2.1rem,5.2vw,3.6rem); font-weight:800; line-height:1.07; letter-spacing:-.035em; color:var(--text); margin-bottom:1.1rem; text-wrap:balance; }
-    .lp-hero-accent { display:block; color:var(--cyan); }
-    .lp-hero .lp-cta-row { margin-bottom:0; }
-    .lp-paths { background:var(--bg); border:1px solid var(--border); border-radius:14px; padding:.6rem; }
-    .lp-paths-h { font-family:var(--fh); font-size:1.1rem; font-weight:700; color:var(--text); padding:.8rem .9rem .5rem; }
-    .lp-paths ul { list-style:none; margin:0; padding:0; }
-    .lp-paths li + li { border-top:1px solid var(--border); }
-    .lp-paths a { display:block; padding:.95rem .9rem; border-radius:10px; text-decoration:none; transition:background .2s; }
-    .lp-paths a:hover { background:var(--bg3); }
-    .lp-paths a:focus-visible { outline:2px solid var(--cyan); outline-offset:2px; }
-    .lp-path-t { display:block; font-family:var(--fh); font-weight:700; font-size:1rem; color:var(--text); }
-    .lp-path-t::after { content:" →"; color:var(--cyan); transition:margin .2s; }
-    .lp-paths a:hover .lp-path-t::after { margin-left:.25rem; }
-    .lp-path-d { display:block; font-size:.85rem; color:var(--text2); line-height:1.55; margin-top:.25rem; }
-    .ki-case { background:var(--bg2); border:1px solid var(--border); border-radius:14px; padding:1.5rem 1.6rem; margin:1.1rem 0; }
-    .ki-case-tag { font-family:var(--fm); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--cyan); display:block; margin-bottom:.5rem; }
-    .ki-case h3 { font-family:var(--fh); font-size:1.05rem; font-weight:800; color:var(--text); margin:0 0 .6rem; letter-spacing:-.01em; }
-    .ki-case p { font-size:.9rem; color:var(--text2); line-height:1.75; margin:0 0 .7rem; }
-    .ki-case p:last-child { margin-bottom:0; }
-    .ki-case .ki-result { font-size:.86rem; color:var(--text); background:rgba(38,189,239,.07); border-radius:8px; padding:.7rem .9rem; }
-    .ki-check { background:var(--bg2); border:1px solid var(--cyan); border-radius:16px; padding:1.8rem; margin:2.2rem 0; box-shadow:0 8px 28px rgba(38,189,239,.10); }
-    .ki-check h3 { font-family:var(--fh); font-size:1.2rem; font-weight:800; color:var(--text); margin:0 0 .7rem; }
-    .ki-check p { font-size:.92rem; color:var(--text2); line-height:1.75; margin:0 0 1rem; }
-    .ki-check ul { list-style:none; margin:0 0 1.2rem; padding:0; }
-    .ki-check li { font-size:.9rem; color:var(--text2); line-height:1.6; padding:.35rem 0 .35rem 1.5rem; position:relative; }
-    .ki-check li::before { content:""; position:absolute; left:0; top:.85rem; width:7px; height:7px; border-radius:50%; background:var(--cyan); }
-    .ki-note { background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:1.3rem 1.5rem; margin:1.8rem 0; }
-    .ki-note strong { color:var(--text); }
-    .ki-note p { font-size:.88rem; color:var(--text2); line-height:1.75; margin:0 0 .7rem; }
-    .ki-note p:last-child { margin-bottom:0; }
-    .ki-tbl-wrap { overflow-x:auto; margin:1.4rem 0; }
-    .ki-tbl { width:100%; border-collapse:collapse; font-size:.86rem; min-width:520px; }
-    .ki-tbl th { font-family:var(--fh); font-size:.78rem; letter-spacing:.03em; text-transform:uppercase; color:var(--text3); text-align:left; padding:.7rem .9rem; border-bottom:1px solid var(--border); }
-    .ki-tbl td { padding:.85rem .9rem; border-bottom:1px solid var(--border); color:var(--text2); line-height:1.65; vertical-align:top; }
-    .ki-tbl td:first-child { color:var(--text); font-weight:600; white-space:nowrap; }
-    .ki-tbl tr:last-child td { border-bottom:none; }
-    @media (max-width:600px) {
-      .ki-tbl { min-width:0; }
-      .ki-tbl thead { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
-      .ki-tbl tbody, .ki-tbl tr, .ki-tbl td { display:block; width:100%; }
-      .ki-tbl tr { border-bottom:1px solid var(--border); padding:.75rem 0; }
-      .ki-tbl tr:last-child { border-bottom:none; }
-      .ki-tbl td { border-bottom:none; padding:.2rem 0; }
-      .ki-tbl td:first-child { white-space:normal; }
-      .ki-tbl td[data-label]::before { content:attr(data-label) ": "; color:var(--text); font-weight:600; }
-    }
-  </style>
-  <style>
-    .lp-steps { counter-reset:st; list-style:none; margin:1.2rem 0 1.8rem; padding:0; }
-    .lp-steps > li { counter-increment:st; position:relative; padding:.15rem 0 1.1rem 2.9rem; font-size:.93rem; color:var(--text2); line-height:1.75; }
-    .lp-steps > li::before { content:counter(st); position:absolute; left:0; top:.05rem; width:1.9rem; height:1.9rem; border-radius:50%; border:1px solid var(--cyan); color:var(--cyan); font-family:var(--fh); font-weight:700; font-size:.85rem; display:grid; place-items:center; }
-    .lp-steps > li + li::after { content:""; position:absolute; left:.95rem; top:-1.05rem; width:1px; height:1.05rem; background:var(--border); }
-    .lp-steps strong { color:var(--text); }
-    .lp-checklist { list-style:none; margin:1rem 0 1.4rem; padding:0; }
-    .lp-checklist li { position:relative; padding:.35rem 0 .35rem 1.9rem; font-size:.92rem; color:var(--text2); line-height:1.65; }
-    .lp-checklist li::before { content:""; position:absolute; left:.35rem; top:.62rem; width:.4rem; height:.75rem; border:solid var(--cyan); border-width:0 2px 2px 0; transform:rotate(45deg); }
-    .lp-checklist strong, .lp-dont strong { color:var(--text); }
-    .lp-dont { list-style:none; margin:1rem 0 1.4rem; padding:0; }
-    .lp-dont li { position:relative; padding:.35rem 0 .35rem 1.9rem; font-size:.92rem; color:var(--text2); line-height:1.65; }
-    .lp-dont li::before, .lp-dont li::after { content:""; position:absolute; left:.2rem; top:1rem; width:.85rem; height:2px; border-radius:1px; background:#e8806f; transform:rotate(45deg); }
-    .lp-dont li::after { transform:rotate(-45deg); }
-    .lp-answer { background:var(--bg2); border:1px solid var(--border); border-radius:14px; padding:1.3rem 1.5rem; margin:1.6rem 0 2rem; }
-    .lp-answer p { margin:0; color:var(--text); font-size:.98rem; line-height:1.75; }
-    .lp-answer p + p { margin-top:.7rem; color:var(--text2); font-size:.92rem; }
-    .lp-content > h3 { font-family:var(--fh); font-size:1.08rem; font-weight:700; color:var(--text); margin:1.8rem 0 .6rem; }
   </style>
   <script type="application/ld+json">
 {
@@ -270,7 +165,7 @@
     "@id": "https://grundke-it.de/#website"
   },
   "datePublished": "2026-08-22",
-  "dateModified": "2026-10-07",
+  "dateModified": "2026-10-10",
   "author": {
     "@type": "Person",
     "@id": "https://grundke-it.de/#andreas",
@@ -382,60 +277,95 @@
 </header>
 
 <main id="main">
-<article class="lp-wrap lp-wrap--hero">
-  <div class="lp-hero">
-    <div class="inner lp-hero-grid">
-      <div>
-        <nav class="lp-crumbs" aria-label="Brotkrumen"><ol><li><a href="/">Startseite</a></li><li aria-current="page">KI im Betrieb</li></ol></nav>
-        <h1 class="lp-hero-h1">KI im Betrieb <span class="lp-hero-accent">für kleine &amp; mittlere Unternehmen</span></h1>
-        <p class="s-sub">Keine Folien über Künstliche Intelligenz, sondern Anwendungen, die bei dir laufen. Gebaut von jemandem, der deine IT ohnehin betreut.</p>
-        <div class="lp-cta-row">
-        <a href="tel:+491782584438" class="btn-p">Kostenloses Erstgespräch</a>
-        <a href="/kontakt/" class="btn-g">Anfrage senden</a>
+<section class="sec sec--glow page-head">
+  <div class="inner page-head-grid page-head-grid--paths">
+    <div class="page-head-copy">
+      <nav class="lp-crumbs" aria-label="Brotkrumen"><ol><li><a href="/">Startseite</a></li><li aria-current="page">KI im Betrieb</li></ol></nav>
+      <h1 class="page-h1">KI im Betrieb<br> <em>für kleine &amp; mittlere Unternehmen</em></h1>
+      <p class="page-k">Ich baue KI dort ein, wo bei euch jede Woche jemand Daten abtippt oder Aufnahmen durchklickt, und betreue es danach weiter.</p>
+      <p class="s-sub measure">KI im Betrieb heißt bei Grundke IT-Service in Grasbrunn: Abläufe automatisieren, vorhandene Daten auswerten und KI-Werkzeuge datenschutzgerecht einführen, für kleine und mittlere Betriebe im Münchner Osten. Der Einstieg ist ein kostenloser Potenzialcheck.</p>
+      <div class="hc-ctas">
+        <a href="tel:+491782584438" class="btn-p hc-call"><svg width="18" height="18" aria-hidden="true"><use href="#ico-phone"/></svg>Anrufen <span class="hc-num">0178 258 44 38</span></a>
+        <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20komme%20%C3%BCber%20deine%20Seite%20%E2%80%9EKI%20im%20Betrieb%E2%80%9C." target="_blank" rel="noopener" class="hc-wa"><svg width="18" height="18" aria-hidden="true"><use href="#ico-wa"/></svg>WhatsApp</a>
       </div>
-      </div>
-      <nav class="lp-paths" aria-label="Die vier Bereiche">
-        <h2 class="lp-paths-h">Die vier Bereiche</h2>
-        <ul>
-          <li><a href="/ki-automatisierung/"><span class="lp-path-t">Abläufe automatisieren</span><span class="lp-path-d">Schnittstellen, Dokumente auslesen, Berichte ohne Excel-Bastelei.</span></a></li>
-          <li><a href="/ki-videoanalyse/"><span class="lp-path-t">Videoanalyse und Auswertung</span><span class="lp-path-d">Videoüberwachung mit KI: Fahrzeuge und Kennzeichen erkennen, Vorgänge zählen.</span></a></li>
-          <li><a href="/ki-dsgvo/"><span class="lp-path-t">KI sicher einsetzen</span><span class="lp-path-d">Verträge, Regeln und Schulung, damit KI datenschutzgerecht läuft.</span></a></li>
-          <li><a href="/software-nach-mass/"><span class="lp-path-t">Software nach Maß</span><span class="lp-path-d">Kleine Anwendungen für Abläufe, die heute in Excel oder auf Zetteln laufen.</span></a></li>
-        </ul>
-      </nav>
+      <ul class="hc-proof">
+        <li><svg class="is-star" aria-hidden="true"><use href="#ico-star"/></svg><a href="/#bewertungen-herkunft" data-proof>5,0 bei 5 Google-Bewertungen</a></li>
+        <li><svg aria-hidden="true"><use href="#ico-search-check"/></svg>Kostenloser KI-Potenzialcheck, Ergebnis schriftlich</li>
+      </ul>
     </div>
+    <nav class="lp-paths" aria-label="Die vier Bereiche">
+      <h2 class="lp-paths-h">Die vier Bereiche</h2>
+      <ul>
+        <li><a href="/ki-automatisierung/"><span class="lp-path-t">Abläufe automatisieren</span><span class="lp-path-d">Schnittstellen, Dokumente auslesen, Berichte ohne Excel-Bastelei.</span></a></li>
+        <li><a href="/ki-videoanalyse/"><span class="lp-path-t">Videoanalyse und Auswertung</span><span class="lp-path-d">Videoüberwachung mit KI: Fahrzeuge und Kennzeichen erkennen, Vorgänge zählen.</span></a></li>
+        <li><a href="/ki-dsgvo/"><span class="lp-path-t">KI sicher einsetzen</span><span class="lp-path-d">Verträge, Regeln und Schulung, damit KI datenschutzgerecht läuft.</span></a></li>
+        <li><a href="/software-nach-mass/"><span class="lp-path-t">Software nach Maß</span><span class="lp-path-d">Kleine Anwendungen für Abläufe, die heute in Excel oder auf Zetteln laufen.</span></a></li>
+      </ul>
+    </nav>
   </div>
+</section>
+
+<section class="sec sec--alt">
   <div class="inner">
+    <h2 class="s-title">Das steckt drin</h2>
+    <div class="sec-split">
+    <div>
     <div class="lp-content">
-
       <p>Wenn ein Betrieb heute über KI spricht, geht es meist um zwei Dinge: dass sich alles ändern wird und dass man vorsichtig sein muss. Beides hilft nicht weiter, solange am Montag wieder jemand Rechnungsdaten abtippt oder Kameraaufnahmen durchklickt. <strong>Ich baue Anwendungen für genau diese Stellen</strong> und betreue sie danach weiter. In meiner eigenen Firma läuft das seit über einem halben Jahr täglich: Kundenverwaltung, Monitoring, Auswertungen, Rechnungsläufe. Seit einigen Monaten entstehen die ersten Anwendungen bei Kunden. Was ich anbiete, benutze ich selbst.</p>
+    </div>
+    </div>
+    <div>
+    <div class="card-box"><p><strong>Einheitlicher Stundensatz von 110 € netto, Abrechnung im 15-Minuten-Takt, keine versteckten Kosten.</strong> Kein klassischer Kundendienst, sondern ein fester persönlicher Ansprechpartner mit über 20 Jahren IT-Erfahrung – im Raum München Ost, datenschutzgerecht und auf Wunsch self-hosted.</p></div>
+    </div>
+    </div>
+    <ul class="feat-rows">
+      <li><span class="feat-ico" aria-hidden="true"><svg><use href="#ico-tools"/></svg></span><div><h3>Abläufe automatisieren</h3><p>Wiederkehrende Handarbeit am Rechner: Daten übertragen, Listen erzeugen, Rechnungen bauen, Berichte zusammenstellen.</p></div></li>
+      <li><span class="feat-ico" aria-hidden="true"><svg><use href="#ico-search-check"/></svg></span><div><h3>Auswertungen aus vorhandenen Daten</h3><p>Was in Kamera, Kasse, Zeiterfassung oder Warenwirtschaft schon steckt, wird sichtbar gemacht.</p></div></li>
+      <li><span class="feat-ico" aria-hidden="true"><svg><use href="#ico-network"/></svg></span><div><h3>Systeme verbinden</h3><p>Zwei Programme, die nicht miteinander reden, koppele ich über ihre Dateiformate oder ihre Schnittstelle.</p></div></li>
+      <li><span class="feat-ico" aria-hidden="true"><svg><use href="#ico-monitor"/></svg></span><div><h3>KI-Werkzeuge einführen</h3><p>Welches Werkzeug für welche Aufgabe taugt, wie es eingerichtet wird und was die Mitarbeiter darüber wissen müssen.</p></div></li>
+      <li><span class="feat-ico" aria-hidden="true"><svg><use href="#ico-shield"/></svg></span><div><h3>Datenschutz vorher klären</h3><p>Lokales Modell, EU-Rechenzentrum oder Anbieter mit Auftragsverarbeitungsvertrag. Die Entscheidung fällt vor der Umsetzung.</p></div></li>
+      <li><span class="feat-ico" aria-hidden="true"><svg><use href="#ico-user-check"/></svg></span><div><h3>Betrieb und Pflege</h3><p>Eine gebaute Anwendung braucht jemanden, der sie weiter betreut. Ich bleibe der Ansprechpartner.</p></div></li>
+    </ul>
+  </div>
+</section>
 
-      <h2>Das steckt drin</h2>
-      <div class="lp-grid">
-        <div class="lp-card"><h3>Abläufe automatisieren</h3><p>Wiederkehrende Handarbeit am Rechner: Daten übertragen, Listen erzeugen, Rechnungen bauen, Berichte zusammenstellen.</p></div>
-        <div class="lp-card"><h3>Auswertungen aus vorhandenen Daten</h3><p>Was in Kamera, Kasse, Zeiterfassung oder Warenwirtschaft schon steckt, wird sichtbar gemacht.</p></div>
-        <div class="lp-card"><h3>Systeme verbinden</h3><p>Zwei Programme, die nicht miteinander reden, koppele ich über ihre Dateiformate oder ihre Schnittstelle.</p></div>
-        <div class="lp-card"><h3>KI-Werkzeuge einführen</h3><p>Welches Werkzeug für welche Aufgabe taugt, wie es eingerichtet wird und was die Mitarbeiter darüber wissen müssen.</p></div>
-        <div class="lp-card"><h3>Datenschutz vorher klären</h3><p>Lokales Modell, EU-Rechenzentrum oder Anbieter mit Auftragsverarbeitungsvertrag. Die Entscheidung fällt vor der Umsetzung.</p></div>
-        <div class="lp-card"><h3>Betrieb und Pflege</h3><p>Eine gebaute Anwendung braucht jemanden, der sie weiter betreut. Ich bleibe der Ansprechpartner.</p></div>
-      </div>
-
-      <h2>KI soll bei euch niemanden ersetzen</h2>
+<section class="sec">
+  <div class="inner">
+    <h2 class="s-title">KI soll bei euch niemanden ersetzen</h2>
+    <div class="lp-content">
       <p>Sie soll die Arbeit wegnehmen, die keiner gern macht: Daten von einem Programm ins andere kopieren, Rechnungen abtippen, dieselben Fragen zum zehnten Mal beantworten, Spam aussortieren. Eure Leute haben dann wieder Zeit für Kunden, Aufträge und Ideen, und du als Inhaber für das Geschäft statt für den Papierkram. Ich fange deshalb immer bei den Menschen an, die mit dem Ablauf arbeiten: Was nervt euch jede Woche? Das bauen wir zuerst weg.</p>
       <p>Wer im Betrieb arbeitet, fragt sich bei KI oft, ob der eigene Platz sicher ist. Aus der Praxis: Der Job wird nicht ersetzt, er wird leichter. Wer den Ablauf kennt, weiß am besten, wo es hakt, und genau diese Leute brauche ich, um die Lösung zu bauen.</p>
+    </div>
+  </div>
+</section>
 
-      <h2>So sieht das im Alltag aus</h2>
+<section class="sec sec--alt">
+  <div class="inner">
+    <h2 class="s-title">So sieht das im Alltag aus</h2>
+    <div class="lp-content">
       <h3>Doku nach dem Einsatz per Sprache</h3>
       <p>Auf dem Rückweg von der Baustelle sind die Hände voll. Im Firmen-KI-Konto einen neuen Chat öffnen, Kunde und Vorhaben nennen, dann frei erzählen: was gemacht wurde, welches Material, was abgestimmt ist, was noch offen ist und wie lange es gedauert hat. Am Ende fasst die KI zusammen, und der Text geht per Kopieren und Einfügen in Buchhaltung oder Auftragsverwaltung. Voraussetzung ist ein bezahltes Firmenkonto mit Vertrag; unterwegs nur mit dem Handy in der Halterung und per Sprachsteuerung (§ 23 Abs. 1a StVO) oder kurz auf dem Parkplatz.</p>
-      <h3>Programme reden miteinander</h3>
+      <details class="more">
+        <summary>Mehr dazu</summary>
+        <h3>Programme reden miteinander</h3>
       <p>Lexware Office und viele Auftrags- und Rechnungsprogramme haben Schnittstellen. Kundendaten, Aufträge, Material und Angebotsentwürfe lassen sich darüber anlegen, abfragen und abgleichen, statt alles in der Oberfläche abzutippen. Mein eigener Betrieb legt Kunden und Angebotsentwürfe auf diesem Weg direkt in Lexware an.</p>
       <h3>Warnungen, die jemand liest</h3>
       <p>Meldungen der Datensicherung, Fehlermails von Geräten, volle Postfächer: Eine KI liest sie, ordnet sie ein und schickt nur das Wichtige an die richtige Person, mit einem Satz, was zu tun ist.</p>
       <p>Dazu kommen Auswertungen und Monatsberichte, Zusammenfassungen langer Mails und Dokumente, Entwürfe für Angebote und Antworten und die Abstimmung von Terminen.</p>
+      </details>
+    </div>
+  </div>
+</section>
 
-      <h2>Zwei Beispiele aus der Praxis</h2>
+<section class="sec">
+  <div class="inner">
+    <h2 class="s-title">Zwei Beispiele aus der Praxis</h2>
+    <div class="lp-content">
       <p>Das erste ist ein typischer Fall für Videoauswertung, das zweite läuft in meinem eigenen Betrieb.</p>
 
+      <details class="more">
+        <summary>Mehr dazu</summary>
+        <div class="card-grid">
       <div class="ki-case">
         <span class="ki-case-tag">Videoüberwachung mit KI</span>
         <h3>Eine Hofzufahrt, die sich selbst protokolliert</h3>
@@ -450,6 +380,8 @@
         <p>Meine Kundenverwaltung, mein Monitoring, meine Auswertungen und meine Rechnungsläufe laufen über Anwendungen, die ich selbst gebaut habe und täglich benutze. Dazu kommen Werkzeuge, die aus einer konkreten Not entstanden sind: eine Prüfung von Websites auf technische und rechtliche Mängel, ein Scanner für Netzwerkumgebungen, ein Auswertungswerkzeug für die Sichtbarkeit in Suchmaschinen.</p>
         <p class="ki-result">Der Punkt daran ist nicht die Liste. Der Punkt ist, dass ich im Erstgespräch aus eigener Erfahrung sagen kann, was funktioniert, was Zeit frisst und was sich nicht lohnt.</p>
       </div>
+      </div>
+      </details>
 
       <div class="ki-check">
         <h3>Kostenloser KI-Potenzialcheck</h3>
@@ -460,22 +392,29 @@
           <li>Du bekommst es schriftlich, mit Aufwand, Nutzen und den rechtlichen Punkten</li>
           <li>Das Papier gehört dir, auch wenn wir nicht weiterarbeiten</li>
         </ul>
-        <div class="lp-cta-row" style="margin:0;">
+        <div class="card-cta">
           <a href="tel:+491782584438" class="btn-p">Potenzialcheck vereinbaren</a>
           <a href="/kontakt/" class="btn-g">Lieber schreiben</a>
         </div>
       </div>
+    </div>
+  </div>
+</section>
 
-      <h2>Wann sich das nicht lohnt</h2>
+<section class="sec sec--alt">
+  <div class="inner">
+    <h2 class="s-title">Wann sich das nicht lohnt</h2>
+    <div class="lp-content">
       <p>Nicht jede Aufgabe verdient eine eigene Anwendung. Was dreimal im Jahr vorkommt, ist von Hand billiger als jede Automatisierung, und wenn ein Ablauf sich alle paar Monate ändert, wird die Pflege teurer als der Nutzen. Auch dort, wo es am Ende auf ein Urteil ankommt und nicht auf eine Regel, hat eine Maschine wenig verloren.</p>
       <p>Das sage ich im Erstgespräch, bevor daraus ein Projekt wird. Mir ist ein Kunde lieber, der einmal etwas Sinnvolles bekommt, als einer, der ein halbes Jahr später merkt, dass er es nie gebraucht hat.</p>
+    </div>
+  </div>
+</section>
 
-
-      <div class="lp-trust">
-        <strong>Einheitlicher Stundensatz von 110 € netto, Abrechnung im 15-Minuten-Takt, keine versteckten Kosten.</strong> Kein klassischer Kundendienst, sondern ein fester persönlicher Ansprechpartner mit über 20 Jahren IT-Erfahrung – im Raum München Ost, datenschutzgerecht und auf Wunsch self-hosted.
-      </div>
-
-      <h2>Häufige Fragen</h2>
+<section class="sec sec--aside">
+  <div class="inner">
+    <h2 class="s-title">Häufige Fragen</h2>
+    <div class="sec-aside-body">
       <div class="faq-wrap">
         <details class="faq-item"><summary>Was bringt KI einem Betrieb mit 15 Mitarbeitern konkret? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Meistens Zeit an einer Stelle, die niemand gern macht. Typisch sind drei Fälle: Daten, die aus einem Export von Hand in ein anderes Programm übertragen werden. Auswertungen, die jemand am Monatsende in Excel zusammenbaut. Und Aufnahmen oder Protokolle, die niemand durchsieht, weil es zu lange dauert. Das sind Stunden, die jeden Monat anfallen und sich ohne zusätzliches Personal zurückholen lassen.</div></details>
         <details class="faq-item"><summary>Ist das für einen kleinen Betrieb nicht viel zu teuer? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Du bekommst vor dem Start einen Festpreis. Der Einstieg mit Verträgen, Regeln und Schulung (KI-Start) beginnt bei 1.500 Euro netto, eine kleine Anwendung bei 3.000 Euro. Ob sich eine Automatisierung rechnet, lässt sich vorher ausrechnen: Wenn eine Aufgabe monatlich vier Stunden kostet, ist die einzige Frage, nach wie vielen Monaten die Umsetzung bezahlt ist. Rechnet es sich nicht, sage ich das im Erstgespräch.</div></details>
@@ -484,23 +423,31 @@
         <details class="faq-item"><summary>Wir nutzen schon ChatGPT. Reicht das nicht? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Für Texte oft ja. Der Unterschied beginnt dort, wo etwas regelmäßig und ohne einen Menschen davor passieren soll: Daten aus einem System holen, verarbeiten, in ein anderes schreiben, und das jede Nacht. Dafür braucht es eine gebaute Anwendung. Dazu kommt die Frage, was Mitarbeiter überhaupt in ein Chatfenster eingeben dürfen. Artikel 4 der europäischen KI-Verordnung verlangt von jedem Unternehmen, das KI einsetzt, Maßnahmen zur Förderung der KI-Kompetenz seiner Beschäftigten.</div></details>
         <details class="faq-item"><summary>Wie fange ich an? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Mit dem kostenlosen KI-Potenzialcheck. Wir gehen 60 bis 90 Minuten durch deine Abläufe und schauen, wo Zeit verloren geht. Danach bekommst du schriftlich, was sich automatisieren lässt, was es ungefähr kostet und was rechtlich zu beachten ist. Ob du damit weiterarbeitest, entscheidest du in Ruhe.</div></details>
       </div>
-
-      <div class="lp-author">
-        <img src="/assets/img/logo-grundke-it-badge-112.webp" alt="Logo Andreas Grundke IT-Service" width="56" height="56" loading="lazy"/>
-        <div class="lp-author-body">
-          <span class="lp-author-name">Andreas Grundke</span>
-          <span class="lp-author-role">Inhaber · Fachinformatiker für Systemintegration</span>
-          Die externe IT-Abteilung für kleine und mittlere Betriebe im Münchner Osten: IT-Betreuung, KI im Betrieb, Software nach Maß und Websites. Über 20 Jahre in der IT, ein Ansprechpartner für alles Technische.
-          <div class="lp-author-meta">Zuletzt aktualisiert: 7. Oktober 2026 · <a href="/kontakt/">Kontakt aufnehmen</a></div>
-        </div>
-      </div>
-      <div class="lp-cta-row" style="margin-top:2.5rem;">
-        <a href="tel:+491782584438" class="btn-p">Jetzt anrufen · 0178 258 44 38</a>
-        <a href="/ki-automatisierung/" class="btn-g">Abläufe automatisieren</a>
-      </div>
     </div>
   </div>
-</article>
+</section>
+
+<section class="cta-sec">
+  <div class="inner">
+    <h2 class="cta-h">Problem? <em>Ich bin dran.</em></h2>
+    <p class="cta-sub">Ruf an, schreib auf WhatsApp oder per Mail. Am anderen Ende bin ich, Andreas Grundke. Gerne per Du.</p>
+    <div class="cta-btns inline-cta-mobile">
+      <a href="tel:+491782584438" class="btn-tel"><svg width="20" height="20" aria-hidden="true"><use href="#ico-phone"/></svg> 0178 258 44 38</a>
+      <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20komme%20%C3%BCber%20deine%20Seite%20%E2%80%9EKI%20im%20Betrieb%E2%80%9C." target="_blank" rel="noopener" class="btn-wa"><svg width="20" height="20" aria-hidden="true"><use href="#ico-wa"/></svg> WhatsApp</a>
+      <a href="mailto:info@grundke-it.de?subject=Anfrage%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0AMein%20Anliegen%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F)." class="btn-email"><svg width="20" height="20" aria-hidden="true"><use href="#ico-mail"/></svg> E-Mail schreiben</a>
+    </div>
+    <div class="hc-qr cta-qr">
+      <a href="/kontakt/" title="Alle Kontaktwege"><img src="/assets/img/qr-tree.png" alt="QR-Code: Kontaktseite aufs Handy holen" width="88" height="88"/></a>
+      <p><strong>Scan mich. Dann reden wir.</strong>Alle Kontaktwege direkt aufs Handy.</p>
+    </div>
+    <p class="cta-next"><a href="/ki-automatisierung/">Abläufe automatisieren<svg width="16" height="16" aria-hidden="true"><use href="#ico-arrow-r"/></svg></a></p>
+    <div class="cta-author">
+      <span class="ava" aria-hidden="true">AG</span>
+      <p><strong>Andreas Grundke</strong> · Fachinformatiker für Systemintegration · über 20 Jahre IT<br><span class="cta-date">Zuletzt aktualisiert: 10. Oktober 2026</span></p>
+    </div>
+  </div>
+</section>
+
 </main>
 
 <footer class="site-footer">
@@ -582,7 +529,7 @@
     </div>
   </div>
 </footer>
-<script src="/assets/js/main.js?v=2026.10.b"></script>
+<script src="/assets/js/main.js?v=2026.10.c"></script>
 
 <div class="sticky-contact" id="stickyContact" role="navigation" aria-label="Kontakt-Optionen">
   <a href="tel:+491782584438" class="sc-btn sc-phone" aria-label="Anrufen">

@@ -32,101 +32,15 @@
   <meta name="application-name" content="Grundke IT"/>
   <meta name="msapplication-TileColor" content="#0c4da2"/>
   <link rel="stylesheet" href="../assets/css/fonts.css"/>
-  <link rel="stylesheet" href="/assets/css/style.css?v=2026.10.b"/>
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026.10.c"/>
 
   <style>
-    .lp-wrap { margin-top:var(--nav-h); padding:clamp(3rem,8vw,6rem) 0; }
-    .lp-content { max-width:880px; }
-    .lp-crumbs ol { display:flex; flex-wrap:wrap; gap:.35rem; list-style:none; margin:0 0 1.4rem; padding:0; font-size:.8rem; color:var(--text3); }
-    .lp-crumbs li + li::before { content:"/"; margin-right:.35rem; color:var(--border); }
-    .lp-crumbs a { color:var(--text2); text-decoration:none; }
-    .lp-crumbs a:hover { color:var(--cyan); }
-    .lp-crumbs [aria-current] { color:var(--text); }
-    .lp-content h2 { font-family:var(--fh); font-size:clamp(1.3rem,3vw,1.8rem); font-weight:800; color:var(--text); letter-spacing:-.02em; margin:2.6rem 0 1rem; }
-    .lp-content p { font-size:1.0667rem; color:var(--text2); line-height:1.8; margin-bottom:1rem; }
+    .lp-content > p, .lp-content > div { max-width:68ch; }
+    .lp-content p { font-size:1.0667rem; color:var(--text2); line-height:1.75; margin:0 0 1rem; }
+    .lp-content p:last-child { margin-bottom:0; }
     .lp-content strong { color:var(--text); }
-    .lp-cta-row { display:flex; flex-wrap:wrap; gap:1rem; margin:2rem 0; }
-    .lp-content .faq-wrap { margin-top:1.2rem; }
+    .lp-content p a, .lp-content li a { color:var(--cyan); }
     .lp-related { margin-top:2rem; }
-    .lp-content p a { color:var(--cyan); text-underline-offset:.2em; }
-    @media (max-width:560px) { .lp-cta-row .btn-p, .lp-cta-row .btn-g { width:100%; justify-content:center; } }
-    .lp-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1rem; margin:1.5rem 0; }
-    .lp-card { background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:1.3rem; }
-    .lp-card h3 { font-family:var(--fh); font-size:1rem; font-weight:700; color:var(--text); margin-bottom:.4rem; }
-    .lp-card p { font-size:.85rem; color:var(--text2); line-height:1.6; margin:0; }
-    .lp-price-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1rem; margin:1.5rem 0; }
-    .lp-price { background:var(--bg2); border:1px solid var(--border); border-radius:14px; padding:1.5rem; text-align:center; }
-    .lp-price.feat { border-color:var(--cyan); box-shadow:0 8px 24px rgba(38,189,239,.10); }
-    .lp-price .tier { font-family:var(--fm); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--text3); }
-    .lp-price .amount { font-family:var(--fh); font-size:1.8rem; font-weight:800; color:var(--text); margin:.4rem 0; }
-    .lp-price .amount span { display:block; margin-top:.2rem; font-size:.8rem; font-weight:500; color:var(--text3); }
-    .lp-price .desc { font-size:.82rem; color:var(--text2); line-height:1.6; }
-    .lp-places { display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0; }
-    .lp-place { font-family:var(--fm); font-size:.78rem; background:var(--bg2); border:1px solid var(--border); border-radius:999px; padding:.35rem .9rem; color:var(--text2); text-decoration:none; }
-    .lp-place:hover { border-color:var(--cyan); color:var(--cyan); }
-    .lp-place.here { border-color:var(--cyan); color:var(--cyan); }
-    .lp-trust { background:var(--bg2); border:1px solid var(--border); border-radius:16px; padding:1.6rem; margin:2rem 0; font-size:.9rem; color:var(--text2); line-height:1.7; }
-    .lp-author { display:flex; gap:1.1rem; align-items:flex-start; background:var(--bg2); border:1px solid var(--border); border-radius:14px; padding:1.4rem 1.5rem; margin:2.5rem 0 1rem; }
-    .lp-author img { width:56px; height:56px; border-radius:50%; flex-shrink:0; background:var(--bg); object-fit:contain; border:1px solid var(--border); }
-    .lp-author-body { font-size:.88rem; color:var(--text2); line-height:1.7; }
-    .lp-author-name { font-family:var(--fh); font-weight:800; color:var(--text); font-size:1rem; }
-    .lp-author-role { display:block; font-size:.8rem; color:var(--text3); margin:.1rem 0 .6rem; }
-    .lp-author-meta { margin-top:.7rem; font-size:.78rem; color:var(--text3); }
-    .lp-author-meta a { color:var(--cyan); text-decoration:underline; text-underline-offset:.2em; }
-  </style>
-  <style>
-    /* Bausteine nur fuer den KI-Bereich (via extra_style, damit die uebrigen Seiten unveraendert bleiben) */
-    .lp-wrap--hero { padding-top:0; }
-    .lp-hero { background:var(--bg2); border-bottom:1px solid var(--border); padding:clamp(2.5rem,7vw,5.5rem) 0 clamp(2.5rem,6vw,4.5rem); margin-bottom:clamp(2.5rem,6vw,4rem); position:relative; overflow:hidden; }
-    .lp-hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 55% 70% at 85% 15%, rgba(12,77,162,.28), transparent 70%); pointer-events:none; }
-    .lp-hero-grid { position:relative; display:grid; gap:clamp(2rem,5vw,4rem); align-items:center; }
-    @media (min-width:1024px) { .lp-hero-grid { grid-template-columns:minmax(0,1.35fr) minmax(0,1fr); } }
-    .lp-hero-h1 { font-family:var(--fh); font-size:clamp(2.1rem,5.2vw,3.6rem); font-weight:800; line-height:1.07; letter-spacing:-.035em; color:var(--text); margin-bottom:1.1rem; text-wrap:balance; }
-    .lp-hero-accent { display:block; color:var(--cyan); }
-    .lp-hero .lp-cta-row { margin-bottom:0; }
-    .lp-paths { background:var(--bg); border:1px solid var(--border); border-radius:14px; padding:.6rem; }
-    .lp-paths-h { font-family:var(--fh); font-size:1.1rem; font-weight:700; color:var(--text); padding:.8rem .9rem .5rem; }
-    .lp-paths ul { list-style:none; margin:0; padding:0; }
-    .lp-paths li + li { border-top:1px solid var(--border); }
-    .lp-paths a { display:block; padding:.95rem .9rem; border-radius:10px; text-decoration:none; transition:background .2s; }
-    .lp-paths a:hover { background:var(--bg3); }
-    .lp-paths a:focus-visible { outline:2px solid var(--cyan); outline-offset:2px; }
-    .lp-path-t { display:block; font-family:var(--fh); font-weight:700; font-size:1rem; color:var(--text); }
-    .lp-path-t::after { content:" →"; color:var(--cyan); transition:margin .2s; }
-    .lp-paths a:hover .lp-path-t::after { margin-left:.25rem; }
-    .lp-path-d { display:block; font-size:.85rem; color:var(--text2); line-height:1.55; margin-top:.25rem; }
-    .ki-case { background:var(--bg2); border:1px solid var(--border); border-radius:14px; padding:1.5rem 1.6rem; margin:1.1rem 0; }
-    .ki-case-tag { font-family:var(--fm); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--cyan); display:block; margin-bottom:.5rem; }
-    .ki-case h3 { font-family:var(--fh); font-size:1.05rem; font-weight:800; color:var(--text); margin:0 0 .6rem; letter-spacing:-.01em; }
-    .ki-case p { font-size:.9rem; color:var(--text2); line-height:1.75; margin:0 0 .7rem; }
-    .ki-case p:last-child { margin-bottom:0; }
-    .ki-case .ki-result { font-size:.86rem; color:var(--text); background:rgba(38,189,239,.07); border-radius:8px; padding:.7rem .9rem; }
-    .ki-check { background:var(--bg2); border:1px solid var(--cyan); border-radius:16px; padding:1.8rem; margin:2.2rem 0; box-shadow:0 8px 28px rgba(38,189,239,.10); }
-    .ki-check h3 { font-family:var(--fh); font-size:1.2rem; font-weight:800; color:var(--text); margin:0 0 .7rem; }
-    .ki-check p { font-size:.92rem; color:var(--text2); line-height:1.75; margin:0 0 1rem; }
-    .ki-check ul { list-style:none; margin:0 0 1.2rem; padding:0; }
-    .ki-check li { font-size:.9rem; color:var(--text2); line-height:1.6; padding:.35rem 0 .35rem 1.5rem; position:relative; }
-    .ki-check li::before { content:""; position:absolute; left:0; top:.85rem; width:7px; height:7px; border-radius:50%; background:var(--cyan); }
-    .ki-note { background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:1.3rem 1.5rem; margin:1.8rem 0; }
-    .ki-note strong { color:var(--text); }
-    .ki-note p { font-size:.88rem; color:var(--text2); line-height:1.75; margin:0 0 .7rem; }
-    .ki-note p:last-child { margin-bottom:0; }
-    .ki-tbl-wrap { overflow-x:auto; margin:1.4rem 0; }
-    .ki-tbl { width:100%; border-collapse:collapse; font-size:.86rem; min-width:520px; }
-    .ki-tbl th { font-family:var(--fh); font-size:.78rem; letter-spacing:.03em; text-transform:uppercase; color:var(--text3); text-align:left; padding:.7rem .9rem; border-bottom:1px solid var(--border); }
-    .ki-tbl td { padding:.85rem .9rem; border-bottom:1px solid var(--border); color:var(--text2); line-height:1.65; vertical-align:top; }
-    .ki-tbl td:first-child { color:var(--text); font-weight:600; white-space:nowrap; }
-    .ki-tbl tr:last-child td { border-bottom:none; }
-    @media (max-width:600px) {
-      .ki-tbl { min-width:0; }
-      .ki-tbl thead { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
-      .ki-tbl tbody, .ki-tbl tr, .ki-tbl td { display:block; width:100%; }
-      .ki-tbl tr { border-bottom:1px solid var(--border); padding:.75rem 0; }
-      .ki-tbl tr:last-child { border-bottom:none; }
-      .ki-tbl td { border-bottom:none; padding:.2rem 0; }
-      .ki-tbl td:first-child { white-space:normal; }
-      .ki-tbl td[data-label]::before { content:attr(data-label) ": "; color:var(--text); font-weight:600; }
-    }
   </style>
   <script type="application/ld+json">
 {
@@ -249,7 +163,7 @@
     "@id": "https://grundke-it.de/#website"
   },
   "datePublished": "2026-08-22",
-  "dateModified": "2026-10-07",
+  "dateModified": "2026-10-10",
   "author": {
     "@type": "Person",
     "@id": "https://grundke-it.de/#andreas",
@@ -319,32 +233,55 @@
 </header>
 
 <main id="main">
-<article class="lp-wrap">
-  <div class="inner">
-    <div class="lp-content">
+<section class="sec sec--glow page-head">
+  <div class="inner page-head-grid">
+    <div class="page-head-copy page-head-copy--two">
       <nav class="lp-crumbs" aria-label="Brotkrumen"><ol><li><a href="/">Startseite</a></li><li><a href="/ki-fuer-kmu/">KI im Betrieb</a></li><li aria-current="page">Videoanalyse &amp; Auswertung</li></ol></nav>
-      <div class="s-label">Kamera plus Auswertung</div>
-      <h1 class="s-title">Videoanalyse und Auswertung – Kameradaten nutzbar machen</h1>
-      <p class="s-sub">Eine Kamera zeichnet auf. Ausgewertet wird sie selten, weil niemand die Zeit hat, Aufnahmen durchzusehen.</p>
-
-      <div class="lp-cta-row">
-        <a href="tel:+491782584438" class="btn-p">Kostenloses Erstgespräch</a>
-        <a href="/kontakt/" class="btn-g">Anfrage senden</a>
+      <h1 class="page-h1">Videoanalyse und Auswertung – Kameradaten nutzbar machen</h1>
+      <p class="page-k">Ich setze auf eure vorhandene Kameraanlage eine Auswertung, die Fahrzeuge erkennt, Vorgänge zählt und Auffälligkeiten meldet.</p>
+      <div class="page-head-b">
+        <p class="s-sub measure">Als Grundke IT-Service aus Grasbrunn richte ich für Betriebe im Münchner Osten eine Videoanalyse auf vorhandenen Kameras ein, meist UniFi Protect: Fahrzeuge und Vorgänge werden gezählt, Kennzeichen nur mit klarem Zweck gelesen, und die Aufnahmen bleiben im Haus.</p>
+        <div class="hc-ctas">
+          <a href="tel:+491782584438" class="btn-p hc-call"><svg width="18" height="18" aria-hidden="true"><use href="#ico-phone"/></svg>Anrufen <span class="hc-num">0178 258 44 38</span></a>
+          <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20komme%20%C3%BCber%20deine%20Seite%20%E2%80%9EVideoanalyse%20%26%20Auswertung%E2%80%9C." target="_blank" rel="noopener" class="hc-wa"><svg width="18" height="18" aria-hidden="true"><use href="#ico-wa"/></svg>WhatsApp</a>
+        </div>
+        <ul class="hc-proof">
+          <li><svg class="is-star" aria-hidden="true"><use href="#ico-star"/></svg><a href="/#bewertungen-herkunft" data-proof>5,0 bei 5 Google-Bewertungen</a></li>
+          <li><svg aria-hidden="true"><use href="#ico-shield"/></svg>Ohne Gesichtserkennung, Verarbeitung im Haus</li>
+        </ul>
       </div>
+    </div>
+  </div>
+</section>
 
+<section class="sec sec--alt">
+  <div class="inner">
+    <h2 class="s-title">Das steckt drin</h2>
+    <div class="sec-split">
+    <div>
+    <div class="lp-content">
       <p>Die meisten Betriebe haben Kameras, und fast alle benutzen sie erst, wenn etwas passiert ist. Dann sitzt jemand eine Stunde vor der Zeitleiste und sucht. <strong>Dabei steckt in diesen Aufnahmen eine Information, die sich automatisch herausziehen lässt:</strong> was sich bewegt hat, wann, wie oft und in welche Richtung. Auf vorhandene UniFi-Protect-Anlagen setze ich eine Auswertung auf. Die Erkennung läuft auf Hardware im Betrieb, die Ergebnisse landen in einer Datenbank, und daraus entsteht eine Oberfläche mit Zahlen. Die Aufnahmen selbst verlassen das Haus dabei nicht.</p>
+    </div>
+    </div>
+    <div>
+    <div class="card-box"><p><strong>Einheitlicher Stundensatz von 110 € netto, Abrechnung im 15-Minuten-Takt, keine versteckten Kosten.</strong> Kein klassischer Kundendienst, sondern ein fester persönlicher Ansprechpartner mit über 20 Jahren IT-Erfahrung – im Raum München Ost, datenschutzgerecht und auf Wunsch self-hosted.</p></div>
+    </div>
+    </div>
+    <ul class="feat-rows">
+      <li><span class="feat-ico" aria-hidden="true"><svg><use href="#ico-search-check"/></svg></span><div><h3>Fahrzeuge und Kennzeichen erkennen</h3><p>Fahrzeuge, Container, Maschinen, Paletten. Wo es einen klaren Zweck gibt, werden auch Kennzeichen gelesen, etwa um bekannte Fahrzeuge von fremden zu unterscheiden.</p></div></li>
+      <li><span class="feat-ico" aria-hidden="true"><svg><use href="#ico-list"/></svg></span><div><h3>Vorgänge zählen</h3><p>Zufahrten, Anlieferungen, Durchgänge, Standzeiten. Mit Zeitstempel und ohne dass jemand mitschreibt.</p></div></li>
+      <li><span class="feat-ico" aria-hidden="true"><svg><use href="#ico-file-text"/></svg></span><div><h3>Protokoll in der Datenbank</h3><p>Jedes Ereignis wird gespeichert und bleibt auswertbar, auch wenn die Aufnahme längst gelöscht ist.</p></div></li>
+      <li><span class="feat-ico" aria-hidden="true"><svg><use href="#ico-monitor"/></svg></span><div><h3>Kennzahlen auf einen Blick</h3><p>Eine Oberfläche zeigt Verläufe, Summen und Auffälligkeiten. Im Browser, auch vom Handy aus.</p></div></li>
+      <li><span class="feat-ico" aria-hidden="true"><svg><use href="#ico-mail"/></svg></span><div><h3>Meldung bei Auffälligkeiten</h3><p>Bewegung außerhalb der Betriebszeit oder ungewöhnliche Häufungen melden sich von selbst.</p></div></li>
+      <li><span class="feat-ico" aria-hidden="true"><svg><use href="#ico-shield"/></svg></span><div><h3>Verarbeitung im Haus</h3><p>Erkennung und Speicherung laufen auf eigener Hardware im Netzwerk, nicht bei einem Clouddienst.</p></div></li>
+    </ul>
+  </div>
+</section>
 
-      <h2>Das steckt drin</h2>
-      <div class="lp-grid">
-        <div class="lp-card"><h3>Fahrzeuge und Kennzeichen erkennen</h3><p>Fahrzeuge, Container, Maschinen, Paletten. Wo es einen klaren Zweck gibt, werden auch Kennzeichen gelesen, etwa um bekannte Fahrzeuge von fremden zu unterscheiden.</p></div>
-        <div class="lp-card"><h3>Vorgänge zählen</h3><p>Zufahrten, Anlieferungen, Durchgänge, Standzeiten. Mit Zeitstempel und ohne dass jemand mitschreibt.</p></div>
-        <div class="lp-card"><h3>Protokoll in der Datenbank</h3><p>Jedes Ereignis wird gespeichert und bleibt auswertbar, auch wenn die Aufnahme längst gelöscht ist.</p></div>
-        <div class="lp-card"><h3>Kennzahlen auf einen Blick</h3><p>Eine Oberfläche zeigt Verläufe, Summen und Auffälligkeiten. Im Browser, auch vom Handy aus.</p></div>
-        <div class="lp-card"><h3>Meldung bei Auffälligkeiten</h3><p>Bewegung außerhalb der Betriebszeit oder ungewöhnliche Häufungen melden sich von selbst.</p></div>
-        <div class="lp-card"><h3>Verarbeitung im Haus</h3><p>Erkennung und Speicherung laufen auf eigener Hardware im Netzwerk, nicht bei einem Clouddienst.</p></div>
-      </div>
-
-      <h2>Was dabei erlaubt ist und was nicht</h2>
+<section class="sec">
+  <div class="inner">
+    <h2 class="s-title">Was dabei erlaubt ist und was nicht</h2>
+    <div class="lp-content">
       <p>Videoauswertung im Betrieb ist kein Selbstläufer. Für die Aufnahme selbst braucht es einen Grund, der sich benennen lässt, meist der Schutz von Eigentum oder die Kontrolle betrieblicher Abläufe, und dieser Grund muss schwerer wiegen als das Interesse der Aufgenommenen. Dazu kommen Hinweisschilder, festgelegte Löschfristen, ein Eintrag im Verzeichnis der Verarbeitungstätigkeiten und, sobald Beschäftigte betroffen sind, deren Beteiligung.</p>
       <p>Die Auswertung ändert an diesen Regeln nichts, sie verschiebt aber die Bewertung. Wer Fahrzeuge und Objekte zählt, verarbeitet etwas anderes als jemand, der Personen wiedererkennt.</p>
       <p>Kennzeichen liegen dazwischen: Über den Halter lassen sie sich einer Person zuordnen und sind deshalb personenbezogene Daten. Wer sie liest, braucht einen klar benannten Zweck, ein Hinweisschild und kurze Löschfristen; Kennzeichen, die zu keinem bekannten Fahrzeug gehören, werden nicht dauerhaft gespeichert.</p>
@@ -352,29 +289,37 @@
         <p><strong>Gesichtserkennung und die Auswertung des Verhaltens einzelner Mitarbeiter baue ich nicht.</strong> Das ist rechtlich heikel bis unzulässig, und in einem normalen Betrieb ist es auch gar nicht nötig: Für die Fragen, um die es tatsächlich geht, reicht es, Objekte zu unterscheiden, Vorgänge zu zählen und, wo es einen Zweck gibt, Kennzeichen zu lesen. Kennzeichen von Mitarbeiterfahrzeugen werden nicht genutzt, um Arbeitszeiten oder Wege zu überwachen.</p>
         <p>Wo eine Datenschutz-Folgenabschätzung fällig wird, sage ich das vor der Umsetzung, statt es später zu entdecken. Die rechtliche Prüfung im Einzelfall bleibt Sache deines Datenschutzbeauftragten oder deines Anwalts. Ich sorge dafür, dass die Technik zu dieser Prüfung passt.</p>
       </div>
+    </div>
+  </div>
+</section>
 
-      <h2>Typische Fragen, die sich damit beantworten lassen</h2>
-      <div class="lp-grid">
-        <div class="lp-card"><h3>Wie viel ist wirklich los?</h3><p>Zufahrten, Anlieferungen und Abholungen pro Tag, Woche und Monat. Mit Tagesverlauf statt Bauchgefühl.</p></div>
-        <div class="lp-card"><h3>Wie lange steht etwas?</h3><p>Standzeiten von Fahrzeugen oder Containern, inklusive Auffälligkeiten nach oben.</p></div>
-        <div class="lp-card"><h3>War nachts jemand da?</h3><p>Bewegung außerhalb der Betriebszeiten wird erkannt und gemeldet, ohne dass jemand aufbleibt.</p></div>
-        <div class="lp-card"><h3>Stimmt die Dokumentation?</h3><p>Erfasste Vorgänge lassen sich gegen Lieferscheine oder Aufträge halten, wenn etwas unklar ist.</p></div>
+<section class="sec sec--alt">
+  <div class="inner">
+    <h2 class="s-title">Typische Fragen, die sich damit beantworten lassen</h2>
+    <div class="lp-content">
+      <div class="card-grid card-grid--4">
+        <div class="card"><h3>Wie viel ist wirklich los?</h3><p>Zufahrten, Anlieferungen und Abholungen pro Tag, Woche und Monat. Mit Tagesverlauf statt Bauchgefühl.</p></div>
+        <div class="card"><h3>Wie lange steht etwas?</h3><p>Standzeiten von Fahrzeugen oder Containern, inklusive Auffälligkeiten nach oben.</p></div>
+        <div class="card"><h3>War nachts jemand da?</h3><p>Bewegung außerhalb der Betriebszeiten wird erkannt und gemeldet, ohne dass jemand aufbleibt.</p></div>
+        <div class="card"><h3>Stimmt die Dokumentation?</h3><p>Erfasste Vorgänge lassen sich gegen Lieferscheine oder Aufträge halten, wenn etwas unklar ist.</p></div>
       </div>
 
       <div class="ki-check">
         <h3>Erst ansehen, dann entscheiden</h3>
         <p>Ob sich eine Auswertung lohnt, hängt an der Anlage und an der Frage, die du beantwortet haben willst. Beim kostenlosen Potenzialcheck sehe ich mir die vorhandenen Kameras an und sage dir, was damit geht und was nicht. Ist die Anlage dafür nicht geeignet, erfährst du das an dem Tag und nicht nach dem ersten Rechnungsposten.</p>
-        <div class="lp-cta-row" style="margin:0;">
+        <div class="card-cta">
           <a href="tel:+491782584438" class="btn-p">Anlage ansehen lassen</a>
           <a href="/kontakt/" class="btn-g">Lieber schreiben</a>
         </div>
       </div>
+    </div>
+  </div>
+</section>
 
-      <div class="lp-trust">
-        <strong>Einheitlicher Stundensatz von 110 € netto, Abrechnung im 15-Minuten-Takt, keine versteckten Kosten.</strong> Kein klassischer Kundendienst, sondern ein fester persönlicher Ansprechpartner mit über 20 Jahren IT-Erfahrung – im Raum München Ost, datenschutzgerecht und auf Wunsch self-hosted.
-      </div>
-
-      <h2>Häufige Fragen</h2>
+<section class="sec sec--aside">
+  <div class="inner">
+    <h2 class="s-title">Häufige Fragen</h2>
+    <div class="sec-aside-body">
       <div class="faq-wrap">
         <details class="faq-item"><summary>Funktioniert das mit unseren vorhandenen Kameras? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">In der Regel ja, wenn die Kameras einen brauchbaren Bildausschnitt und eine vernünftige Auflösung liefern. Ich arbeite überwiegend mit Anlagen von Ubiquiti UniFi Protect, weil ich diese Technik ohnehin plane und betreue. Andere Systeme gehen auch, solange sie einen Videostream im Netzwerk bereitstellen. Was nicht geht, sage ich, bevor etwas gekauft wird.</div></details>
         <details class="faq-item"><summary>Werden die Aufnahmen in die Cloud geschickt? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Nein. Erkennung und Auswertung laufen auf Hardware bei dir im Netzwerk. Was das Haus verlässt, ist höchstens eine Meldung, dass etwas passiert ist, und auch nur, wenn du das so willst. Genau das ist der Grund, warum ich diesen Weg baue und keinen Clouddienst dazwischenschalte.</div></details>
@@ -382,25 +327,34 @@
         <details class="faq-item"><summary>Wie zuverlässig erkennt so ein System? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Bei klar unterscheidbaren Objekten wie Fahrzeugen ist die Erkennung gut genug, um belastbare Zahlen zu liefern. Fehler gibt es trotzdem, vor allem bei schlechtem Licht, Regen oder ungünstigem Kamerawinkel. Deshalb wird jede Auswertung anfangs mit der Wirklichkeit abgeglichen und nachjustiert, bevor sie in den Betrieb geht. Wer behauptet, so etwas laufe von Anfang an fehlerfrei, hat es nicht gemacht.</div></details>
         <details class="faq-item"><summary>Was kostet eine solche Auswertung? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Das hängt daran, wie viele Kameras beteiligt sind, wie klar die Fragestellung ist und ob passende Hardware für die Erkennung schon vorhanden ist. Nach dem Blick auf die Anlage bekommst du einen Festpreis. Was später außerhalb des Auftrags anfällt, kostet 110 Euro netto je Stunde im 15-Minuten-Takt.</div></details>
       </div>
-
+    <div class="lp-content">
       <p class="lp-related">Mehr aus dem Bereich <a href="/ki-fuer-kmu/">KI im Betrieb</a>: <a href="/ki-automatisierung/">Abläufe automatisieren</a> und <a href="/ki-dsgvo/">KI sicher einsetzen</a>.</p>
-
-      <div class="lp-author">
-        <img src="/assets/img/logo-grundke-it-badge-112.webp" alt="Logo Andreas Grundke IT-Service" width="56" height="56" loading="lazy"/>
-        <div class="lp-author-body">
-          <span class="lp-author-name">Andreas Grundke</span>
-          <span class="lp-author-role">Inhaber · Fachinformatiker für Systemintegration</span>
-          Die externe IT-Abteilung für kleine und mittlere Betriebe im Münchner Osten: IT-Betreuung, KI im Betrieb, Software nach Maß und Websites. Über 20 Jahre in der IT, ein Ansprechpartner für alles Technische.
-          <div class="lp-author-meta">Zuletzt aktualisiert: 7. Oktober 2026 · <a href="/kontakt/">Kontakt aufnehmen</a></div>
-        </div>
-      </div>
-      <div class="lp-cta-row" style="margin-top:2.5rem;">
-        <a href="tel:+491782584438" class="btn-p">Jetzt anrufen · 0178 258 44 38</a>
-        <a href="/netzwerk-wlan-firewall/" class="btn-g">Netzwerk &amp; Kameratechnik</a>
-      </div>
+    </div>
     </div>
   </div>
-</article>
+</section>
+
+<section class="cta-sec">
+  <div class="inner">
+    <h2 class="cta-h">Problem? <em>Ich bin dran.</em></h2>
+    <p class="cta-sub">Ruf an, schreib auf WhatsApp oder per Mail. Am anderen Ende bin ich, Andreas Grundke. Gerne per Du.</p>
+    <div class="cta-btns inline-cta-mobile">
+      <a href="tel:+491782584438" class="btn-tel"><svg width="20" height="20" aria-hidden="true"><use href="#ico-phone"/></svg> 0178 258 44 38</a>
+      <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20komme%20%C3%BCber%20deine%20Seite%20%E2%80%9EVideoanalyse%20%26%20Auswertung%E2%80%9C." target="_blank" rel="noopener" class="btn-wa"><svg width="20" height="20" aria-hidden="true"><use href="#ico-wa"/></svg> WhatsApp</a>
+      <a href="mailto:info@grundke-it.de?subject=Anfrage%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0AMein%20Anliegen%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F)." class="btn-email"><svg width="20" height="20" aria-hidden="true"><use href="#ico-mail"/></svg> E-Mail schreiben</a>
+    </div>
+    <div class="hc-qr cta-qr">
+      <a href="/kontakt/" title="Alle Kontaktwege"><img src="/assets/img/qr-tree.png" alt="QR-Code: Kontaktseite aufs Handy holen" width="88" height="88"/></a>
+      <p><strong>Scan mich. Dann reden wir.</strong>Alle Kontaktwege direkt aufs Handy.</p>
+    </div>
+    <p class="cta-next"><a href="/netzwerk-wlan-firewall/">Netzwerk &amp; Kameratechnik<svg width="16" height="16" aria-hidden="true"><use href="#ico-arrow-r"/></svg></a></p>
+    <div class="cta-author">
+      <span class="ava" aria-hidden="true">AG</span>
+      <p><strong>Andreas Grundke</strong> · Fachinformatiker für Systemintegration · über 20 Jahre IT<br><span class="cta-date">Zuletzt aktualisiert: 10. Oktober 2026</span></p>
+    </div>
+  </div>
+</section>
+
 </main>
 
 <footer class="site-footer">
@@ -482,7 +436,7 @@
     </div>
   </div>
 </footer>
-<script src="/assets/js/main.js?v=2026.10.b"></script>
+<script src="/assets/js/main.js?v=2026.10.c"></script>
 
 <div class="sticky-contact" id="stickyContact" role="navigation" aria-label="Kontakt-Optionen">
   <a href="tel:+491782584438" class="sc-btn sc-phone" aria-label="Anrufen">

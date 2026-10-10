@@ -892,6 +892,64 @@ blockquote.testi-txt { margin-top:0; margin-left:0; margin-right:0; }
   .sec--aside .faq-wrap { max-width:none; margin-top:0; }
   .sec--aside .testi-grid--few { margin-top:0; }
 }
+/* Seit Task 7 (KI-Bereich, Software, Websites, Ratgeber): Bausteine aus KI_STYLE/NEW_STYLE des Generators, die
+   bis dahin im <style> dieser Seiten standen, Text 16 px. Absaetze in .lp-content bekommen Groesse, Farbe und
+   Abstand aus dem gemeinsamen <style> der Generator-Seiten (gleiche Spezifitaet, steht spaeter und gewinnt);
+   wo ein Kasten davon abweicht (Kurzantwort), traegt die Regel .lp-content mit. */
+/* Hub-Kopf: Wege zu den Unterseiten, ab 1024 px rechts neben dem Kopf wie der Beispiel-Chat, darunter unter ihm */
+@media (min-width:1024px) {
+  .page-head-grid--paths { grid-template-columns:minmax(0,1.45fr) minmax(0,1fr); gap:3.5rem; }
+  .page-head-grid--paths .lp-paths { margin-top:3.1rem; }
+}
+.lp-paths { background:var(--bg); border:1px solid var(--border); border-radius:14px; padding:.6rem; }
+.lp-paths-h { font-family:var(--fh); font-size:1.1rem; font-weight:700; color:var(--text); padding:.8rem .9rem .5rem; margin:0; }
+.lp-paths ul { list-style:none; margin:0; padding:0; }
+.lp-paths li + li { border-top:1px solid var(--border); }
+.lp-paths a { display:block; padding:.95rem .9rem; border-radius:10px; text-decoration:none; transition:background .2s; }
+.lp-paths a:hover { background:var(--bg3); }
+.lp-paths a:focus-visible { outline:2px solid var(--cyan); outline-offset:2px; }
+.lp-path-t { display:block; font-family:var(--fh); font-weight:700; font-size:1.0667rem; color:var(--text); }
+.lp-path-t::after { content:" →"; color:var(--cyan); transition:margin .2s; }
+.lp-paths a:hover .lp-path-t::after { margin-left:.25rem; }
+.lp-path-d { display:block; font-size:.93rem; color:var(--text2); line-height:1.55; margin-top:.25rem; }
+/* Zwischenueberschriften im Fliesstext, auch im zugeklappten Teil (<details class="more">) */
+.lp-content > h3, .lp-content > .more > h3 { font-family:var(--fh); font-size:1.15rem; font-weight:700; line-height:1.3; color:var(--text); margin:1.8rem 0 .6rem; }
+.lp-content > h3:first-child, .lp-content > .more > summary + h3 { margin-top:.4rem; }
+.lp-content > .more { max-width:68ch; }
+/* Karten und Fallbeispiele im Fliesstext ueber die volle Breite (statt 68ch wie Absaetze); auf der zweiten Flaeche
+   eine Stufe heller, damit die Karte sich abhebt */
+.sec .card-grid { max-width:none; margin-top:1.6rem; }
+.sec--alt .card, .sec--alt .ki-case { background:var(--bg3); }
+.card-grid > .ki-case { margin:0; }
+.lp-content > .more > .card-grid { grid-template-columns:minmax(0,1fr); }  /* im zugeklappten Teil (68ch) untereinander */
+@media (min-width:601px) { .card-grid--4 { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (min-width:1101px) { .card-grid--4 { grid-template-columns:repeat(4,minmax(0,1fr)); } }
+/* Fallbeispiel (Karte mit Merkzeile) */
+.ki-case { background:var(--bg2); border:1px solid var(--border); border-radius:14px; padding:1.5rem 1.6rem; margin:1.1rem 0; }
+.ki-case-tag { font-family:var(--fm); font-size:.8rem; letter-spacing:.08em; text-transform:uppercase; color:var(--cyan); display:block; margin-bottom:.5rem; }
+.ki-case h3 { font-family:var(--fh); font-size:1.1rem; font-weight:800; line-height:1.3; color:var(--text); margin:0 0 .6rem; letter-spacing:-.01em; }
+.ki-case p { font-size:1.0667rem; color:var(--text2); line-height:1.75; margin:0 0 1rem; }
+.ki-case p:last-child { margin-bottom:0; }
+.ki-case .ki-result { color:var(--text); background:rgba(38,189,239,.07); border-radius:8px; padding:.7rem .9rem; }
+/* Kasten mit Handlung (Potenzialcheck, Website-Check): bleibt immer sichtbar */
+.ki-check { background:var(--bg2); border:1px solid var(--cyan); border-radius:16px; padding:1.8rem; margin:2.2rem 0 0; box-shadow:0 8px 28px rgba(38,189,239,.10); }
+.ki-check h3 { font-family:var(--fh); font-size:1.2rem; font-weight:800; line-height:1.3; color:var(--text); margin:0 0 .7rem; }
+.ki-check p { font-size:1.0667rem; color:var(--text2); line-height:1.75; margin:0 0 1rem; }
+.ki-check ul { list-style:none; margin:0 0 1.4rem; padding:0; }
+.ki-check li { position:relative; padding:.35rem 0 .35rem 1.5rem; font-size:1.0667rem; color:var(--text2); line-height:1.6; }
+.ki-check li::before { content:""; position:absolute; left:0; top:.95rem; width:7px; height:7px; border-radius:50%; background:var(--cyan); }
+.sec--alt .ki-check { background:var(--bg3); }
+/* Satz unter den Preisen (Foerderhinweis auf Software) und Vertrauenskasten in Lesebreite statt ueber die volle Zeile */
+.price-grid + .lp-content { margin-top:1.4rem; }
+.price-grid ~ .card-box { max-width:68ch; }
+/* Ratgeber: Kurzantwort als Kasten oben im Artikel, Artikel in einer Lesespalte mit Zwischenueberschriften,
+   Listen dort einspaltig (in der Huelle sonst ab 768 px zweispaltig) */
+.lp-answer { background:var(--bg3); border:1px solid var(--border); border-radius:14px; padding:1.3rem 1.5rem; margin:0 0 2rem; }
+.lp-answer p, .lp-content .lp-answer p { margin:0; color:var(--text); font-size:1.0667rem; line-height:1.75; }
+.lp-answer p + p, .lp-content .lp-answer p + p { margin-top:.7rem; color:var(--text2); }
+.lp-article > h2 { font-family:var(--fh); font-size:clamp(1.45rem,2.6vw,1.9rem); font-weight:800; line-height:1.2; letter-spacing:-.03em; color:var(--text); margin:2.6rem 0 1rem; }
+.sec .lp-article .lp-dont, .sec .lp-article .lp-checklist { display:block; }
+.sec--alt .lp-article .ki-note { background:var(--bg3); }
 /* ══════════════════════════════════════════════════════════════════════════════════ */
 
 

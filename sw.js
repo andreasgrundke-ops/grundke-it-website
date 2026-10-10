@@ -94,11 +94,14 @@
  *                        Stimmen/FAQ aus dem Generator, aufklappbare Details), Bausteine in
  *                        style.css, main.js 1.6.0, Fuss aufklappbar, WhatsApp mit Einstiegssatz,
  *                        Asset-Version 2026.10.b.
+ *   1.25.0 / 2026-10-10 — Release B Website-Umbau: alle Unterseiten in der Generator-Huelle
+ *                        (IT-, Orts-, KI-, Software-, Websites- und Ratgeberseiten), Bausteine des
+ *                        KI-Bereichs in style.css, Asset-Version 2026.10.c.
  */
 
-const CACHE_NAME    = 'grundke-it-v1.24.0';
-const RUNTIME_CACHE = 'grundke-it-runtime-v31';
-const ASSET_VER     = '2026.10.b';   // muss ASSET_VER im Generator entsprechen
+const CACHE_NAME    = 'grundke-it-v1.25.0';
+const RUNTIME_CACHE = 'grundke-it-runtime-v32';
+const ASSET_VER     = '2026.10.c';   // muss ASSET_VER im Generator entsprechen
 
 /* Pre-Cache: minimaler Kern fuer Offline-First-Boot */
 const PRECACHE_URLS = [

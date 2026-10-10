@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 build_landingpages.py
-Version : 2.4
+Version : 2.5
 Autor   : Andreas Grundke IT-Service (Grundke IT-Service)
 Datum   : 2026-10-10
 Zweck   : Generiert aus einem gemeinsamen Template + Datenlisten die Orts- und
@@ -53,6 +53,12 @@ Aenderungen:
               Textblatt, freigegebene Ersatzsaetze (Frage 5). Huelle: Kopf ohne Chat zweispaltig,
               FAQ und einzelne Stimme mit seitlicher Ueberschrift, tail_blocks, voices_h2,
               <!--split--> in extra, Vertrauenstext neben dem Einstieg; ico-network, ico-wifi.
+  2026-10-10  Release B, Task 7: KI-Hub, KI-Seiten, Software, Websites und Ratgeber in der Huelle, damit alle
+              Generator-Seiten. K4/Antwortsatz aus dem Textblatt, Hubs mit Wegen (nav.lp-paths) rechts im Kopf,
+              Ratgeber ohne K4 und nur mit Anruf-Knopf, Ratgeber-Artikel in einer Lesespalte, <!--more--> fuer
+              zugeklappte Teile (content_blocks, more_html). KI_STYLE/NEW_STYLE nach style.css; STYLE_LEGACY,
+              SHELL_SLUGS, author_box, cards_html, die alte Huelle in render_service und RATGEBER_CTA entfernt.
+              Asset-Version 2026.10.c.
 """
 
 import os
@@ -87,7 +93,7 @@ NEW_DATE_DISP = "7. Oktober 2026"
 # als ASSET_VER im Pre-Cache von sw.js. Bei JEDEM Release erhoehen, zusammen mit
 # CACHE_NAME/RUNTIME_CACHE in sw.js. Neue URLs laufen am alten Cache des Service Workers
 # vorbei, ein wiederkehrender Besucher bekommt nie neues HTML mit altem CSS.
-ASSET_VER = "2026.10.b"
+ASSET_VER = "2026.10.c"
 # Bewertungen im Google-Unternehmensprofil (Stand 10.10.2026). Eine weitere Stimme kam
 # direkt und zaehlt hier nicht mit. Einzige Quelle fuer die Zahl auf allen Seiten.
 REVIEW_COUNT_GOOGLE = 5
@@ -159,9 +165,9 @@ def eur(n):
 #  Gemeinsame Bausteine                                                        #
 # --------------------------------------------------------------------------- #
 
-# Seiten in der neuen Huelle (render_shell, SHELL_SLUGS) tragen im eigenen <style> nur noch die
-# Prosa-Regeln fuer den Fliesstext aus "intro" und "extra"; alle Bausteine (Kopf, Karten, Preise,
-# Stimmen, FAQ, Abschluss) kommen aus style.css (Spec AK1).
+# Alle Generator-Seiten (Huelle render_shell, seit Task 7 ohne Ausnahme) tragen im eigenen <style> nur
+# noch die Prosa-Regeln fuer den Fliesstext aus "intro" und "extra"; alle Bausteine (Kopf, Karten, Preise,
+# Stimmen, FAQ, Abschluss, Kaesten aus dem KI-Bereich) kommen aus style.css (Spec AK1).
 STYLE = """  <style>
     .lp-content > p, .lp-content > div { max-width:68ch; }
     .lp-content p { font-size:1.0667rem; color:var(--text2); line-height:1.75; margin:0 0 1rem; }
@@ -169,49 +175,6 @@ STYLE = """  <style>
     .lp-content strong { color:var(--text); }
     .lp-content p a, .lp-content li a { color:var(--cyan); }
     .lp-related { margin-top:2rem; }
-  </style>"""
-
-# Bisherige Huelle (lp-wrap) fuer alle Seiten, die noch nicht in SHELL_SLUGS stehen.
-# Entfaellt mit Task 7, wenn alle Generator-Seiten umgestellt sind.
-STYLE_LEGACY = """  <style>
-    .lp-wrap { margin-top:var(--nav-h); padding:clamp(3rem,8vw,6rem) 0; }
-    .lp-content { max-width:880px; }
-    .lp-crumbs ol { display:flex; flex-wrap:wrap; gap:.35rem; list-style:none; margin:0 0 1.4rem; padding:0; font-size:.8rem; color:var(--text3); }
-    .lp-crumbs li + li::before { content:"/"; margin-right:.35rem; color:var(--border); }
-    .lp-crumbs a { color:var(--text2); text-decoration:none; }
-    .lp-crumbs a:hover { color:var(--cyan); }
-    .lp-crumbs [aria-current] { color:var(--text); }
-    .lp-content h2 { font-family:var(--fh); font-size:clamp(1.3rem,3vw,1.8rem); font-weight:800; color:var(--text); letter-spacing:-.02em; margin:2.6rem 0 1rem; }
-    .lp-content p { font-size:1.0667rem; color:var(--text2); line-height:1.8; margin-bottom:1rem; }
-    .lp-content strong { color:var(--text); }
-    .lp-cta-row { display:flex; flex-wrap:wrap; gap:1rem; margin:2rem 0; }
-    .lp-content .faq-wrap { margin-top:1.2rem; }
-    .lp-related { margin-top:2rem; }
-    .lp-content p a { color:var(--cyan); text-underline-offset:.2em; }
-    @media (max-width:560px) { .lp-cta-row .btn-p, .lp-cta-row .btn-g { width:100%; justify-content:center; } }
-    .lp-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1rem; margin:1.5rem 0; }
-    .lp-card { background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:1.3rem; }
-    .lp-card h3 { font-family:var(--fh); font-size:1rem; font-weight:700; color:var(--text); margin-bottom:.4rem; }
-    .lp-card p { font-size:.85rem; color:var(--text2); line-height:1.6; margin:0; }
-    .lp-price-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1rem; margin:1.5rem 0; }
-    .lp-price { background:var(--bg2); border:1px solid var(--border); border-radius:14px; padding:1.5rem; text-align:center; }
-    .lp-price.feat { border-color:var(--cyan); box-shadow:0 8px 24px rgba(38,189,239,.10); }
-    .lp-price .tier { font-family:var(--fm); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--text3); }
-    .lp-price .amount { font-family:var(--fh); font-size:1.8rem; font-weight:800; color:var(--text); margin:.4rem 0; }
-    .lp-price .amount span { display:block; margin-top:.2rem; font-size:.8rem; font-weight:500; color:var(--text3); }
-    .lp-price .desc { font-size:.82rem; color:var(--text2); line-height:1.6; }
-    .lp-places { display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0; }
-    .lp-place { font-family:var(--fm); font-size:.78rem; background:var(--bg2); border:1px solid var(--border); border-radius:999px; padding:.35rem .9rem; color:var(--text2); text-decoration:none; }
-    .lp-place:hover { border-color:var(--cyan); color:var(--cyan); }
-    .lp-place.here { border-color:var(--cyan); color:var(--cyan); }
-    .lp-trust { background:var(--bg2); border:1px solid var(--border); border-radius:16px; padding:1.6rem; margin:2rem 0; font-size:.9rem; color:var(--text2); line-height:1.7; }
-    .lp-author { display:flex; gap:1.1rem; align-items:flex-start; background:var(--bg2); border:1px solid var(--border); border-radius:14px; padding:1.4rem 1.5rem; margin:2.5rem 0 1rem; }
-    .lp-author img { width:56px; height:56px; border-radius:50%; flex-shrink:0; background:var(--bg); object-fit:contain; border:1px solid var(--border); }
-    .lp-author-body { font-size:.88rem; color:var(--text2); line-height:1.7; }
-    .lp-author-name { font-family:var(--fh); font-weight:800; color:var(--text); font-size:1rem; }
-    .lp-author-role { display:block; font-size:.8rem; color:var(--text3); margin:.1rem 0 .6rem; }
-    .lp-author-meta { margin-top:.7rem; font-size:.78rem; color:var(--text3); }
-    .lp-author-meta a { color:var(--cyan); text-decoration:underline; text-underline-offset:.2em; }
   </style>"""
 
 # --- Navigation: EINE Quelle fuer alle Seiten (seit 2026-09-23) ------------- #
@@ -604,21 +567,6 @@ def webpage_schema(title, desc, slug, pub=None, mod=None):
     }
 
 
-def author_box(mod_disp=None):
-    """Sichtbare Inhaber-/Autorenangabe (E-E-A-T) inkl. 'Zuletzt aktualisiert'-Datum.
-    Deckungsgleich mit dem Person-Schema (#andreas) und der WebPage-dateModified."""
-    return (
-        '\n      <div class="lp-author">\n'
-        '        <img src="/assets/img/logo-grundke-it-badge-112.webp" alt="Logo Andreas Grundke IT-Service" width="56" height="56" loading="lazy"/>\n'
-        '        <div class="lp-author-body">\n'
-        '          <span class="lp-author-name">Andreas Grundke</span>\n'
-        '          <span class="lp-author-role">Inhaber · Fachinformatiker für Systemintegration</span>\n'
-        '          Die externe IT-Abteilung für kleine und mittlere Betriebe im Münchner Osten: IT-Betreuung, KI im Betrieb, Software nach Maß und Websites. Über 20 Jahre in der IT, ein Ansprechpartner für alles Technische.\n'
-        '          <div class="lp-author-meta">Zuletzt aktualisiert: ' + (mod_disp or TODAY_DISP) + ' · <a href="/kontakt/">Kontakt aufnehmen</a></div>\n'
-        '        </div>\n'
-        '      </div>')
-
-
 def faq_html(faqs):
     """FAQ als Akkordeon (<details>), gleiches Markup wie auf der Startseite.
     Text bleibt zeichengleich mit dem FAQPage-Schema (faq_schema)."""
@@ -628,19 +576,11 @@ def faq_html(faqs):
     return '\n      <div class="faq-wrap">' + items + '\n      </div>'
 
 
-def cards_html(cards):
-    return "".join(
-        '\n        <div class="lp-card"><h3>{h}</h3><p>{t}</p></div>'.format(h=esc(h), t=esc(t))
-        for h, t in cards)
-
-
-def page(head_html, schema_blocks, main_html, places, services, extra_style="", slug=""):
-    """extra_style wird nur von Seiten genutzt, die eigene Bausteine mitbringen
-    (KI-Bereich). Alle uebrigen Seiten bleiben dadurch unveraendert.
-    Seiten in SHELL_SLUGS bekommen das schlanke STYLE, alle anderen noch STYLE_LEGACY."""
-    parts = [head_html, STYLE if slug in SHELL_SLUGS else STYLE_LEGACY]
-    if extra_style:
-        parts.append(extra_style)
+def page(head_html, schema_blocks, main_html, places, services, slug=""):
+    """Ganze Seite: <head> mit den gemeinsamen Prosa-Regeln (STYLE) und dem Schema, Icon-Sprite, Kopfzeile,
+    Inhalt, Fuss, Kontaktleiste. Seit Task 7 ohne seitenspezifischen <style> (KI_STYLE, NEW_STYLE und die
+    alte Huelle STYLE_LEGACY sind nach style.css gewandert bzw. entfallen)."""
+    parts = [head_html, STYLE]
     for s in schema_blocks:
         parts.append(schema_script(s))
     parts.append("</head>")
@@ -662,14 +602,10 @@ def page(head_html, schema_blocks, main_html, places, services, extra_style="", 
 #  Generator-Huelle (seit 10.10.2026, Website-Umbau Release B)                 #
 # --------------------------------------------------------------------------- #
 # Ein Aufbau fuer alle Generator-Seiten (Spec §6): Kopf (Krumen, H1, K4, Antwortsatz, Knoepfe,
-# Belegzeile, Beispiel-Chat) -> Abschnitte im Wechsel -> Stimmen -> Preise -> FAQ -> Abschluss K5
-# mit Autorzeile. Bausteine kommen nur aus style.css. SHELL_SLUGS schaltet Seite fuer Seite um
-# (Task 5: drei Kernseiten, Task 6: Orte und IT-Seiten, Task 7: Rest, danach entfaellt der Schalter).
-SHELL_SLUGS = ("managed-it-service", "it-betreuer-wechseln", "it-notdienst",
-               # Task 6: Ortsseiten und uebrige IT-Seiten
-               "it-service-grasbrunn", "it-service-vaterstetten", "it-service-baldham", "it-service-zorneding",
-               "it-service-haar", "it-service-putzbrunn", "microsoft-365-betreuung", "it-sicherheit-backup",
-               "netzwerk-wlan-firewall", "lizenzen", "e-rechnung", "digitalbonus-bayern")
+# Belegzeile, Beispiel-Chat oder Wege) -> Abschnitte im Wechsel -> Stimmen -> Preise -> FAQ -> Abschluss K5
+# mit Autorzeile. Bausteine kommen nur aus style.css. Umgestellt Seite fuer Seite (Task 5: drei Kernseiten,
+# Task 6: Orte und IT-Seiten, Task 7: KI-Bereich, Software, Websites, Ratgeber); seither gibt es keine
+# zweite Huelle mehr. Ratgeber-Artikel (kind "ratgeber") stehen nach dem Kopf in einer Lesespalte.
 # WhatsApp-Satz fuer Kopf und Abschluss einer Unterseite (Textblatt §4): die Seite ist das Merkmal
 WA_SEITE = "Hallo Andreas, ich komme über deine Seite „{nav}“."
 AUTHOR_ROLE = "Fachinformatiker für Systemintegration · über 20 Jahre IT"
@@ -679,6 +615,12 @@ H2_SPLIT_RE = re.compile(r"\s*<h2>(.*?)</h2>\s*", re.S)
 # Marke in einem extra-Abschnitt: Text davor links, danach rechts (<!--split--> 1,3 : 1; <!--split-wide-->
 # 1 : 1,35 mit breiterer rechter Spalte, wenn rechts Hinweis und Kasten stehen)
 SPLIT_RE = re.compile(r"<!--split(-wide)?-->")
+# Marke in einem extra-Abschnitt (Task 7): Text zwischen <!--more--> und <!--/more--> steht im HTML, ist aber
+# zugeklappt (<details class="more">, Baustein der Startseite). Fuer lange Abschnitte, deren Anfang reicht: KI-Hub
+# (Vorgabe Release B) und KI sicher einsetzen (sonst am Handy ueber 8.000 px, AK5). Kaesten mit Handlung
+# (Potenzialcheck, Website-Check) bleiben ausserhalb.
+MORE_RE = re.compile(r"<!--more-->(.*?)<!--/more-->", re.S)
+MORE_SUMMARY = "Mehr dazu"
 
 
 def section(content, alt=False, label="", title="", sid="", aside=False):
@@ -722,16 +664,21 @@ def page_head(s, crumbs):
     (.s-sub), Knoepfe Anrufen + WhatsApp (am Handy uebernimmt die Kontaktleiste), Belegzeile: zuerst
     die Google-Bewertungen mit Link zur Herkunft, dann ein Beleg der Seite (proof2: Symbol, Text) und
     optional ein dritter (proof3, gleiches Format).
-    Daneben optional der Beispiel-Chat, bei Hubs darunter die Wege zu den Unterseiten. Ohne Chat und
-    ohne Wege ab 1024 px ein Raster: H1 ueber beide Spalten, darunter links K4, rechts Antwortsatz,
-    Knoepfe und Belegzeile; die Reihenfolge im HTML bleibt dieselbe (erste 300 Zeichen, Screenreader)."""
+    Daneben optional der Beispiel-Chat oder bei Hubs die Wege zu den Unterseiten (nav.lp-paths), beides ab
+    1024 px rechts, darunter unter dem Kopf. Ohne Chat und ohne Wege ab 1024 px ein Raster: H1 ueber beide
+    Spalten, darunter links K4, rechts Antwortsatz, Knoepfe und Belegzeile; die Reihenfolge im HTML bleibt
+    dieselbe (erste 300 Zeichen, Screenreader).
+    Ratgeber (kind "hub" und "ratgeber", Task 7): kein K4, statt Antwortsatz der bisherige Vorspann ("lead"),
+    nur der Anruf-Knopf, keine Belegzeile; der Kopf bleibt einspaltig (ohne K4 gaebe es keine linke Spalte)."""
     hero = s.get("hero")
+    ratgeber = s.get("kind") in ("hub", "ratgeber")
     h1 = s["h1"]
     if s.get("h1_nowrap"):
         if s["h1_nowrap"] not in h1:
             raise SystemExit("page_head: h1_nowrap steht nicht in der H1 von " + s["slug"])
         h1 = h1.replace(s["h1_nowrap"], '<span class="nowrap">' + s["h1_nowrap"] + "</span>", 1)
-    h1 += " <em>" + hero["accent"] + "</em>" if hero else ""
+    # Akzentzeile der Hubs in eigener Zeile wie die H1 der Startseite (<br> <em>), Text der H1 bleibt gleich
+    h1 += "<br> <em>" + hero["accent"] + "</em>" if hero else ""
     # proof2: Beleg der Seite, proof3 (optional): weiterer Beleg dahinter, z. B. der Stundensatz
     proof2 = "".join('\n        <li><svg aria-hidden="true"><use href="#{i}"/></svg>{t}</li>'.format(
         i=s[key][0], t=eur_nbsp(s[key][1])) for key in ("proof2", "proof3") if s.get(key))
@@ -741,30 +688,34 @@ def page_head(s, crumbs):
                  '\n      </ul>\n    </nav>').format(l=esc(hero["paths_label"]), p="".join(
                      '\n        <li><a href="{h}"><span class="lp-path-t">{t}</span><span class="lp-path-d">{d}</span></a></li>'
                      .format(h=h, t=esc(t), d=esc(d)) for t, d, h in hero["paths"]))
-    two = not side   # kein Chat, keine Wege: Kopf selbst zweispaltig
-    head_a = """
-      <h1 class="page-h1">{h1}</h1>
-      <p class="page-k">{k}</p>""".format(h1=h1, k=esc(s["k"]))
+    two = not side and not ratgeber   # kein Chat, keine Wege: Kopf selbst zweispaltig
+    head_a = '\n      <h1 class="page-h1">{h1}</h1>'.format(h1=h1)
+    if not ratgeber:
+        head_a += '\n      <p class="page-k">{k}</p>'.format(k=esc(s["k"]))
+    wa_btn = "" if ratgeber else (
+        '\n        <a href="{wa}" target="_blank" rel="noopener" class="hc-wa"><svg width="18" height="18" '
+        'aria-hidden="true"><use href="#ico-wa"/></svg>WhatsApp</a>').format(wa=WA(WA_SEITE.format(nav=s["nav"])))
+    proofs = "" if ratgeber else (
+        '\n      <ul class="hc-proof">\n        <li><svg class="is-star" aria-hidden="true"><use href="#ico-star"/></svg>'
+        '<a href="/#bewertungen-herkunft" data-proof>5,0 bei {n} Google-Bewertungen</a></li>{proof2}\n      </ul>'
+    ).format(n=REVIEW_COUNT_GOOGLE, proof2=proof2)
     head_b = """
       <p class="s-sub measure">{answer}</p>
       <div class="hc-ctas">
-        <a href="tel:{tel}" class="btn-p hc-call"><svg width="18" height="18" aria-hidden="true"><use href="#ico-phone"/></svg>Anrufen <span class="hc-num">{phone}</span></a>
-        <a href="{wa}" target="_blank" rel="noopener" class="hc-wa"><svg width="18" height="18" aria-hidden="true"><use href="#ico-wa"/></svg>WhatsApp</a>
-      </div>
-      <ul class="hc-proof">
-        <li><svg class="is-star" aria-hidden="true"><use href="#ico-star"/></svg><a href="/#bewertungen-herkunft" data-proof>5,0 bei {n} Google-Bewertungen</a></li>{proof2}
-      </ul>""".format(answer=esc(s["answer"]), tel=PHONE, phone=PHONE_DISP,
-                      wa=WA(WA_SEITE.format(nav=s["nav"])), n=REVIEW_COUNT_GOOGLE, proof2=proof2)
+        <a href="tel:{tel}" class="btn-p hc-call"><svg width="18" height="18" aria-hidden="true"><use href="#ico-phone"/></svg>Anrufen <span class="hc-num">{phone}</span></a>{wa_btn}
+      </div>{proofs}""".format(answer=esc(s["lead"] if ratgeber else s["answer"]), tel=PHONE, phone=PHONE_DISP,
+                               wa_btn=wa_btn, proofs=proofs)
     if two:
         # H1 und K4 bleiben direkte Kinder (Rasterflaechen h1/kum), der Rest steht in .page-head-b (antwort)
         head_b = '\n      <div class="page-head-b">' + head_b.replace("\n", "\n  ") + '\n      </div>'
+    grid = " page-head-grid--chat" if s.get("chat") else (" page-head-grid--paths" if hero else "")
     return """<section class="sec sec--glow page-head">
   <div class="inner page-head-grid{grid}">
     <div class="page-head-copy{copy}">
       {crumbs}{a}{b}
     </div>{side}
   </div>
-</section>""".format(grid=" page-head-grid--chat" if s.get("chat") else "", copy=" page-head-copy--two" if two else "",
+</section>""".format(grid=grid, copy=" page-head-copy--two" if two else "",
                      crumbs=crumbs, a=head_a, b=head_b, side=side)
 
 
@@ -865,17 +816,17 @@ def split(left, right, wide=False):
         '\n    </div>\n    <div>' + right + '\n    </div>\n    </div>'
 
 
-def render_shell(s, places, services, head_schema=None):
-    """Leistungs- oder Ortsseite in der neuen Huelle. Kopf (<head>) und Schema wie bisher
-    (service_head_schema; Ortsseiten geben ihr eigenes Paar als head_schema mit), Inhalte aus denselben
-    Daten; neu sind k, answer, chat, voices (Textblatt) und die Darstellung: proof2 (zweiter Beleg im
-    Kopf), h1_nowrap, intro_price (Preis neben dem Einstieg), price_line (Zeile unter den Paketen),
-    row (zwei Abschnitte nebeneinander, auch der Stimmen-Abschnitt und tail_blocks), voices_h2 (eigene
-    Ueberschrift ueber den Stimmen), tail_blocks ((Titel, HTML) nach den Stimmen), "<!--split-->" bzw.
-    "<!--split-wide-->" in einem extra-Abschnitt (Text links, Rest rechts). Ein Vertrauenskasten erscheint nur mit eigenem
-    "trust" (ohne Preise neben dem Einstieg); der allgemeine TRUST_DEFAULT gilt nur in der alten Huelle."""
+def more_html(m):
+    """<!--more-->…<!--/more--> -> zugeklappter Teil (<details class="more">, Inhalt bleibt im HTML)."""
+    return ('<details class="more">\n        <summary>' + MORE_SUMMARY + '</summary>\n        '
+            + m.group(1).strip() + '\n      </details>')
+
+
+def content_blocks(s):
+    """Abschnitte zwischen Kopf und FAQ als (Titel, HTML), dazu die Titel mit seitlicher Ueberschrift.
+    Einstieg (intro, Karten), extra an seinen <h2>, Stimmen, tail_blocks, row, Preise; Darstellung siehe
+    render_shell."""
     slug = s["slug"]
-    h, schema = head_schema or service_head_schema(s)
     intro = s["intro"] if s.get("raw_intro") else esc(s["intro"])
     lead = prose(intro if intro.lstrip().startswith("<div") else "<p>" + intro + "</p>")
     trust_box = '\n    <div class="card-box"><p>' + s["trust"] + '</p></div>' if s.get("trust") else ""
@@ -887,6 +838,7 @@ def render_shell(s, places, services, head_schema=None):
     blocks = [(s.get("cards_h2", "Das steckt drin") if s.get("cards") else "",
                lead + (feat_rows(s["cards"]) if s.get("cards") else ""))]
     for title, body in extra_blocks(s.get("extra", "")):
+        body = MORE_RE.sub(more_html, body)
         mark = SPLIT_RE.search(body)
         if mark:
             body_html = split(prose(body[:mark.start()]), prose(body[mark.end():]), wide=bool(mark.group(1)))
@@ -919,10 +871,35 @@ def render_shell(s, places, services, head_schema=None):
         if s.get("price_line"):
             line = '\n    <p class="price-line"><strong>{}</strong> {}</p>'.format(
                 esc(s["price_line"][0]), eur_nbsp(s["price_line"][1]))
+        # prices_after (Satz unter den Preisen, z. B. Foerderhinweis) im Fliesstext-Stil (Task 7)
+        after = prose(s["prices_after"]) if s.get("prices_after") else ""
         blocks.append((s.get("prices_h2", "Pakete &amp; Preise"),
                        '\n    <p class="s-sub measure">' + s.get("prices_intro", "Transparente Monatspauschalen – "
                        "welches Paket passt, klären wir im kostenlosen Erstgespräch:") + '</p>'
-                       + prices_html(s) + line + s.get("prices_after", "") + trust_box))
+                       + prices_html(s) + line + after + trust_box))
+    return blocks, aside
+
+
+def render_shell(s, places, services, head_schema=None):
+    """Leistungs-, Orts-, KI- oder Ratgeberseite in der Huelle. Kopf (<head>) und Schema wie bisher
+    (service_head_schema; Ortsseiten geben ihr eigenes Paar als head_schema mit), Inhalte aus denselben
+    Daten; neu sind k, answer, chat, voices (Textblatt) und die Darstellung: proof2 (zweiter Beleg im
+    Kopf), h1_nowrap, intro_price (Preis neben dem Einstieg), price_line (Zeile unter den Paketen),
+    row (zwei Abschnitte nebeneinander, auch der Stimmen-Abschnitt und tail_blocks), voices_h2 (eigene
+    Ueberschrift ueber den Stimmen), tail_blocks ((Titel, HTML) nach den Stimmen), "<!--split-->" bzw.
+    "<!--split-wide-->" in einem extra-Abschnitt (Text links, Rest rechts), "<!--more-->…<!--/more-->"
+    (zugeklappter Teil, Task 7). Ein Vertrauenskasten erscheint nur mit eigenem "trust" (ohne Preise neben dem
+    Einstieg, mit Preisen unter ihnen); TRUST_DEFAULT nur, wo eine Seite ihn ausdruecklich fuehrt (KI-Seiten).
+    Ratgeber-Artikel (kind "ratgeber", Task 7): nach dem Kopf Kurzantwort und "extra" mit ihren H2 unveraendert
+    in einer Lesespalte (article.measure), danach FAQ und Abschluss."""
+    slug = s["slug"]
+    h, schema = head_schema or service_head_schema(s)
+    if s.get("kind") == "ratgeber":
+        blocks = [("", '\n    <article class="lp-content measure lp-article">\n      '
+                   + (s["intro"] + s.get("extra", "")).strip() + '\n    </article>')]
+        aside = {s.get("faq_h2", "Häufige Fragen")}
+    else:
+        blocks, aside = content_blocks(s)
     related = related_html(slug, services)
     blocks.append((s.get("faq_h2", "Häufige Fragen"), faq_html(s["faqs"]) + (prose(related) if related else "")))
     # Flaechen im Wechsel, der erste Abschnitt nach dem Kopf auf der zweiten Flaeche
@@ -1188,88 +1165,9 @@ POTENZIALCHECK_SCHEMA = {
                "description": "Kostenlos und unverbindlich, das schriftliche Ergebnis bleibt beim Kunden."},
 }
 
-# Zusatz-CSS ausschliesslich fuer die KI-Seiten. Wird ueber das Feld "extra_style"
-# eingehaengt, damit Orts- und uebrige Leistungsseiten unveraendert bleiben.
-KI_STYLE = '''  <style>
-    /* Bausteine nur fuer den KI-Bereich (via extra_style, damit die uebrigen Seiten unveraendert bleiben) */
-    .lp-wrap--hero { padding-top:0; }
-    .lp-hero { background:var(--bg2); border-bottom:1px solid var(--border); padding:clamp(2.5rem,7vw,5.5rem) 0 clamp(2.5rem,6vw,4.5rem); margin-bottom:clamp(2.5rem,6vw,4rem); position:relative; overflow:hidden; }
-    .lp-hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 55% 70% at 85% 15%, rgba(12,77,162,.28), transparent 70%); pointer-events:none; }
-    .lp-hero-grid { position:relative; display:grid; gap:clamp(2rem,5vw,4rem); align-items:center; }
-    @media (min-width:1024px) { .lp-hero-grid { grid-template-columns:minmax(0,1.35fr) minmax(0,1fr); } }
-    .lp-hero-h1 { font-family:var(--fh); font-size:clamp(2.1rem,5.2vw,3.6rem); font-weight:800; line-height:1.07; letter-spacing:-.035em; color:var(--text); margin-bottom:1.1rem; text-wrap:balance; }
-    .lp-hero-accent { display:block; color:var(--cyan); }
-    .lp-hero .lp-cta-row { margin-bottom:0; }
-    .lp-paths { background:var(--bg); border:1px solid var(--border); border-radius:14px; padding:.6rem; }
-    .lp-paths-h { font-family:var(--fh); font-size:1.1rem; font-weight:700; color:var(--text); padding:.8rem .9rem .5rem; }
-    .lp-paths ul { list-style:none; margin:0; padding:0; }
-    .lp-paths li + li { border-top:1px solid var(--border); }
-    .lp-paths a { display:block; padding:.95rem .9rem; border-radius:10px; text-decoration:none; transition:background .2s; }
-    .lp-paths a:hover { background:var(--bg3); }
-    .lp-paths a:focus-visible { outline:2px solid var(--cyan); outline-offset:2px; }
-    .lp-path-t { display:block; font-family:var(--fh); font-weight:700; font-size:1rem; color:var(--text); }
-    .lp-path-t::after { content:" →"; color:var(--cyan); transition:margin .2s; }
-    .lp-paths a:hover .lp-path-t::after { margin-left:.25rem; }
-    .lp-path-d { display:block; font-size:.85rem; color:var(--text2); line-height:1.55; margin-top:.25rem; }
-    .ki-case { background:var(--bg2); border:1px solid var(--border); border-radius:14px; padding:1.5rem 1.6rem; margin:1.1rem 0; }
-    .ki-case-tag { font-family:var(--fm); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--cyan); display:block; margin-bottom:.5rem; }
-    .ki-case h3 { font-family:var(--fh); font-size:1.05rem; font-weight:800; color:var(--text); margin:0 0 .6rem; letter-spacing:-.01em; }
-    .ki-case p { font-size:.9rem; color:var(--text2); line-height:1.75; margin:0 0 .7rem; }
-    .ki-case p:last-child { margin-bottom:0; }
-    .ki-case .ki-result { font-size:.86rem; color:var(--text); background:rgba(38,189,239,.07); border-radius:8px; padding:.7rem .9rem; }
-    .ki-check { background:var(--bg2); border:1px solid var(--cyan); border-radius:16px; padding:1.8rem; margin:2.2rem 0; box-shadow:0 8px 28px rgba(38,189,239,.10); }
-    .ki-check h3 { font-family:var(--fh); font-size:1.2rem; font-weight:800; color:var(--text); margin:0 0 .7rem; }
-    .ki-check p { font-size:.92rem; color:var(--text2); line-height:1.75; margin:0 0 1rem; }
-    .ki-check ul { list-style:none; margin:0 0 1.2rem; padding:0; }
-    .ki-check li { font-size:.9rem; color:var(--text2); line-height:1.6; padding:.35rem 0 .35rem 1.5rem; position:relative; }
-    .ki-check li::before { content:""; position:absolute; left:0; top:.85rem; width:7px; height:7px; border-radius:50%; background:var(--cyan); }
-    .ki-note { background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:1.3rem 1.5rem; margin:1.8rem 0; }
-    .ki-note strong { color:var(--text); }
-    .ki-note p { font-size:.88rem; color:var(--text2); line-height:1.75; margin:0 0 .7rem; }
-    .ki-note p:last-child { margin-bottom:0; }
-    .ki-tbl-wrap { overflow-x:auto; margin:1.4rem 0; }
-    .ki-tbl { width:100%; border-collapse:collapse; font-size:.86rem; min-width:520px; }
-    .ki-tbl th { font-family:var(--fh); font-size:.78rem; letter-spacing:.03em; text-transform:uppercase; color:var(--text3); text-align:left; padding:.7rem .9rem; border-bottom:1px solid var(--border); }
-    .ki-tbl td { padding:.85rem .9rem; border-bottom:1px solid var(--border); color:var(--text2); line-height:1.65; vertical-align:top; }
-    .ki-tbl td:first-child { color:var(--text); font-weight:600; white-space:nowrap; }
-    .ki-tbl tr:last-child td { border-bottom:none; }
-    @media (max-width:600px) {
-      .ki-tbl { min-width:0; }
-      .ki-tbl thead { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
-      .ki-tbl tbody, .ki-tbl tr, .ki-tbl td { display:block; width:100%; }
-      .ki-tbl tr { border-bottom:1px solid var(--border); padding:.75rem 0; }
-      .ki-tbl tr:last-child { border-bottom:none; }
-      .ki-tbl td { border-bottom:none; padding:.2rem 0; }
-      .ki-tbl td:first-child { white-space:normal; }
-      .ki-tbl td[data-label]::before { content:attr(data-label) ": "; color:var(--text); font-weight:600; }
-    }
-  </style>'''
-
-
-
-# Zusatz-CSS fuer die Seiten vom 07.10.2026 (Schritte, Checklisten, Kurzantwort
-# im Ratgeber). Wird zusammen mit KI_STYLE ueber "extra_style" eingehaengt, die uebrigen Seiten
-# bleiben unveraendert. Nummern nur dort, wo die Reihenfolge zaehlt (Ablauf, erste Minuten).
-NEW_STYLE = '''  <style>
-    .lp-steps { counter-reset:st; list-style:none; margin:1.2rem 0 1.8rem; padding:0; }
-    .lp-steps > li { counter-increment:st; position:relative; padding:.15rem 0 1.1rem 2.9rem; font-size:.93rem; color:var(--text2); line-height:1.75; }
-    .lp-steps > li::before { content:counter(st); position:absolute; left:0; top:.05rem; width:1.9rem; height:1.9rem; border-radius:50%; border:1px solid var(--cyan); color:var(--cyan); font-family:var(--fh); font-weight:700; font-size:.85rem; display:grid; place-items:center; }
-    .lp-steps > li + li::after { content:""; position:absolute; left:.95rem; top:-1.05rem; width:1px; height:1.05rem; background:var(--border); }
-    .lp-steps strong { color:var(--text); }
-    .lp-checklist { list-style:none; margin:1rem 0 1.4rem; padding:0; }
-    .lp-checklist li { position:relative; padding:.35rem 0 .35rem 1.9rem; font-size:.92rem; color:var(--text2); line-height:1.65; }
-    .lp-checklist li::before { content:""; position:absolute; left:.35rem; top:.62rem; width:.4rem; height:.75rem; border:solid var(--cyan); border-width:0 2px 2px 0; transform:rotate(45deg); }
-    .lp-checklist strong, .lp-dont strong { color:var(--text); }
-    .lp-dont { list-style:none; margin:1rem 0 1.4rem; padding:0; }
-    .lp-dont li { position:relative; padding:.35rem 0 .35rem 1.9rem; font-size:.92rem; color:var(--text2); line-height:1.65; }
-    .lp-dont li::before, .lp-dont li::after { content:""; position:absolute; left:.2rem; top:1rem; width:.85rem; height:2px; border-radius:1px; background:#e8806f; transform:rotate(45deg); }
-    .lp-dont li::after { transform:rotate(-45deg); }
-    .lp-answer { background:var(--bg2); border:1px solid var(--border); border-radius:14px; padding:1.3rem 1.5rem; margin:1.6rem 0 2rem; }
-    .lp-answer p { margin:0; color:var(--text); font-size:.98rem; line-height:1.75; }
-    .lp-answer p + p { margin-top:.7rem; color:var(--text2); font-size:.92rem; }
-    .lp-content > h3 { font-family:var(--fh); font-size:1.08rem; font-weight:700; color:var(--text); margin:1.8rem 0 .6rem; }
-  </style>'''
-NEW_PAGE_STYLE = KI_STYLE + "\n" + NEW_STYLE
+# KI_STYLE und NEW_STYLE (bis Task 7 per "extra_style" im <style> der KI-, Software-, Websites- und
+# Ratgeberseiten) stehen seit Release B in assets/css/style.css: .ki-case, .ki-check, .ki-note, .ki-tbl,
+# .lp-steps, .lp-checklist, .lp-dont, .lp-answer, .lp-content > h3, .lp-paths (Spec AK1).
 KI_START_TEXT = (
     '<p>Das Paket KI-Start kostet je nach Größe des Betriebs ab ' + eur(PRICES["ki_start"]) + ' netto. '
     'Microsoft 365 und Copilot bekommst du auf Wunsch über mich, ChatGPT- und Claude-Teamkonten schließt ihr '
@@ -1293,8 +1191,6 @@ def offer_from(name, min_price, desc, monthly=False, approx=False):
 
 
 EINMALIG = "einmalig, zzgl. MwSt."
-RATGEBER_CTA = [("tel:+491782584438", "Anrufen · 0178 258 44 38", "btn-p"),
-                ("/fernwartung/", "Fernwartung starten", "btn-g")]
 
 TRUST_DEFAULT = ("<strong>Einheitlicher Stundensatz von 110 € netto, Abrechnung im 15-Minuten-Takt, keine "
                  "versteckten Kosten.</strong> Kein klassischer Kundendienst, sondern ein fester persönlicher "
@@ -1600,14 +1496,22 @@ SERVICES = [
                 ("Software nach Maß", "Kleine Anwendungen für Abläufe, die heute in Excel oder auf Zetteln laufen.", "/software-nach-mass/"),
             ],
         },
-        "label": "KI in der Praxis", "service_type": "KI-Beratung und Anwendungsentwicklung für KMU",
-        "published": KI_PUB_DATE, "modified": NEW_DATE, "modified_disp": NEW_DATE_DISP,
-        "extra_style": NEW_PAGE_STYLE,
+        "service_type": "KI-Beratung und Anwendungsentwicklung für KMU",
+        # 10.10.2026 (Task 7): neuer Kopf mit K4 und Antwortsatz -> neues Datum
+        "published": KI_PUB_DATE, "modified": "2026-10-10", "modified_disp": "10. Oktober 2026",
         "cta2_href": "/ki-automatisierung/", "cta2_text": "Abläufe automatisieren",
         "extra_schema": [POTENZIALCHECK_SCHEMA],
         "desc": ("KI im Betrieb: Abläufe automatisieren, Auswertungen aus vorhandenen Daten, "
                  "datenschutzgerecht umgesetzt. Kostenloser Potenzialcheck im Raum München Ost."),
-        "sub": "Keine Folien über Künstliche Intelligenz, sondern Anwendungen, die bei dir laufen. Gebaut von jemandem, der deine IT ohnehin betreut.",
+        # Kopf der Huelle (Textblatt §1, freigegeben 10.10.2026; ohne Stimme, Andreas 10.10.2026): K4, Antwortsatz;
+        # Beleg aus dem Potenzialcheck-Kasten der Seite; Vertrauenstext wie bisher (TRUST_DEFAULT) neben dem Einstieg
+        "k": ("Ich baue KI dort ein, wo bei euch jede Woche jemand Daten abtippt oder Aufnahmen durchklickt, und "
+              "betreue es danach weiter."),
+        "answer": ("KI im Betrieb heißt bei Grundke IT-Service in Grasbrunn: Abläufe automatisieren, vorhandene Daten "
+                   "auswerten und KI-Werkzeuge datenschutzgerecht einführen, für kleine und mittlere Betriebe im "
+                   "Münchner Osten. Der Einstieg ist ein kostenloser Potenzialcheck."),
+        "proof2": ("ico-search-check", "Kostenloser KI-Potenzialcheck, Ergebnis schriftlich"),
+        "trust": TRUST_DEFAULT,
         "intro": ("Wenn ein Betrieb heute über KI spricht, geht es meist um zwei Dinge: dass sich "
                   "alles ändern wird und dass man vorsichtig sein muss. Beides hilft nicht weiter, "
                   "solange am Montag wieder jemand Rechnungsdaten abtippt oder Kameraaufnahmen "
@@ -1618,12 +1522,12 @@ SERVICES = [
                   "anbiete, benutze ich selbst."),
         "raw_intro": True,
         "cards": [
-            ("Abläufe automatisieren", "Wiederkehrende Handarbeit am Rechner: Daten übertragen, Listen erzeugen, Rechnungen bauen, Berichte zusammenstellen."),
-            ("Auswertungen aus vorhandenen Daten", "Was in Kamera, Kasse, Zeiterfassung oder Warenwirtschaft schon steckt, wird sichtbar gemacht."),
-            ("Systeme verbinden", "Zwei Programme, die nicht miteinander reden, koppele ich über ihre Dateiformate oder ihre Schnittstelle."),
-            ("KI-Werkzeuge einführen", "Welches Werkzeug für welche Aufgabe taugt, wie es eingerichtet wird und was die Mitarbeiter darüber wissen müssen."),
-            ("Datenschutz vorher klären", "Lokales Modell, EU-Rechenzentrum oder Anbieter mit Auftragsverarbeitungsvertrag. Die Entscheidung fällt vor der Umsetzung."),
-            ("Betrieb und Pflege", "Eine gebaute Anwendung braucht jemanden, der sie weiter betreut. Ich bleibe der Ansprechpartner."),
+            ("Abläufe automatisieren", "Wiederkehrende Handarbeit am Rechner: Daten übertragen, Listen erzeugen, Rechnungen bauen, Berichte zusammenstellen.", "ico-tools"),
+            ("Auswertungen aus vorhandenen Daten", "Was in Kamera, Kasse, Zeiterfassung oder Warenwirtschaft schon steckt, wird sichtbar gemacht.", "ico-search-check"),
+            ("Systeme verbinden", "Zwei Programme, die nicht miteinander reden, koppele ich über ihre Dateiformate oder ihre Schnittstelle.", "ico-network"),
+            ("KI-Werkzeuge einführen", "Welches Werkzeug für welche Aufgabe taugt, wie es eingerichtet wird und was die Mitarbeiter darüber wissen müssen.", "ico-monitor"),
+            ("Datenschutz vorher klären", "Lokales Modell, EU-Rechenzentrum oder Anbieter mit Auftragsverarbeitungsvertrag. Die Entscheidung fällt vor der Umsetzung.", "ico-shield"),
+            ("Betrieb und Pflege", "Eine gebaute Anwendung braucht jemanden, der sie weiter betreut. Ich bleibe der Ansprechpartner.", "ico-user-check"),
         ],
         "extra": """
       <h2>KI soll bei euch niemanden ersetzen</h2>
@@ -1633,15 +1537,19 @@ SERVICES = [
       <h2>So sieht das im Alltag aus</h2>
       <h3>Doku nach dem Einsatz per Sprache</h3>
       <p>Auf dem Rückweg von der Baustelle sind die Hände voll. Im Firmen-KI-Konto einen neuen Chat öffnen, Kunde und Vorhaben nennen, dann frei erzählen: was gemacht wurde, welches Material, was abgestimmt ist, was noch offen ist und wie lange es gedauert hat. Am Ende fasst die KI zusammen, und der Text geht per Kopieren und Einfügen in Buchhaltung oder Auftragsverwaltung. Voraussetzung ist ein bezahltes Firmenkonto mit Vertrag; unterwegs nur mit dem Handy in der Halterung und per Sprachsteuerung (§ 23 Abs. 1a StVO) oder kurz auf dem Parkplatz.</p>
+      <!--more-->
       <h3>Programme reden miteinander</h3>
       <p>Lexware Office und viele Auftrags- und Rechnungsprogramme haben Schnittstellen. Kundendaten, Aufträge, Material und Angebotsentwürfe lassen sich darüber anlegen, abfragen und abgleichen, statt alles in der Oberfläche abzutippen. Mein eigener Betrieb legt Kunden und Angebotsentwürfe auf diesem Weg direkt in Lexware an.</p>
       <h3>Warnungen, die jemand liest</h3>
       <p>Meldungen der Datensicherung, Fehlermails von Geräten, volle Postfächer: Eine KI liest sie, ordnet sie ein und schickt nur das Wichtige an die richtige Person, mit einem Satz, was zu tun ist.</p>
       <p>Dazu kommen Auswertungen und Monatsberichte, Zusammenfassungen langer Mails und Dokumente, Entwürfe für Angebote und Antworten und die Abstimmung von Terminen.</p>
+      <!--/more-->
 
       <h2>Zwei Beispiele aus der Praxis</h2>
       <p>Das erste ist ein typischer Fall für Videoauswertung, das zweite läuft in meinem eigenen Betrieb.</p>
 
+      <!--more-->
+      <div class="card-grid">
       <div class="ki-case">
         <span class="ki-case-tag">Videoüberwachung mit KI</span>
         <h3>Eine Hofzufahrt, die sich selbst protokolliert</h3>
@@ -1656,6 +1564,8 @@ SERVICES = [
         <p>Meine Kundenverwaltung, mein Monitoring, meine Auswertungen und meine Rechnungsläufe laufen über Anwendungen, die ich selbst gebaut habe und täglich benutze. Dazu kommen Werkzeuge, die aus einer konkreten Not entstanden sind: eine Prüfung von Websites auf technische und rechtliche Mängel, ein Scanner für Netzwerkumgebungen, ein Auswertungswerkzeug für die Sichtbarkeit in Suchmaschinen.</p>
         <p class="ki-result">Der Punkt daran ist nicht die Liste. Der Punkt ist, dass ich im Erstgespräch aus eigener Erfahrung sagen kann, was funktioniert, was Zeit frisst und was sich nicht lohnt.</p>
       </div>
+      </div>
+      <!--/more-->
 
       <div class="ki-check">
         <h3>Kostenloser KI-Potenzialcheck</h3>
@@ -1666,7 +1576,7 @@ SERVICES = [
           <li>Du bekommst es schriftlich, mit Aufwand, Nutzen und den rechtlichen Punkten</li>
           <li>Das Papier gehört dir, auch wenn wir nicht weiterarbeiten</li>
         </ul>
-        <div class="lp-cta-row" style="margin:0;">
+        <div class="card-cta">
           <a href="tel:+491782584438" class="btn-p">Potenzialcheck vereinbaren</a>
           <a href="/kontakt/" class="btn-g">Lieber schreiben</a>
         </div>
@@ -1722,13 +1632,18 @@ SERVICES = [
         "slug": "ki-automatisierung", "nav": "Abläufe automatisieren",
         "title": "KI-Automatisierung: Schnittstellen & Berichte | Grundke IT",
         "h1": "Abläufe automatisieren: Schnittstellen, Dokumente und Berichte",
-        "label": "Weniger Handarbeit", "service_type": "Prozessautomatisierung und Anwendungsentwicklung für KMU",
-        "published": KI_PUB_DATE, "modified": NEW_DATE, "modified_disp": NEW_DATE_DISP,
-        "extra_style": KI_STYLE,
+        "service_type": "Prozessautomatisierung und Anwendungsentwicklung für KMU",
+        "published": KI_PUB_DATE, "modified": "2026-10-10", "modified_disp": "10. Oktober 2026",
         "cta2_href": "/ki-fuer-kmu/", "cta2_text": "Überblick KI im Betrieb",
         "desc": ("Schnittstellen zwischen Programmen, Dokumente automatisch auslesen, Berichte ohne "
                  "Excel-Bastelei: Prozesse mit KI automatisieren für kleine Betriebe."),
-        "sub": "Alles, was jeden Monat gleich abläuft und trotzdem jemand von Hand macht, lässt sich meistens automatisieren.",
+        # Kopf der Huelle (Textblatt §1, Task 7); Beleg aus der FAQ „Was kostet eine Automatisierung?“
+        "k": "Ich verbinde eure Programme, damit Daten nicht mehr von Hand von einem ins andere wandern.",
+        "answer": ("Als Grundke IT-Service aus Grasbrunn automatisiere ich für Betriebe im Münchner Osten, was "
+                   "regelmäßig gleich abläuft und an einer Datei hängt: Exporte, Listen, Rechnungen, Berichte. Zum "
+                   "Festpreis, und KI nur dort, wo eine feste Regel nicht reicht."),
+        "proof2": ("ico-check", "Festpreis, bevor etwas gebaut wird"),
+        "trust": TRUST_DEFAULT,
         "intro": ("In fast jedem Betrieb gibt es eine Stelle, an der Daten von Hand von einem System "
                   "ins andere wandern. Jemand exportiert eine Liste, sortiert sie, tippt sie woanders "
                   "wieder ein. Das dauert, dabei passieren Fehler, und im nächsten Monat geht es von "
@@ -1739,12 +1654,12 @@ SERVICES = [
                   "reicht, bleibt es bei der Regel. Das ist billiger und zuverlässiger."),
         "raw_intro": True,
         "cards": [
-            ("E-Rechnungen aus vorhandenen Daten", "Aus CSV-Exporten, Listen oder einem Vorsystem entstehen Rechnungen als XRechnung oder ZUGFeRD."),
-            ("Schnittstellen zwischen Programmen", "Warenwirtschaft, Zeiterfassung, Buchhaltung, Kasse. Was Daten exportieren kann, lässt sich koppeln."),
-            ("Dokumente auslesen", "Lieferscheine, Eingangsrechnungen, Formulare: Inhalte werden erkannt und landen strukturiert in der Datenbank."),
-            ("Auswertungen und Berichte", "Zahlen, die heute jemand am Monatsende in Excel zusammensucht, entstehen automatisch und immer gleich."),
-            ("Wiederkehrende Läufe", "Nächtliche Abgleiche, Erinnerungen, Prüfungen, Datenübernahmen. Einmal eingerichtet, läuft es weiter."),
-            ("Meldung statt Nachsehen", "Wenn etwas schiefgeht, meldet sich die Anwendung von selbst. Per E-Mail oder Nachricht aufs Handy."),
+            ("E-Rechnungen aus vorhandenen Daten", "Aus CSV-Exporten, Listen oder einem Vorsystem entstehen Rechnungen als XRechnung oder ZUGFeRD.", "ico-file-text"),
+            ("Schnittstellen zwischen Programmen", "Warenwirtschaft, Zeiterfassung, Buchhaltung, Kasse. Was Daten exportieren kann, lässt sich koppeln.", "ico-network"),
+            ("Dokumente auslesen", "Lieferscheine, Eingangsrechnungen, Formulare: Inhalte werden erkannt und landen strukturiert in der Datenbank.", "ico-search-check"),
+            ("Auswertungen und Berichte", "Zahlen, die heute jemand am Monatsende in Excel zusammensucht, entstehen automatisch und immer gleich.", "ico-list"),
+            ("Wiederkehrende Läufe", "Nächtliche Abgleiche, Erinnerungen, Prüfungen, Datenübernahmen. Einmal eingerichtet, läuft es weiter.", "ico-clock"),
+            ("Meldung statt Nachsehen", "Wenn etwas schiefgeht, meldet sich die Anwendung von selbst. Per E-Mail oder Nachricht aufs Handy.", "ico-mail"),
         ],
         "extra": """
       <h2>Sonderfall E-Rechnung</h2>
@@ -1752,17 +1667,17 @@ SERVICES = [
 
       <h2>Wie so ein Projekt abläuft</h2>
       <p>Am Anfang steht kein Angebot, sondern ein Blick auf den Ablauf, um den es geht. Meist zeigt sich schon dabei, ob die Sache klein oder groß ist.</p>
-      <div class="lp-grid">
-        <div class="lp-card"><h3>1. Ablauf ansehen</h3><p>Wir gehen den Weg der Daten einmal gemeinsam durch, so wie er heute läuft. Mit den echten Dateien, nicht mit einem Beispiel.</p></div>
-        <div class="lp-card"><h3>2. Aufwand schätzen</h3><p>Du bekommst eine Einschätzung, wie lange die Umsetzung dauert und wie viel Zeit sie im Monat spart. Beides schriftlich.</p></div>
-        <div class="lp-card"><h3>3. Klein anfangen</h3><p>Erst läuft ein Teilstück, das nachweisbar funktioniert. Danach wird erweitert. Kein Projekt, das ein halbes Jahr im Dunkeln läuft.</p></div>
-        <div class="lp-card"><h3>4. Übergabe und Betreuung</h3><p>Die Anwendung wird dokumentiert und läuft bei dir. Ich bleibe der Ansprechpartner, wenn sich etwas ändert.</p></div>
+      <div class="card-grid card-grid--4">
+        <div class="card"><h3>1. Ablauf ansehen</h3><p>Wir gehen den Weg der Daten einmal gemeinsam durch, so wie er heute läuft. Mit den echten Dateien, nicht mit einem Beispiel.</p></div>
+        <div class="card"><h3>2. Aufwand schätzen</h3><p>Du bekommst eine Einschätzung, wie lange die Umsetzung dauert und wie viel Zeit sie im Monat spart. Beides schriftlich.</p></div>
+        <div class="card"><h3>3. Klein anfangen</h3><p>Erst läuft ein Teilstück, das nachweisbar funktioniert. Danach wird erweitert. Kein Projekt, das ein halbes Jahr im Dunkeln läuft.</p></div>
+        <div class="card"><h3>4. Übergabe und Betreuung</h3><p>Die Anwendung wird dokumentiert und läuft bei dir. Ich bleibe der Ansprechpartner, wenn sich etwas ändert.</p></div>
       </div>
 
       <div class="ki-check">
         <h3>Kostenloser KI-Potenzialcheck</h3>
         <p>Wenn du nicht sicher bist, ob sich bei dir etwas lohnt: 60 bis 90 Minuten, wir gehen deine Abläufe durch, danach bekommst du schriftlich, was sich automatisieren lässt, was es kostet und was es bringt. Kostenlos und ohne Verpflichtung.</p>
-        <div class="lp-cta-row" style="margin:0;">
+        <div class="card-cta">
           <a href="tel:+491782584438" class="btn-p">Potenzialcheck vereinbaren</a>
           <a href="/kontakt/" class="btn-g">Lieber schreiben</a>
         </div>
@@ -1797,13 +1712,20 @@ SERVICES = [
         "slug": "ki-videoanalyse", "nav": "Videoanalyse & Auswertung",
         "title": "Videoüberwachung mit KI: Fahrzeuge & Kennzeichen | Grundke IT",
         "h1": "Videoanalyse und Auswertung – Kameradaten nutzbar machen",
-        "label": "Kamera plus Auswertung", "service_type": "KI-gestützte Videoanalyse und Auswertung für Unternehmen",
-        "published": KI_PUB_DATE, "modified": NEW_DATE, "modified_disp": NEW_DATE_DISP,
-        "extra_style": KI_STYLE,
+        "service_type": "KI-gestützte Videoanalyse und Auswertung für Unternehmen",
+        "published": KI_PUB_DATE, "modified": "2026-10-10", "modified_disp": "10. Oktober 2026",
         "cta2_href": "/netzwerk-wlan-firewall/", "cta2_text": "Netzwerk & Kameratechnik",
         "desc": ("Videoüberwachung mit KI: Fahrzeuge und Kennzeichen erkennen, Vorgänge zählen, Kennzahlen "
                  "darstellen. Auf vorhandenen UniFi-Anlagen, Verarbeitung im Haus."),
-        "sub": "Eine Kamera zeichnet auf. Ausgewertet wird sie selten, weil niemand die Zeit hat, Aufnahmen durchzusehen.",
+        # Kopf der Huelle (Textblatt §1, Task 7); Beleg aus Hinweis und Karte der Seite (keine Gesichtserkennung,
+        # Verarbeitung im Haus)
+        "k": ("Ich setze auf eure vorhandene Kameraanlage eine Auswertung, die Fahrzeuge erkennt, Vorgänge zählt und "
+              "Auffälligkeiten meldet."),
+        "answer": ("Als Grundke IT-Service aus Grasbrunn richte ich für Betriebe im Münchner Osten eine Videoanalyse "
+                   "auf vorhandenen Kameras ein, meist UniFi Protect: Fahrzeuge und Vorgänge werden gezählt, "
+                   "Kennzeichen nur mit klarem Zweck gelesen, und die Aufnahmen bleiben im Haus."),
+        "proof2": ("ico-shield", "Ohne Gesichtserkennung, Verarbeitung im Haus"),
+        "trust": TRUST_DEFAULT,
         "intro": ("Die meisten Betriebe haben Kameras, und fast alle benutzen sie erst, wenn etwas "
                   "passiert ist. Dann sitzt jemand eine Stunde vor der Zeitleiste und sucht. "
                   "<strong>Dabei steckt in diesen Aufnahmen eine Information, die sich automatisch "
@@ -1814,12 +1736,12 @@ SERVICES = [
                   "Haus dabei nicht."),
         "raw_intro": True,
         "cards": [
-            ("Fahrzeuge und Kennzeichen erkennen", "Fahrzeuge, Container, Maschinen, Paletten. Wo es einen klaren Zweck gibt, werden auch Kennzeichen gelesen, etwa um bekannte Fahrzeuge von fremden zu unterscheiden."),
-            ("Vorgänge zählen", "Zufahrten, Anlieferungen, Durchgänge, Standzeiten. Mit Zeitstempel und ohne dass jemand mitschreibt."),
-            ("Protokoll in der Datenbank", "Jedes Ereignis wird gespeichert und bleibt auswertbar, auch wenn die Aufnahme längst gelöscht ist."),
-            ("Kennzahlen auf einen Blick", "Eine Oberfläche zeigt Verläufe, Summen und Auffälligkeiten. Im Browser, auch vom Handy aus."),
-            ("Meldung bei Auffälligkeiten", "Bewegung außerhalb der Betriebszeit oder ungewöhnliche Häufungen melden sich von selbst."),
-            ("Verarbeitung im Haus", "Erkennung und Speicherung laufen auf eigener Hardware im Netzwerk, nicht bei einem Clouddienst."),
+            ("Fahrzeuge und Kennzeichen erkennen", "Fahrzeuge, Container, Maschinen, Paletten. Wo es einen klaren Zweck gibt, werden auch Kennzeichen gelesen, etwa um bekannte Fahrzeuge von fremden zu unterscheiden.", "ico-search-check"),
+            ("Vorgänge zählen", "Zufahrten, Anlieferungen, Durchgänge, Standzeiten. Mit Zeitstempel und ohne dass jemand mitschreibt.", "ico-list"),
+            ("Protokoll in der Datenbank", "Jedes Ereignis wird gespeichert und bleibt auswertbar, auch wenn die Aufnahme längst gelöscht ist.", "ico-file-text"),
+            ("Kennzahlen auf einen Blick", "Eine Oberfläche zeigt Verläufe, Summen und Auffälligkeiten. Im Browser, auch vom Handy aus.", "ico-monitor"),
+            ("Meldung bei Auffälligkeiten", "Bewegung außerhalb der Betriebszeit oder ungewöhnliche Häufungen melden sich von selbst.", "ico-mail"),
+            ("Verarbeitung im Haus", "Erkennung und Speicherung laufen auf eigener Hardware im Netzwerk, nicht bei einem Clouddienst.", "ico-shield"),
         ],
         "extra": """
       <h2>Was dabei erlaubt ist und was nicht</h2>
@@ -1832,17 +1754,17 @@ SERVICES = [
       </div>
 
       <h2>Typische Fragen, die sich damit beantworten lassen</h2>
-      <div class="lp-grid">
-        <div class="lp-card"><h3>Wie viel ist wirklich los?</h3><p>Zufahrten, Anlieferungen und Abholungen pro Tag, Woche und Monat. Mit Tagesverlauf statt Bauchgefühl.</p></div>
-        <div class="lp-card"><h3>Wie lange steht etwas?</h3><p>Standzeiten von Fahrzeugen oder Containern, inklusive Auffälligkeiten nach oben.</p></div>
-        <div class="lp-card"><h3>War nachts jemand da?</h3><p>Bewegung außerhalb der Betriebszeiten wird erkannt und gemeldet, ohne dass jemand aufbleibt.</p></div>
-        <div class="lp-card"><h3>Stimmt die Dokumentation?</h3><p>Erfasste Vorgänge lassen sich gegen Lieferscheine oder Aufträge halten, wenn etwas unklar ist.</p></div>
+      <div class="card-grid card-grid--4">
+        <div class="card"><h3>Wie viel ist wirklich los?</h3><p>Zufahrten, Anlieferungen und Abholungen pro Tag, Woche und Monat. Mit Tagesverlauf statt Bauchgefühl.</p></div>
+        <div class="card"><h3>Wie lange steht etwas?</h3><p>Standzeiten von Fahrzeugen oder Containern, inklusive Auffälligkeiten nach oben.</p></div>
+        <div class="card"><h3>War nachts jemand da?</h3><p>Bewegung außerhalb der Betriebszeiten wird erkannt und gemeldet, ohne dass jemand aufbleibt.</p></div>
+        <div class="card"><h3>Stimmt die Dokumentation?</h3><p>Erfasste Vorgänge lassen sich gegen Lieferscheine oder Aufträge halten, wenn etwas unklar ist.</p></div>
       </div>
 
       <div class="ki-check">
         <h3>Erst ansehen, dann entscheiden</h3>
         <p>Ob sich eine Auswertung lohnt, hängt an der Anlage und an der Frage, die du beantwortet haben willst. Beim kostenlosen Potenzialcheck sehe ich mir die vorhandenen Kameras an und sage dir, was damit geht und was nicht. Ist die Anlage dafür nicht geeignet, erfährst du das an dem Tag und nicht nach dem ersten Rechnungsposten.</p>
-        <div class="lp-cta-row" style="margin:0;">
+        <div class="card-cta">
           <a href="tel:+491782584438" class="btn-p">Anlage ansehen lassen</a>
           <a href="/kontakt/" class="btn-g">Lieber schreiben</a>
         </div>
@@ -1885,16 +1807,24 @@ SERVICES = [
         "slug": "ki-dsgvo", "nav": "KI sicher einsetzen",
         "title": "KI sicher einsetzen: ChatGPT, Copilot & DSGVO | Grundke IT",
         "h1": "KI sicher einsetzen: Verträge, Regeln und Schulung für den Betrieb",
-        "label": "Datenschutzgerecht eingesetzt", "service_type": "Einführung von KI im Unternehmen, datenschutzgerecht umgesetzt",
-        "published": KI_PUB_DATE, "modified": NEW_DATE, "modified_disp": NEW_DATE_DISP,
-        "extra_style": NEW_PAGE_STYLE,
+        "service_type": "Einführung von KI im Unternehmen, datenschutzgerecht umgesetzt",
+        "published": KI_PUB_DATE, "modified": "2026-10-10", "modified_disp": "10. Oktober 2026",
         "cta2_href": "/schulung/", "cta2_text": "Schulung für dein Team",
         "offers": ([offer_from("KI-Start", PRICES["ki_start"],
                                "Bestandsaufnahme, Werkzeug mit Vertrag, Leitplanken, Nutzungsrichtlinie, Schulung "
                                "und erste Anwendung, einmalig netto.")] if SHOW_FROM_PRICES else []),
         "desc": ("ChatGPT, Copilot & Co. datenschutzgerecht im Betrieb: Verträge, Nutzungsrichtlinie und Schulung "
                  "als Maßnahme zur KI-Kompetenz (Art. 4 KI-VO). Paket KI-Start."),
-        "sub": "Viele lassen die Finger von KI, weil sie Datenschutz und Haftung nicht durchschauen. Die Hürde nehmen wir gemeinsam, danach nutzt ihr KI sauber und mit gutem Gewissen.",
+        # Kopf der Huelle (Textblatt §1, Task 7); Beleg = Preis des Pakets KI-Start (KI_START_TEXT, FAQ), ohne
+        # Projektpreise der Stundensatz wie in der FAQ „Was kostet die Einführung?“
+        "k": ("Ich lege mit euch fest, welche KI-Werkzeuge erlaubt sind und welche Daten hineindürfen, in einer "
+              "kurzen, verständlichen Richtlinie."),
+        "answer": ("Als Grundke IT-Service aus Grasbrunn führe ich KI in Betrieben im Münchner Osten datenschutzgerecht "
+                   "ein: geschäftlicher Zugang mit Auftragsverarbeitungsvertrag, Nutzungsrichtlinie und Schulung als "
+                   "Maßnahme zur KI-Kompetenz nach Artikel 4 der KI-Verordnung, als Paket KI-Start zum Festpreis."),
+        "proof2": (("ico-check", "Paket KI-Start ab " + eur(PRICES["ki_start"]) + " netto")
+                   if SHOW_FROM_PRICES else PROOF_ADHOC),
+        "trust": TRUST_DEFAULT,
         "intro": ("Das häufigste Problem beim KI-Einsatz im Betrieb ist nicht die Technik. Es ist der "
                   "Mitarbeiter, der eine Kundenliste in ein kostenloses Chatfenster kopiert, weil es "
                   "schneller geht. <strong>Damit liegen personenbezogene Daten bei einem Anbieter, "
@@ -1905,16 +1835,17 @@ SERVICES = [
                   "jemand liest."),
         "raw_intro": True,
         "cards": [
-            ("Wo das Modell läuft", "Eigene Hardware, EU-Rechenzentrum oder Anbieter mit Vertrag. Für jede Aufgabe die passende Stufe."),
-            ("Auftragsverarbeitungsvertrag", "Welcher Anbieter einen anbietet, was darin stehen muss und wo die Daten tatsächlich liegen."),
-            ("Nutzungsrichtlinie", "Eine verständliche Seite für die Belegschaft: erlaubte Werkzeuge, erlaubte Daten, Ansprechpartner."),
-            ("Schulung der Mitarbeiter", "Artikel 4 der KI-Verordnung verlangt Maßnahmen, die die KI-Kompetenz im Unternehmen fördern."),
-            ("Lokale KI-Server einrichten", "Ein Sprachmodell auf einem eigenen Server im Betrieb, das ohne Internetverbindung arbeitet. Für sensible Daten der sauberste Weg."),
-            ("Bestandsaufnahme", "Welche KI-Werkzeuge im Betrieb bereits benutzt werden, weiß meist niemand. Das lässt sich klären."),
+            ("Wo das Modell läuft", "Eigene Hardware, EU-Rechenzentrum oder Anbieter mit Vertrag. Für jede Aufgabe die passende Stufe.", "ico-cloud"),
+            ("Auftragsverarbeitungsvertrag", "Welcher Anbieter einen anbietet, was darin stehen muss und wo die Daten tatsächlich liegen.", "ico-file-text"),
+            ("Nutzungsrichtlinie", "Eine verständliche Seite für die Belegschaft: erlaubte Werkzeuge, erlaubte Daten, Ansprechpartner.", "ico-list"),
+            ("Schulung der Mitarbeiter", "Artikel 4 der KI-Verordnung verlangt Maßnahmen, die die KI-Kompetenz im Unternehmen fördern.", "ico-user-check"),
+            ("Lokale KI-Server einrichten", "Ein Sprachmodell auf einem eigenen Server im Betrieb, das ohne Internetverbindung arbeitet. Für sensible Daten der sauberste Weg.", "ico-monitor"),
+            ("Bestandsaufnahme", "Welche KI-Werkzeuge im Betrieb bereits benutzt werden, weiß meist niemand. Das lässt sich klären.", "ico-search-check"),
         ],
         "extra": """
       <h2>KI-Start: die Hürde nehmen wir gemeinsam</h2>
       <p>Viele Inhaber lassen die Finger von KI, während im selben Betrieb vielleicht schon jemand Kundendaten in einen privaten ChatGPT-Zugang tippt. Das Risiko verschwindet nicht, indem man KI verbietet, sondern indem man sie ordentlich einführt. Das Paket KI-Start hat sieben Schritte:</p>
+      <!--more-->
       <ol class="lp-steps">
         <li><strong>Bestandsaufnahme:</strong> Wer nutzt heute schon welche KI, mit welchen Daten und über welche Konten?</li>
         <li><strong>Werkzeug mit Vertrag:</strong> eine bezahlte Business-Version mit Auftragsverarbeitungsvertrag und klaren Nutzungsbedingungen, etwa Microsoft 365 Copilot, ChatGPT Business oder Claude Team, möglichst mit Verarbeitung in der EU. Oder eine lokale KI im Haus, wenn die Daten den Betrieb nicht verlassen sollen.</li>
@@ -1924,10 +1855,12 @@ SERVICES = [
         <li><strong>Mitarbeitende befähigen:</strong> die <a href="/schulung/">Schulung</a> „KI sicher nutzen“ als Maßnahme zur KI-Kompetenz nach Artikel 4 der KI-Verordnung, mit Teilnahmenachweis.</li>
         <li><strong>Erste Anwendung im Alltag:</strong> Zusammenfassungen, Entwürfe für Dokumente und Mails, Auswertungen. Dort sieht das Team den Nutzen.</li>
       </ol>
+      <!--/more-->
       """ + KI_START_TEXT + """
 
       <h2>Drei Wege, und wann welcher passt</h2>
       <p>Die wichtigste Entscheidung fällt vor der ersten Zeile Code: wo die Daten verarbeitet werden. Danach richtet sich alles Weitere.</p>
+      <!--more-->
       <div class="ki-tbl-wrap">
         <table class="ki-tbl">
           <thead><tr><th scope="col">Weg</th><th scope="col">Wie es funktioniert</th><th scope="col">Wofür geeignet</th></tr></thead>
@@ -1939,6 +1872,7 @@ SERVICES = [
         </table>
       </div>
       <p>In der Praxis läuft es meist auf eine Kombination hinaus: das Bequeme für Unkritisches, das Lokale für alles, was den Betrieb nicht verlassen darf. Wichtig ist, dass die Grenze zwischen beidem klar gezogen und aufgeschrieben ist.</p>
+      <!--/more-->
 
       <h2>Was die KI-Verordnung von einem KMU verlangt</h2>
       <p>Artikel 4 der europäischen KI-Verordnung gilt seit dem 2. Februar 2025. Mit dem sogenannten Digital Omnibus (Verordnung (EU) 2026/1744, in Kraft seit dem 27. Juli 2026) wurde er entschärft: Ein Unternehmen, das KI-Systeme einsetzt, muss nicht mehr sicherstellen, dass jeder Beschäftigte einen bestimmten Wissensstand erreicht. Es muss aber Maßnahmen ergreifen, die die KI-Kompetenz der Menschen fördern, die damit arbeiten. Das gilt für den Betrieb, in dem drei Leute ChatGPT benutzen, genauso wie für Entwickler von Hochrisiko-Anwendungen.</p>
@@ -1948,11 +1882,11 @@ SERVICES = [
       </div>
 
       <h2>Was in eine Nutzungsrichtlinie gehört</h2>
-      <div class="lp-grid">
-        <div class="lp-card"><h3>Welche Werkzeuge</h3><p>Eine kurze Liste der freigegebenen Anwendungen. Alles andere ist damit nicht freigegeben, ohne dass man jedes Werkzeug einzeln verbieten muss.</p></div>
-        <div class="lp-card"><h3>Welche Daten</h3><p>Klar benannt, was nie in ein Chatfenster gehört: Kundendaten, Personaldaten, Zugangsdaten, Kalkulationen, Verträge.</p></div>
-        <div class="lp-card"><h3>Wer prüft das Ergebnis</h3><p>KI-Ausgaben sind Entwürfe. Wer sie verantwortet, bevor sie den Betrieb verlassen, muss benannt sein.</p></div>
-        <div class="lp-card"><h3>Wen man fragt</h3><p>Ein Ansprechpartner für den Fall, dass jemand unsicher ist. Ohne den landet im Zweifel doch wieder alles im Chatfenster.</p></div>
+      <div class="card-grid card-grid--4">
+        <div class="card"><h3>Welche Werkzeuge</h3><p>Eine kurze Liste der freigegebenen Anwendungen. Alles andere ist damit nicht freigegeben, ohne dass man jedes Werkzeug einzeln verbieten muss.</p></div>
+        <div class="card"><h3>Welche Daten</h3><p>Klar benannt, was nie in ein Chatfenster gehört: Kundendaten, Personaldaten, Zugangsdaten, Kalkulationen, Verträge.</p></div>
+        <div class="card"><h3>Wer prüft das Ergebnis</h3><p>KI-Ausgaben sind Entwürfe. Wer sie verantwortet, bevor sie den Betrieb verlassen, muss benannt sein.</p></div>
+        <div class="card"><h3>Wen man fragt</h3><p>Ein Ansprechpartner für den Fall, dass jemand unsicher ist. Ohne den landet im Zweifel doch wieder alles im Chatfenster.</p></div>
       </div>
 
       <div class="ki-note">
@@ -2179,10 +2113,19 @@ SERVICES = [
         "slug": "software-nach-mass", "nav": "Software nach Maß", "group": "ki",
         "title": "Software entwickeln lassen für kleine Betriebe | Grundke IT",
         "h1": "Software nach Maß für kleine Betriebe",
-        "label": "Das nervt jede Woche?", "service_type": "Individuelle Softwareentwicklung und Betrieb für kleine Unternehmen",
-        # 10.10.2026: Betrieb ab 80 € statt 79 € (Inhaltsaenderung -> neues Datum)
+        "service_type": "Individuelle Softwareentwicklung und Betrieb für kleine Unternehmen",
+        # 10.10.2026: Betrieb ab 80 € statt 79 € (Inhaltsaenderung -> neues Datum), Kopf mit K4 (Task 7)
         "published": NEW_DATE, "modified": "2026-10-10", "modified_disp": "10. Oktober 2026",
-        "extra_style": NEW_PAGE_STYLE,
+        # Kopf der Huelle (Textblatt §1, Task 7); Beleg = Betriebspreis der kleinen Anwendung (Andreas 10.10.2026:
+        # 80 € netto), ohne Projektpreise der Vertrauenssatz der Seite
+        "k": ("Aus der Excel-Liste, die drei Leute pflegen, baue ich eine kleine Anwendung, in der alle denselben "
+              "Stand sehen."),
+        "answer": ("Als Grundke IT-Service aus Grasbrunn baue ich für Betriebe im Münchner Osten kleine Anwendungen "
+                   "dort, wo Standardsoftware nicht passt: zum Festpreis, betrieben auf einem Server in Deutschland "
+                   "oder im eigenen Netzwerk, danach gepflegt für einen festen Monatsbetrag."),
+        "proof2": (("ico-check", "Betrieb und Pflege ab " + eur(PRICES["software_betrieb"]) + " netto im Monat")
+                   if SHOW_FROM_PRICES else
+                   ("ico-check", "Festpreis für das Projekt, fester Monatsbetrag für Betrieb und Pflege")),
         "trust": TRUST_FESTPREIS,
         "prices_h2": "Was das kostet",
         "prices_intro": ("Richtwerte für den Einstieg, alle Preise netto. Den Festpreis bekommst du, nachdem wir den "
@@ -2209,7 +2152,6 @@ SERVICES = [
         "cta2_href": "/ki-automatisierung/", "cta2_text": "Abläufe automatisieren",
         "desc": ("Excel-Listen, Zettel, doppelte Eingaben: Ich baue kleine Anwendungen für eure Abläufe und "
                  "betreibe sie weiter. Festpreis, Server in Deutschland."),
-        "sub": "Doppelt erfasste Daten, Excel-Listen, Zettel am Monitor: Daraus wird eine kleine Anwendung, die ich baue und weiter betreue.",
         "intro": ("In vielen Betrieben gibt es diese eine Liste. Sie liegt als Excel-Datei auf dem Server, drei "
                   "Leute pflegen sie, und keiner weiß genau, welche Fassung stimmt. Daneben ein Ordner mit "
                   "Zetteln und ein Programm, in das dieselben Daten noch einmal getippt werden. <strong>Für "
@@ -2221,17 +2163,18 @@ SERVICES = [
                   "Anwendung weiter."),
         "raw_intro": True,
         "cards": [
-            ("Aus der Liste wird eine Anwendung", "Was heute in Excel oder einer alten Access-Datenbank gepflegt wird, bekommt Eingabemasken, Prüfungen und einen Verlauf. Alle sehen denselben Stand."),
-            ("Schnittstellen statt Abtippen", "Lexware Office und viele Auftrags- und Rechnungsprogramme haben Schnittstellen. Kunden, Aufträge und Angebotsentwürfe lassen sich darüber anlegen und abgleichen."),
-            ("Rechte und Rollen", "Büro, Werkstatt und Chef arbeiten mit derselben Anwendung, aber nicht mit denselben Rechten."),
-            ("Im Browser, auch am Handy", "Nichts zu installieren. Die Anwendung läuft im Browser, auf der Baustelle genauso wie im Büro."),
-            ("Daten in Deutschland", "Betrieben auf einem Server in Deutschland mit Auftragsverarbeitungsvertrag oder auf Hardware bei dir im Netzwerk. Eure Daten könnt ihr jederzeit exportieren."),
-            ("Betrieb und Pflege", "Updates, Datensicherung und Anpassungen, wenn sich ein Ablauf ändert. Dafür gibt es einen festen Monatsbetrag."),
+            ("Aus der Liste wird eine Anwendung", "Was heute in Excel oder einer alten Access-Datenbank gepflegt wird, bekommt Eingabemasken, Prüfungen und einen Verlauf. Alle sehen denselben Stand.", "ico-list"),
+            ("Schnittstellen statt Abtippen", "Lexware Office und viele Auftrags- und Rechnungsprogramme haben Schnittstellen. Kunden, Aufträge und Angebotsentwürfe lassen sich darüber anlegen und abgleichen.", "ico-network"),
+            ("Rechte und Rollen", "Büro, Werkstatt und Chef arbeiten mit derselben Anwendung, aber nicht mit denselben Rechten.", "ico-key"),
+            ("Im Browser, auch am Handy", "Nichts zu installieren. Die Anwendung läuft im Browser, auf der Baustelle genauso wie im Büro.", "ico-monitor"),
+            ("Daten in Deutschland", "Betrieben auf einem Server in Deutschland mit Auftragsverarbeitungsvertrag oder auf Hardware bei dir im Netzwerk. Eure Daten könnt ihr jederzeit exportieren.", "ico-shield"),
+            ("Betrieb und Pflege", "Updates, Datensicherung und Anpassungen, wenn sich ein Ablauf ändert. Dafür gibt es einen festen Monatsbetrag.", "ico-tools"),
         ],
         "extra": """
       <h2>Drei Beispiele</h2>
       <p>Das erste läuft täglich, das zweite ist im Aufbau, das dritte ist ein typischer Fall. Kundenprojekte nenne ich ohne Namen.</p>
 
+      <div class="card-grid">
       <div class="ki-case">
         <span class="ki-case-tag">Eigener Betrieb · läuft täglich</span>
         <h3>Eine Kundenverwaltung, die direkt mit Lexware spricht</h3>
@@ -2249,6 +2192,7 @@ SERVICES = [
         <span class="ki-case-tag">Typischer Fall · Gastronomie</span>
         <h3>Veranstaltungen ohne vier Listen</h3>
         <p>Anfrage per Mail, Termin im Kalender, Menüauswahl in Excel, Rechnung im Buchhaltungsprogramm: Bei Feiern und Veranstaltungen laufen dieselben Daten oft durch vier Hände. Eine kleine Anwendung führt das an einer Stelle zusammen, vom ersten Anruf bis zur Rechnung.</p>
+      </div>
       </div>
 
       <h2>So läuft ein Projekt ab</h2>
@@ -2300,9 +2244,18 @@ SERVICES = [
         "slug": "websites-fuer-betriebe", "nav": "Websites für Betriebe", "group": "ki",
         "title": "Website erstellen lassen oder modernisieren | Grundke IT",
         "h1": "Websites für Betriebe, die gefunden werden",
-        "label": "Eure Website bringt keine Anfragen?", "service_type": "Technische Umsetzung von Websites für kleine Unternehmen",
-        "published": NEW_DATE, "modified": "2026-10-09", "modified_disp": "9. Oktober 2026",
-        "extra_style": NEW_PAGE_STYLE,
+        "service_type": "Technische Umsetzung von Websites für kleine Unternehmen",
+        # 10.10.2026 (Task 7): neuer Kopf mit K4 und Antwortsatz -> neues Datum
+        "published": NEW_DATE, "modified": "2026-10-10", "modified_disp": "10. Oktober 2026",
+        # Kopf der Huelle (Textblatt §1, Task 7); Beleg = Richtwert des One-Pagers aus den Preiskarten, ohne
+        # Projektpreise der Vertrauenssatz der Seite. Der Website-Check-Kasten bleibt sichtbar (Spec §5).
+        "k": ("Ich baue eure Website technisch so auf, dass sie am Handy gut funktioniert und für Google und "
+              "KI-Assistenten lesbar ist."),
+        "answer": ("Als Grundke IT-Service aus Grasbrunn baue ich Websites für Betriebe im Münchner Osten technisch "
+                   "neu auf: fürs Handy, schlank, mit eigenen Seiten je Leistung und Ort. Die Optik kommt aus "
+                   "geprüften Vorlagen, Hosting und Pflege übernehme ich auf Wunsch."),
+        "proof2": (("ico-check", "Website One-Pager ca. " + eur(PRICES["website_onepager"]) + " netto")
+                   if SHOW_FROM_PRICES else ("ico-check", "Preis nach Aufwand, verbindlich im Angebot")),
         "trust": TRUST_WEBSITE,
         "prices_h2": "Was das kostet",
         "prices_intro": ("Richtwerte, alle Preise netto. Was es bei euch tatsächlich kostet, hängt vom Aufwand ab: "
@@ -2334,7 +2287,6 @@ SERVICES = [
         "cta2_href": "/kontakt/", "cta2_text": "Sichtbarkeits-Check anfragen",
         "desc": ("Website erstellen lassen oder modernisieren: schnell, fürs Handy gebaut, für Google und "
                  "KI-Assistenten lesbar aufgebaut. Technische Umsetzung, Raum München Ost."),
-        "sub": "Eine Website, die am Handy schnell lädt, bei Google gefunden wird und so aufgebaut ist, dass ChatGPT und Co. sie lesen und zitieren können. Ich setze sie technisch um, die Optik kommt aus geprüften Vorlagen.",
         "intro": ("Viele Betriebs-Websites sind irgendwann entstanden und seitdem stehen geblieben. Am Handy "
                   "rutscht alles durcheinander, Google zeigt sie auf Seite drei, und wenn jemand ChatGPT nach "
                   "einem Betrieb in der Gegend fragt, kommt sie nicht vor. <strong>Ich baue die Website "
@@ -2346,12 +2298,12 @@ SERVICES = [
                   "und betreut wird sie von mir."),
         "raw_intro": True,
         "cards": [
-            ("Fürs Handy gebaut", "Die meisten Besucher kommen über das Telefon. Die Seite wird zuerst dafür gebaut, mit Anruf- und WhatsApp-Knopf im Daumenbereich."),
-            ("Schlank und schnell", "Kein Baukasten mit fünfzig Erweiterungen, sondern schlankes HTML. Die Seite lädt auch im Mobilnetz schnell."),
-            ("Gefunden bei Google", "Eine eigene Seite je Leistung und Ort, saubere Titel, strukturierte Daten und ein gepflegtes Google-Unternehmensprofil."),
-            ("Lesbar für KI-Assistenten", "ChatGPT, Gemini und Copilot zitieren vor allem Seiten, die klare Antworten auf echte Kundenfragen geben. Darauf ist der Aufbau ausgelegt."),
-            ("Datenschutz-Technik", "Schriften lokal, kein Tracking ohne Einwilligung, Impressum und Datenschutzerklärung an der richtigen Stelle. Die Rechtstexte selbst verantwortet ihr."),
-            ("Betrieb und Updates", "Hosting, Sicherheitsupdates, Datensicherung und ein monatlicher Bericht, wie die Seite gefunden wird. Rein technisch."),
+            ("Fürs Handy gebaut", "Die meisten Besucher kommen über das Telefon. Die Seite wird zuerst dafür gebaut, mit Anruf- und WhatsApp-Knopf im Daumenbereich.", "ico-phone"),
+            ("Schlank und schnell", "Kein Baukasten mit fünfzig Erweiterungen, sondern schlankes HTML. Die Seite lädt auch im Mobilnetz schnell.", "ico-clock"),
+            ("Gefunden bei Google", "Eine eigene Seite je Leistung und Ort, saubere Titel, strukturierte Daten und ein gepflegtes Google-Unternehmensprofil.", "ico-search-check"),
+            ("Lesbar für KI-Assistenten", "ChatGPT, Gemini und Copilot zitieren vor allem Seiten, die klare Antworten auf echte Kundenfragen geben. Darauf ist der Aufbau ausgelegt.", "ico-file-text"),
+            ("Datenschutz-Technik", "Schriften lokal, kein Tracking ohne Einwilligung, Impressum und Datenschutzerklärung an der richtigen Stelle. Die Rechtstexte selbst verantwortet ihr.", "ico-shield"),
+            ("Betrieb und Updates", "Hosting, Sicherheitsupdates, Datensicherung und ein monatlicher Bericht, wie die Seite gefunden wird. Rein technisch.", "ico-tools"),
         ],
         "extra": """
       <h2>Der Beleg ist diese Website</h2>
@@ -2370,7 +2322,7 @@ SERVICES = [
           <li>Ob ChatGPT, Gemini und Copilot euren Betrieb nennen</li>
           <li>Ob die Datenschutz-Technik stimmt, als technischer Befund und nicht als Rechtsberatung</li>
         </ul>
-        <div class="lp-cta-row" style="margin:0;">
+        <div class="card-cta">
           <a href="tel:+491782584438" class="btn-p">Check vereinbaren</a>
           <a href="/kontakt/" class="btn-g">Lieber schreiben</a>
         </div>
@@ -2649,14 +2601,12 @@ SERVICES = [
                 ("NAS defekt", "Festplatte ausgefallen, Netzwerkspeicher meldet Fehler: so rettest du die Daten.", "/ratgeber/nas-defekt/"),
             ],
         },
-        "label": "Ratgeber", "service_type": "Ratgeber",
+        "service_type": "Ratgeber",
         "published": NEW_DATE, "modified": NEW_DATE, "modified_disp": NEW_DATE_DISP,
-        "extra_style": NEW_PAGE_STYLE, "trust": None,
-        "cta_top": RATGEBER_CTA,
         "cta2_href": "/fernwartung/", "cta2_text": "Fernwartung starten",
         "desc": ("Server ausgefallen, Phishing-Mail geklickt, E-Mails kommen nicht an, NAS defekt: was du in den "
                  "ersten 15 Minuten selbst tun kannst und wann du anrufst."),
-        "sub": "Was du in den ersten Minuten selbst tun kannst, was du besser lässt, und ab wann ein Anruf schneller ist.",
+        "lead": "Was du in den ersten Minuten selbst tun kannst, was du besser lässt, und ab wann ein Anruf schneller ist.",
         "intro": ("Die meisten Störungen beginnen mit einer Suche nach „… was tun“. Wer in dem Moment das "
                   "Richtige macht, spart oft Stunden, und wer das Falsche macht, verliert manchmal Daten. Jeder "
                   "Ratgeber hier hat denselben Aufbau: zuerst die kurze Antwort, dann die Schritte, die du "
@@ -2681,14 +2631,12 @@ SERVICES = [
         "slug": "ratgeber/server-ausgefallen", "nav": "Server ausgefallen", "group": "ratgeber", "kind": "ratgeber",
         "title": "Server ausgefallen – was tun? Die ersten 15 Minuten | Grundke IT",
         "h1": "Server ausgefallen: was tun in den ersten 15 Minuten?",
-        "label": "Die ersten 15 Minuten", "service_type": "Ratgeber",
+        "service_type": "Ratgeber",
         "published": NEW_DATE, "modified": NEW_DATE, "modified_disp": NEW_DATE_DISP,
-        "extra_style": NEW_PAGE_STYLE, "trust": None,
-        "cta_top": RATGEBER_CTA,
         "cta2_href": "/fernwartung/", "cta2_text": "Fernwartung starten",
         "desc": ("Server ausgefallen, keiner kommt an die Daten? Was du in den ersten 15 Minuten prüfen kannst, "
                  "was du auf keinen Fall tun solltest und wann du anrufen solltest."),
-        "sub": "Erst schauen, dann handeln. Die meisten Ausfälle lassen sich eingrenzen, bevor jemand kommt.",
+        "lead": "Erst schauen, dann handeln. Die meisten Ausfälle lassen sich eingrenzen, bevor jemand kommt.",
         "intro": ("<div class=\"lp-answer\"><p>Kurz gesagt: Prüfe zuerst, ob wirklich der Server ausgefallen ist "
                   "oder nur die Verbindung dorthin. Sieh dir Lämpchen und Bildschirm an und fotografiere jede "
                   "Meldung. Ein einziger sauberer Neustart ist in Ordnung, mehrfaches Aus- und Einschalten nicht. "
@@ -2739,14 +2687,12 @@ SERVICES = [
         "slug": "ratgeber/phishing-mail-geklickt", "nav": "Phishing-Mail geklickt", "group": "ratgeber", "kind": "ratgeber",
         "title": "Auf Phishing-Mail geklickt – was tun? | Grundke IT-Service",
         "h1": "Auf eine Phishing-Mail geklickt: was jetzt zu tun ist",
-        "label": "Die ersten 15 Minuten", "service_type": "Ratgeber",
+        "service_type": "Ratgeber",
         "published": NEW_DATE, "modified": NEW_DATE, "modified_disp": NEW_DATE_DISP,
-        "extra_style": NEW_PAGE_STYLE, "trust": None,
-        "cta_top": RATGEBER_CTA,
         "cta2_href": "/schulung/", "cta2_text": "Schulung für dein Team",
         "desc": ("Auf eine Phishing-Mail geklickt, Passwort eingegeben oder Anhang geöffnet? Was in den ersten "
                  "15 Minuten zu tun ist, je nachdem was passiert ist."),
-        "sub": "Ruhe bewahren hilft mehr als Löschen. Was zu tun ist, hängt davon ab, was nach dem Klick passiert ist.",
+        "lead": "Ruhe bewahren hilft mehr als Löschen. Was zu tun ist, hängt davon ab, was nach dem Klick passiert ist.",
         "intro": ("<div class=\"lp-answer\"><p>Kurz gesagt: Nichts mehr eingeben und das Fenster schließen. Hast "
                   "du nur geklickt, ist meist nichts passiert. Hast du ein Passwort eingegeben, ändere es sofort "
                   "von einem anderen Gerät aus. Hast du einen Anhang geöffnet, trenne den Rechner vom Netzwerk, "
@@ -2806,14 +2752,12 @@ SERVICES = [
         "slug": "ratgeber/e-mails-kommen-nicht-an", "nav": "E-Mails kommen nicht an", "group": "ratgeber", "kind": "ratgeber",
         "title": "E-Mails kommen nicht an – was tun? | Grundke IT-Service",
         "h1": "E-Mails kommen nicht an: woran es liegt und was du tun kannst",
-        "label": "Die ersten 15 Minuten", "service_type": "Ratgeber",
+        "service_type": "Ratgeber",
         "published": NEW_DATE, "modified": NEW_DATE, "modified_disp": NEW_DATE_DISP,
-        "extra_style": NEW_PAGE_STYLE, "trust": None,
-        "cta_top": RATGEBER_CTA,
         "cta2_href": "/microsoft-365-betreuung/", "cta2_text": "Microsoft 365 Betreuung",
         "desc": ("E-Mails kommen nicht an oder landen beim Empfänger im Spam? So grenzt du in 15 Minuten ein, "
                  "ob es an Outlook, am Postfach oder an der Domain liegt."),
-        "sub": "Erst klären, ob keine Mails hereinkommen oder ob deine nicht ankommen. Das sind zwei verschiedene Probleme.",
+        "lead": "Erst klären, ob keine Mails hereinkommen oder ob deine nicht ankommen. Das sind zwei verschiedene Probleme.",
         "intro": ("<div class=\"lp-answer\"><p>Kurz gesagt: Melde dich im Browser am Postfach an, bei Microsoft 365 "
                   "unter outlook.office.com. Sind die Mails dort, liegt es am Outlook auf dem Rechner. Prüfe "
                   "Spam-Ordner, Quarantäne und den Speicherplatz. Kommen deine Mails beim Empfänger nicht an, lies "
@@ -2861,14 +2805,12 @@ SERVICES = [
         "slug": "ratgeber/nas-defekt", "nav": "NAS defekt", "group": "ratgeber", "kind": "ratgeber",
         "title": "NAS defekt – Daten retten: die ersten Schritte | Grundke IT",
         "h1": "NAS defekt: so rettest du die Daten",
-        "label": "Die ersten 15 Minuten", "service_type": "Ratgeber",
+        "service_type": "Ratgeber",
         "published": NEW_DATE, "modified": NEW_DATE, "modified_disp": NEW_DATE_DISP,
-        "extra_style": NEW_PAGE_STYLE, "trust": None,
-        "cta_top": RATGEBER_CTA,
         "cta2_href": "/it-sicherheit-backup/", "cta2_text": "Backup richtig aufsetzen",
         "desc": ("Netzwerkspeicher meldet eine defekte Festplatte oder startet nicht mehr? Was du in den ersten 15 "
                  "Minuten tun kannst, damit die Daten nicht verloren gehen."),
-        "sub": "Eine defekte Festplatte im NAS ist meist kein Datenverlust. Dazu wird sie erst durch die falschen Handgriffe danach.",
+        "lead": "Eine defekte Festplatte im NAS ist meist kein Datenverlust. Dazu wird sie erst durch die falschen Handgriffe danach.",
         "intro": ("<div class=\"lp-answer\"><p>Kurz gesagt: Lies zuerst, was das NAS meldet. „Beeinträchtigt“ "
                   "heißt, eine Platte ist ausgefallen, die Daten sind noch da. Sichere dann sofort die wichtigsten "
                   "Daten, bevor du irgendetwas tauschst. Tausch nur die Platte, die als defekt markiert ist. Meldet "
@@ -2990,112 +2932,8 @@ def service_head_schema(s):
 
 
 def render_service(s, places, services):
-    slug = s["slug"]
-    if slug in SHELL_SLUGS:
-        return slug, render_shell(s, places, services)
-    h, schema = service_head_schema(s)
-
-    price_html = ""
-    if s.get("prices"):
-        # Eintrag: (Stufe, Betrag, Beschreibung, hervorgehoben[, Einheit]). Ohne Einheit gilt
-        # der Monatspreis der Betreuungspakete.
-        cells = "".join(
-            '\n        <div class="lp-price{feat}">\n          <div class="tier">{t}</div>\n'
-            '          <div class="amount">{a}<span> {u}</span></div>\n'
-            '          <div class="desc">{d}</div>\n        </div>'.format(
-                feat=" feat" if pr[3] else "", t=esc(pr[0]), a=esc(pr[1]), d=esc(pr[2]),
-                u=esc(pr[4] if len(pr) > 4 else "/ Monat zzgl. MwSt."))
-            for pr in s["prices"])
-        price_html = ("\n      <h2>{h}</h2>\n"
-                      "      <p>{i}</p>\n"
-                      '      <div class="lp-price-grid">{cells}\n      </div>\n{after}').format(
-                          cells=cells,
-                          h=s.get("prices_h2", "Pakete &amp; Preise"),
-                          i=s.get("prices_intro", "Transparente Monatspauschalen – welches Paket passt, "
-                                                  "klären wir im kostenlosen Erstgespräch:"),
-                          after=s.get("prices_after", ""))
-
-    intro = s["intro"] if s.get("raw_intro") else esc(s["intro"])
-
-    cta_row = """<div class="lp-cta-row">
-        <a href="tel:+491782584438" class="btn-p">Kostenloses Erstgespräch</a>
-        <a href="/kontakt/" class="btn-g">Anfrage senden</a>
-      </div>"""
-    if s.get("cta_top"):
-        cta_row = ('<div class="lp-cta-row">' + "".join(
-            '\n        <a href="{h}" class="{c}">{t}</a>'.format(h=h, c=c, t=esc(t))
-            for h, t, c in s["cta_top"]) + "\n      </div>")
-    hero = s.get("hero")
-    if hero:
-        # Eigener Einstieg fuer Bereichs-Hubs (KI im Betrieb): grosse Ueberschrift wie auf
-        # der Startseite und daneben die Unterseiten als direkte Wege.
-        paths = "".join(
-            '\n          <li><a href="{h}"><span class="lp-path-t">{t}</span>'
-            '<span class="lp-path-d">{d}</span></a></li>'.format(h=h, t=esc(t), d=esc(d))
-            for t, d, h in hero["paths"])
-        top = """<article class="lp-wrap lp-wrap--hero">
-  <div class="lp-hero">
-    <div class="inner lp-hero-grid">
-      <div>
-        {crumbs}
-        <h1 class="lp-hero-h1">{h1} <span class="lp-hero-accent">{accent}</span></h1>
-        <p class="s-sub">{sub}</p>
-        {cta_row}
-      </div>
-      <nav class="lp-paths" aria-label="{paths_label}">
-        <h2 class="lp-paths-h">{paths_label}</h2>
-        <ul>{paths}
-        </ul>
-      </nav>
-    </div>
-  </div>
-  <div class="inner">
-    <div class="lp-content">
-""".format(crumbs=crumbs_html(s["nav"], slug), h1=s["h1"], accent=hero["accent"], sub=esc(s["sub"]),
-           cta_row=cta_row, paths_label=esc(hero["paths_label"]), paths=paths)
-    else:
-        top = """<article class="lp-wrap">
-  <div class="inner">
-    <div class="lp-content">
-      {crumbs}
-      <div class="s-label">{label}</div>
-      <h1 class="s-title">{h1}</h1>
-      <p class="s-sub">{sub}</p>
-
-      {cta_row}
-""".format(crumbs=crumbs_html(s["nav"], slug), label=esc(s["label"]), h1=s["h1"], sub=esc(s["sub"]),
-           cta_row=cta_row)
-
-    related = related_html(slug, services)
-    related = "\n      " + related + "\n" if related else ""
-
-    cards_block = ""
-    if s.get("cards"):
-        cards_block = ('\n      <h2>{h}</h2>\n      <div class="lp-grid">{c}\n      </div>\n').format(
-            h=s.get("cards_h2", "Das steckt drin"), c=cards_html(s["cards"]))
-    trust = s.get("trust", TRUST_DEFAULT)
-    trust_block = ('\n      <div class="lp-trust">\n        ' + trust + '\n      </div>\n') if trust else ""
-    intro_html = intro if intro.lstrip().startswith("<div") else "<p>" + intro + "</p>"
-    main = top + """
-      {intro}
-{cards_block}{extra}{prices}{trust_block}
-      <h2>{faq_h2}</h2>{faqs}
-{related}{author}
-      <div class="lp-cta-row" style="margin-top:2.5rem;">
-        <a href="tel:+491782584438" class="btn-p">Jetzt anrufen · 0178 258 44 38</a>
-        <a href="{cta2_href}" class="btn-g">{cta2_text}</a>
-      </div>
-    </div>
-  </div>
-</article>""".format(intro=intro_html, cards_block=cards_block, trust_block=trust_block,
-                     prices=price_html, faqs=faq_html(s["faqs"]),
-                     author=author_box(s.get("modified_disp")), related=related,
-                     faq_h2=s.get("faq_h2", "Häufige Fragen"),
-                     extra=s.get("extra", ""),
-                     cta2_href=s.get("cta2_href", "/it-service-grasbrunn/"),
-                     cta2_text=esc(s.get("cta2_text", "IT-Service in deiner Region")))
-
-    return slug, page(h, schema, main, places, services, s.get("extra_style", ""), slug=slug)
+    """Leistungs-, KI- und Ratgeberseite: seit Task 7 alle in der Huelle (render_shell)."""
+    return s["slug"], render_shell(s, places, services)
 
 
 # --------------------------------------------------------------------------- #

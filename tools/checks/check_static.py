@@ -1,4 +1,4 @@
-"""Statische Pruefungen (Spec §9: AK1, AK2, AK7, AK8, AK9, AK13, AK14).
+"""Statische Pruefungen (Spec §9: AK1, AK2, AK2b, AK7, AK8, AK9, AK9b, AK11a, AK13, AK14).
 Aufruf: python tools/checks/check_static.py [--only AK1,AK9]   Exit 1 bei Fehler."""
 import hashlib, html, json, re, sys
 from pathlib import Path
@@ -9,7 +9,10 @@ SKIP = ("tree", "ki-arbeitsplatz-onboarding-kit", "Audit 2026-04", "assets", "to
 LEGAL = ("impressum", "datenschutz", "agb", "barrierefreiheit")
 FORBIDDEN_SELECTORS = [".btn-p", ".btn-g", ".btn-wa", ".btn-email", ".btn-tel", ".price-card", ".price-btn", ".faq-item",
                        ".cta-sec", ".lp-btn", ".lp-price", ".lp-card", ".emp-link", ".emp-card", ".k-card", ".sch-card",
-                       ".topic", ".ki-case", ".ki-check", ".ki-note", ".lp-voice", ".testi-card", ".card"]
+                       ".topic", ".ki-case", ".ki-check", ".ki-note", ".lp-voice", ".testi-card", ".card",
+                       # Task 7: Fliesstext-Bausteine und Kopf/Fuss der alten Generator-Huelle, seit Release B in style.css
+                       ".ki-tbl", ".lp-steps", ".lp-checklist", ".lp-dont", ".lp-answer", ".lp-paths", ".lp-grid",
+                       ".lp-hero", ".lp-cta-row", ".lp-trust", ".lp-author", ".lp-crumbs", ".more"]
 OLD_WRAPPERS = ("lp-wrap", "page-wrap", "kontakt-wrap", "fw-wrap", "emp-hero", "err-wrap")
 PROMISES = ["sofort", "immer erreichbar", "ich geh ran", "rund um die uhr", "24/7", "garantiert", "am selben tag",
             "in minuten", "heute noch", "schnell", "zurückruft", "umgehend", "kurzfristig", "bleib dran",
@@ -61,6 +64,25 @@ def styles(s):
     return "\n".join(re.findall(r"<style[^>]*>(.*?)</style>", s, re.S))
 
 
+_GEN = []
+
+
+def gen():
+    """Generator-Modul (Daten PLACES/SERVICES, STYLE, REVIEWS), einmal importiert."""
+    if not _GEN:
+        sys.path.insert(0, str(ROOT / "tools"))
+        import build_landingpages
+        _GEN.append(build_landingpages)
+    return _GEN[0]
+
+
+def generator_pages():
+    """(Pfad, Daten) aller Seiten, die tools/build_landingpages.py erzeugt (Orte und SERVICES)."""
+    g = gen()
+    out = [(ROOT / ("it-service-" + p["slug"]) / "index.html", p) for p in g.PLACES]
+    return out + [(ROOT / s["slug"] / "index.html", s) for s in g.SERVICES]
+
+
 def ak1():
     errs = []
     for p in pages():
@@ -70,12 +92,57 @@ def ak1():
         for sel in FORBIDDEN_SELECTORS:
             if re.search(re.escape(sel) + r"(?![\w-])", css):
                 errs.append(f"{rel(p)}: eigener Stil fuer {sel}")
+    # Generator-Seiten: kein seitenspezifischer <style> (KI_STYLE, NEW_STYLE, STYLE_LEGACY), nur die
+    # gemeinsamen Prosa-Regeln aus STYLE (Task 7)
+    shared = styles(gen().STYLE)
+    for p, _d in generator_pages():
+        if styles(read(p)) != shared:
+            errs.append(f"{rel(p)}: eigener <style> neben den gemeinsamen Prosa-Regeln")
     return errs
 
 
 def ak2():
-    return [f"{rel(p)}: alte Huelle {w}" for p in pages() for w in OLD_WRAPPERS
+    errs = [f"{rel(p)}: alte Huelle {w}" for p in pages() for w in OLD_WRAPPERS
             if re.search(r'class="[^"]*\b' + w + r'\b', read(p))]
+    # Eine Huelle fuer alle Generator-Seiten: Kopf .page-head und Abschluss .cta-sec (Task 7)
+    for p, _d in generator_pages():
+        s = read(p)
+        for need, what in (('<section class="sec sec--glow page-head">', "Kopf .page-head"),
+                           ('<section class="cta-sec">', "Abschluss .cta-sec")):
+            if need not in s:
+                errs.append(f"{rel(p)}: {what} fehlt")
+    return errs
+
+
+def ak2b():
+    """Kopf je Seitenart (Task 7): Hubs (Daten mit "hero") zeigen die Wege zu allen Unterseiten als
+    nav.lp-paths im Kopf und die Akzentzeile als <em> in der H1. Ratgeber (kind "hub"/"ratgeber") ohne
+    K4 (.page-k) und im Kopf nur den Anruf-Knopf (kein WhatsApp, keine Belegzeile); Ratgeber-Artikel in
+    einer Lesespalte (.measure) mit der Kurzantwort (.lp-answer). Kaesten mit Handlung (.ki-check:
+    Potenzialcheck, Website-Check) stehen nie in einem zugeklappten <details>."""
+    errs = []
+    for p, d in generator_pages():
+        s = read(p)
+        head = first(r'(<section class="sec sec--glow page-head">.*?</section>)', s)
+        if d.get("hero"):
+            nav = first(r'(<nav class="lp-paths".*?</nav>)', head)
+            missing = [h for _t, _d, h in d["hero"]["paths"] if 'href="' + h + '"' not in nav]
+            if not nav or missing:
+                errs.append(f"{rel(p)}: Wege (nav.lp-paths) im Kopf fehlen {missing or ''}")
+            if "<em>" not in first(r"(<h1[^>]*>.*?</h1>)", head):
+                errs.append(f"{rel(p)}: Akzentzeile der H1 nicht als <em>")
+        if d.get("kind") in ("hub", "ratgeber"):
+            if "page-k" in s:
+                errs.append(f"{rel(p)}: Ratgeber mit K4 (.page-k)")
+            if "hc-call" not in head or "hc-wa" in head or "hc-proof" in head:
+                errs.append(f"{rel(p)}: Ratgeber-Kopf nicht nur mit Anruf-Knopf")
+        if d.get("kind") == "ratgeber" and not re.search(r'class="[^"]*\bmeasure\b[^"]*"[^>]*>\s*<div class="lp-answer">', s):
+            errs.append(f"{rel(p)}: Artikel nicht in der Lesespalte (.measure) mit Kurzantwort")
+    for p in pages():
+        for blk in re.findall(r"<details\b(?![^>]*\bopen\b)[^>]*>.*?</details>", read(p), re.S):
+            if 'class="ki-check"' in blk:
+                errs.append(f"{rel(p)}: Kasten .ki-check steht zugeklappt in <details>")
+    return errs
 
 
 def ak7():
@@ -301,6 +368,7 @@ CHECKS = {"AK1": ak1, "AK2": ak2, "AK7": ak7, "AK8": ak8, "AK9": ak9, "AK14": ak
 CHECKS["AK13"] = ak13
 CHECKS["AK9b"] = ak9b
 CHECKS["AK11a"] = ak11a
+CHECKS["AK2b"] = ak2b
 
 if __name__ == "__main__":
     if "--legal-baseline" in sys.argv:
