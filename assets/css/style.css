@@ -379,6 +379,9 @@ button { font-family: var(--fb); cursor: pointer; }
 .mobile-menu a:hover { background:var(--bg3); color:var(--cyan); }
 .mobile-menu .m-cta { background:var(--blue-vi); color:#fff !important; text-align:center; margin-top:.5rem; font-weight:700 !important; }
 .mobile-menu .m-cta:hover, .mobile-menu .m-cta:focus-visible { background:#2222ff; color:#fff !important; }
+/* Fernwartung im Mobilmenue hervorgehoben (seit Task 9: Symbol aus dem Sprite statt Blitz-Zeichen, Klasse statt Inline-Style) */
+.mobile-menu .m-fw { display:flex; align-items:center; gap:.55rem; color:var(--cyan); font-weight:700; }
+.mobile-menu .m-fw svg { flex-shrink:0; }
 
 /* ── Buttons ── */
 .btn-p {
@@ -779,6 +782,10 @@ blockquote.testi-txt { margin-top:0; margin-left:0; margin-right:0; }
 @media (min-width:1024px) { .page-head-grid--chat .mini-chat-box { margin-top:3.1rem; } }
 /* Handy: Kopf so eng wie der Hero der Startseite, damit Belegzeile ueber der Kontaktleiste steht (AK6, 390x700) */
 @media (max-width:767px) { .page-head { padding-top:1.6rem; } .page-head .s-sub { line-height:1.6; } }
+/* Dokumentseiten (Rechtsseiten, seit Task 9): Kopf nur mit Krumen und H1, der Text folgt ohne doppelten Abschnittsabstand */
+.page-head--doc { padding-bottom:clamp(1.6rem,3vw,2.6rem); }
+.page-head--doc .page-h1 { margin-bottom:0; }
+.page-head--doc + .sec { padding-top:clamp(2rem,4vw,3rem); }
 /* Begriff in der H1 zusammenhalten („Managed IT-Service“), erst ab 480 px: darunter ist er breiter als die Zeile */
 @media (min-width:480px) { .nowrap { white-space:nowrap; } }
 .s-title .nowrap { white-space:nowrap; }  /* Ueberschriften: langes Wort nie am Bindestrich trennen (schulung, FAQ) */

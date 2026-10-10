@@ -71,6 +71,9 @@ Aenderungen:
               ausgenommen) und den Font-Preload aus head() in deren Kopf (preload_fonts, idempotent). closing() mit
               Autorzeile ohne Datum (mod_disp None) und Knoepfen auch am Handy, wenn die Seite keine Kontaktleiste hat.
               Asset-Version 2026.10.d (Release C1).
+              Fix-Runde 1: KONTAKT_DATE/KONTAKT_DATE_DISP (Abschluss-Datum und Sitemap aus einer Quelle), Preload-Pruefung
+              je Schrift (nur fehlende einfuegen), Mobilmenue „Fernwartung starten“ mit Sprite-Symbol und Klasse .m-fw
+              statt Blitz-Zeichen und Inline-Style.
 """
 
 import os
@@ -113,6 +116,10 @@ REVIEW_COUNT_GOOGLE = 5
 # (sync_home). Nur hochsetzen, wenn sich der Inhalt der Startseite wirklich aendert.
 HOME_DATE = "2026-10-10"
 HOME_DATE_DISP = "10.10.2026"
+# Kontaktseite (Handseite): Stand fuer „Zuletzt aktualisiert“ im Abschluss (HAND_CLOSING) und lastmod der Sitemap
+# (STATIC_URLS). Nur hochsetzen, wenn sich der Inhalt der Kontaktseite wirklich aendert.
+KONTAKT_DATE = "2026-10-10"
+KONTAKT_DATE_DISP = "10. Oktober 2026"
 
 # WhatsApp mit vorbefuelltem Satz je Einstieg (Textblatt §4, seit 10.10.2026): Am Satz ist
 # erkennbar, ueber welchen Knopf eine Anfrage kam, ohne Tracking-Skript. Auf der Startseite
@@ -279,7 +286,7 @@ def nav_html(current=None, home=False):
 </nav>
 <div class="mobile-menu" id="mobileMenu">{mob}
   <a href="{k_href}"{k_cur}>{k_lbl}</a>
-  <a href="/fernwartung/"{fw_cur} style="color:var(--cyan);font-weight:700;">&#9889; Fernwartung starten</a>
+  <a href="/fernwartung/"{fw_cur} class="m-fw"><svg width="18" height="18" aria-hidden="true"><use href="#ico-monitor"/></svg>Fernwartung starten</a>
   <a href="tel:+491782584438" class="m-cta">Jetzt anrufen · 0178 258 44 38</a>
 </div>
 </header>""".format(maps=MAPS_URL, desk=desk, mob=mob, phone=PHONE_SVG, fw_cur=fw_cur,
@@ -333,7 +340,7 @@ MAIN_JS_RE = re.compile(r'src="(?:\.\./)*/?assets/js/main\.js(?:\?v=[^"]*)?"')
 # seiner Textaenderung, Fernwartung das der letzten Anleitung (09.10.2026); Rechtsseiten fuehren ihren Stand im
 # Text, die 404 hat keinen. Nicht hier: Startseite (eigener Abschluss) und empfehlungen (Task 10).
 HAND_CLOSING = {
-    "kontakt/index.html": ("Kontakt", "10. Oktober 2026"),
+    "kontakt/index.html": ("Kontakt", KONTAKT_DATE_DISP),
     "fernwartung/index.html": ("Fernwartung", "9. Oktober 2026"),
     "impressum/index.html": (None, None),
     "datenschutz/index.html": (None, None),
@@ -345,20 +352,21 @@ CLOSING_RE = re.compile(r'<section class="cta-sec".*?</section>', re.S)
 # Font-Preload wie in head() der Generator-Seiten, vor dem fonts.css-Link der Handseite und mit dessen Pfad
 # (../assets/… oder /assets/… bei der 404), damit die URL der des @font-face in fonts.css entspricht
 FONTS_CSS_RE = re.compile(r'( *)<link rel="stylesheet" href="((?:\.\./)*|/)assets/css/fonts\.css"/?>')
-FONT_PRELOAD_RE = re.compile(r'<link rel="preload" as="font"[^>]*Manrope-latin\.woff2')
 FONT_PRELOADS = ("Manrope-latin.woff2", "SpaceGrotesk-latin.woff2")
 
 
 def preload_fonts(html, nl):
-    """Setzt die beiden Font-Preloads vor fonts.css (Layout-Sprung beim ersten Aufruf, Release B). Steht der
-    Preload schon da (Startseite, zweiter Lauf), bleibt die Seite unveraendert."""
-    if FONT_PRELOAD_RE.search(html):
+    """Setzt die Font-Preloads vor fonts.css (Layout-Sprung beim ersten Aufruf, Release B), je Schrift nur, wenn ihr
+    Preload noch fehlt (Startseite, zweiter Lauf: unveraendert)."""
+    missing = [f for f in FONT_PRELOADS
+               if not re.search(r'<link rel="preload" as="font"[^>]*' + re.escape(f), html)]
+    if not missing:
         return html
     m = FONTS_CSS_RE.search(html)
     if not m:
         raise SystemExit("preload_fonts: fonts.css-Link fehlt")
     links = "".join('{i}<link rel="preload" as="font" type="font/woff2" crossorigin href="{p}assets/fonts/{f}"/>{nl}'
-                    .format(i=m.group(1), p=m.group(2), f=f, nl=nl) for f in FONT_PRELOADS)
+                    .format(i=m.group(1), p=m.group(2), f=f, nl=nl) for f in missing)
     return html[:m.start()] + links + html[m.start():]
 
 
@@ -3571,7 +3579,7 @@ def sync_home():
 
 STATIC_URLS = [   # (Pfad, Prioritaet, lastmod) -- lastmod der Startseite = ihr dateModified
     ("/", "1.0", HOME_DATE),
-    ("/kontakt/", "0.7", "2026-10-10"),   # Task 9: Erreichbarkeit, Untertitel und FAQ nach Textblatt-Anhang
+    ("/kontakt/", "0.7", KONTAKT_DATE),   # Task 9: Erreichbarkeit, Untertitel und FAQ nach Textblatt-Anhang
     ("/empfehlungen/", "0.7", "2026-05-01"),
 ]   # /schulung/ steht seit Task 8 ueber SERVICES in der Sitemap
 

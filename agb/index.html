@@ -45,12 +45,14 @@
   <link rel="stylesheet" href="../assets/css/fonts.css"/>
   <link rel="stylesheet" href="/assets/css/style.css?v=2026.10.d"/>
   <style>
-    .agb-box { background:var(--bg2); border:1px solid var(--border); border-radius:16px; padding:clamp(1.25rem,6vw,3rem); text-align:center; }
-    .agb-ico { font-size:3rem; margin-bottom:1.5rem; }
+    .agb-box { background:var(--bg2); border:1px solid var(--border); border-radius:16px; padding:clamp(1.25rem,6vw,3rem); text-align:left; }
+    .agb-ico { margin-bottom:1.2rem; color:var(--cyan); }
+    .agb-ico svg { display:block; width:2.6rem; height:2.6rem; }
     .agb-box p { font-size:.9rem; color:var(--text2); line-height:1.7; margin-bottom:2rem; }
     .agb-dl { white-space:normal; justify-content:center; }
-    .agb-links { display:flex; flex-direction:column; gap:.8rem; align-items:center; }
-    .agb-hint { font-size:.75rem; color:var(--text3); font-family:var(--fm); margin-top:1.5rem; }
+    .agb-links { display:flex; flex-direction:column; gap:.8rem; align-items:flex-start; }
+    .agb-hint { font-size:.87rem; color:var(--text3); font-family:var(--fb); margin-top:1.5rem; }
+    .agb-box .agb-hint { margin-bottom:0; }  /* letzter Absatz im Kasten: kein Abstand zusaetzlich zum Innenabstand */
   </style>
 </head>
 <body>
@@ -102,17 +104,22 @@
   <a href="/websites-fuer-betriebe/">Websites</a>
   <a href="/#preise">Preise</a>
   <a href="/kontakt/">Kontakt</a>
-  <a href="/fernwartung/" style="color:var(--cyan);font-weight:700;">&#9889; Fernwartung starten</a>
+  <a href="/fernwartung/" class="m-fw"><svg width="18" height="18" aria-hidden="true"><use href="#ico-monitor"/></svg>Fernwartung starten</a>
   <a href="tel:+491782584438" class="m-cta">Jetzt anrufen · 0178 258 44 38</a>
 </div>
 </header>
 
 <main id="main">
+<section class="sec sec--glow page-head page-head--doc">
+  <div class="inner">
+    <nav class="lp-crumbs" aria-label="Brotkrumen"><ol><li><a href="/">Startseite</a></li><li aria-current="page">AGB</li></ol></nav>
+    <h1 class="page-h1">Allgemeine Geschäfts&shy;bedingungen</h1>
+  </div>
+</section>
 <section class="sec">
   <div class="inner">
     <article class="agb-box measure">
-      <div class="agb-ico">&#128196;</div>
-      <h1 class="page-h1">Allgemeine Geschäfts&shy;bedingungen</h1>
+      <div class="agb-ico"><svg aria-hidden="true"><use href="#ico-file-text"/></svg></div>
       <p>Die AGB von Grundke IT-Service stehen als PDF zum Download bereit. Mit der Beauftragung von Grundke IT-Service erkennen Sie diese AGB an.</p>
       <div class="agb-links">
         <a href="/assets/agb/AGB-Grundke-IT-Service.pdf" class="btn-p agb-dl" download>

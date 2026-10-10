@@ -24,10 +24,10 @@
   <link rel="stylesheet" href="/assets/css/fonts.css"/>
   <link rel="stylesheet" href="/assets/css/style.css?v=2026.10.d"/>
   <style>
-    .err-box { max-width:40rem; margin:0 auto; text-align:center; }
-    .err-code { font-family:var(--fm); font-size:clamp(5rem,15vw,9rem); font-weight:600; color:var(--border); letter-spacing:-.05em; line-height:1; margin-bottom:1rem; }
-    .err-sub { font-size:1.0667rem; color:var(--text2); max-width:30rem; margin:0 auto 2rem; line-height:1.7; }
-    .err-btns { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
+    .err-box { max-width:40rem; }
+    .err-code { font-family:var(--fh); font-size:clamp(5rem,15vw,9rem); font-weight:600; color:var(--border); letter-spacing:-.05em; line-height:1; margin-bottom:1rem; }
+    .err-sub { font-size:1.0667rem; color:var(--text2); max-width:30rem; margin:0 0 2rem; line-height:1.7; }
+    .err-btns { display:flex; gap:1rem; flex-wrap:wrap; }
   </style>
 </head>
 <body>
@@ -79,15 +79,16 @@
   <a href="/websites-fuer-betriebe/">Websites</a>
   <a href="/#preise">Preise</a>
   <a href="/kontakt/">Kontakt</a>
-  <a href="/fernwartung/" style="color:var(--cyan);font-weight:700;">&#9889; Fernwartung starten</a>
+  <a href="/fernwartung/" class="m-fw"><svg width="18" height="18" aria-hidden="true"><use href="#ico-monitor"/></svg>Fernwartung starten</a>
   <a href="tel:+491782584438" class="m-cta">Jetzt anrufen · 0178 258 44 38</a>
 </div>
 </header>
 
 <main id="main">
-<section class="sec sec--glow">
+<section class="sec sec--glow page-head">
   <div class="inner">
     <div class="err-box">
+      <nav class="lp-crumbs" aria-label="Brotkrumen"><ol><li><a href="/">Startseite</a></li><li aria-current="page">Seite nicht gefunden</li></ol></nav>
       <div class="err-code" aria-hidden="true">404</div>
       <h1 class="page-h1">Die Seite gibt's nicht (mehr).</h1>
       <p class="err-sub">Tippfehler, alter Link, oder ich hab umgebaut. Zurück zur Startseite – oder ruf an, dann führ ich dich zum Richtigen.</p>
