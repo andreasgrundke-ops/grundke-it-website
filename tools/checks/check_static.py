@@ -129,6 +129,76 @@ def ak9():
     return errs
 
 
+def schema_nodes(s):
+    """Alle JSON-LD-Knoten (dict) einer Seite, verschachtelte eingeschlossen."""
+    out = []
+    for blk in re.findall(r'<script type="application/ld\+json">(.*?)</script>', s, re.S):
+        stack = [json.loads(blk)]
+        while stack:
+            x = stack.pop()
+            if isinstance(x, dict):
+                out.append(x)
+                stack.extend(x.values())
+            elif isinstance(x, list):
+                stack.extend(x)
+    return out
+
+
+def first(rx, s):
+    m = re.search(rx, s, re.S)
+    return m.group(1) if m else ""
+
+
+def ak9b():
+    """Kundenstimmen aus einer Quelle (REVIEWS im Generator). Jede Karte <figure class="testi-card">
+    traegt Name (testi-who), Quelle (testi-role: "Google-Bewertung" nur bei Google-Stimmen) und den
+    Text woertlich und ungekuerzt in <blockquote class="testi-txt">. Startseite zusaetzlich: jede Stimme
+    genau einmal, review[]/reviewBody im Schema = REVIEWS, reviewCount = len(REVIEWS), Belegzeile
+    [data-proof] nennt REVIEW_COUNT_GOOGLE."""
+    sys.path.insert(0, str(ROOT / "tools"))
+    try:
+        import build_landingpages as gen
+        reviews, n_google = gen.REVIEWS, gen.REVIEW_COUNT_GOOGLE
+    except (ImportError, AttributeError) as e:
+        return [f"Generator ohne REVIEWS/REVIEW_COUNT_GOOGLE: {e}"]
+    by_name = {r["name"]: r for r in reviews}
+    errs = []
+    if sum(r["source"] == "Google-Bewertung" for r in reviews) > n_google:
+        errs.append("REVIEWS: mehr Google-Stimmen als REVIEW_COUNT_GOOGLE")
+    for p in pages():
+        s = read(p)
+        seen = []
+        for c in re.findall(r'<figure class="testi-card[^"]*"[^>]*>(.*?)</figure>', s, re.S):
+            who = text_of(first(r'class="testi-who"[^>]*>(.*?)</', c))
+            role = text_of(first(r'class="testi-role"[^>]*>(.*?)</', c))
+            txt = text_of(first(r'<blockquote class="testi-txt"[^>]*>(.*?)</blockquote>', c))
+            r = by_name.get(who)
+            if not r:
+                errs.append(f"{rel(p)}: Stimme '{who}' steht nicht in REVIEWS")
+                continue
+            seen.append(who)
+            if txt != "„" + " ".join(r["paragraphs"]) + "“":
+                errs.append(f"{rel(p)}: Text von {who} weicht von REVIEWS ab")
+            if ("Google" in role) != (r["source"] == "Google-Bewertung"):
+                errs.append(f"{rel(p)}: Quelle von {who} falsch beschriftet ('{role}')")
+        if rel(p) != "index.html":
+            continue
+        if sorted(seen) != sorted(by_name):
+            errs.append(f"index.html: Stimmen sichtbar {sorted(seen)} != REVIEWS {sorted(by_name)}")
+        nodes = schema_nodes(s)
+        sch = [(x["author"]["name"], x["reviewBody"]) for x in nodes if x.get("@type") == "Review"]
+        want = [(r["name"], "\n\n".join(r["paragraphs"])) for r in reviews]
+        if sorted(sch) != sorted(want):
+            errs.append("index.html: review[]/reviewBody im Schema != REVIEWS")
+        counts = [x.get("reviewCount") for x in nodes if x.get("@type") == "AggregateRating"]
+        if counts != [str(len(reviews))]:
+            errs.append(f"index.html: reviewCount {counts} != {len(reviews)}")
+        proof = re.search(r"bei (\d+) Google-Bewertungen", text_of(first(r"(<a[^>]*\bdata-proof\b.*?</a>)", s)))
+        if not proof or int(proof.group(1)) != n_google:
+            errs.append(f"index.html: Belegzeile [data-proof] nennt nicht {n_google} Google-Bewertungen")
+    return errs
+
+
 def legal_text(page_html):
     """Rechtstext einer Seite: <main> ohne nav/header/cta-sec-Huelle. Fuer Baseline UND Vergleich."""
     col = re.search(r"<main.*?</main>", page_html, re.S).group(0)
@@ -185,6 +255,7 @@ def write_legal_baseline():
 
 CHECKS = {"AK1": ak1, "AK2": ak2, "AK7": ak7, "AK8": ak8, "AK9": ak9, "AK14": ak14}
 CHECKS["AK13"] = ak13
+CHECKS["AK9b"] = ak9b
 
 if __name__ == "__main__":
     if "--legal-baseline" in sys.argv:
