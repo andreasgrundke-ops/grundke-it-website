@@ -358,7 +358,9 @@ def ak14():
     if 'id="bewertungen-herkunft"' not in read(ROOT / "index.html"):
         errs.append("index.html: #bewertungen-herkunft fehlt")
     base = INTERN / "vorher" / "legal_hash.json"
-    if base.exists():
+    if not base.exists():
+        errs.append(f"Rechtstexte: Baseline {base} fehlt, AK14 nicht pruefbar")
+    else:
         old = json.loads(base.read_text(encoding="utf-8"))
         for p in legal_pages():
             try:
