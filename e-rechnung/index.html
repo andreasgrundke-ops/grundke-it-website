@@ -35,117 +35,12 @@
   <link rel="stylesheet" href="/assets/css/style.css?v=2026.10.b"/>
 
   <style>
-    .lp-wrap { margin-top:var(--nav-h); padding:clamp(3rem,8vw,6rem) 0; }
-    .lp-content { max-width:880px; }
-    .lp-crumbs ol { display:flex; flex-wrap:wrap; gap:.35rem; list-style:none; margin:0 0 1.4rem; padding:0; font-size:.8rem; color:var(--text3); }
-    .lp-crumbs li + li::before { content:"/"; margin-right:.35rem; color:var(--border); }
-    .lp-crumbs a { color:var(--text2); text-decoration:none; }
-    .lp-crumbs a:hover { color:var(--cyan); }
-    .lp-crumbs [aria-current] { color:var(--text); }
-    .lp-content h2 { font-family:var(--fh); font-size:clamp(1.3rem,3vw,1.8rem); font-weight:800; color:var(--text); letter-spacing:-.02em; margin:2.6rem 0 1rem; }
-    .lp-content p { font-size:1.0667rem; color:var(--text2); line-height:1.8; margin-bottom:1rem; }
+    .lp-content > p, .lp-content > div { max-width:68ch; }
+    .lp-content p { font-size:1.0667rem; color:var(--text2); line-height:1.75; margin:0 0 1rem; }
+    .lp-content p:last-child { margin-bottom:0; }
     .lp-content strong { color:var(--text); }
-    .lp-cta-row { display:flex; flex-wrap:wrap; gap:1rem; margin:2rem 0; }
-    .lp-content .faq-wrap { margin-top:1.2rem; }
+    .lp-content p a, .lp-content li a { color:var(--cyan); }
     .lp-related { margin-top:2rem; }
-    .lp-content p a { color:var(--cyan); text-underline-offset:.2em; }
-    @media (max-width:560px) { .lp-cta-row .btn-p, .lp-cta-row .btn-g { width:100%; justify-content:center; } }
-    .lp-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1rem; margin:1.5rem 0; }
-    .lp-card { background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:1.3rem; }
-    .lp-card h3 { font-family:var(--fh); font-size:1rem; font-weight:700; color:var(--text); margin-bottom:.4rem; }
-    .lp-card p { font-size:.85rem; color:var(--text2); line-height:1.6; margin:0; }
-    .lp-price-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1rem; margin:1.5rem 0; }
-    .lp-price { background:var(--bg2); border:1px solid var(--border); border-radius:14px; padding:1.5rem; text-align:center; }
-    .lp-price.feat { border-color:var(--cyan); box-shadow:0 8px 24px rgba(38,189,239,.10); }
-    .lp-price .tier { font-family:var(--fm); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--text3); }
-    .lp-price .amount { font-family:var(--fh); font-size:1.8rem; font-weight:800; color:var(--text); margin:.4rem 0; }
-    .lp-price .amount span { display:block; margin-top:.2rem; font-size:.8rem; font-weight:500; color:var(--text3); }
-    .lp-price .desc { font-size:.82rem; color:var(--text2); line-height:1.6; }
-    .lp-places { display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0; }
-    .lp-place { font-family:var(--fm); font-size:.78rem; background:var(--bg2); border:1px solid var(--border); border-radius:999px; padding:.35rem .9rem; color:var(--text2); text-decoration:none; }
-    .lp-place:hover { border-color:var(--cyan); color:var(--cyan); }
-    .lp-place.here { border-color:var(--cyan); color:var(--cyan); }
-    .lp-trust { background:var(--bg2); border:1px solid var(--border); border-radius:16px; padding:1.6rem; margin:2rem 0; font-size:.9rem; color:var(--text2); line-height:1.7; }
-    .lp-author { display:flex; gap:1.1rem; align-items:flex-start; background:var(--bg2); border:1px solid var(--border); border-radius:14px; padding:1.4rem 1.5rem; margin:2.5rem 0 1rem; }
-    .lp-author img { width:56px; height:56px; border-radius:50%; flex-shrink:0; background:var(--bg); object-fit:contain; border:1px solid var(--border); }
-    .lp-author-body { font-size:.88rem; color:var(--text2); line-height:1.7; }
-    .lp-author-name { font-family:var(--fh); font-weight:800; color:var(--text); font-size:1rem; }
-    .lp-author-role { display:block; font-size:.8rem; color:var(--text3); margin:.1rem 0 .6rem; }
-    .lp-author-meta { margin-top:.7rem; font-size:.78rem; color:var(--text3); }
-    .lp-author-meta a { color:var(--cyan); text-decoration:underline; text-underline-offset:.2em; }
-  </style>
-  <style>
-    /* Bausteine nur fuer den KI-Bereich (via extra_style, damit die uebrigen Seiten unveraendert bleiben) */
-    .lp-wrap--hero { padding-top:0; }
-    .lp-hero { background:var(--bg2); border-bottom:1px solid var(--border); padding:clamp(2.5rem,7vw,5.5rem) 0 clamp(2.5rem,6vw,4.5rem); margin-bottom:clamp(2.5rem,6vw,4rem); position:relative; overflow:hidden; }
-    .lp-hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 55% 70% at 85% 15%, rgba(12,77,162,.28), transparent 70%); pointer-events:none; }
-    .lp-hero-grid { position:relative; display:grid; gap:clamp(2rem,5vw,4rem); align-items:center; }
-    @media (min-width:1024px) { .lp-hero-grid { grid-template-columns:minmax(0,1.35fr) minmax(0,1fr); } }
-    .lp-hero-h1 { font-family:var(--fh); font-size:clamp(2.1rem,5.2vw,3.6rem); font-weight:800; line-height:1.07; letter-spacing:-.035em; color:var(--text); margin-bottom:1.1rem; text-wrap:balance; }
-    .lp-hero-accent { display:block; color:var(--cyan); }
-    .lp-hero .lp-cta-row { margin-bottom:0; }
-    .lp-paths { background:var(--bg); border:1px solid var(--border); border-radius:14px; padding:.6rem; }
-    .lp-paths-h { font-family:var(--fh); font-size:1.1rem; font-weight:700; color:var(--text); padding:.8rem .9rem .5rem; }
-    .lp-paths ul { list-style:none; margin:0; padding:0; }
-    .lp-paths li + li { border-top:1px solid var(--border); }
-    .lp-paths a { display:block; padding:.95rem .9rem; border-radius:10px; text-decoration:none; transition:background .2s; }
-    .lp-paths a:hover { background:var(--bg3); }
-    .lp-paths a:focus-visible { outline:2px solid var(--cyan); outline-offset:2px; }
-    .lp-path-t { display:block; font-family:var(--fh); font-weight:700; font-size:1rem; color:var(--text); }
-    .lp-path-t::after { content:" →"; color:var(--cyan); transition:margin .2s; }
-    .lp-paths a:hover .lp-path-t::after { margin-left:.25rem; }
-    .lp-path-d { display:block; font-size:.85rem; color:var(--text2); line-height:1.55; margin-top:.25rem; }
-    .ki-case { background:var(--bg2); border:1px solid var(--border); border-radius:14px; padding:1.5rem 1.6rem; margin:1.1rem 0; }
-    .ki-case-tag { font-family:var(--fm); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--cyan); display:block; margin-bottom:.5rem; }
-    .ki-case h3 { font-family:var(--fh); font-size:1.05rem; font-weight:800; color:var(--text); margin:0 0 .6rem; letter-spacing:-.01em; }
-    .ki-case p { font-size:.9rem; color:var(--text2); line-height:1.75; margin:0 0 .7rem; }
-    .ki-case p:last-child { margin-bottom:0; }
-    .ki-case .ki-result { font-size:.86rem; color:var(--text); background:rgba(38,189,239,.07); border-radius:8px; padding:.7rem .9rem; }
-    .ki-check { background:var(--bg2); border:1px solid var(--cyan); border-radius:16px; padding:1.8rem; margin:2.2rem 0; box-shadow:0 8px 28px rgba(38,189,239,.10); }
-    .ki-check h3 { font-family:var(--fh); font-size:1.2rem; font-weight:800; color:var(--text); margin:0 0 .7rem; }
-    .ki-check p { font-size:.92rem; color:var(--text2); line-height:1.75; margin:0 0 1rem; }
-    .ki-check ul { list-style:none; margin:0 0 1.2rem; padding:0; }
-    .ki-check li { font-size:.9rem; color:var(--text2); line-height:1.6; padding:.35rem 0 .35rem 1.5rem; position:relative; }
-    .ki-check li::before { content:""; position:absolute; left:0; top:.85rem; width:7px; height:7px; border-radius:50%; background:var(--cyan); }
-    .ki-note { background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:1.3rem 1.5rem; margin:1.8rem 0; }
-    .ki-note strong { color:var(--text); }
-    .ki-note p { font-size:.88rem; color:var(--text2); line-height:1.75; margin:0 0 .7rem; }
-    .ki-note p:last-child { margin-bottom:0; }
-    .ki-tbl-wrap { overflow-x:auto; margin:1.4rem 0; }
-    .ki-tbl { width:100%; border-collapse:collapse; font-size:.86rem; min-width:520px; }
-    .ki-tbl th { font-family:var(--fh); font-size:.78rem; letter-spacing:.03em; text-transform:uppercase; color:var(--text3); text-align:left; padding:.7rem .9rem; border-bottom:1px solid var(--border); }
-    .ki-tbl td { padding:.85rem .9rem; border-bottom:1px solid var(--border); color:var(--text2); line-height:1.65; vertical-align:top; }
-    .ki-tbl td:first-child { color:var(--text); font-weight:600; white-space:nowrap; }
-    .ki-tbl tr:last-child td { border-bottom:none; }
-    @media (max-width:600px) {
-      .ki-tbl { min-width:0; }
-      .ki-tbl thead { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
-      .ki-tbl tbody, .ki-tbl tr, .ki-tbl td { display:block; width:100%; }
-      .ki-tbl tr { border-bottom:1px solid var(--border); padding:.75rem 0; }
-      .ki-tbl tr:last-child { border-bottom:none; }
-      .ki-tbl td { border-bottom:none; padding:.2rem 0; }
-      .ki-tbl td:first-child { white-space:normal; }
-      .ki-tbl td[data-label]::before { content:attr(data-label) ": "; color:var(--text); font-weight:600; }
-    }
-  </style>
-  <style>
-    .lp-steps { counter-reset:st; list-style:none; margin:1.2rem 0 1.8rem; padding:0; }
-    .lp-steps > li { counter-increment:st; position:relative; padding:.15rem 0 1.1rem 2.9rem; font-size:.93rem; color:var(--text2); line-height:1.75; }
-    .lp-steps > li::before { content:counter(st); position:absolute; left:0; top:.05rem; width:1.9rem; height:1.9rem; border-radius:50%; border:1px solid var(--cyan); color:var(--cyan); font-family:var(--fh); font-weight:700; font-size:.85rem; display:grid; place-items:center; }
-    .lp-steps > li + li::after { content:""; position:absolute; left:.95rem; top:-1.05rem; width:1px; height:1.05rem; background:var(--border); }
-    .lp-steps strong { color:var(--text); }
-    .lp-checklist { list-style:none; margin:1rem 0 1.4rem; padding:0; }
-    .lp-checklist li { position:relative; padding:.35rem 0 .35rem 1.9rem; font-size:.92rem; color:var(--text2); line-height:1.65; }
-    .lp-checklist li::before { content:""; position:absolute; left:.35rem; top:.62rem; width:.4rem; height:.75rem; border:solid var(--cyan); border-width:0 2px 2px 0; transform:rotate(45deg); }
-    .lp-checklist strong, .lp-dont strong { color:var(--text); }
-    .lp-dont { list-style:none; margin:1rem 0 1.4rem; padding:0; }
-    .lp-dont li { position:relative; padding:.35rem 0 .35rem 1.9rem; font-size:.92rem; color:var(--text2); line-height:1.65; }
-    .lp-dont li::before, .lp-dont li::after { content:""; position:absolute; left:.2rem; top:1rem; width:.85rem; height:2px; border-radius:1px; background:#e8806f; transform:rotate(45deg); }
-    .lp-dont li::after { transform:rotate(-45deg); }
-    .lp-answer { background:var(--bg2); border:1px solid var(--border); border-radius:14px; padding:1.3rem 1.5rem; margin:1.6rem 0 2rem; }
-    .lp-answer p { margin:0; color:var(--text); font-size:.98rem; line-height:1.75; }
-    .lp-answer p + p { margin-top:.7rem; color:var(--text2); font-size:.92rem; }
-    .lp-content > h3 { font-family:var(--fh); font-size:1.08rem; font-weight:700; color:var(--text); margin:1.8rem 0 .6rem; }
   </style>
   <script type="application/ld+json">
 {
@@ -300,7 +195,7 @@
     "@id": "https://grundke-it.de/#website"
   },
   "datePublished": "2026-10-07",
-  "dateModified": "2026-10-07",
+  "dateModified": "2026-10-10",
   "author": {
     "@type": "Person",
     "@id": "https://grundke-it.de/#andreas",
@@ -336,6 +231,8 @@
   <symbol id="ico-key" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.3 9.3"/><path d="m18 5 3-3"/><path d="m15 8 3-3"/></symbol>
   <symbol id="ico-file-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></symbol>
   <symbol id="ico-search-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m8 11 2 2 4-4"/><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+  <symbol id="ico-network" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="16" y="16" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="9" y="2" width="6" height="6" rx="1"/><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"/><path d="M12 12V8"/></symbol>
+  <symbol id="ico-wifi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h.01"/><path d="M2 8.82a15 15 0 0 1 20 0"/><path d="M5 12.859a10 10 0 0 1 14 0"/><path d="M8.5 16.429a5 5 0 0 1 7 0"/></symbol>
 </svg>
 <header class="site-header">
 <nav aria-label="Hauptnavigation">
@@ -368,30 +265,55 @@
 </header>
 
 <main id="main">
-<article class="lp-wrap">
-  <div class="inner">
-    <div class="lp-content">
+<section class="sec sec--glow page-head">
+  <div class="inner page-head-grid">
+    <div class="page-head-copy page-head-copy--two">
       <nav class="lp-crumbs" aria-label="Brotkrumen"><ol><li><a href="/">Startseite</a></li><li><a href="/ki-fuer-kmu/">KI im Betrieb</a></li><li aria-current="page">E-Rechnung</li></ol></nav>
-      <div class="s-label">E-Rechnung</div>
-      <h1 class="s-title">E-Rechnung: was dein Betrieb bis 2027 und 2028 tun muss</h1>
-      <p class="s-sub">Empfangen müsst ihr sie schon. Ausstellen müsst ihr sie ab 2027 oder 2028. Hier steht, was das für euren Betrieb heißt, und wie ihr zu einem Programm kommt, das beides kann.</p>
-
-      <div class="lp-cta-row">
-        <a href="tel:+491782584438" class="btn-p">Kostenloses Erstgespräch</a>
-        <a href="/kontakt/" class="btn-g">Anfrage senden</a>
+      <div class="page-head-a">
+        <h1 class="page-h1">E-Rechnung: was dein Betrieb bis 2027 und 2028 tun muss</h1>
+        <p class="page-k">Ich prüfe, ob euer Rechnungsprogramm E-Rechnungen kann, suche sonst mit euch ein passendes aus oder baue den fehlenden Export.</p>
       </div>
+      <div class="page-head-b">
+        <p class="s-sub measure">Als Grundke IT-Service aus Grasbrunn stelle ich Betriebe im Münchner Osten auf die E-Rechnung um. Ausstellen müsst ihr sie für Rechnungen an Unternehmen im Inland ab 2027, wenn euer Gesamtumsatz im Vorjahr über 800.000 Euro lag, sonst ab 2028.</p>
+        <div class="hc-ctas">
+          <a href="tel:+491782584438" class="btn-p hc-call"><svg width="18" height="18" aria-hidden="true"><use href="#ico-phone"/></svg>Anrufen <span class="hc-num">0178 258 44 38</span></a>
+          <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20komme%20%C3%BCber%20deine%20Seite%20%E2%80%9EE-Rechnung%E2%80%9C." target="_blank" rel="noopener" class="hc-wa"><svg width="18" height="18" aria-hidden="true"><use href="#ico-wa"/></svg>WhatsApp</a>
+        </div>
+        <ul class="hc-proof">
+          <li><svg class="is-star" aria-hidden="true"><use href="#ico-star"/></svg><a href="/#bewertungen-herkunft" data-proof>5,0 bei 5 Google-Bewertungen</a></li>
+          <li><svg aria-hidden="true"><use href="#ico-check"/></svg>Umstellung im Standardfall ab 1.500 € netto</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
 
+<section class="sec sec--alt">
+  <div class="inner">
+    <h2 class="s-title">Was ich dabei mache</h2>
+    <div class="sec-split">
+    <div>
+    <div class="lp-content">
       <p>Eine E-Rechnung ist ein strukturierter Datensatz, den das Programm des Empfängers direkt lesen kann, im Format XRechnung oder ZUGFeRD (ein PDF, in dem die Rechnungsdaten zusätzlich als Datei stecken). Ein normales PDF zählt nicht dazu. Empfangen können muss sie jedes Unternehmen in Deutschland schon seit Januar 2025. Ausstellen müsst ihr sie je nach Umsatz ab 2027 oder 2028. In einer Umfrage von YouGov für den Rechnungsanbieter easybill (Juni 2026) hatte ein Drittel der Unternehmen noch nie eine E-Rechnung verschickt, und rund jedes fünfte schrieb seine Rechnungen in Word oder Excel. <strong>Für die meisten Betriebe ist die Umstellung überschaubar</strong>, wenn sie rechtzeitig passiert.</p>
+    </div>
+    </div>
+    <div>
+    <div class="card-box"><p><strong>Festpreis für das Projekt, fester Monatsbetrag für Betrieb und Pflege.</strong> Was außerhalb davon anfällt, kostet 110 € netto je Stunde im 15-Minuten-Takt. Du sprichst von der ersten Frage bis zum laufenden Betrieb mit mir, Andreas Grundke.</p></div>
+    </div>
+    </div>
+    <ul class="feat-rows">
+      <li><span class="feat-ico" aria-hidden="true"><svg><use href="#ico-search-check"/></svg></span><div><h3>Programm finden</h3><p>Kann euer Rechnungsprogramm keine E-Rechnung, oder gibt es noch gar keins, suche ich mit euch eins aus, das zu Betrieb und Steuerberatung passt.</p></div></li>
+      <li><span class="feat-ico" aria-hidden="true"><svg><use href="#ico-mail"/></svg></span><div><h3>Empfang einrichten</h3><p>Ein Postfach für E-Rechnungen, die Anzeige der Formate und die Weitergabe an die Buchhaltung.</p></div></li>
+      <li><span class="feat-ico" aria-hidden="true"><svg><use href="#ico-file-text"/></svg></span><div><h3>Ausstellen umstellen</h3><p>Euer Programm einrichten oder anpassen, oder einen Export aus eurer Fachanwendung bauen, wenn die Rechnungsdaten von dort kommen.</p></div></li>
+      <li><span class="feat-ico" aria-hidden="true"><svg><use href="#ico-list"/></svg></span><div><h3>Ablage und Steuerberatung</h3><p>E-Rechnungen bleiben im Originalformat abgelegt und laufen dorthin, wo eure Steuerberatung sie braucht.</p></div></li>
+    </ul>
+  </div>
+</section>
 
-      <h2>Was ich dabei mache</h2>
-      <div class="lp-grid">
-        <div class="lp-card"><h3>Programm finden</h3><p>Kann euer Rechnungsprogramm keine E-Rechnung, oder gibt es noch gar keins, suche ich mit euch eins aus, das zu Betrieb und Steuerberatung passt.</p></div>
-        <div class="lp-card"><h3>Empfang einrichten</h3><p>Ein Postfach für E-Rechnungen, die Anzeige der Formate und die Weitergabe an die Buchhaltung.</p></div>
-        <div class="lp-card"><h3>Ausstellen umstellen</h3><p>Euer Programm einrichten oder anpassen, oder einen Export aus eurer Fachanwendung bauen, wenn die Rechnungsdaten von dort kommen.</p></div>
-        <div class="lp-card"><h3>Ablage und Steuerberatung</h3><p>E-Rechnungen bleiben im Originalformat abgelegt und laufen dorthin, wo eure Steuerberatung sie braucht.</p></div>
-      </div>
-
-      <h2>Noch kein Programm, das E-Rechnungen kann?</h2>
+<section class="sec">
+  <div class="inner">
+    <h2 class="s-title">Noch kein Programm, das E-Rechnungen kann?</h2>
+    <div class="lp-content">
       <p>Das ist der häufigste Fall: Rechnungen entstehen in Word oder Excel, in einem älteren Programm ohne XRechnung und ZUGFeRD oder in einer Fachanwendung, die nur ein PDF ausgibt. Dann gehe ich so vor:</p>
       <ul class="lp-checklist">
         <li><strong>Bestandsaufnahme:</strong> Wie schreibt ihr heute Rechnungen, wie kommen Eingangsrechnungen an, mit welchem Programm arbeitet eure Steuerberatung?</li>
@@ -399,8 +321,14 @@
         <li><strong>Einrichten oder wechseln:</strong> Kunden und Artikel übernehmen, Rechnungsvorlage anpassen, Empfang und Ablage einrichten, die erste E-Rechnung gemeinsam schreiben.</li>
         <li><strong>Anpassen statt neu kaufen:</strong> Kann euer Programm E-Rechnungen nur halb, etwa nur empfangen oder nur ein Format, passe ich es an oder baue den fehlenden Export.</li>
       </ul>
+    </div>
+  </div>
+</section>
 
-      <h2>Ab wann gilt die E-Rechnungspflicht?</h2>
+<section class="sec sec--alt">
+  <div class="inner">
+    <h2 class="s-title">Ab wann gilt die E-Rechnungspflicht?</h2>
+    <div class="lp-content">
       <div class="ki-tbl-wrap">
         <table class="ki-tbl">
           <thead><tr><th scope="col">Ab wann</th><th scope="col">Was gilt</th></tr></thead>
@@ -412,31 +340,47 @@
           </tbody>
         </table>
       </div>
+    </div>
+  </div>
+</section>
 
-      <h2>Betrifft mich das? Drei Fragen</h2>
+<section class="sec">
+  <div class="inner">
+    <h2 class="s-title">Betrifft mich das? Drei Fragen</h2>
+    <div class="sec-split">
+    <div>
+    <div class="lp-content">
       <ol class="lp-steps">
         <li><strong>Schreibst du Rechnungen an andere Unternehmen in Deutschland?</strong> Wenn du nur an Privatkunden verkaufst, betrifft dich die Pflicht zum Ausstellen nicht. Empfangen musst du trotzdem können.</li>
         <li><strong>Lag dein Gesamtumsatz 2026 über 800.000 Euro?</strong> Dann musst du ab 1. Januar 2027 ausstellen, sonst ab 1. Januar 2028. Die Zahl kennt deine Steuerberatung.</li>
         <li><strong>Schreibst du Rechnungen heute in Word, Excel oder einem Programm ohne E-Rechnung?</strong> Dann ist jetzt der Zeitpunkt, umzustellen, und nicht im Dezember.</li>
       </ol>
       <p>Vom Ausstellen ausgenommen sind unter anderem Kleinbetragsrechnungen bis 250 Euro brutto, Fahrausweise und Kleinunternehmer. Empfangen können müssen auch sie E-Rechnungen.</p>
+    </div>
+    </div>
+    <div>
+    <div class="lp-content">
       <div class="ki-note">
         <p><strong>Zur Einordnung:</strong> Das ist die allgemeine Rechtslage nach dem zweiten Schreiben des Bundesfinanzministeriums zur E-Rechnung vom 15. Oktober 2025, das das erste Schreiben von 2024 ersetzt, und keine Steuerberatung. Ob und ab wann die Pflicht deinen Betrieb genau trifft, klärst du mit deiner Steuerberatung. Ich baue die Umsetzung.</p>
       </div>
-      <div class="ki-check">
+      <div class="card-box">
         <h3>Umstellung zum Festpreis</h3>
         <p>Im Standardfall ab 1.500 € netto: Bestandsaufnahme, Programm auswählen oder umstellen, Empfang und Ablage einrichten, Weg zur Steuerberatung. Kommen die Rechnungsdaten aus einer Fachanwendung, einer Excel-Kalkulation oder einem Vorsystem und braucht es einen eigenen Export, ab 4.000 € netto. Die Lizenz für das Rechnungsprogramm zahlt ihr direkt beim Anbieter. Ab 4.000 Euro Ausgaben kann der <a href="/digitalbonus-bayern/">Digitalbonus Bayern</a> bis zur Hälfte übernehmen.</p>
-        <div class="lp-cta-row" style="margin:0;">
+        <div class="card-cta">
           <a href="tel:+491782584438" class="btn-p">Umstellung besprechen</a>
           <a href="/kontakt/" class="btn-g">Lieber schreiben</a>
         </div>
       </div>
+    </div>
+    </div>
+    </div>
+  </div>
+</section>
 
-      <div class="lp-trust">
-        <strong>Festpreis für das Projekt, fester Monatsbetrag für Betrieb und Pflege.</strong> Was außerhalb davon anfällt, kostet 110 € netto je Stunde im 15-Minuten-Takt. Du sprichst von der ersten Frage bis zum laufenden Betrieb mit mir, Andreas Grundke.
-      </div>
-
-      <h2>Häufige Fragen</h2>
+<section class="sec sec--alt sec--aside">
+  <div class="inner">
+    <h2 class="s-title">Häufige Fragen</h2>
+    <div class="sec-aside-body">
       <div class="faq-wrap">
         <details class="faq-item"><summary>Ab wann gilt die E-Rechnungspflicht? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Empfangen können müssen alle Unternehmen in Deutschland E-Rechnungen seit dem 1. Januar 2025. Ausstellen müssen sie Betriebe mit mehr als 800.000 Euro Gesamtumsatz im Vorjahr ab dem 1. Januar 2027, alle übrigen ab dem 1. Januar 2028. Das gilt für Rechnungen an andere Unternehmen im Inland.</div></details>
         <details class="faq-item"><summary>Ist ein PDF per E-Mail eine E-Rechnung? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Nur, wenn die Rechnungsdaten nach der europäischen Norm EN 16931 darin stecken, wie bei ZUGFeRD. Ein normales PDF gilt als sonstige Rechnung. Mit Zustimmung des Empfängers ist es bis Ende 2026 erlaubt, für Betriebe bis 800.000 Euro Vorjahresumsatz noch bis Ende 2027.</div></details>
@@ -445,23 +389,31 @@
         <details class="faq-item"><summary>Wie empfange ich E-Rechnungen, ohne neue Software zu kaufen? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Für den Empfang reicht ein E-Mail-Postfach. Viele Buchhaltungsprogramme lesen E-Rechnungen schon ein, und für die Anzeige gibt es kostenlose Programme. Wichtig ist, dass die Datei im Originalformat abgelegt wird und nicht nur ein Ausdruck.</div></details>
         <details class="faq-item"><summary>Was kostet die Umstellung? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Im Standardfall ab 1.500 Euro netto, mit eigenem Export aus einer Fachanwendung ab 4.000 Euro. Die Lizenz für ein Rechnungsprogramm zahlt ihr direkt beim Anbieter. Den Festpreis bekommst du nach einem kurzen Blick auf eure Rechnungsstrecke.</div></details>
       </div>
-
-      <div class="lp-author">
-        <img src="/assets/img/logo-grundke-it-badge-112.webp" alt="Logo Andreas Grundke IT-Service" width="56" height="56" loading="lazy"/>
-        <div class="lp-author-body">
-          <span class="lp-author-name">Andreas Grundke</span>
-          <span class="lp-author-role">Inhaber · Fachinformatiker für Systemintegration</span>
-          Die externe IT-Abteilung für kleine und mittlere Betriebe im Münchner Osten: IT-Betreuung, KI im Betrieb, Software nach Maß und Websites. Über 20 Jahre in der IT, ein Ansprechpartner für alles Technische.
-          <div class="lp-author-meta">Zuletzt aktualisiert: 7. Oktober 2026 · <a href="/kontakt/">Kontakt aufnehmen</a></div>
-        </div>
-      </div>
-      <div class="lp-cta-row" style="margin-top:2.5rem;">
-        <a href="tel:+491782584438" class="btn-p">Jetzt anrufen · 0178 258 44 38</a>
-        <a href="/ki-automatisierung/" class="btn-g">Abläufe automatisieren</a>
-      </div>
     </div>
   </div>
-</article>
+</section>
+
+<section class="cta-sec">
+  <div class="inner">
+    <h2 class="cta-h">Problem? <em>Ich bin dran.</em></h2>
+    <p class="cta-sub">Ruf an, schreib auf WhatsApp oder per Mail. Am anderen Ende bin ich, Andreas Grundke. Gerne per Du.</p>
+    <div class="cta-btns inline-cta-mobile">
+      <a href="tel:+491782584438" class="btn-tel"><svg width="20" height="20" aria-hidden="true"><use href="#ico-phone"/></svg> 0178 258 44 38</a>
+      <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20komme%20%C3%BCber%20deine%20Seite%20%E2%80%9EE-Rechnung%E2%80%9C." target="_blank" rel="noopener" class="btn-wa"><svg width="20" height="20" aria-hidden="true"><use href="#ico-wa"/></svg> WhatsApp</a>
+      <a href="mailto:info@grundke-it.de?subject=Anfrage%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0AMein%20Anliegen%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F)." class="btn-email"><svg width="20" height="20" aria-hidden="true"><use href="#ico-mail"/></svg> E-Mail schreiben</a>
+    </div>
+    <div class="hc-qr cta-qr">
+      <a href="/kontakt/" title="Alle Kontaktwege"><img src="/assets/img/qr-tree.png" alt="QR-Code: Kontaktseite aufs Handy holen" width="88" height="88"/></a>
+      <p><strong>Scan mich. Dann reden wir.</strong>Alle Kontaktwege direkt aufs Handy.</p>
+    </div>
+    <p class="cta-next"><a href="/ki-automatisierung/">Abläufe automatisieren<svg width="16" height="16" aria-hidden="true"><use href="#ico-arrow-r"/></svg></a></p>
+    <div class="cta-author">
+      <span class="ava" aria-hidden="true">AG</span>
+      <p><strong>Andreas Grundke</strong> · Fachinformatiker für Systemintegration · über 20 Jahre IT<br><span class="cta-date">Zuletzt aktualisiert: 10. Oktober 2026</span></p>
+    </div>
+  </div>
+</section>
+
 </main>
 
 <footer class="site-footer">

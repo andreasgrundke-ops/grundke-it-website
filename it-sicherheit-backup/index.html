@@ -35,44 +35,12 @@
   <link rel="stylesheet" href="/assets/css/style.css?v=2026.10.b"/>
 
   <style>
-    .lp-wrap { margin-top:var(--nav-h); padding:clamp(3rem,8vw,6rem) 0; }
-    .lp-content { max-width:880px; }
-    .lp-crumbs ol { display:flex; flex-wrap:wrap; gap:.35rem; list-style:none; margin:0 0 1.4rem; padding:0; font-size:.8rem; color:var(--text3); }
-    .lp-crumbs li + li::before { content:"/"; margin-right:.35rem; color:var(--border); }
-    .lp-crumbs a { color:var(--text2); text-decoration:none; }
-    .lp-crumbs a:hover { color:var(--cyan); }
-    .lp-crumbs [aria-current] { color:var(--text); }
-    .lp-content h2 { font-family:var(--fh); font-size:clamp(1.3rem,3vw,1.8rem); font-weight:800; color:var(--text); letter-spacing:-.02em; margin:2.6rem 0 1rem; }
-    .lp-content p { font-size:1.0667rem; color:var(--text2); line-height:1.8; margin-bottom:1rem; }
+    .lp-content > p, .lp-content > div { max-width:68ch; }
+    .lp-content p { font-size:1.0667rem; color:var(--text2); line-height:1.75; margin:0 0 1rem; }
+    .lp-content p:last-child { margin-bottom:0; }
     .lp-content strong { color:var(--text); }
-    .lp-cta-row { display:flex; flex-wrap:wrap; gap:1rem; margin:2rem 0; }
-    .lp-content .faq-wrap { margin-top:1.2rem; }
+    .lp-content p a, .lp-content li a { color:var(--cyan); }
     .lp-related { margin-top:2rem; }
-    .lp-content p a { color:var(--cyan); text-underline-offset:.2em; }
-    @media (max-width:560px) { .lp-cta-row .btn-p, .lp-cta-row .btn-g { width:100%; justify-content:center; } }
-    .lp-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1rem; margin:1.5rem 0; }
-    .lp-card { background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:1.3rem; }
-    .lp-card h3 { font-family:var(--fh); font-size:1rem; font-weight:700; color:var(--text); margin-bottom:.4rem; }
-    .lp-card p { font-size:.85rem; color:var(--text2); line-height:1.6; margin:0; }
-    .lp-price-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1rem; margin:1.5rem 0; }
-    .lp-price { background:var(--bg2); border:1px solid var(--border); border-radius:14px; padding:1.5rem; text-align:center; }
-    .lp-price.feat { border-color:var(--cyan); box-shadow:0 8px 24px rgba(38,189,239,.10); }
-    .lp-price .tier { font-family:var(--fm); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--text3); }
-    .lp-price .amount { font-family:var(--fh); font-size:1.8rem; font-weight:800; color:var(--text); margin:.4rem 0; }
-    .lp-price .amount span { display:block; margin-top:.2rem; font-size:.8rem; font-weight:500; color:var(--text3); }
-    .lp-price .desc { font-size:.82rem; color:var(--text2); line-height:1.6; }
-    .lp-places { display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0; }
-    .lp-place { font-family:var(--fm); font-size:.78rem; background:var(--bg2); border:1px solid var(--border); border-radius:999px; padding:.35rem .9rem; color:var(--text2); text-decoration:none; }
-    .lp-place:hover { border-color:var(--cyan); color:var(--cyan); }
-    .lp-place.here { border-color:var(--cyan); color:var(--cyan); }
-    .lp-trust { background:var(--bg2); border:1px solid var(--border); border-radius:16px; padding:1.6rem; margin:2rem 0; font-size:.9rem; color:var(--text2); line-height:1.7; }
-    .lp-author { display:flex; gap:1.1rem; align-items:flex-start; background:var(--bg2); border:1px solid var(--border); border-radius:14px; padding:1.4rem 1.5rem; margin:2.5rem 0 1rem; }
-    .lp-author img { width:56px; height:56px; border-radius:50%; flex-shrink:0; background:var(--bg); object-fit:contain; border:1px solid var(--border); }
-    .lp-author-body { font-size:.88rem; color:var(--text2); line-height:1.7; }
-    .lp-author-name { font-family:var(--fh); font-weight:800; color:var(--text); font-size:1rem; }
-    .lp-author-role { display:block; font-size:.8rem; color:var(--text3); margin:.1rem 0 .6rem; }
-    .lp-author-meta { margin-top:.7rem; font-size:.78rem; color:var(--text3); }
-    .lp-author-meta a { color:var(--cyan); text-decoration:underline; text-underline-offset:.2em; }
   </style>
   <script type="application/ld+json">
 {
@@ -181,7 +149,7 @@
     "@id": "https://grundke-it.de/#website"
   },
   "datePublished": "2026-06-15",
-  "dateModified": "2026-10-07",
+  "dateModified": "2026-10-10",
   "author": {
     "@type": "Person",
     "@id": "https://grundke-it.de/#andreas",
@@ -217,6 +185,8 @@
   <symbol id="ico-key" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.3 9.3"/><path d="m18 5 3-3"/><path d="m15 8 3-3"/></symbol>
   <symbol id="ico-file-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></symbol>
   <symbol id="ico-search-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m8 11 2 2 4-4"/><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+  <symbol id="ico-network" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="16" y="16" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="9" y="2" width="6" height="6" rx="1"/><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"/><path d="M12 12V8"/></symbol>
+  <symbol id="ico-wifi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h.01"/><path d="M2 8.82a15 15 0 0 1 20 0"/><path d="M5 12.859a10 10 0 0 1 14 0"/><path d="M8.5 16.429a5 5 0 0 1 7 0"/></symbol>
 </svg>
 <header class="site-header">
 <nav aria-label="Hauptnavigation">
@@ -249,57 +219,100 @@
 </header>
 
 <main id="main">
-<article class="lp-wrap">
-  <div class="inner">
-    <div class="lp-content">
+<section class="sec sec--glow page-head">
+  <div class="inner page-head-grid">
+    <div class="page-head-copy page-head-copy--two">
       <nav class="lp-crumbs" aria-label="Brotkrumen"><ol><li><a href="/">Startseite</a></li><li aria-current="page">IT-Sicherheit &amp; Backup</li></ol></nav>
-      <div class="s-label">IT-Sicherheit</div>
-      <h1 class="s-title">IT-Sicherheit &amp; Backup für Unternehmen</h1>
-      <p class="s-sub">Schutz vor Ransomware, Datenverlust und Ausfall – mit einer Datensicherung, die im Ernstfall wirklich funktioniert.</p>
-
-      <div class="lp-cta-row">
-        <a href="tel:+491782584438" class="btn-p">Kostenloses Erstgespräch</a>
-        <a href="/kontakt/" class="btn-g">Anfrage senden</a>
+      <div class="page-head-a">
+        <h1 class="page-h1"><span class="nowrap">IT-Sicherheit</span> &amp; Backup für Unternehmen</h1>
+        <p class="page-k">Ich sichere eure Daten mit einer Kopie außer Haus und prüfe regelmäßig, ob sie sich zurückspielen lassen.</p>
       </div>
+      <div class="page-head-b">
+        <p class="s-sub measure">IT-Sicherheit heißt bei Grundke IT-Service in Grasbrunn für Betriebe im Münchner Osten: Datensicherung nach 3-2-1 mit Kopie außer Haus, zentral verwalteter Virenschutz, Firewall und ein Team, das Phishing erkennt. Ich richte das ein und betreue es weiter.</p>
+        <div class="hc-ctas">
+          <a href="tel:+491782584438" class="btn-p hc-call"><svg width="18" height="18" aria-hidden="true"><use href="#ico-phone"/></svg>Anrufen <span class="hc-num">0178 258 44 38</span></a>
+          <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20komme%20%C3%BCber%20deine%20Seite%20%E2%80%9EIT-Sicherheit%20%26%20Backup%E2%80%9C." target="_blank" rel="noopener" class="hc-wa"><svg width="18" height="18" aria-hidden="true"><use href="#ico-wa"/></svg>WhatsApp</a>
+        </div>
+        <ul class="hc-proof">
+          <li><svg class="is-star" aria-hidden="true"><use href="#ico-star"/></svg><a href="/#bewertungen-herkunft" data-proof>5,0 bei 5 Google-Bewertungen</a></li>
+          <li><svg aria-hidden="true"><use href="#ico-cloud"/></svg>Datensicherung nach 3-2-1 mit Kopie außer Haus</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
 
+<section class="sec sec--alt">
+  <div class="inner">
+    <h2 class="s-title">Das steckt drin</h2>
+    <div class="lp-content">
       <p>Ein einziger verschlüsselter Server oder ein gelöschtes Verzeichnis kann ein kleines Unternehmen tagelang lahmlegen. Ich sorge dafür, dass es gar nicht erst so weit kommt – und dass du im Ernstfall deine Daten zurückbekommst. Dazu gehören eine saubere Backup-Strategie nach dem 3-2-1-Prinzip, aktueller Virenschutz, eine vernünftige Firewall und Mitarbeiter, die Phishing erkennen.</p>
+    </div>
+    <ul class="feat-rows">
+      <li><span class="feat-ico" aria-hidden="true"><svg><use href="#ico-cloud"/></svg></span><div><h3>Backup nach 3-2-1</h3><p>Drei Kopien, zwei Medien, eine außer Haus – inklusive Test der Rücksicherung.</p></div></li>
+      <li><span class="feat-ico" aria-hidden="true"><svg><use href="#ico-shield"/></svg></span><div><h3>Virenschutz</h3><p>Zentral verwalteter Schutz (z. B. ESET) auf allen Geräten.</p></div></li>
+      <li><span class="feat-ico" aria-hidden="true"><svg><use href="#ico-key"/></svg></span><div><h3>Firewall &amp; VPN</h3><p>Abgesicherter Internetzugang und verschlüsselter Zugriff fürs Home-Office.</p></div></li>
+      <li><span class="feat-ico" aria-hidden="true"><svg><use href="#ico-user-check"/></svg></span><div><h3>Awareness-Schulung</h3><p>Deine Mitarbeiter lernen, Phishing und Betrug zu erkennen.</p></div></li>
+    </ul>
+  </div>
+</section>
 
-      <h2>Das steckt drin</h2>
-      <div class="lp-grid">
-        <div class="lp-card"><h3>Backup nach 3-2-1</h3><p>Drei Kopien, zwei Medien, eine außer Haus – inklusive Test der Rücksicherung.</p></div>
-        <div class="lp-card"><h3>Virenschutz</h3><p>Zentral verwalteter Schutz (z. B. ESET) auf allen Geräten.</p></div>
-        <div class="lp-card"><h3>Firewall &amp; VPN</h3><p>Abgesicherter Internetzugang und verschlüsselter Zugriff fürs Home-Office.</p></div>
-        <div class="lp-card"><h3>Awareness-Schulung</h3><p>Deine Mitarbeiter lernen, Phishing und Betrug zu erkennen.</p></div>
-      </div>
+<section class="sec sec--aside">
+  <div class="inner">
+    <h2 class="s-title">Was andere über mich sagen</h2>
+    <div class="sec-aside-body">
+    <div class="testi-grid testi-grid--few">
+      <figure class="testi-card">
+        <div class="stars" role="img" aria-label="5 von 5 Sternen"><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg></div>
+        <blockquote class="testi-txt">
+          <p>„Ich bin sehr zufrieden mit der Arbeit der Firma. Die Umsetzung erfolgte schnell, zuverlässig und in sehr guter Qualität. Alle meine Anliegen wurden professionell gelöst. Klare Empfehlung!“</p>
+        </blockquote>
+        <figcaption>
+          <div class="testi-who">Christian Fleischmann</div>
+          <div class="testi-role">Google-Bewertung</div>
+        </figcaption>
+      </figure>
+    </div>
+    <p class="testi-source testi-source--link"><a href="/#bewertungen-herkunft">Woher die Stimmen kommen</a></p>
+    </div>
+  </div>
+</section>
 
-      <div class="lp-trust">
-        <strong>Einheitlicher Stundensatz von 110 € netto, Abrechnung im 15-Minuten-Takt, keine versteckten Kosten.</strong> Kein klassischer Kundendienst, sondern ein fester persönlicher Ansprechpartner mit über 20 Jahren IT-Erfahrung – im Raum München Ost, datenschutzgerecht und auf Wunsch self-hosted.
-      </div>
-
-      <h2>Häufige Fragen</h2>
+<section class="sec sec--alt sec--aside">
+  <div class="inner">
+    <h2 class="s-title">Häufige Fragen</h2>
+    <div class="sec-aside-body">
       <div class="faq-wrap">
         <details class="faq-item"><summary>Reicht OneDrive oder eine externe Festplatte als Backup? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Nein. OneDrive synchronisiert nur – wird eine Datei verschlüsselt oder gelöscht, ist das auch in der Cloud so. Eine einzelne Festplatte fällt bei Diebstahl, Brand oder Ransomware mit aus. Erst ein 3-2-1-Konzept mit einer Kopie außer Haus schützt wirklich.</div></details>
         <details class="faq-item"><summary>Was mache ich bei einem Ransomware-Befall? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Sofort Gerät vom Netz trennen und mich anrufen. Mit einem funktionierenden Backup stelle ich deine Daten wieder her, statt Lösegeld zu zahlen – deshalb ist die Vorbereitung so wichtig.</div></details>
         <details class="faq-item"><summary>Wie oft werden meine Daten gesichert? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">In der Regel mehrmals täglich, je nach Datenmenge und Wichtigkeit. Wichtig ist nicht nur das Sichern, sondern der regelmäßige Test, ob sich die Daten auch wirklich zurückspielen lassen.</div></details>
         <details class="faq-item"><summary>Was kostet IT-Sicherheit für ein kleines Unternehmen? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Deutlich weniger als ein einziger ernster Ausfall. Backup, Virenschutz und Firewall sind Teil meiner Managed-IT-Pakete ab 149 € netto im Monat oder als Einzelprojekt zum festen Stundensatz umsetzbar.</div></details>
       </div>
-
-      <div class="lp-author">
-        <img src="/assets/img/logo-grundke-it-badge-112.webp" alt="Logo Andreas Grundke IT-Service" width="56" height="56" loading="lazy"/>
-        <div class="lp-author-body">
-          <span class="lp-author-name">Andreas Grundke</span>
-          <span class="lp-author-role">Inhaber · Fachinformatiker für Systemintegration</span>
-          Die externe IT-Abteilung für kleine und mittlere Betriebe im Münchner Osten: IT-Betreuung, KI im Betrieb, Software nach Maß und Websites. Über 20 Jahre in der IT, ein Ansprechpartner für alles Technische.
-          <div class="lp-author-meta">Zuletzt aktualisiert: 7. Oktober 2026 · <a href="/kontakt/">Kontakt aufnehmen</a></div>
-        </div>
-      </div>
-      <div class="lp-cta-row" style="margin-top:2.5rem;">
-        <a href="tel:+491782584438" class="btn-p">Jetzt anrufen · 0178 258 44 38</a>
-        <a href="/it-service-grasbrunn/" class="btn-g">IT-Service in deiner Region</a>
-      </div>
     </div>
   </div>
-</article>
+</section>
+
+<section class="cta-sec">
+  <div class="inner">
+    <h2 class="cta-h">Problem? <em>Ich bin dran.</em></h2>
+    <p class="cta-sub">Ruf an, schreib auf WhatsApp oder per Mail. Am anderen Ende bin ich, Andreas Grundke. Gerne per Du.</p>
+    <div class="cta-btns inline-cta-mobile">
+      <a href="tel:+491782584438" class="btn-tel"><svg width="20" height="20" aria-hidden="true"><use href="#ico-phone"/></svg> 0178 258 44 38</a>
+      <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20komme%20%C3%BCber%20deine%20Seite%20%E2%80%9EIT-Sicherheit%20%26%20Backup%E2%80%9C." target="_blank" rel="noopener" class="btn-wa"><svg width="20" height="20" aria-hidden="true"><use href="#ico-wa"/></svg> WhatsApp</a>
+      <a href="mailto:info@grundke-it.de?subject=Anfrage%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0AMein%20Anliegen%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F)." class="btn-email"><svg width="20" height="20" aria-hidden="true"><use href="#ico-mail"/></svg> E-Mail schreiben</a>
+    </div>
+    <div class="hc-qr cta-qr">
+      <a href="/kontakt/" title="Alle Kontaktwege"><img src="/assets/img/qr-tree.png" alt="QR-Code: Kontaktseite aufs Handy holen" width="88" height="88"/></a>
+      <p><strong>Scan mich. Dann reden wir.</strong>Alle Kontaktwege direkt aufs Handy.</p>
+    </div>
+    <p class="cta-next"><a href="/it-service-grasbrunn/">IT-Service in deiner Region<svg width="16" height="16" aria-hidden="true"><use href="#ico-arrow-r"/></svg></a></p>
+    <div class="cta-author">
+      <span class="ava" aria-hidden="true">AG</span>
+      <p><strong>Andreas Grundke</strong> · Fachinformatiker für Systemintegration · über 20 Jahre IT<br><span class="cta-date">Zuletzt aktualisiert: 10. Oktober 2026</span></p>
+    </div>
+  </div>
+</section>
+
 </main>
 
 <footer class="site-footer">

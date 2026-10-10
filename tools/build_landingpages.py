@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 build_landingpages.py
-Version : 2.3
+Version : 2.4
 Autor   : Andreas Grundke IT-Service (Grundke IT-Service)
 Datum   : 2026-10-10
 Zweck   : Generiert aus einem gemeinsamen Template + Datenlisten die Orts- und
@@ -47,6 +47,12 @@ Aenderungen:
               voices_html, prices_html, closing) fuer managed-it-service, it-betreuer-wechseln und
               it-notdienst (Schalter SHELL_SLUGS), K4/Antwortsatz/Chat/Stimmen aus dem Textblatt,
               schlankes STYLE fuer diese Seiten, STYLE_LEGACY fuer die uebrigen bis Task 7.
+  2026-10-10  Release B, Task 6: Ortsseiten (render_place ueber render_shell, PLACE_DATE) und
+              Microsoft 365, IT-Sicherheit, Netzwerk (Stimme aus REVIEWS statt lp-voice/VOICE_STYLE),
+              Lizenzen, E-Rechnung, Digitalbonus in der Huelle; K4/Antwortsatz/Stimmen aus dem
+              Textblatt, freigegebene Ersatzsaetze (Frage 5). Huelle: Kopf ohne Chat zweispaltig,
+              FAQ und einzelne Stimme mit seitlicher Ueberschrift, tail_blocks, voices_h2,
+              <!--split--> in extra, Vertrauenstext neben dem Einstieg; ico-network, ico-wifi.
 """
 
 import os
@@ -240,7 +246,8 @@ PHONE_SVG = ('<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke
 
 # Icon-Sprite fuer alle Seiten (seit 10.10.2026): die Symbole, die die gemeinsamen Bausteine
 # brauchen (Belegzeile, Knoepfe, Sterne; ab ico-tools die Kacheln der Leistungszeilen in der
-# Generator-Huelle). Pfade 1:1 aus dem Sprite der Startseite.
+# Generator-Huelle). Pfade 1:1 aus dem Sprite der Startseite; ico-wifi (Task 6) aus derselben
+# Lucide-Reihe wie ico-wifi-off der Startseite, die dort kein WLAN-Symbol ohne Strich hat.
 # page() und sync_shared() setzen es direkt vor den <header>. Die Startseite bekommt es nicht:
 # ihr eigenes Sprite enthaelt dieselben Symbole, ein zweites ergaebe doppelte IDs.
 ICON_SPRITE = ('<svg xmlns="http://www.w3.org/2000/svg" id="icon-sprite" style="display:none" aria-hidden="true">\n'
@@ -262,6 +269,8 @@ ICON_SPRITE = ('<svg xmlns="http://www.w3.org/2000/svg" id="icon-sprite" style="
                '  <symbol id="ico-key" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.3 9.3"/><path d="m18 5 3-3"/><path d="m15 8 3-3"/></symbol>\n'
                '  <symbol id="ico-file-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></symbol>\n'
                '  <symbol id="ico-search-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m8 11 2 2 4-4"/><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>\n'
+               '  <symbol id="ico-network" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="16" y="16" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="9" y="2" width="6" height="6" rx="1"/><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"/><path d="M12 12V8"/></symbol>\n'
+               '  <symbol id="ico-wifi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h.01"/><path d="M2 8.82a15 15 0 0 1 20 0"/><path d="M5 12.859a10 10 0 0 1 14 0"/><path d="M8.5 16.429a5 5 0 0 1 7 0"/></symbol>\n'
                '</svg>')
 
 
@@ -656,7 +665,11 @@ def page(head_html, schema_blocks, main_html, places, services, extra_style="", 
 # Belegzeile, Beispiel-Chat) -> Abschnitte im Wechsel -> Stimmen -> Preise -> FAQ -> Abschluss K5
 # mit Autorzeile. Bausteine kommen nur aus style.css. SHELL_SLUGS schaltet Seite fuer Seite um
 # (Task 5: drei Kernseiten, Task 6: Orte und IT-Seiten, Task 7: Rest, danach entfaellt der Schalter).
-SHELL_SLUGS = ("managed-it-service", "it-betreuer-wechseln", "it-notdienst")
+SHELL_SLUGS = ("managed-it-service", "it-betreuer-wechseln", "it-notdienst",
+               # Task 6: Ortsseiten und uebrige IT-Seiten
+               "it-service-grasbrunn", "it-service-vaterstetten", "it-service-baldham", "it-service-zorneding",
+               "it-service-haar", "it-service-putzbrunn", "microsoft-365-betreuung", "it-sicherheit-backup",
+               "netzwerk-wlan-firewall", "lizenzen", "e-rechnung", "digitalbonus-bayern")
 # WhatsApp-Satz fuer Kopf und Abschluss einer Unterseite (Textblatt §4): die Seite ist das Merkmal
 WA_SEITE = "Hallo Andreas, ich komme über deine Seite „{nav}“."
 AUTHOR_ROLE = "Fachinformatiker für Systemintegration · über 20 Jahre IT"
@@ -665,16 +678,21 @@ CHAT_SENDER = {"kunde": ("is-me", "Kunde"), "andreas": ("is-ag", "Andreas")}
 H2_SPLIT_RE = re.compile(r"\s*<h2>(.*?)</h2>\s*", re.S)
 
 
-def section(content, alt=False, label="", title="", sid=""):
+def section(content, alt=False, label="", title="", sid="", aside=False):
     """Abschnitt der Huelle: .sec (Grundflaeche) oder .sec--alt (zweite Flaeche), optional mit
-    Kicker (label, Text), Ueberschrift (title, HTML aus den Daten wie bisher) und id."""
+    Kicker (label, Text), Ueberschrift (title, HTML aus den Daten wie bisher) und id.
+    aside=True (FAQ, eine einzelne Stimme): ab 1024 px steht die Ueberschrift links, der Inhalt in
+    der breiteren rechten Spalte (.sec--aside), statt einer schmalen Spalte mit leerer rechter Haelfte."""
     top = ""
     if label:
         top += '\n    <div class="s-label">' + esc(label) + '</div>'
     if title:
         top += '\n    <h2 class="s-title">' + title + '</h2>'
-    return '<section class="sec{a}"{i}>\n  <div class="inner">{t}{c}\n  </div>\n</section>'.format(
-        a=" sec--alt" if alt else "", i=' id="' + sid + '"' if sid else "", t=top, c=content)
+    if aside:
+        content = '\n    <div class="sec-aside-body">' + content + '\n    </div>'
+    return '<section class="sec{a}{s}"{i}>\n  <div class="inner">{t}{c}\n  </div>\n</section>'.format(
+        a=" sec--alt" if alt else "", s=" sec--aside" if aside else "", i=' id="' + sid + '"' if sid else "",
+        t=top, c=content)
 
 
 def mini_chat(lines):
@@ -700,7 +718,9 @@ def page_head(s, crumbs):
     Akzentzeile als <em>; h1_nowrap haelt einen Begriff in einer Zeile), K4 (.page-k), Antwortsatz
     (.s-sub), Knoepfe Anrufen + WhatsApp (am Handy uebernimmt die Kontaktleiste), Belegzeile: zuerst
     die Google-Bewertungen mit Link zur Herkunft, dann ein Beleg der Seite (proof2: Symbol, Text).
-    Daneben optional der Beispiel-Chat, bei Hubs darunter die Wege zu den Unterseiten."""
+    Daneben optional der Beispiel-Chat, bei Hubs darunter die Wege zu den Unterseiten. Ohne Chat und
+    ohne Wege steht der Kopf ab 1024 px in zwei Spalten (H1 + K4 links, Antwortsatz, Knoepfe und
+    Belegzeile rechts); die Reihenfolge im HTML bleibt dieselbe (erste 300 Zeichen, Handy)."""
     hero = s.get("hero")
     h1 = s["h1"]
     if s.get("h1_nowrap"):
@@ -718,12 +738,11 @@ def page_head(s, crumbs):
                  '\n      </ul>\n    </nav>').format(l=esc(hero["paths_label"]), p="".join(
                      '\n        <li><a href="{h}"><span class="lp-path-t">{t}</span><span class="lp-path-d">{d}</span></a></li>'
                      .format(h=h, t=esc(t), d=esc(d)) for t, d, h in hero["paths"]))
-    return """<section class="sec sec--glow page-head">
-  <div class="inner page-head-grid{grid}">
-    <div class="page-head-copy">
-      {crumbs}
+    two = not side   # kein Chat, keine Wege: Kopf selbst zweispaltig
+    head_a = """
       <h1 class="page-h1">{h1}</h1>
-      <p class="page-k">{k}</p>
+      <p class="page-k">{k}</p>""".format(h1=h1, k=esc(s["k"]))
+    head_b = """
       <p class="s-sub measure">{answer}</p>
       <div class="hc-ctas">
         <a href="tel:{tel}" class="btn-p hc-call"><svg width="18" height="18" aria-hidden="true"><use href="#ico-phone"/></svg>Anrufen <span class="hc-num">{phone}</span></a>
@@ -731,12 +750,19 @@ def page_head(s, crumbs):
       </div>
       <ul class="hc-proof">
         <li><svg class="is-star" aria-hidden="true"><use href="#ico-star"/></svg><a href="/#bewertungen-herkunft" data-proof>5,0 bei {n} Google-Bewertungen</a></li>{proof2}
-      </ul>
+      </ul>""".format(answer=esc(s["answer"]), tel=PHONE, phone=PHONE_DISP,
+                      wa=WA(WA_SEITE.format(nav=s["nav"])), n=REVIEW_COUNT_GOOGLE, proof2=proof2)
+    if two:
+        head_a = '\n      <div class="page-head-a">' + head_a.replace("\n", "\n  ") + '\n      </div>'
+        head_b = '\n      <div class="page-head-b">' + head_b.replace("\n", "\n  ") + '\n      </div>'
+    return """<section class="sec sec--glow page-head">
+  <div class="inner page-head-grid{grid}">
+    <div class="page-head-copy{copy}">
+      {crumbs}{a}{b}
     </div>{side}
   </div>
-</section>""".format(grid=" page-head-grid--chat" if s.get("chat") else "", crumbs=crumbs, h1=h1,
-                     k=esc(s["k"]), answer=esc(s["answer"]), tel=PHONE, phone=PHONE_DISP,
-                     wa=WA(WA_SEITE.format(nav=s["nav"])), n=REVIEW_COUNT_GOOGLE, proof2=proof2, side=side)
+</section>""".format(grid=" page-head-grid--chat" if s.get("chat") else "", copy=" page-head-copy--two" if two else "",
+                     crumbs=crumbs, a=head_a, b=head_b, side=side)
 
 
 def feat_rows(cards):
@@ -834,39 +860,55 @@ def split(left, right):
     return '\n    <div class="sec-split">\n    <div>' + left + '\n    </div>\n    <div>' + right + '\n    </div>\n    </div>'
 
 
-def render_shell(s, places, services):
-    """Leistungsseite in der neuen Huelle. Kopf (<head>) und Schema wie bisher (service_head_schema),
-    Inhalte aus denselben Daten; neu sind k, answer, chat, voices (Textblatt) und die Darstellung:
-    proof2 (zweiter Beleg im Kopf), h1_nowrap, intro_price (Preis neben dem Einstieg), price_line
-    (Zeile unter den Paketen), row (zwei Abschnitte aus "extra" nebeneinander). Ein Vertrauens-
-    kasten erscheint nur mit eigenem "trust"; der allgemeine TRUST_DEFAULT gilt nur in der alten Huelle."""
+def render_shell(s, places, services, head_schema=None):
+    """Leistungs- oder Ortsseite in der neuen Huelle. Kopf (<head>) und Schema wie bisher
+    (service_head_schema; Ortsseiten geben ihr eigenes Paar als head_schema mit), Inhalte aus denselben
+    Daten; neu sind k, answer, chat, voices (Textblatt) und die Darstellung: proof2 (zweiter Beleg im
+    Kopf), h1_nowrap, intro_price (Preis neben dem Einstieg), price_line (Zeile unter den Paketen),
+    row (zwei Abschnitte nebeneinander, auch der Stimmen-Abschnitt und tail_blocks), voices_h2 (eigene
+    Ueberschrift ueber den Stimmen), tail_blocks ((Titel, HTML) nach den Stimmen), "<!--split-->" in
+    einem extra-Abschnitt (Text links, Rest rechts). Ein Vertrauenskasten erscheint nur mit eigenem
+    "trust" (ohne Preise neben dem Einstieg); der allgemeine TRUST_DEFAULT gilt nur in der alten Huelle."""
     slug = s["slug"]
-    h, schema = service_head_schema(s)
+    h, schema = head_schema or service_head_schema(s)
     intro = s["intro"] if s.get("raw_intro") else esc(s["intro"])
     lead = prose(intro if intro.lstrip().startswith("<div") else "<p>" + intro + "</p>")
+    trust_box = '\n    <div class="card-box"><p>' + s["trust"] + '</p></div>' if s.get("trust") else ""
     if s.get("intro_price"):
         lead = split(lead, price_card(s["intro_price"], slug))
+    elif trust_box and not s.get("prices"):
+        # Vertrauenstext neben dem Einstieg statt als Kasten am Ende (Desktop zweispaltig)
+        lead, trust_box = split(lead, trust_box), ""
     blocks = [(s.get("cards_h2", "Das steckt drin") if s.get("cards") else "",
                lead + (feat_rows(s["cards"]) if s.get("cards") else ""))]
     for title, body in extra_blocks(s.get("extra", "")):
-        if title:
-            blocks.append((title, prose(body)))
+        if "<!--split-->" in body:
+            left, right = body.split("<!--split-->", 1)
+            body_html = split(prose(left), prose(right))
         else:
-            blocks[-1] = (blocks[-1][0], blocks[-1][1] + prose(body))
+            body_html = prose(body)
+        if title:
+            blocks.append((title, body_html))
+        else:
+            blocks[-1] = (blocks[-1][0], blocks[-1][1] + body_html)
+    if not s.get("prices"):
+        blocks[-1] = (blocks[-1][0], blocks[-1][1] + trust_box)
+    aside = {s.get("faq_h2", "Häufige Fragen")}
+    if s.get("voices"):
+        voices_h2 = s.get("voices_h2", "Was andere über mich sagen")
+        blocks.append((voices_h2, voices_html(s["voices"])))
+        if len(s["voices"]) == 1:
+            aside.add(voices_h2)   # eine einzelne Stimme: Ueberschrift links, Karte rechts
+    blocks += s.get("tail_blocks", [])
     if s.get("row"):
-        # zwei Abschnitte aus "extra" als eine Zeile, in der Reihenfolge von "row" (links, rechts)
+        # zwei Abschnitte als eine Zeile, in der Reihenfolge von "row" (links, rechts)
         pos = {t: k for k, (t, _c) in enumerate(blocks)}
         if not all(t in pos for t in s["row"]):
-            raise SystemExit("render_shell: row-Titel fehlen in extra auf " + slug)
+            raise SystemExit("render_shell: row-Titel fehlen auf " + slug)
         cols = ['\n    <h2 class="s-title">' + t + '</h2>' + blocks[pos[t]][1] for t in s["row"]]
         at = min(pos[t] for t in s["row"])
         blocks = [b for b in blocks if b[0] not in s["row"]]
         blocks.insert(at, ("", split(cols[0], cols[1])))
-    trust_box = '\n    <div class="card-box"><p>' + s["trust"] + '</p></div>' if s.get("trust") else ""
-    if not s.get("prices"):
-        blocks[-1] = (blocks[-1][0], blocks[-1][1] + trust_box)
-    if s.get("voices"):
-        blocks.append(("Was andere über mich sagen", voices_html(s["voices"])))
     if s.get("prices"):
         line = ""
         if s.get("price_line"):
@@ -880,7 +922,8 @@ def render_shell(s, places, services):
     blocks.append((s.get("faq_h2", "Häufige Fragen"), faq_html(s["faqs"]) + (prose(related) if related else "")))
     # Flaechen im Wechsel, der erste Abschnitt nach dem Kopf auf der zweiten Flaeche
     secs = [page_head(s, crumbs_html(s["nav"], slug))]
-    secs += [section(content, alt=k % 2 == 0, title=title) for k, (title, content) in enumerate(blocks)]
+    secs += [section(content, alt=k % 2 == 0, title=title, aside=bool(title) and title in aside)
+             for k, (title, content) in enumerate(blocks)]
     secs.append(closing(s.get("modified_disp", TODAY_DISP), WA(WA_SEITE.format(nav=s["nav"])),
                         (s.get("cta2_href", "/it-service-grasbrunn/"), s.get("cta2_text", "IT-Service in deiner Region"))))
     return page(h, schema, "\n\n".join(secs) + "\n", places, services, slug=slug)
@@ -890,10 +933,22 @@ def render_shell(s, places, services):
 #  Daten: Orte                                                                 #
 # --------------------------------------------------------------------------- #
 
+# Ortsseiten in der Generator-Huelle (seit 10.10.2026, Task 6): k (K4) und answer (Antwortsatz) und
+# voice (eine Google-Stimme ohne Ortsbezug) aus dem Textblatt §1/§3; intro und near_a von Vaterstetten,
+# Haar und Baldham mit den freigegebenen Ersatzsaetzen (Textblatt, Frage 5) statt Minuten- und
+# Rueckruf-Zusagen.
+PLACE_DATE = "2026-10-10"            # dateModified, Sitemap und „Zuletzt aktualisiert“ aller Ortsseiten
+PLACE_DATE_DISP = "10. Oktober 2026"
 PLACES = [
     {
         "slug": "grasbrunn", "name": "Grasbrunn", "title_name": "Grasbrunn & Neukeferloh",
         "area": ["Grasbrunn", "Neukeferloh", "Harthausen", "Haar", "Vaterstetten"],
+        "k": ("Mein Sitz ist im Beethovenring 16 in Neukeferloh: Für Betriebe in Grasbrunn und Harthausen bin ich "
+              "der IT-Betreuer aus der Nachbarschaft."),
+        "answer": ("Als Grundke IT-Service betreue ich in Grasbrunn, Neukeferloh und Harthausen Büros, Werkstätten und "
+                   "Praxen mit 5 bis 50 Arbeitsplätzen: Rechner, Server, Microsoft 365 und Datensicherung, ad hoc für "
+                   "110 € netto je Stunde oder ab 149 € netto im Monat."),
+        "voice": "dietz",
         "intro": ("Mein Sitz ist im Beethovenring 16 in Neukeferloh – also direkt in der "
                   "Gemeinde Grasbrunn. Wenn bei dir im Büro, in der Werkstatt oder in der Praxis "
                   "die IT streikt, bin ich nicht irgendein Callcenter zwei Bundesländer entfernt, "
@@ -907,23 +962,35 @@ PLACES = [
     {
         "slug": "vaterstetten", "name": "Vaterstetten", "title_name": "Vaterstetten",
         "area": ["Vaterstetten", "Baldham", "Parsdorf", "Grasbrunn"],
+        "k": ("Für Büros, Praxen und Handwerksbetriebe in Vaterstetten und Parsdorf bin ich von Neukeferloh aus der "
+              "feste Ansprechpartner, der eure IT kennt."),
+        "answer": ("Als Grundke IT-Service aus Grasbrunn betreue ich Betriebe in Vaterstetten, Baldham und Parsdorf mit "
+                   "5 bis 50 Arbeitsplätzen: Microsoft 365, Netzwerk, Datensicherung und sicherer Zugriff aus dem "
+                   "Home-Office, vor Ort oder per Fernwartung."),
+        "voice": "verena-k",
         "intro": ("Vaterstetten ist mit Baldham und Parsdorf eine der größten Gemeinden im Münchner "
                   "Osten – viele Pendler, Büros, Praxen und Handwerksbetriebe. Von meinem Sitz in "
-                  "Neukeferloh bin ich in wenigen Minuten bei dir. Du bekommst einen festen "
+                  "Neukeferloh ist die Anfahrt kurz. Du bekommst einen festen "
                   "Ansprechpartner statt einer anonymen Hotline – persönlich, zuverlässig und mit "
                   "über 20 Jahren IT-Erfahrung."),
         "near_q": "Kommst du für IT-Probleme nach Vaterstetten?",
-        "near_a": ("Ja, sehr gerne. Vaterstetten, Baldham und Parsdorf sind nur wenige Minuten von "
-                   "meinem Sitz in Neukeferloh entfernt. Termine vor Ort stimmen wir ab, vieles lässt sich auch "
+        "near_a": ("Ja. Vaterstetten, Baldham und Parsdorf liegen nicht weit von meinem Sitz in Neukeferloh. "
+                   "Termine vor Ort stimmen wir ab, vieles lässt sich auch "
                    "per Fernwartung lösen. Vertragskunden werden bevorzugt behandelt."),
     },
     {
         "slug": "baldham", "name": "Baldham", "title_name": "Baldham",
         "area": ["Baldham", "Vaterstetten", "Zorneding", "Grasbrunn"],
+        "k": ("Für kleine Büros, Freiberufler und Selbstständige im Home-Office in Baldham rechne ich ohne "
+              "Mindestbetrag im 15-Minuten-Takt ab, per Fernwartung oder nach Absprache vor Ort."),
+        "answer": ("Ja. Als Grundke IT-Service aus Grasbrunn betreue ich auch kleine Betriebe in Baldham und "
+                   "Vaterstetten, vom Freiberufler bis zum Büro mit 50 Arbeitsplätzen, ad hoc für 110 € netto je "
+                   "Stunde oder mit Monatspauschale ab 149 € netto."),
+        "voice": "fleischmann",
         "intro": ("Baldham gehört zu Vaterstetten und ist über die S-Bahn bestens angebunden – ein "
                   "Standort mit vielen kleinen Unternehmen, Freiberuflern und Home-Offices. Ich "
-                  "kümmere mich persönlich um deine IT: schnelle Hilfe, kurze Wege und ein "
-                  "Ansprechpartner, der zurückruft."),
+                  "kümmere mich persönlich um deine IT: kurze Wege, Abrechnung im 15-Minuten-Takt und ein "
+                  "Ansprechpartner, der dein System kennt."),
         "near_q": "Lohnt sich IT-Service für ein kleines Büro in Baldham?",
         "near_a": ("Gerade dann. Für kleine Büros, Freiberufler und Home-Offices in Baldham biete "
                    "ich unkomplizierte Hilfe ohne teure Mindestpauschalen – per Fernwartung oder vor Ort, "
@@ -932,6 +999,12 @@ PLACES = [
     {
         "slug": "zorneding", "name": "Zorneding", "title_name": "Zorneding",
         "area": ["Zorneding", "Pöring", "Baldham", "Vaterstetten"],
+        "k": ("Für Handwerksbetriebe und kleine Firmen in Zorneding und Pöring ohne eigene IT-Abteilung bin ich die "
+              "IT-Abteilung von außen."),
+        "answer": ("Betriebe in Zorneding, Pöring und Wolfesing betreue ich als Grundke IT-Service aus Grasbrunn: "
+                   "laufend mit Monatspauschale ab 149 € netto oder einmalig für 110 € netto je Stunde, per "
+                   "Fernwartung oder vor Ort."),
+        "voice": "dietz",
         "intro": ("Zorneding mit Pöring und Wolfesing liegt an der S-Bahn-Linie S4 im grünen Osten "
                   "des Landkreises Ebersberg. Viele Handwerksbetriebe und kleine Firmen hier haben "
                   "keine eigene IT-Abteilung – genau dafür bin ich da: als externer IT-Betreuer mit "
@@ -944,17 +1017,29 @@ PLACES = [
     {
         "slug": "haar", "name": "Haar", "title_name": "Haar",
         "area": ["Haar", "Grasbrunn", "Putzbrunn", "Vaterstetten"],
+        "k": ("Für Büros, Praxen und Werkstätten in Haar, direkt an der Münchner Stadtgrenze, behalte ich Zugänge, "
+              "Geräte und Datensicherung im Blick, damit bei einer Störung niemand suchen muss."),
+        "answer": ("In Haar betreue ich als Grundke IT-Service aus Grasbrunn die IT von Büros, Praxen und "
+                   "Handwerksbetrieben: Netzwerk und WLAN, Microsoft 365, Virenschutz und Datensicherung, laufend "
+                   "mit Monatspauschale oder bei Bedarf im 15-Minuten-Takt."),
+        "voice": "polednik",
         "intro": ("Haar grenzt direkt an München und ist einer der gewerbestärksten Orte im Münchner "
-                  "Osten – vom Büro über die Praxis bis zum Handwerksbetrieb. Von Neukeferloh aus bin "
-                  "ich in wenigen Minuten in Haar und kümmere mich persönlich um deine komplette IT."),
+                  "Osten – vom Büro über die Praxis bis zum Handwerksbetrieb. Von Neukeferloh aus ist "
+                  "die Anfahrt nach Haar kurz, und ich kümmere mich persönlich um deine komplette IT."),
         "near_q": "Wie schnell bist du bei einem IT-Notfall in Haar?",
-        "near_a": ("Haar ist nur wenige Minuten von meinem Sitz entfernt. Viele Störungen lassen sich "
+        "near_a": ("Haar ist nicht weit von meinem Sitz in Neukeferloh entfernt. Viele Störungen lassen sich "
                    "per Fernwartung lösen; ist ein Einsatz vor Ort nötig, ist die Anfahrt kurz. Eine feste "
                    "Reaktionszeit sage ich nicht zu, Vertragskunden werden bevorzugt behandelt."),
     },
     {
         "slug": "putzbrunn", "name": "Putzbrunn", "title_name": "Putzbrunn",
         "area": ["Putzbrunn", "Solalinden", "Hohenbrunn", "Grasbrunn"],
+        "k": ("Für Betriebe im Gewerbegebiet Putzbrunn und in Solalinden bin ich ein Ansprechpartner, der die Arbeit "
+              "selbst macht, statt Tickets zu verteilen."),
+        "answer": ("Betriebe in Putzbrunn und Solalinden betreue ich als Grundke IT-Service aus Grasbrunn: "
+                   "IT-Betreuung, Microsoft 365, Netzwerk, Datensicherung und IT-Sicherheit zum einheitlichen "
+                   "Stundensatz von 110 € netto im 15-Minuten-Takt oder als Monatspauschale ab 149 € netto."),
+        "voice": "verena-k",
         "intro": ("Putzbrunn mit Solalinden hat ein lebhaftes Gewerbegebiet mit vielen KMU und "
                   "Handwerksbetrieben. Ich biete hier persönliche IT-Betreuung mit einem festen "
                   "Ansprechpartner – zu einem einheitlichen Stundensatz, abgerechnet im "
@@ -966,13 +1051,20 @@ PLACES = [
     },
 ]
 
-# Gemeinsame Leistungs-Karten fuer Ortsseiten
+# Gemeinsame Leistungs-Zeilen fuer Ortsseiten (Titel, Text, Symbol)
 PLACE_CARDS = [
-    ("IT-Betreuung & Wartung", "Laufende Betreuung deiner Rechner, Server und Netzwerke – als fester Ansprechpartner."),
-    ("Microsoft 365 & E-Mail", "Einrichtung, Migration und Betreuung von Outlook, Teams, SharePoint & Co."),
-    ("Netzwerk & WLAN", "Stabiles WLAN und sichere Netzwerke mit professioneller UniFi-Technik."),
-    ("Backup & IT-Sicherheit", "Datensicherung nach 3-2-1-Strategie, Virenschutz und Schutz vor Ransomware."),
+    ("IT-Betreuung & Wartung", "Laufende Betreuung deiner Rechner, Server und Netzwerke – als fester Ansprechpartner.", "ico-tools"),
+    ("Microsoft 365 & E-Mail", "Einrichtung, Migration und Betreuung von Outlook, Teams, SharePoint & Co.", "ico-mail"),
+    ("Netzwerk & WLAN", "Stabiles WLAN und sichere Netzwerke mit professioneller UniFi-Technik.", "ico-wifi"),
+    ("Backup & IT-Sicherheit", "Datensicherung nach 3-2-1-Strategie, Virenschutz und Schutz vor Ransomware.", "ico-shield"),
 ]
+# Vertrauenstext der Ortsseiten: freigegebener Ersatz (Textblatt, Frage 5) fuer „… der zurückruft“ und das
+# gekuerzte Zitat aus einer Bewertung. Steht neben dem Einstieg.
+PLACE_TRUST = ("<strong>Warum Unternehmen aus {n} mit mir arbeiten:</strong> Ein einheitlicher Stundensatz, "
+               "Abrechnung im 15-Minuten-Takt, keine versteckten Kosten und ein Ansprechpartner, der eure IT kennt. "
+               "Was Kunden über mich schreiben, steht ungekürzt bei den Kundenstimmen.")
+PLACE_PROOF2 = ("ico-clock", "Ad hoc 110 € netto/Std. im 15-Minuten-Takt")
+PLACE_NEAR_H2 = "Auch in deiner Nähe im Einsatz"
 
 
 def place_faqs(p):
@@ -993,10 +1085,14 @@ def place_faqs(p):
 
 
 def render_place(p, places, services):
+    """Ortsseite in der Generator-Huelle (seit 10.10.2026): eigener <head> und LocalBusiness-Schema wie
+    bisher, Inhalt ueber render_shell. Abschnitte: Leistungen (Einstieg + Vertrauenstext, Zeilen), Stimme
+    und Nachbarorte nebeneinander, FAQ (near_q/near_a + drei gemeinsame Fragen), Abschluss."""
     slug = "it-service-" + p["slug"]
     title = "IT-Service {tn} | Andreas Grundke IT-Service".format(tn=p["title_name"])
+    # Description: „schnelle Hilfe“ durch den freigegebenen Ersatz (Textblatt, Frage 5; seo-ausnahmen.json)
     desc = ("IT-Service für {tn}: persönlicher IT-Betreuer vor Ort für KMU, Handwerk & Büros. "
-            "Microsoft 365, Netzwerk, Backup, IT-Sicherheit. Kurze Wege, schnelle Hilfe.").format(tn=p["title_name"])
+            "Microsoft 365, Netzwerk, Backup, IT-Sicherheit. Kurze Wege, ein fester Ansprechpartner.").format(tn=p["title_name"])
     og_title = "IT-Service {tn} – Andreas Grundke IT-Service".format(tn=p["title_name"])
     og_desc = "Persönlicher IT-Service vor Ort in {tn}. Für KMU, Handwerk & Büros im Raum München Ost.".format(tn=p["title_name"])
     faqs = place_faqs(p)
@@ -1022,57 +1118,28 @@ def render_place(p, places, services):
         "founder": {"@id": PERSON_ID},
     }
     schema = [breadcrumb("IT-Service " + p["name"], slug), lb, faq_schema(faqs),
-              webpage_schema(title, desc, slug)]
+              webpage_schema(title, desc, slug, mod=PLACE_DATE)]
 
-    # Nachbarorte-Chips (verlinken zu den anderen Ortsseiten)
-    chips = ['<a class="lp-place here">{n}</a>'.format(n=esc(p["title_name"]))]
+    # Nachbarorte als Chips (der eigene Ort markiert, die anderen verlinkt), eigener Abschnitt
+    chips = ['<span class="here">{n}</span>'.format(n=esc(p["title_name"]))]
     for o in places:
         if o["slug"] != p["slug"]:
-            chips.append('<a class="lp-place" href="/it-service-{s}/">{n}</a>'.format(s=o["slug"], n=esc(o["name"])))
-    chips_html = "\n        ".join(chips)
-
-    main = """<article class="lp-wrap">
-  <div class="inner">
-    <div class="lp-content">
-      {crumbs}
-      <div class="s-label">IT-Service vor Ort</div>
-      <h1 class="s-title">IT-Service in {tn}</h1>
-      <p class="s-sub">Dein persönlicher IT-Betreuer für {name} – kurze Wege, schnelle Hilfe, ein fester Ansprechpartner statt anonymer Hotline.</p>
-
-      <div class="lp-cta-row">
-        <a href="tel:+491782584438" class="btn-p">Jetzt anrufen · 0178 258 44 38</a>
-        <a href="/kontakt/" class="btn-g">Kontakt &amp; Anfrage</a>
-      </div>
-
-      <p>{intro}</p>
-
-      <h2>IT-Leistungen für {name}</h2>
-      <div class="lp-grid">{cards}
-      </div>
-
-      <div class="lp-trust">
-        <strong>Warum Unternehmen aus {name} mit mir arbeiten:</strong> Ein einheitlicher Stundensatz, Abrechnung im 15-Minuten-Takt, keine versteckten Kosten – und ein Ansprechpartner, der zurückruft. Genau das, was meine Kunden in den Google-Bewertungen mit „schnell, zuverlässig und in sehr guter Qualität“ beschreiben.
-      </div>
-
-      <h2>Auch in deiner Nähe im Einsatz</h2>
-      <p>Von Neukeferloh aus betreue ich den gesamten Münchner Osten im Umkreis von rund 25&nbsp;km:</p>
-      <div class="lp-places">
-        {chips}
-      </div>
-
-      <h2>Häufige Fragen zum IT-Service in {name}</h2>{faqs}
-{author}
-      <div class="lp-cta-row" style="margin-top:2.5rem;">
-        <a href="tel:+491782584438" class="btn-p">IT-Problem? Jetzt anrufen</a>
-        <a href="/managed-it-service/" class="btn-g">Mehr zur laufenden IT-Betreuung</a>
-      </div>
-    </div>
-  </div>
-</article>""".format(crumbs=crumbs_html("IT-Service " + p["name"], slug), tn=esc(p["title_name"]), name=esc(p["name"]), intro=esc(p["intro"]),
-                     cards=cards_html(PLACE_CARDS), chips=chips_html, faqs=faq_html(faqs),
-                     author=author_box())
-
-    return slug, page(h, schema, main, places, services, slug=slug)
+            chips.append('<a href="/it-service-{s}/">{n}</a>'.format(s=o["slug"], n=esc(o["name"])))
+    near = (PLACE_NEAR_H2,
+            prose("<p>Von Neukeferloh aus betreue ich den gesamten Münchner Osten im Umkreis von rund 25&nbsp;km:</p>")
+            + '\n    <div class="chips">\n      ' + "\n      ".join(chips) + '\n    </div>')
+    name = esc(p["name"])
+    s = {
+        "slug": slug, "nav": "IT-Service " + p["name"], "h1": "IT-Service in " + esc(p["title_name"]),
+        "h1_nowrap": "IT-Service", "k": p["k"], "answer": p["answer"], "proof2": PLACE_PROOF2,
+        "intro": p["intro"], "cards_h2": "IT-Leistungen für " + name, "cards": PLACE_CARDS,
+        "trust": PLACE_TRUST.format(n=name), "voices": [p["voice"]], "tail_blocks": [near],
+        "row": ("Was andere über mich sagen", PLACE_NEAR_H2),
+        "faqs": faqs, "faq_h2": "Häufige Fragen zum IT-Service in " + name,
+        "modified_disp": PLACE_DATE_DISP,
+        "cta2_href": "/managed-it-service/", "cta2_text": "Mehr zur laufenden IT-Betreuung",
+    }
+    return slug, render_shell(s, places, services, (h, schema))
 
 
 # --------------------------------------------------------------------------- #
@@ -1098,19 +1165,6 @@ POTENZIALCHECK_SCHEMA = {
                "availability": "https://schema.org/InStock",
                "description": "Kostenlos und unverbindlich, das schriftliche Ergebnis bleibt beim Kunden."},
 }
-
-# Kundenstimme auf einer Leistungsseite (bisher nur Netzwerk). Eigener Baustein statt der
-# Startseiten-Karte, weil die Leistungsseiten deren CSS und Stern-Sprite nicht laden.
-VOICE_STYLE = '''  <style>
-    .lp-voice { margin:1.5rem 0 2.5rem; padding:1.6rem 1.8rem; background:var(--bg2); border:1px solid var(--border); border-radius:16px; }
-    .lp-voice blockquote { margin:0; max-width:66ch; font-style:italic; color:var(--text2); line-height:1.7; }
-    .lp-voice blockquote p { margin:0; }
-    .lp-voice blockquote p + p { margin-top:.85em; }
-    .lp-voice figcaption { margin-top:1.2rem; padding-top:1rem; border-top:1px solid var(--border); font-size:.85rem; color:var(--text2); }
-    .lp-voice figcaption strong { color:var(--text); }
-    .lp-voice figcaption a { color:var(--cyan); text-decoration:underline; text-underline-offset:3px; }
-  </style>
-'''
 
 # Zusatz-CSS ausschliesslich fuer die KI-Seiten. Wird ueber das Feld "extra_style"
 # eingehaengt, damit Orts- und uebrige Leistungsseiten unveraendert bleiben.
@@ -1312,11 +1366,19 @@ SERVICES = [
         "slug": "microsoft-365-betreuung", "nav": "Microsoft 365 Betreuung",
         "title": "Microsoft 365 Betreuung für KMU | München Ost – Andreas Grundke IT-Service",
         "h1": "Microsoft 365 Betreuung für Unternehmen",
-        "label": "Microsoft 365", "service_type": "Microsoft 365 Betreuung",
+        "service_type": "Microsoft 365 Betreuung",
+        "modified": "2026-10-10", "modified_disp": "10. Oktober 2026",
         "desc": ("Microsoft 365 für KMU im Raum München Ost: Einrichtung, Migration und laufende "
                  "Betreuung von Exchange Online, Teams, SharePoint & OneDrive – inklusive Sicherheit "
                  "und DSGVO-konformer Datensicherung."),
-        "sub": "Outlook, Teams, SharePoint & OneDrive – richtig eingerichtet, sicher betrieben und persönlich betreut.",
+        # Kopf der Huelle (Textblatt §1/§3, Task 6): K4, Antwortsatz, Stimme; Darstellung: zweiter Beleg
+        "k": ("Kommt jemand ins Team oder geht, lege ich Konto, Postfach und Rechte an oder räume sie wieder weg."),
+        "answer": ("Microsoft 365 betreue ich als Grundke IT-Service aus Grasbrunn für Betriebe im Münchner Osten: "
+                   "Einrichtung und Umzug alter Postfächer nach Aufwand, laufende Betreuung mit Zwei-Faktor-Anmeldung "
+                   "und zusätzlicher Datensicherung im Monatspaket ab 149 € netto."),
+        "voices": ["fleischmann"],
+        "h1_nowrap": "Microsoft 365",
+        "proof2": ("ico-check", "Betreuung im Monatspaket ab 149 € netto"),
         "intro": ("Microsoft 365 ist schnell gebucht – aber sauber eingerichtet, abgesichert und "
                   "DSGVO-konform betrieben ist es eine andere Sache. Ich übernehme die Ersteinrichtung, "
                   "die Migration von alten Postfächern oder Servern und die laufende Betreuung deiner "
@@ -1325,10 +1387,10 @@ SERVICES = [
                   "Wunsch über mich, mehr auf der Seite <a href=\"/lizenzen/\">Lizenzen</a>."),
         "raw_intro": True,
         "cards": [
-            ("Einrichtung & Migration", "Umzug von altem Server oder Postfach nach Microsoft 365 – ohne Datenverlust."),
-            ("Exchange Online & E-Mail", "Professionelle E-Mail mit eigener Domain, Signaturen und Spam-Schutz."),
-            ("Teams & SharePoint", "Zusammenarbeit, Dateifreigaben und Strukturen, die dein Team versteht."),
-            ("Sicherheit & Backup", "MFA, Rechte-Konzept und externes M365-Backup – denn Microsoft sichert deine Daten nicht vollständig."),
+            ("Einrichtung & Migration", "Umzug von altem Server oder Postfach nach Microsoft 365 – ohne Datenverlust.", "ico-cloud"),
+            ("Exchange Online & E-Mail", "Professionelle E-Mail mit eigener Domain, Signaturen und Spam-Schutz.", "ico-mail"),
+            ("Teams & SharePoint", "Zusammenarbeit, Dateifreigaben und Strukturen, die dein Team versteht.", "ico-file-text"),
+            ("Sicherheit & Backup", "MFA, Rechte-Konzept und externes M365-Backup – denn Microsoft sichert deine Daten nicht vollständig.", "ico-shield"),
         ],
         "faqs": [
             ("Was kostet die Microsoft 365 Betreuung?",
@@ -1352,10 +1414,19 @@ SERVICES = [
         "slug": "it-sicherheit-backup", "nav": "IT-Sicherheit & Backup",
         "title": "IT-Sicherheit & Backup für KMU | München Ost – Andreas Grundke IT-Service",
         "h1": "IT-Sicherheit &amp; Backup für Unternehmen",
-        "label": "IT-Sicherheit", "service_type": "IT-Sicherheit und Datensicherung",
+        "service_type": "IT-Sicherheit und Datensicherung",
+        "modified": "2026-10-10", "modified_disp": "10. Oktober 2026",
         "desc": ("IT-Sicherheit & Backup für KMU im Raum München Ost: Schutz vor Ransomware und "
                  "Datenverlust mit 3-2-1-Backup, Virenschutz, Firewall und Mitarbeiter-Awareness."),
-        "sub": "Schutz vor Ransomware, Datenverlust und Ausfall – mit einer Datensicherung, die im Ernstfall wirklich funktioniert.",
+        # Kopf der Huelle (Textblatt §1/§3, Task 6)
+        "k": ("Ich sichere eure Daten mit einer Kopie außer Haus und prüfe regelmäßig, ob sie sich zurückspielen "
+              "lassen."),
+        "answer": ("IT-Sicherheit heißt bei Grundke IT-Service in Grasbrunn für Betriebe im Münchner Osten: "
+                   "Datensicherung nach 3-2-1 mit Kopie außer Haus, zentral verwalteter Virenschutz, Firewall und ein "
+                   "Team, das Phishing erkennt. Ich richte das ein und betreue es weiter."),
+        "voices": ["fleischmann"],
+        "h1_nowrap": "IT-Sicherheit",
+        "proof2": ("ico-cloud", "Datensicherung nach 3-2-1 mit Kopie außer Haus"),
         "intro": ("Ein einziger verschlüsselter Server oder ein gelöschtes Verzeichnis kann ein "
                   "kleines Unternehmen tagelang lahmlegen. Ich sorge dafür, dass es gar nicht erst so "
                   "weit kommt – und dass du im Ernstfall deine Daten zurückbekommst. Dazu gehören eine "
@@ -1363,10 +1434,10 @@ SERVICES = [
                   "vernünftige Firewall und Mitarbeiter, die Phishing erkennen."),
         "raw_intro": True,
         "cards": [
-            ("Backup nach 3-2-1", "Drei Kopien, zwei Medien, eine außer Haus – inklusive Test der Rücksicherung."),
-            ("Virenschutz", "Zentral verwalteter Schutz (z. B. ESET) auf allen Geräten."),
-            ("Firewall & VPN", "Abgesicherter Internetzugang und verschlüsselter Zugriff fürs Home-Office."),
-            ("Awareness-Schulung", "Deine Mitarbeiter lernen, Phishing und Betrug zu erkennen."),
+            ("Backup nach 3-2-1", "Drei Kopien, zwei Medien, eine außer Haus – inklusive Test der Rücksicherung.", "ico-cloud"),
+            ("Virenschutz", "Zentral verwalteter Schutz (z. B. ESET) auf allen Geräten.", "ico-shield"),
+            ("Firewall & VPN", "Abgesicherter Internetzugang und verschlüsselter Zugriff fürs Home-Office.", "ico-key"),
+            ("Awareness-Schulung", "Deine Mitarbeiter lernen, Phishing und Betrug zu erkennen.", "ico-user-check"),
         ],
         "faqs": [
             ("Reicht OneDrive oder eine externe Festplatte als Backup?",
@@ -1391,10 +1462,15 @@ SERVICES = [
         "slug": "netzwerk-wlan-firewall", "nav": "Netzwerk, WLAN & Firewall",
         "title": "Netzwerk, WLAN & Firewall für KMU | München Ost – Andreas Grundke IT-Service",
         "h1": "Netzwerk, WLAN &amp; Firewall für Unternehmen",
-        "label": "Netzwerktechnik", "service_type": "Netzwerk, WLAN und Firewall",
+        "service_type": "Netzwerk, WLAN und Firewall",
         "desc": ("Netzwerk, WLAN & Firewall für KMU im Raum München Ost: stabiles WLAN, sichere "
                  "Netzwerke und VPN mit professioneller UniFi-Technik – geplant, eingerichtet und betreut."),
-        "sub": "Stabiles WLAN im ganzen Gebäude, sichere Netze und verschlüsselter Zugriff fürs Home-Office.",
+        # Kopf der Huelle (Textblatt §1/§3, Task 6)
+        "k": "Ich plane das WLAN für euer Gebäude und trenne Gäste, Kasse und Betrieb in eigene Netze.",
+        "answer": ("Als Grundke IT-Service aus Grasbrunn plane ich Netzwerk, WLAN und Firewall für Betriebe im "
+                   "Münchner Osten, richte sie ein und betreue sie: UniFi-Technik, getrennte Netze für Gäste und "
+                   "Betrieb und VPN fürs Home-Office."),
+        "proof2": ("ico-clock", "110 € netto/Std. im 15-Minuten-Takt"),
         "intro": ("Langsames WLAN, ständige Abbrüche oder ein Netzwerk, das mit dem Betrieb gewachsen "
                   "und unübersichtlich geworden ist – das kostet täglich Zeit und Nerven. Ich plane, "
                   "richte ein und betreue Netzwerke mit professioneller UniFi-Technik: stabiles WLAN "
@@ -1402,27 +1478,16 @@ SERVICES = [
                   "Zugänge per Firewall und VPN."),
         "raw_intro": True,
         "cards": [
-            ("Netzwerk & VLAN", "Strukturierte, sicher getrennte Netze für Betrieb, Gäste und Kasse."),
-            ("WLAN (UniFi)", "Lückenloses, schnelles WLAN auf jeder Etage und im Außenbereich."),
-            ("Firewall & VPN", "Abgesicherter Internetzugang und verschlüsselter Zugriff von unterwegs."),
-            ("Monitoring", "Ich sehe Störungen oft, bevor du sie bemerkst – und reagiere proaktiv."),
+            ("Netzwerk & VLAN", "Strukturierte, sicher getrennte Netze für Betrieb, Gäste und Kasse.", "ico-network"),
+            ("WLAN (UniFi)", "Lückenloses, schnelles WLAN auf jeder Etage und im Außenbereich.", "ico-wifi"),
+            ("Firewall & VPN", "Abgesicherter Internetzugang und verschlüsselter Zugriff von unterwegs.", "ico-shield"),
+            ("Monitoring", "Ich sehe Störungen oft, bevor du sie bemerkst – und reagiere proaktiv.", "ico-monitor"),
         ],
-        "modified": "2026-09-27", "modified_disp": "27.09.2026",
-        # Kundenstimme wortgetreu wie auf Google (Apartments Bauer, 26.09.2026). Nicht kuerzen,
-        # nicht glaetten; identisch mit der Karte und dem reviewBody auf der Startseite.
-        "extra": """
-      <h2>Aus der Praxis: WLAN in einem älteren Gebäude</h2>
-      <figure class="lp-voice">
-        <blockquote>
-          <p>„Andy hat das WLAN in unserem Haus modernisiert und auf Ubiquiti umgestellt, damit unsere Gäste eine bessere Internetverbindung genießen können. Die Zusammenarbeit hat sehr viel Spaß gemacht – auch wenn wir aufgrund des älteren Gebäudes die eine oder andere Hürde zu bewältigen hatten.</p>
-          <p>Besonders beeindruckt hat uns Andys hoher Anspruch an die Qualität seiner Arbeit. Dazu kommt seine herzliche und unkomplizierte Art, die die Zusammenarbeit auch menschlich sehr angenehm gemacht hat.</p>
-          <p>Über den eigentlichen Auftrag hinaus hat Andy uns wertvolle Tipps zum Einsatz von KI gegeben und hilfreiche Analysen erstellt, für die wir ihm sehr dankbar sind.</p>
-          <p>Rundum eine tolle Erfahrung. Ich kann Andy mit bestem Gewissen weiterempfehlen!“</p>
-        </blockquote>
-        <figcaption><strong>Apartments Bauer</strong> · Google-Bewertung, 5 von 5 Sternen, wörtlich übernommen · <a href="/#referenzen">weitere Kundenstimmen</a> · <a href="/#bewertungen-herkunft">woher die Stimmen kommen</a></figcaption>
-      </figure>
-""",
-        "extra_style": VOICE_STYLE,
+        "modified": "2026-10-10", "modified_disp": "10. Oktober 2026",
+        # Kundenstimme Apartments Bauer (Google, 26.09.2026) seit Task 6 aus REVIEWS ueber voices_html, wortgetreu
+        # wie auf der Startseite; Ueberschrift des bisherigen Abschnitts bleibt.
+        "voices": ["bauer"],
+        "voices_h2": "Aus der Praxis: WLAN in einem älteren Gebäude",
         "faqs": [
             ("Warum UniFi und nicht der Router vom Provider?",
              "Provider-Router sind für den Hausgebrauch gedacht. Mit professioneller UniFi-Technik "
@@ -2023,13 +2088,19 @@ SERVICES = [
         "slug": "lizenzen", "nav": "Lizenzen", "group": "it",
         "title": "Lizenzen für Firmen: Microsoft 365, Copilot, ChatGPT | Grundke IT",
         "h1": "Lizenzen für deinen Betrieb, eingerichtet und verwaltet",
-        "label": "Microsoft 365, Copilot, Virenschutz", "service_type": "Lizenzvertrieb mit Einrichtung und Verwaltung für Unternehmen",
-        "published": NEW_DATE, "modified": NEW_DATE, "modified_disp": NEW_DATE_DISP,
-        "extra_style": NEW_PAGE_STYLE,
+        "service_type": "Lizenzvertrieb mit Einrichtung und Verwaltung für Unternehmen",
+        "published": NEW_DATE, "modified": "2026-10-10", "modified_disp": "10. Oktober 2026",
         "cta2_href": "/microsoft-365-betreuung/", "cta2_text": "Microsoft 365 Betreuung",
         "desc": ("Microsoft 365, Copilot, ESET-Virenschutz und Datensicherung für Unternehmen: Lizenz, "
                  "Einrichtung und Verwaltung aus einer Hand. Raum München Ost."),
-        "sub": "Eine Lizenz zu kaufen ist der kleinste Teil. Richtig eingerichtet, abgesichert und verwaltet wird sie bei mir gleich mit.",
+        # Kopf der Huelle (Textblatt §1/§3, Task 6); Darstellung: zwei Abschnitte aus "extra" als Zeile
+        "k": ("Ich behalte Laufzeiten und Nutzer im Blick, damit ihr keine Lizenz bezahlt, die niemand mehr braucht."),
+        "answer": ("Lizenzen für Microsoft 365, Copilot und ESET-Virenschutz bekommen Betriebe im Münchner Osten bei "
+                   "Grundke IT-Service in Grasbrunn, mit Einrichtung, Verwaltung und Datensicherung auf einer Rechnung. "
+                   "ChatGPT Business und Claude Team schließt ihr direkt beim Anbieter ab, ich richte sie ein."),
+        "voices": ["verena-k"],
+        "proof2": ("ico-file-text", "Lizenzen und Betreuung auf einer Rechnung"),
+        "row": ("Was kosten ChatGPT oder Copilot für Unternehmen?", "Warum nicht einfach selbst online bestellen?"),
         "intro": ("Microsoft 365 kann jeder online bestellen. Was dabei fehlt, merkt man später: Konten ohne "
                   "Zwei-Faktor-Anmeldung, Lizenzen für Leute, die längst weg sind, Virenschutz, der nur auf "
                   "einem Teil der Rechner läuft. <strong>Bei mir bekommst du die Lizenz mit Einrichtung und "
@@ -2041,12 +2112,12 @@ SERVICES = [
         "raw_intro": True,
         "cards_h2": "Was ich besorge und betreue",
         "cards": [
-            ("Microsoft 365", "E-Mail, Teams, OneDrive und Office mit Zwei-Faktor-Anmeldung und einem Rechtekonzept, das zum Betrieb passt."),
-            ("Microsoft 365 Copilot", "Copilot für Firmenkonten, nachdem Rechte und Freigaben aufgeräumt sind. Sonst findet Copilot Dateien, die nie für alle gedacht waren."),
-            ("ESET Virenschutz", "Zentral verwalteter Schutz auf allen Geräten. Warnungen und auslaufende Lizenzen laufen bei mir auf, statt unbemerkt zu bleiben."),
-            ("Datensicherung", "Sicherung von Microsoft 365, Servern und Rechnern, mit einer Kopie außer Haus."),
-            ("ChatGPT und Claude im Team", "Geschäftliche Konten mit Vertrag statt privater Zugänge. Den Vertrag schließt ihr direkt beim Anbieter, ich richte die Konten ein und verwalte Nutzer und Rechte."),
-            ("Laufzeiten im Blick", "Wer kommt, wer geht, was läuft wann aus. Lizenzen werden angepasst, statt ungenutzt weiterzulaufen."),
+            ("Microsoft 365", "E-Mail, Teams, OneDrive und Office mit Zwei-Faktor-Anmeldung und einem Rechtekonzept, das zum Betrieb passt.", "ico-mail"),
+            ("Microsoft 365 Copilot", "Copilot für Firmenkonten, nachdem Rechte und Freigaben aufgeräumt sind. Sonst findet Copilot Dateien, die nie für alle gedacht waren.", "ico-search-check"),
+            ("ESET Virenschutz", "Zentral verwalteter Schutz auf allen Geräten. Warnungen und auslaufende Lizenzen laufen bei mir auf, statt unbemerkt zu bleiben.", "ico-shield"),
+            ("Datensicherung", "Sicherung von Microsoft 365, Servern und Rechnern, mit einer Kopie außer Haus.", "ico-cloud"),
+            ("ChatGPT und Claude im Team", "Geschäftliche Konten mit Vertrag statt privater Zugänge. Den Vertrag schließt ihr direkt beim Anbieter, ich richte die Konten ein und verwalte Nutzer und Rechte.", "ico-user-check"),
+            ("Laufzeiten im Blick", "Wer kommt, wer geht, was läuft wann aus. Lizenzen werden angepasst, statt ungenutzt weiterzulaufen.", "ico-clock"),
         ],
         "extra": """
       <h2>Was kosten ChatGPT oder Copilot für Unternehmen?</h2>
@@ -2319,10 +2390,17 @@ SERVICES = [
         "slug": "e-rechnung", "nav": "E-Rechnung", "group": "ki",
         "title": "E-Rechnung Pflicht 2027/2028: Fristen & Umstellung | Grundke IT",
         "h1": "E-Rechnung: was dein Betrieb bis 2027 und 2028 tun muss",
-        "label": "E-Rechnung", "service_type": "Umstellung auf die E-Rechnung für kleine Unternehmen",
-        "published": NEW_DATE, "modified": NEW_DATE, "modified_disp": NEW_DATE_DISP,
-        "extra_style": NEW_PAGE_STYLE,
+        "service_type": "Umstellung auf die E-Rechnung für kleine Unternehmen",
+        "published": NEW_DATE, "modified": "2026-10-10", "modified_disp": "10. Oktober 2026",
         "trust": TRUST_FESTPREIS,
+        # Kopf der Huelle (Textblatt §1, Task 6); Vertrauenstext steht neben dem Einstieg
+        "k": ("Ich prüfe, ob euer Rechnungsprogramm E-Rechnungen kann, suche sonst mit euch ein passendes aus oder "
+              "baue den fehlenden Export."),
+        "answer": ("Als Grundke IT-Service aus Grasbrunn stelle ich Betriebe im Münchner Osten auf die E-Rechnung um. "
+                   "Ausstellen müsst ihr sie für Rechnungen an Unternehmen im Inland ab 2027, wenn euer Gesamtumsatz "
+                   "im Vorjahr über 800.000 Euro lag, sonst ab 2028."),
+        "proof2": (("ico-check", "Umstellung im Standardfall ab " + eur(PRICES["erechnung"]) + " netto")
+                   if SHOW_FROM_PRICES else ("ico-check", "Festpreis nach einem Blick auf eure Rechnungsstrecke")),
         "cta2_href": "/ki-automatisierung/", "cta2_text": "Abläufe automatisieren",
         "offers": ([
             offer_from("E-Rechnung umstellen", PRICES["erechnung"],
@@ -2332,7 +2410,6 @@ SERVICES = [
         ] if SHOW_FROM_PRICES else []),
         "desc": ("E-Rechnung empfangen seit 2025, ausstellen ab 2027 oder 2028: Fristen, Ausnahmen, Check in "
                  "drei Fragen und Hilfe bei Programmwahl und Umstellung."),
-        "sub": "Empfangen müsst ihr sie schon. Ausstellen müsst ihr sie ab 2027 oder 2028. Hier steht, was das für euren Betrieb heißt, und wie ihr zu einem Programm kommt, das beides kann.",
         "intro": ("Eine E-Rechnung ist ein strukturierter Datensatz, den das Programm des Empfängers direkt "
                   "lesen kann, im Format XRechnung oder ZUGFeRD (ein PDF, in dem die Rechnungsdaten "
                   "zusätzlich als Datei stecken). Ein normales PDF zählt nicht dazu. Empfangen können muss "
@@ -2344,10 +2421,10 @@ SERVICES = [
         "raw_intro": True,
         "cards_h2": "Was ich dabei mache",
         "cards": [
-            ("Programm finden", "Kann euer Rechnungsprogramm keine E-Rechnung, oder gibt es noch gar keins, suche ich mit euch eins aus, das zu Betrieb und Steuerberatung passt."),
-            ("Empfang einrichten", "Ein Postfach für E-Rechnungen, die Anzeige der Formate und die Weitergabe an die Buchhaltung."),
-            ("Ausstellen umstellen", "Euer Programm einrichten oder anpassen, oder einen Export aus eurer Fachanwendung bauen, wenn die Rechnungsdaten von dort kommen."),
-            ("Ablage und Steuerberatung", "E-Rechnungen bleiben im Originalformat abgelegt und laufen dorthin, wo eure Steuerberatung sie braucht."),
+            ("Programm finden", "Kann euer Rechnungsprogramm keine E-Rechnung, oder gibt es noch gar keins, suche ich mit euch eins aus, das zu Betrieb und Steuerberatung passt.", "ico-search-check"),
+            ("Empfang einrichten", "Ein Postfach für E-Rechnungen, die Anzeige der Formate und die Weitergabe an die Buchhaltung.", "ico-mail"),
+            ("Ausstellen umstellen", "Euer Programm einrichten oder anpassen, oder einen Export aus eurer Fachanwendung bauen, wenn die Rechnungsdaten von dort kommen.", "ico-file-text"),
+            ("Ablage und Steuerberatung", "E-Rechnungen bleiben im Originalformat abgelegt und laufen dorthin, wo eure Steuerberatung sie braucht.", "ico-list"),
         ],
         "extra": """
       <h2>Noch kein Programm, das E-Rechnungen kann?</h2>
@@ -2379,19 +2456,20 @@ SERVICES = [
         <li><strong>Schreibst du Rechnungen heute in Word, Excel oder einem Programm ohne E-Rechnung?</strong> Dann ist jetzt der Zeitpunkt, umzustellen, und nicht im Dezember.</li>
       </ol>
       <p>Vom Ausstellen ausgenommen sind unter anderem Kleinbetragsrechnungen bis 250 Euro brutto, Fahrausweise und Kleinunternehmer. Empfangen können müssen auch sie E-Rechnungen.</p>
+<!--split-->
       <div class="ki-note">
         <p><strong>Zur Einordnung:</strong> Das ist die allgemeine Rechtslage nach dem zweiten Schreiben des Bundesfinanzministeriums zur E-Rechnung vom 15. Oktober 2025, das das erste Schreiben von 2024 ersetzt, und keine Steuerberatung. Ob und ab wann die Pflicht deinen Betrieb genau trifft, klärst du mit deiner Steuerberatung. Ich baue die Umsetzung.</p>
       </div>
       {preise}
 """.replace("{preise}", (
-            '<div class="ki-check">\n        <h3>Umstellung zum Festpreis</h3>\n'
+            '<div class="card-box">\n        <h3>Umstellung zum Festpreis</h3>\n'
             "        <p>Im Standardfall ab " + eur(PRICES["erechnung"]) + " netto: Bestandsaufnahme, Programm "
             "auswählen oder umstellen, Empfang und Ablage einrichten, Weg zur Steuerberatung. Kommen die "
             "Rechnungsdaten aus einer Fachanwendung, einer Excel-Kalkulation oder einem Vorsystem und braucht "
             "es einen eigenen Export, ab " + eur(PRICES["erechnung_export"]) + " netto. Die Lizenz für das "
             "Rechnungsprogramm zahlt ihr direkt beim Anbieter. Ab 4.000 Euro Ausgaben kann der "
             '<a href="/digitalbonus-bayern/">Digitalbonus Bayern</a> bis zur Hälfte übernehmen.</p>\n'
-            '        <div class="lp-cta-row" style="margin:0;">\n'
+            '        <div class="card-cta">\n'
             '          <a href="tel:+491782584438" class="btn-p">Umstellung besprechen</a>\n'
             '          <a href="/kontakt/" class="btn-g">Lieber schreiben</a>\n        </div>\n      </div>')
             if SHOW_FROM_PRICES else ""),
@@ -2430,14 +2508,19 @@ SERVICES = [
         "slug": "digitalbonus-bayern", "nav": "Digitalbonus Bayern", "group": "ki",
         "title": "Digitalbonus Bayern: Antrag & Voraussetzungen | Grundke IT",
         "h1": "Digitalbonus Bayern: bis zur Hälfte zurück für Software und IT-Sicherheit",
-        "label": "Förderung", "service_type": "Umsetzung förderfähiger Digitalisierungs- und IT-Sicherheitsprojekte",
-        "published": NEW_DATE, "modified": NEW_DATE, "modified_disp": NEW_DATE_DISP,
-        "extra_style": NEW_PAGE_STYLE,
-        "trust": None,
+        "service_type": "Umsetzung förderfähiger Digitalisierungs- und IT-Sicherheitsprojekte",
+        "published": NEW_DATE, "modified": "2026-10-10", "modified_disp": "10. Oktober 2026",
         "cta2_href": "/software-nach-mass/", "cta2_text": "Software nach Maß",
         "desc": ("Digitalbonus Bayern bis Ende 2027: bis zu 50 % Zuschuss ab 4.000 € für Software, KI und "
                  "IT-Sicherheit. Voraussetzungen, Antrag über ELSTER, die Haken."),
-        "sub": "Bis Ende 2027 übernimmt der Freistaat bei kleinen Unternehmen bis zur Hälfte vieler Software- und Sicherheitsprojekte, im Standard bis 7.500 Euro. Ich liefere die Unterlagen, den Antrag stellt ihr selbst.",
+        # Kopf der Huelle (Textblatt §1, Task 6); Darstellung: Ablauf und passende Projekte als Zeile
+        "k": ("Ich liefere Projektbeschreibung und Kostenaufstellung für euren Antrag, den ihr selbst über ELSTER "
+              "stellt."),
+        "answer": ("Als Grundke IT-Service aus Grasbrunn setze ich für Betriebe im Münchner Osten Projekte um, die der "
+                   "Digitalbonus Bayern fördern kann: bis zu 50 Prozent der förderfähigen Ausgaben ab 4.000 Euro, im "
+                   "Standard bis 7.500 Euro Zuschuss, Anträge bis Ende 2027."),
+        "proof2": ("ico-file-text", "Unterlagen für Antrag und Verwendungsnachweis"),
+        "row": ("So läuft es mit mir", "Welche Projekte passen"),
         "intro": ("Der Digitalbonus Bayern ist ein Zuschuss des Freistaats für kleine gewerbliche Unternehmen. "
                   "Gefördert werden Leistungen externer Anbieter: Software, die für euren Betrieb gebaut oder "
                   "eingeführt wird, KI-Anwendungen und Maßnahmen für die IT-Sicherheit, dort sogar Hardware "
@@ -2447,10 +2530,10 @@ SERVICES = [
         "raw_intro": True,
         "cards_h2": "Wer was macht",
         "cards": [
-            ("Was ich liefere", "Projektbeschreibung, Kostenaufstellung und die technischen Angaben, die ihr für den Antrag braucht."),
-            ("Was ihr macht", "Den Antrag über euer ELSTER-Unternehmenskonto stellen und die Eingangsbestätigung abwarten."),
-            ("Zwei Anträge möglich", "Je einer für Digitalisierung und für IT-Sicherheit, zusammen bis zu 15.000 Euro Zuschuss im Standard."),
-            ("Am Ende", "Projekt umsetzen, Rechnung bezahlen, Verwendungsnachweis einreichen. Die Unterlagen dafür bereite ich vor."),
+            ("Was ich liefere", "Projektbeschreibung, Kostenaufstellung und die technischen Angaben, die ihr für den Antrag braucht.", "ico-file-text"),
+            ("Was ihr macht", "Den Antrag über euer ELSTER-Unternehmenskonto stellen und die Eingangsbestätigung abwarten.", "ico-key"),
+            ("Zwei Anträge möglich", "Je einer für Digitalisierung und für IT-Sicherheit, zusammen bis zu 15.000 Euro Zuschuss im Standard.", "ico-list"),
+            ("Am Ende", "Projekt umsetzen, Rechnung bezahlen, Verwendungsnachweis einreichen. Die Unterlagen dafür bereite ich vor.", "ico-check"),
         ],
         "extra": """
       <h2>Die Eckdaten</h2>
@@ -3273,7 +3356,7 @@ def write_sitemap(places, services):
     for s in services:
         urls.append(("/" + s["slug"] + "/", s.get("modified", TODAY), "0.8"))
     for p in places:
-        urls.append(("/it-service-" + p["slug"] + "/", TODAY, "0.8"))
+        urls.append(("/it-service-" + p["slug"] + "/", PLACE_DATE, "0.8"))
     body = []
     body.append('<?xml version="1.0" encoding="UTF-8"?>')
     body.append("<!--")
