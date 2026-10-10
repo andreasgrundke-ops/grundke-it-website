@@ -90,11 +90,15 @@
  *                        404 mit Schriften, Kartenabstand, Fernwartung als Menuepunkt
  *                        (main.js 1.4.0), Bilder fuer die E-Mail-Signatur.
  *   1.23.1 / 2026-10-10 — Fakten: 5 Google-Bewertungen, Schulungsportal in Vorbereitung.
+ *   1.24.0 / 2026-10-10 — Release A Website-Umbau: Startseite neu (Kuemmerer, Handy zuerst,
+ *                        Stimmen/FAQ aus dem Generator, aufklappbare Details), Bausteine in
+ *                        style.css, main.js 1.6.0, Fuss aufklappbar, WhatsApp mit Einstiegssatz,
+ *                        Asset-Version 2026.10.b.
  */
 
-const CACHE_NAME    = 'grundke-it-v1.23.1';
-const RUNTIME_CACHE = 'grundke-it-runtime-v30';
-const ASSET_VER     = '2026.10.a';   // muss ASSET_VER im Generator entsprechen
+const CACHE_NAME    = 'grundke-it-v1.24.0';
+const RUNTIME_CACHE = 'grundke-it-runtime-v31';
+const ASSET_VER     = '2026.10.b';   // muss ASSET_VER im Generator entsprechen
 
 /* Pre-Cache: minimaler Kern fuer Offline-First-Boot */
 const PRECACHE_URLS = [
