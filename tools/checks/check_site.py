@@ -85,6 +85,7 @@ def run(out_dir, only=None):
                 bad = {k: v for k, v in r["anchors"].items() if v != "ok"}
                 if bad: fails.append(f"/: Anker {bad} (AK14)")
             if any(r[w]["overflow"] for w in WIDTHS): fails.append(f"{u}: horizontaler Ueberlauf (AK12)")
+            # #0000FE = Visitenkarten-Blau (CI, Haupt-Knopf)
             if m390["btn_bg"] not in (None, "rgb(0, 0, 254)"): fails.append(f"{u}: btn-p {m390['btn_bg']} (AK3)")
             if m1440["cyan_buttons"]: fails.append(f"{u}: {m1440['cyan_buttons']} Cyan-Hauptknoepfe (AK3)")
             if u != "/" and u not in lp and (m390["h1"] < 35 or m1440["h1"] < 48): fails.append(f"{u}: h1 {m390['h1']}/{m1440['h1']} px (AK4)")

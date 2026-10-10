@@ -47,6 +47,8 @@ def read(p):
 
 def text_of(fragment):
     t = re.sub(r"<(script|style)[^>]*>.*?</\1>", " ", fragment, flags=re.S)
+    # Inline-Tags ohne Leerzeichen entfernen ("wechseln</a>." -> "wechseln."), alle anderen Tags als Trenner
+    t = re.sub(r"</?(a|b|strong|em|i|span|code|small|mark|abbr)(\s[^>]*)?>", "", t)
     t = re.sub(r"<[^>]+>", " ", t)
     return re.sub(r"\s+", " ", html.unescape(t)).strip()
 
@@ -127,6 +129,15 @@ def ak9():
     return errs
 
 
+def legal_text(page_html):
+    """Rechtstext einer Seite: <main> ohne nav/header/cta-sec-Huelle. Fuer Baseline UND Vergleich."""
+    col = re.search(r"<main.*?</main>", page_html, re.S).group(0)
+    col = re.sub(r"<nav[^>]*>.*?</nav>", " ", col, flags=re.S)
+    col = re.sub(r"<header[^>]*>.*?</header>", " ", col, flags=re.S)
+    col = re.sub(r"<section[^>]*cta-sec[^>]*>.*?</section>", " ", col, flags=re.S)
+    return text_of(col)
+
+
 def ak14():
     errs = []
     home = text_of(read(ROOT / "index.html"))
@@ -154,8 +165,7 @@ def ak14():
 def write_legal_baseline():
     out = {}
     for p in legal_pages():
-        col = re.search(r"<main.*?</main>", read(p), re.S).group(0)
-        out[rel(p)] = hashlib.sha256(text_of(col).encode()).hexdigest()
+        out[rel(p)] = hashlib.sha256(legal_text(read(p)).encode()).hexdigest()
     (INTERN / "vorher").mkdir(parents=True, exist_ok=True)
     (INTERN / "vorher" / "legal_hash.json").write_text(json.dumps(out, indent=1), encoding="utf-8")
 
