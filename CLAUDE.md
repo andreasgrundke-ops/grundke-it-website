@@ -16,10 +16,10 @@ KI-Anwendungen fuer den Betrieb.
 
 ### Die zwei Dinge, die man vorher wissen muss
 1. **`tools/build_landingpages.py` ist die Single Source of Truth** fuer alle Orts-, Leistungs-
-   und KI-Seiten sowie die Angebots- und Ratgeberseiten (aktuell 26 Stueck) und fuer `sitemap.xml`. Diese `index.html`-Dateien
+   und KI-Seiten sowie die Angebots- und Ratgeberseiten (aktuell 27 Stueck, seit 10.10.2026 inkl. Schulung) und fuer `sitemap.xml`. Diese `index.html`-Dateien
    niemals von Hand aendern, sondern die Datenlisten `PLACES`/`SERVICES` pflegen und
    `python tools/build_landingpages.py` laufen lassen. Handgebaut sind nur: Startseite,
-   kontakt, schulung, fernwartung, empfehlungen, tree, ki-arbeitsplatz-onboarding-kit,
+   kontakt, fernwartung, empfehlungen, tree, ki-arbeitsplatz-onboarding-kit,
    404 und die Rechtsseiten.
    **Navigation und Footer (`<header class="site-header">`, `<footer class="site-footer">`)
    kommen seit 23.09.2026 fuer ALLE Seiten aus dem Generator** (`NAV_ITEMS`/`nav_html`,
@@ -51,22 +51,17 @@ und die Quelle unter der Karte muss stimmen (`Google-Bewertung` nur, wenn sie do
 geaendert hat, nicht wegen eines neuen Footer-Links.
 
 ## Stand / offen / naechster Schritt
-- **09.10.2026 (live):** Hero nur noch mit dem Chat (vier Einstiege raus), `/fernwartung/` mit
-  Umschalter Windows/Linux/macOS, TeamViewer ueberall raus, Website-Preise neu (One-Pager ca. 800,
-  Start ca. 1.300, Ausbau ca. 2.000 €, Betrieb optional 40 €/Monat). `sw.js` 1.22.5.
-- **07.10.2026 (live):** Konzept „Sichtbarkeit und
-  Wachstum“ umgesetzt. Startseite mit Kernsatz „Deine IT-Abteilung. Nur extern.“,
-  elf neue Seiten aus dem Generator (Software, Websites, IT-Betreuer wechseln, Lizenzen, E-Rechnung,
-  Digitalbonus, Ratgeber mit vier Artikeln), Menue IT-Service · KI im Betrieb · Software · Websites ·
-  Preise, drei Audits eingearbeitet. Preise der Projektseiten am Schalter `SHOW_FROM_PRICES`.
-- **Laeuft (ab 10.10.2026):** Umbau „Ein Stil, der Kuemmerer, Handy zuerst“ – alle Unterseiten im
-  Stil der Startseite, Startseite am Handy <= 12.000 px. Spec und Uebergabe in `../_intern/specs/` und
-  `../_intern/handoffs/2026-10-10-website-umbau.md`; naechster Schritt dort §8 (Plan, Pruefung, OK).
-- **Offen:** Linux-Fernwartung auf echtem Mint testen (oeffentlich verlinkt, nie getestet).
-  Geplant nach ATG: Musterbeispiele auf Websites/Software (Gehirn `musterbeispiele-websites-software`).
-- **Naechster Schritt:** offene Inhaltsfragen aus der internen Uebergabe mit Andreas klaeren
-  (`../_intern/`), danach eigener Durchgang fuer Titel der alten Leistungsseiten und Tippflaechen.
-  Details in `STATUS.md`, Fachwissen im Wiki ausserhalb des Repos (`../_intern/wiki/`, weil das
-  Repo oeffentlich ist).
+- **10.10.2026 (live):** Umbau „Ein Stil, der Kuemmerer, Handy zuerst“ in drei Releases. A: Startseite
+  am Handy rund 10.300 px. B: alle Generator-Seiten in der Huelle `render_shell` (Kopf, Abschnitte im
+  Wechsel, Abschluss `closing()`), alter Seitenweg entfernt, Font-Preload. C1: Schulung im Generator,
+  Kontakt, Fernwartung, Rechtsseiten (nur Huelle), 404; `sync_shared()` schreibt auch Abschluss und
+  Font-Preload in die Handseiten. `sw.js` 1.26.1 / runtime v34, `ASSET_VER` 2026.10.d.
+- **Pruefen vor jedem Release:** `tools/checks/` (check_static, check_site, check_seo mit
+  `--allow ../_intern/messungen/seo-ausnahmen.json`, check_visual), Python 3.13 mit Playwright.
+  AK14 vergleicht die Rechtstexte mit Commit 865b00a; Rechtstext nie aendern ohne neue Baseline.
+- **Offen:** `/empfehlungen/` als Einrichtungs-Pauschalen (Release C2) wartet auf Andreas' Preisfreigabe.
+  Linux-Fernwartung auf echtem Mint testen. Danach Gesamtabnahme und Search Console nach 2/4 Wochen.
+- Details in `STATUS.md`; Spec, Plan, Textblatt, Messungen und Fachwissen ausserhalb des Repos in
+  `../_intern/` (Repo ist oeffentlich).
 
 *CI 2026.01 · Grundke IT-Service · www.grundke-it.de*
