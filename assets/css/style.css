@@ -427,7 +427,8 @@ button { font-family: var(--fb); cursor: pointer; }
 .foot-desc  { font-size:.82rem; color:var(--text3); line-height:1.7; margin-bottom:1.2rem; }
 .foot-contact a { font-size:.82rem; color:var(--text2); display:block; margin-bottom:.3rem; transition:color .2s; }
 .foot-contact a:hover { color:var(--cyan); }
-.foot-h { font-family:var(--fm); font-size:.67rem; letter-spacing:.1em; text-transform:uppercase; color:var(--text3); margin-bottom:.9rem; }
+.foot-contact .foot-ico { display:inline-block; width:14px; height:14px; margin-right:.4rem; vertical-align:-2px; }
+.foot-h { font-family:var(--fm); font-size:.8rem; letter-spacing:.08em; text-transform:uppercase; color:var(--text3); margin-bottom:.9rem; } /* 12 px (seit 10.10.2026, vorher .67rem) */
 .foot-links { list-style:none; display:flex; flex-direction:column; gap:.45rem; }
 .foot-links a { font-size:.84rem; color:var(--text2); transition:color .2s; }
 .foot-links a:hover { color:var(--cyan); }
@@ -457,6 +458,8 @@ button { font-family: var(--fb); cursor: pointer; }
   .foot-col[open] > summary::after { transform:translateY(25%) rotate(-135deg); }
   .foot-col > summary:hover { color:var(--text2); }
   .foot-col > .foot-links { padding:.2rem 0 1.2rem; }
+  /* Aufklappzeile am Handy: 15 px, normale Schrift statt Mini-Label */
+  .foot-col > .foot-h { font-family:var(--fb); font-size:1rem; font-weight:600; letter-spacing:0; text-transform:none; color:var(--text2); }
 }
 
 /* ── Responsive (Release-2 Schritt 7: Mobile-First, min-width-Skalierung) ──

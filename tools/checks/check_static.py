@@ -152,9 +152,10 @@ def first(rx, s):
 def ak9b():
     """Kundenstimmen aus einer Quelle (REVIEWS im Generator). Jede Karte <figure class="testi-card">
     traegt Name (testi-who), Quelle (testi-role: "Google-Bewertung" nur bei Google-Stimmen) und den
-    Text woertlich und ungekuerzt in <blockquote class="testi-txt">. Startseite zusaetzlich: jede Stimme
-    genau einmal, review[]/reviewBody im Schema = REVIEWS, reviewCount = len(REVIEWS), Belegzeile
-    [data-proof] nennt REVIEW_COUNT_GOOGLE."""
+    Text woertlich und ungekuerzt in <blockquote class="testi-txt">; Sterne (.stars) nur bei
+    Google-Stimmen. Startseite zusaetzlich: jede Stimme genau einmal, review[]/reviewBody im Schema =
+    REVIEWS, reviewRating nur bei Google-Stimmen, aggregateRating reviewCount = ratingCount =
+    REVIEW_COUNT_GOOGLE, Belegzeile [data-proof] nennt REVIEW_COUNT_GOOGLE."""
     sys.path.insert(0, str(ROOT / "tools"))
     try:
         import build_landingpages as gen
@@ -181,6 +182,8 @@ def ak9b():
                 errs.append(f"{rel(p)}: Text von {who} weicht von REVIEWS ab")
             if ("Google" in role) != (r["source"] == "Google-Bewertung"):
                 errs.append(f"{rel(p)}: Quelle von {who} falsch beschriftet ('{role}')")
+            if r["source"] != "Google-Bewertung" and re.search(r'class="stars\b', c):
+                errs.append(f"{rel(p)}: Sterne bei {who}, die Stimme ist keine Google-Bewertung")
         if rel(p) != "index.html":
             continue
         if sorted(seen) != sorted(by_name):
@@ -190,9 +193,15 @@ def ak9b():
         want = [(r["name"], "\n\n".join(r["paragraphs"])) for r in reviews]
         if sorted(sch) != sorted(want):
             errs.append("index.html: review[]/reviewBody im Schema != REVIEWS")
-        counts = [x.get("reviewCount") for x in nodes if x.get("@type") == "AggregateRating"]
-        if counts != [str(len(reviews))]:
-            errs.append(f"index.html: reviewCount {counts} != {len(reviews)}")
+        for x in nodes:
+            if x.get("@type") == "Review" and x["author"]["name"] in by_name:
+                google = by_name[x["author"]["name"]]["source"] == "Google-Bewertung"
+                if google != ("reviewRating" in x):
+                    errs.append(f"index.html: reviewRating bei {x['author']['name']} "
+                                + ("fehlt" if google else "gesetzt, ist aber keine Google-Bewertung"))
+        agg = [(x.get("reviewCount"), x.get("ratingCount")) for x in nodes if x.get("@type") == "AggregateRating"]
+        if agg != [(str(n_google), str(n_google))]:
+            errs.append(f"index.html: aggregateRating reviewCount/ratingCount {agg} != {n_google}")
         proof = re.search(r"bei (\d+) Google-Bewertungen", text_of(first(r"(<a[^>]*\bdata-proof\b.*?</a>)", s)))
         if not proof or int(proof.group(1)) != n_google:
             errs.append(f"index.html: Belegzeile [data-proof] nennt nicht {n_google} Google-Bewertungen")

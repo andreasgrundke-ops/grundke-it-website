@@ -334,24 +334,40 @@ function initFooter() {
 }
 
 /* ── Startseite: Wischleiste der Kundenstimmen (seit 2026-10-10)
-   Ohne JS steht nur "4 weitere Stimmen" da. Mit JS kommt die Position dazu
-   ("· 2 von 4"), solange die Leiste wirklich seitlich scrollt (am Handy). */
+   Ohne JS steht nur "4 weitere Stimmen" da. Mit JS kommt die Position dazu,
+   solange die Leiste wirklich seitlich scrollt (am Handy). Gezaehlt werden die
+   Rastpunkte: Eine lange Stimme blaettert absatzweise ("· Apartments Bauer ·
+   Absatz 2 von 4"), danach zaehlen die Karten ("· 2 von 4"). */
 function initTestiRow() {
   document.querySelectorAll('.testi-row').forEach(row => {
     const pos = row.parentElement.querySelector('[data-testi-pos]');
     const cards = Array.from(row.querySelectorAll('.testi-card'));
     if (!pos || cards.length < 2) return;
 
+    // Rastpunkte: je Karte einer, bei langen Stimmen je Absatz einer
+    const stops = [];
+    cards.forEach((card, k) => {
+      const paras = card.classList.contains('testi-card--long')
+        ? Array.from(card.querySelectorAll('.testi-txt p')) : [];
+      const who = (card.querySelector('.testi-who') || {}).textContent || '';
+      if (paras.length > 1) {
+        paras.forEach((p, i) => stops.push({ el: p, label: who + ' · Absatz ' + (i + 1) + ' von ' + paras.length }));
+      } else {
+        stops.push({ el: card, label: (k + 1) + ' von ' + cards.length });
+      }
+    });
+
     function update() {
       if (row.scrollWidth <= row.clientWidth + 1) { pos.textContent = ''; return; }
       const start = row.getBoundingClientRect().left;
       let idx = 0;
-      cards.forEach((card, k) => {
-        if (card.getBoundingClientRect().left - start <= 8) idx = k;
+      // Absatz-Rastpunkte liegen um den Kartenrand (scroll-margin) eingerueckt: Toleranz 32 px
+      stops.forEach((s, k) => {
+        if (s.el.getBoundingClientRect().left - start <= 32) idx = k;
       });
       // Am Ende der Leiste kann die letzte Karte nicht ganz nach links rutschen
-      if (row.scrollLeft + row.clientWidth >= row.scrollWidth - 2) idx = cards.length - 1;
-      pos.textContent = ' · ' + (idx + 1) + ' von ' + cards.length;
+      if (row.scrollLeft + row.clientWidth >= row.scrollWidth - 2) idx = stops.length - 1;
+      pos.textContent = ' · ' + stops[idx].label;
     }
 
     row.addEventListener('scroll', update, { passive: true });

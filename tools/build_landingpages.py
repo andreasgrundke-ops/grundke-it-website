@@ -473,7 +473,7 @@ def footer_html(places, services, current_path="", updated=None, home=False):
         <div class="foot-brand">Grundke IT-Service</div>
         <p class="foot-desc">Deine IT-Abteilung. Nur extern.<br>IT, KI, Software und Websites für Betriebe im Münchner Osten.<br>Angebot für Unternehmen, alle Preise zzgl. MwSt.</p>
         <address class="foot-contact" style="font-style:normal;">
-          <a href="tel:+491782584438">☎ 0178 258 44 38</a>
+          <a href="tel:+491782584438"><svg class="foot-ico" width="14" height="14" aria-hidden="true"><use href="#ico-phone"/></svg>0178 258 44 38</a>
           <a href="{wa}" target="_blank" rel="noopener">WhatsApp schreiben</a>
           <a href="{mailto}">info@grundke-it.de</a>
           <a href="https://grundke-it.de">www.grundke-it.de</a>
@@ -1774,7 +1774,8 @@ SERVICES = [
         "title": "Software entwickeln lassen für kleine Betriebe | Grundke IT",
         "h1": "Software nach Maß für kleine Betriebe",
         "label": "Das nervt jede Woche?", "service_type": "Individuelle Softwareentwicklung und Betrieb für kleine Unternehmen",
-        "published": NEW_DATE, "modified": NEW_DATE, "modified_disp": NEW_DATE_DISP,
+        # 10.10.2026: Betrieb ab 80 € statt 79 € (Inhaltsaenderung -> neues Datum)
+        "published": NEW_DATE, "modified": "2026-10-10", "modified_disp": "10. Oktober 2026",
         "extra_style": NEW_PAGE_STYLE,
         "trust": TRUST_FESTPREIS,
         "prices_h2": "Was das kostet",
@@ -2787,6 +2788,7 @@ FAQPAGE_RE = re.compile(r'  <script type="application/ld\+json">\n\{\n  "@contex
                         r'  "@type": "FAQPage",.*?\n  </script>', re.S)
 REVIEW_ARRAY_RE = re.compile(r'("review":\[\n).*?(\n        \])', re.S)
 REVIEW_COUNT_RE = re.compile(r'"reviewCount":"\d+"')
+RATING_COUNT_RE = re.compile(r'"ratingCount":"\d+"')
 PROOF_RE = re.compile(r'(<a\b[^>]*\bdata-proof\b[^>]*>)5,0 bei \d+ Google-Bewertungen(</a>)')
 WA_LINK_RE = re.compile(r'<a\b[^>]*\bdata-wa="([\w-]+)"[^>]*>')
 PRICE_SPAN_RE = re.compile(r'(<span data-price="(\w+)">)[^<]*(</span>)')
@@ -2803,16 +2805,18 @@ def review_label(r):
 
 
 def voice_card(r, ind="      "):
-    """Eine Stimme als <figure class="testi-card">, Text woertlich mit „…“ um das ganze Zitat."""
+    """Eine Stimme als <figure class="testi-card">, Text woertlich mit „…“ um das ganze Zitat.
+    Sterne nur bei Google-Bewertungen (eine direkt uebermittelte Stimme hat keine Sternebewertung)."""
     ps = r["paragraphs"]
     body = "".join("\n{i}    <p>{a}{t}{z}</p>".format(i=ind, t=esc(t), a="„" if k == 0 else "",
                                                      z="“" if k == len(ps) - 1 else "")
                    for k, t in enumerate(ps))
     ctx = '\n{i}    <div class="testi-ctx">{c}</div>'.format(i=ind, c=esc(r["ctx"])) if r.get("ctx") else ""
     cls = "testi-card testi-card--long" if len(ps) > 2 else "testi-card"
-    return ('{i}<figure class="{cls}">\n{i}  {stars}\n{i}  <blockquote class="testi-txt">{body}\n{i}  </blockquote>\n'
+    stars = "\n{i}  {s}".format(i=ind, s=STARS) if r["source"] == "Google-Bewertung" else ""
+    return ('{i}<figure class="{cls}">{stars}\n{i}  <blockquote class="testi-txt">{body}\n{i}  </blockquote>\n'
             '{i}  <figcaption>\n{i}    <div class="testi-who">{who}</div>\n{i}    <div class="testi-role">{lbl}</div>{ctx}\n'
-            '{i}  </figcaption>\n{i}</figure>').format(i=ind, cls=cls, stars=STARS, body=body, who=esc(r["who"]),
+            '{i}  </figcaption>\n{i}</figure>').format(i=ind, cls=cls, stars=stars, body=body, who=esc(r["who"]),
                                                      lbl=esc(review_label(r)), ctx=ctx)
 
 
@@ -2859,17 +2863,19 @@ def home_faq_schema():
 
 
 def home_review_json():
-    """review[] im LocalBusiness-Knoten, im kompakten Format des handgeschriebenen Schemas."""
+    """review[] im LocalBusiness-Knoten, im kompakten Format des handgeschriebenen Schemas.
+    reviewRating nur bei Google-Bewertungen; die direkt uebermittelte Stimme steht ohne Bewertung."""
     def js(v):
         return json.dumps(v, ensure_ascii=False)
     out = []
     for r in REVIEWS:
         date = '\n            "datePublished":{},'.format(js(r["date"])) if r.get("date") else ""
-        out.append('          {{\n            "@type":"Review",\n'
-                   '            "reviewRating":{{"@type":"Rating","ratingValue":"5","bestRating":"5"}},\n'
+        rating = ('\n            "reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"},'
+                  if r["source"] == "Google-Bewertung" else "")
+        out.append('          {{\n            "@type":"Review",{rt}\n'
                    '            "author":{{"@type":{t},"name":{n}}},{d}\n'
-                   '            "reviewBody":{b}\n          }}'.format(t=js(r["author_type"]), n=js(r["name"]), d=date,
-                                                                    b=js("\n\n".join(r["paragraphs"]))))
+                   '            "reviewBody":{b}\n          }}'.format(rt=rating, t=js(r["author_type"]), n=js(r["name"]),
+                                                                    d=date, b=js("\n\n".join(r["paragraphs"]))))
     return ",\n".join(out)
 
 
@@ -2902,7 +2908,9 @@ def sync_home():
     s = one(HOME_FAQ_RE, lambda m: m.group(1) + home_faq_html() + "\n" + m.group(2), s, "HOME_FAQ-Marken")
     s = one(FAQPAGE_RE, lambda m: home_faq_schema(), s, "FAQPage-Schema")
     s = one(REVIEW_ARRAY_RE, lambda m: m.group(1) + home_review_json() + m.group(2), s, "review[] im Schema")
-    s = one(REVIEW_COUNT_RE, lambda m: '"reviewCount":"{}"'.format(len(REVIEWS)), s, "reviewCount")
+    # aggregateRating zaehlt nur die Google-Bewertungen (Controller-Entscheid 10.10.2026)
+    s = one(REVIEW_COUNT_RE, lambda m: '"reviewCount":"{}"'.format(REVIEW_COUNT_GOOGLE), s, "reviewCount")
+    s = one(RATING_COUNT_RE, lambda m: '"ratingCount":"{}"'.format(REVIEW_COUNT_GOOGLE), s, "ratingCount")
     s = one(PROOF_RE, lambda m: m.group(1) + "5,0 bei {} Google-Bewertungen".format(REVIEW_COUNT_GOOGLE) + m.group(2),
             s, "Belegzeile data-proof")
     s = one(HOME_MODIFIED_RE, lambda m: m.group(1) + HOME_DATE + m.group(2), s, "dateModified")

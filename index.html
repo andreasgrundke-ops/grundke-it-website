@@ -120,7 +120,8 @@
         "aggregateRating":{
           "@type":"AggregateRating",
           "ratingValue":"5.0",
-          "reviewCount":"6",
+          "ratingCount":"5",
+          "reviewCount":"5",
           "bestRating":"5",
           "worstRating":"1"
         },
@@ -158,7 +159,6 @@
           },
           {
             "@type":"Review",
-            "reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"},
             "author":{"@type":"Person","name":"Janine Blumenschein"},
             "reviewBody":"Ich kann Grundke IT Service uneingeschränkt empfehlen. Andreas zeichnet sich durch eine äußerst zeitnahe und zuverlässige Betreuung aus. Er ist fachlich hervorragend aufgestellt und setzt gezielt moderne Technologien wie Künstliche Intelligenz ein, um optimale Lösungen zu erarbeiten. Ich fühle mich in allen IT-Angelegenheiten bestens betreut und schätze die professionelle Zusammenarbeit sehr."
           }
@@ -720,7 +720,7 @@
   }
   .rp-head-l { font-family:Arial,sans-serif; font-size:.78rem; letter-spacing:.04em; opacity:.85; }
   .rp-head-l strong { display:block; font-size:1.05rem; letter-spacing:.01em; opacity:1; margin-top:.15rem; }
-  .rp-head-r { font-family:'JetBrains Mono',monospace; font-size:.7rem; opacity:.85; text-align:right; }
+  .rp-head-r { font-family:'JetBrains Mono',monospace; font-size:.8rem; opacity:.85; text-align:right; }
   .rp-body { padding:1.4rem 1.6rem 0; }
   .rp-section-title {
     font-family:Arial,sans-serif; font-size:.95rem; font-weight:700;
@@ -782,7 +782,7 @@
   }
   .rp-foot {
     background:var(--doc-light); padding:.6rem 1.4rem;
-    font-family:'JetBrains Mono',monospace; font-size:.65rem;
+    font-family:'JetBrains Mono',monospace; font-size:.8rem;
     color:var(--doc-muted); display:flex; justify-content:space-between; gap:1rem;
     border-top:1px solid #c9d6e6;
   }
@@ -1261,54 +1261,67 @@
   .hc-wer { font-size:.95rem; line-height:1.5; color:var(--text2); margin:0 0 1.4rem; }
   .hc-wer strong { color:var(--text); font-weight:600; }
   @media (max-width:767px) { .hc-inner { padding-top:1.6rem; padding-bottom:1.6rem; } .hc-wer { margin-bottom:1.1rem; } }
+  @media (min-width:768px) and (max-width:1023px) {
+    .hc-ctas { display:grid; grid-template-columns:minmax(0,1fr); max-width:20rem; }
+    .hc-ctas > a { justify-content:center; }
+  }
 
-  /* 2 Typische Anrufe: Zitat + K2, Vergleich aufklappbar, Chips zu den IT-Leistungen */
+  /* 2 Typische Anrufe: K2 + Andreas' Satz, Vergleich aufklappbar, Chips zu den IT-Leistungen */
   .itb-list { margin:1.8rem 0 2.2rem; }
-  .itb-k { display:grid; grid-template-columns:minmax(0,1fr); gap:.9rem 3.5rem; align-items:start; }
-  @media (min-width:1024px) { .itb-k { grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr); } }
-  .itb-k .usp-quote { margin:0; }
+  .itb-list dd { font-size:1.0667rem; }
+  .itb-k { display:grid; grid-template-columns:minmax(0,1fr); gap:1rem 3.5rem; align-items:center; }
+  @media (min-width:1024px) { .itb-k { grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr); } }
+  /* Andreas' eigener Satz, kein Anruferzitat: ohne Anfuehrungszeichen, Schrift der Ueberschriften, Pointe in Cyan */
+  .itb-claim { margin:0; font-family:var(--fh); font-weight:700; font-size:clamp(1.2rem,2.2vw,1.55rem); line-height:1.3; letter-spacing:-.02em; color:var(--text2); }
+  .itb-claim em { font-style:normal; color:var(--cyan); }
   .itb-k2 { margin:0; max-width:62ch; font-size:1.0667rem; line-height:1.7; color:var(--text); }
   .itb-vgl { max-width:640px; }
   .itb-leist { margin-top:1.6rem; }
   .itb-leist-h { margin:0; max-width:62ch; font-size:.92rem; line-height:1.6; color:var(--text2); }
-  .itb-leist .chips { margin:.7rem 0 0; }
-  .itb-leist .chips > a { font-family:var(--fb); font-size:.86rem; font-weight:600; color:var(--text); padding:.4rem .8rem; }
+  .itb-leist .chips { margin:.7rem 0 0; gap:.5rem; }
+  .itb-leist .chips > a { font-family:var(--fb); font-size:.86rem; font-weight:600; color:var(--text); padding:0 .8rem; }
+  /* Tippflaechen der Chips mindestens 44 px hoch (Leistungen und Orte) */
+  .itb-leist .chips > *, .geo-chips > * { display:inline-flex; align-items:center; min-height:44px; }
   @media (max-width:767px) {
     /* Anrufe am Handy als Absatz mit fettem Einstieg (Run-in): dieselben Texte, eine Zeile weniger je Anruf */
-    .itb-list { gap:.85rem; margin:1.2rem 0 1.3rem; }
-    .itb-vgl { margin-top:1.1rem; }
-    .itb-leist { margin-top:1.2rem; }
-    .itb-list > div { padding-top:.75rem; }
+    .itb-list { gap:.8rem; margin:1rem 0 1.1rem; }
+    .itb-vgl { margin-top:.9rem; }
+    .itb-leist { margin-top:1rem; }
+    .itb-list > div { padding-top:.7rem; line-height:1.45; }
     .itb-list dt, .itb-list dd { display:inline; }
-    .itb-list dt { margin:0 .3rem 0 0; font-size:.98rem; line-height:1.6; }
-    .itb-list dd { font-size:.92rem; line-height:1.7; }
+    .itb-list dt { margin:0 .3rem 0 0; font-size:1.0667rem; line-height:1.45; }
+    .itb-list dd { line-height:1.45; }
+    .itb-k2 { line-height:1.55; }
+    .itb-claim { font-size:1.15rem; }
     .itb-leist-h { font-size:.88rem; }
     .itb-leist .chips { gap:.4rem; }
-    .itb-leist .chips > a { padding:.3rem .7rem; line-height:1.35; }
+    .itb-leist .chips > a { padding:0 .6rem; line-height:1.3; }
   }
 
   /* 3 Stimmen: zwei sichtbar, Rest in der Wischleiste (ab 1024 px als Raster).
      Die lange Stimme (testi-card--long) blaettert am Handy absatzweise: ein Absatz je Seite,
      jede Seite ist ein Rastpunkt der Leiste. So bleibt sie vollstaendig, ohne die Leiste hoch zu machen. */
-  .testimonials .testi-txt { font-size:1rem; margin-bottom:.8rem; }
-  .testimonials .testi-card { padding:1.25rem 1.25rem 1.2rem; }
+  .testimonials .testi-txt { font-size:1.0667rem; line-height:1.55; margin-bottom:.8rem; }
+  .testi-row .testi-txt { color:#cbd5e1; } /* 11:1 auf --bg2 (vorher --text2) */
+  .testi-card--long .testi-txt { font-style:normal; }
+  .testimonials .testi-card { padding:1.1rem 1.1rem 1.05rem; }
   .testimonials .stars { margin-bottom:.55rem; }
   .testi-top { display:grid; grid-template-columns:minmax(0,1fr); gap:.9rem; margin-top:1.3rem; }
   @media (min-width:900px) { .testi-top { grid-template-columns:minmax(0,1.55fr) minmax(0,1fr); gap:1.5rem; } }
   /* Am Handy stehen die zwei sichtbaren Stimmen als Zitat ohne Kartenrahmen, getrennt durch eine Linie */
   @media (max-width:899px) {
-    .testi-top { gap:1.1rem; }
+    .testi-top { gap:.9rem; margin-top:.9rem; }
     .testi-top > .testi-card { padding:0; background:none; border:none; border-radius:0; }
     .testi-top > .testi-card::before { content:none; }
     .testi-top > .testi-card + .testi-card { padding-top:1.1rem; border-top:1px solid var(--border); }
     .testi-top .testi-txt { color:var(--text); }
   }
-  .testi-row-h { margin:1.3rem 0 .6rem; font-size:.95rem; color:var(--text2); }
-  .testi-row { --card-w:min(84vw, 340px); --card-pad:1.25rem; display:flex; align-items:stretch; gap:1rem; overflow-x:auto; scroll-snap-type:x mandatory; overscroll-behavior-x:contain; padding:0 0 .5rem; }
+  .testi-row-h { margin:1rem 0 .4rem; font-size:.88rem; color:var(--text2); }
+  .testi-row { --card-w:min(80vw, 340px); --card-pad:1.1rem; display:flex; align-items:stretch; gap:1rem; overflow-x:auto; scroll-snap-type:x mandatory; overscroll-behavior-x:contain; padding:0 0 .3rem; }
   .testi-row > .testi-card { flex:0 0 var(--card-w); scroll-snap-align:start; }
   .testi-row:focus-visible { outline:2px solid var(--cyan); outline-offset:4px; border-radius:10px; }
   .testi-row::-webkit-scrollbar { height:5px; }
-  .testimonials .testi-source { margin-top:1.1rem; }
+  .testimonials .testi-source { margin-top:.8rem; font-size:1.0667rem; line-height:1.5; }
   @media (max-width:1023px) {
     /* Die lange Karte selbst ist kein Rastpunkt (breiter als die Leiste, der Browser liesse sonst
        freies Scrollen in ihr zu); rasten sollen ihre Absaetze */
@@ -1316,7 +1329,11 @@
     .testi-card--long .testi-txt { display:grid; grid-auto-flow:column; grid-auto-columns:calc(var(--card-w) - 2 * var(--card-pad)); column-gap:calc(2 * var(--card-pad) + 1rem); }
     .testi-card--long .testi-txt p, .testi-card--long .testi-txt p + p { margin:0; }
     .testi-card--long .testi-txt p { scroll-snap-align:start; scroll-margin-left:var(--card-pad); }
-    .testi-card--long figcaption { text-align:right; }
+    /* Name und Quelle stehen oben und laufen beim Blaettern mit (sticky), so steht auf jeder Seite, wer spricht */
+    .testi-card--long > .stars, .testi-card--long > figcaption { position:sticky; left:var(--card-pad); align-self:flex-start; width:calc(var(--card-w) - 2 * var(--card-pad)); }
+    .testi-card--long > .stars { order:-2; }
+    .testi-card--long > figcaption { order:-1; display:flex; flex-wrap:wrap; align-items:baseline; column-gap:.6rem; margin-bottom:.7rem; }
+    .testi-card--long .testi-ctx { flex-basis:100%; margin-top:.1rem; }
   }
   @media (min-width:1024px) {
     .testi-row { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1.5rem; overflow:visible; padding:0; }
@@ -1329,12 +1346,12 @@
   .praxis { background:var(--bg); }
   @media (max-width:700px) {
     .praxis-icon { display:none; }
-    .praxis-card { padding:1.25rem 1.2rem; }
-    .praxis-card h3 { margin-bottom:.7rem; }
-    .praxis-text { line-height:1.65; }
+    .praxis-card { padding:1.1rem 1.1rem; }
+    .praxis-card h3 { margin-bottom:.55rem; }
+    .praxis-text { line-height:1.6; }
     .praxis-text p { margin-bottom:.6rem; }
-    .praxis-text p.praxis-rule { margin:.8rem 0 .8rem; padding:.65rem .85rem; }
-    .praxis-cta { margin-top:0; padding:.7rem 1.2rem; }
+    .praxis-text p.praxis-rule { margin:.6rem 0 .7rem; padding:.6rem .8rem; }
+    .praxis-cta { margin-top:0; padding:.65rem 1.1rem; }
   }
 
   /* 5 Schnellcheck: am Handy kompakter, Knoepfe volle Breite */
@@ -1368,6 +1385,7 @@
   .pkg-head .price-name { margin:0; }
   .pkg-price { text-align:right; }
   .pkg-price .price-per { margin:.25rem 0 0; }
+  .price-val .price-cur { font-size:1.35rem; margin-left:.05rem; letter-spacing:0; }
   .pkg-grid .price-note { margin:.45rem 0 .9rem; }
   .pkg-grid .price-feats { gap:.45rem; margin:0 0 1.2rem; }
   .pkg-grid .price-feats li { align-items:center; font-size:1.0667rem; color:var(--text); }
@@ -1415,6 +1433,8 @@
   .faq-rest .faq-wrap { margin-top:.2rem; }
   .faq-more { margin-top:1.4rem; }
   .faq-more p { font-size:1.0667rem; }
+
+  @media (max-width:899px) { .scroll-top { display:none; } }
 
   /* 10 Abschluss */
   .cta-sec .cta-sub { font-size:1.0667rem; }
@@ -1579,8 +1599,8 @@
       <div><dt>„Es ist 16:30 Uhr, mein IT-Dienstleister hat schon zu.“</dt><dd>Ich habe keine klassischen Öffnungszeiten. Ruf an oder schreib per WhatsApp, auch abends und am Wochenende. Vertragskunden gehen vor.</dd></div>
     </dl>
     <div class="itb-k">
-      <blockquote class="usp-quote">„Kein Gehalt. Kein Obstkorb. Kein Onboarding.<br>Dafür einer, der dein System kennt.“</blockquote>
       <p class="itb-k2">Ich habe eure Zugänge, kenne eure Geräte und weiß, wie bei euch gearbeitet wird. Wenn abends der Server steht oder am Samstag die Kasse, muss niemand erst herausfinden, wer zuständig ist. Und vorher kümmere ich mich je nach Paket um Updates, Datensicherung und Virenschutz, damit es seltener brennt.</p>
+      <p class="itb-claim">Kein Gehalt. Kein Obstkorb. Kein Onboarding.<br><em>Dafür einer, der dein System kennt.</em></p>
     </div>
     <details class="more itb-vgl">
       <summary>Großes Systemhaus oder Grundke IT: der Vergleich</summary>
@@ -1599,9 +1619,9 @@
       <p class="itb-leist-h">Abgeleitet aus 496 realen Einsätzen bei kleinen Betrieben, im Handwerk, in Gastronomie, Hotels und Praxen:</p>
       <div class="chips">
         <a href="/managed-it-service/">Managed IT-Service</a>
+        <a href="/netzwerk-wlan-firewall/">Netzwerk, WLAN &amp; Firewall</a>
         <a href="/microsoft-365-betreuung/">Microsoft 365 Betreuung</a>
         <a href="/it-sicherheit-backup/">IT-Sicherheit &amp; Backup</a>
-        <a href="/netzwerk-wlan-firewall/">Netzwerk, WLAN &amp; Firewall</a>
         <a href="/it-notdienst/">IT-Notdienst</a>
         <a href="/it-betreuer-wechseln/">IT-Betreuer wechseln</a>
         <a href="/lizenzen/">Lizenzen</a>
@@ -1618,7 +1638,6 @@
     <!-- HOME_REVIEWS:START (generiert aus REVIEWS in tools/build_landingpages.py) -->
     <div class="testi-top">
       <figure class="testi-card">
-        <div class="stars" role="img" aria-label="5 von 5 Sternen"><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg></div>
         <blockquote class="testi-txt">
           <p>„Ich kann Grundke IT Service uneingeschränkt empfehlen. Andreas zeichnet sich durch eine äußerst zeitnahe und zuverlässige Betreuung aus. Er ist fachlich hervorragend aufgestellt und setzt gezielt moderne Technologien wie Künstliche Intelligenz ein, um optimale Lösungen zu erarbeiten. Ich fühle mich in allen IT-Angelegenheiten bestens betreut und schätze die professionelle Zusammenarbeit sehr.“</p>
         </blockquote>
@@ -1870,7 +1889,7 @@
         <div class="price-tier">Mit Patchmanagement</div>
         <div class="pkg-head">
           <h3 class="price-name">Business</h3>
-          <div class="pkg-price"><div class="price-val"><sup>€</sup>249</div><div class="price-per">/Monat zzgl. MwSt.</div></div>
+          <div class="pkg-price"><div class="price-val">249<span class="price-cur">&nbsp;€</span></div><div class="price-per">/Monat zzgl. MwSt.</div></div>
         </div>
         <div class="price-note">monatlich kündbar</div>
         <ul class="price-feats">
@@ -1887,7 +1906,7 @@
         <div class="price-tier">Einstieg</div>
         <div class="pkg-head">
           <h3 class="price-name">Starter</h3>
-          <div class="pkg-price"><div class="price-val"><sup>€</sup>149</div><div class="price-per">/Monat zzgl. MwSt.</div></div>
+          <div class="pkg-price"><div class="price-val">149<span class="price-cur">&nbsp;€</span></div><div class="price-per">/Monat zzgl. MwSt.</div></div>
         </div>
         <div class="price-note">monatlich kündbar</div>
         <ul class="price-feats">
@@ -1904,7 +1923,7 @@
         <div class="price-tier">Vollbetreuung</div>
         <div class="pkg-head">
           <h3 class="price-name">Premium</h3>
-          <div class="pkg-price"><div class="price-val"><sup>€</sup>449</div><div class="price-per">/Monat zzgl. MwSt.</div></div>
+          <div class="pkg-price"><div class="price-val">449<span class="price-cur">&nbsp;€</span></div><div class="price-per">/Monat zzgl. MwSt.</div></div>
         </div>
         <div class="price-note">monatlich kündbar</div>
         <ul class="price-feats">
@@ -2068,7 +2087,7 @@
       <a href="mailto:info@grundke-it.de?subject=Anfrage%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0AMein%20Anliegen%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F)." class="btn-email" style="padding:1rem 2rem;font-size:.95rem;"><svg width="20" height="20"><use href="#ico-mail"/></svg> E-Mail schreiben</a>
     </div>
     <div class="hc-qr cta-qr">
-      <a href="/kontakt/" title="Alle Kontaktwege"><img src="/assets/img/qr-tree.png" alt="QR-Code: Kontaktseite aufs Handy holen" width="88" height="88" loading="lazy"/></a>
+      <a href="/kontakt/" title="Alle Kontaktwege"><img src="/assets/img/qr-tree.png" alt="QR-Code: Kontaktseite aufs Handy holen" width="88" height="88"/></a>
       <p><strong>Scan mich. Dann reden wir.</strong>Alle Kontaktwege direkt aufs Handy.</p>
     </div>
   </div>
@@ -2088,7 +2107,7 @@
         <div class="foot-brand">Grundke IT-Service</div>
         <p class="foot-desc">Deine IT-Abteilung. Nur extern.<br>IT, KI, Software und Websites für Betriebe im Münchner Osten.<br>Angebot für Unternehmen, alle Preise zzgl. MwSt.</p>
         <address class="foot-contact" style="font-style:normal;">
-          <a href="tel:+491782584438">☎ 0178 258 44 38</a>
+          <a href="tel:+491782584438"><svg class="foot-ico" width="14" height="14" aria-hidden="true"><use href="#ico-phone"/></svg>0178 258 44 38</a>
           <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20komme%20%C3%BCber%20deine%20Website." target="_blank" rel="noopener">WhatsApp schreiben</a>
           <a href="mailto:info@grundke-it.de?subject=Anfrage%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0AMein%20Anliegen%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F).">info@grundke-it.de</a>
           <a href="https://grundke-it.de">www.grundke-it.de</a>
