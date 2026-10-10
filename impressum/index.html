@@ -40,12 +40,11 @@
   <meta name="application-name" content="Grundke IT"/>
   <meta name="msapplication-TileColor" content="#0c4da2"/>
   <meta name="msapplication-TileImage" content="/android-chrome-192x192.png"/>
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/Manrope-latin.woff2"/>
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/SpaceGrotesk-latin.woff2"/>
   <link rel="stylesheet" href="../assets/css/fonts.css"/>
   <link rel="stylesheet" href="/assets/css/style.css?v=2026.10.c"/>
   <style>
-    .page-wrap { margin-top:var(--nav-h); padding:clamp(3rem,8vw,6rem) 0; }
-    .page-content { max-width:780px; }
-    .page-content h1 { font-family:var(--fh); font-size:clamp(1.8rem,4vw,2.8rem); font-weight:800; color:var(--text); letter-spacing:-.04em; line-height:1.1; margin-bottom:2rem; }
     .page-content h2 { font-family:var(--fh); font-size:1.1rem; font-weight:700; color:var(--text); margin:2rem 0 .6rem; padding-bottom:.4rem; border-bottom:1px solid var(--border); }
     .page-content p { font-size:.92rem; color:var(--text2); line-height:1.8; margin-bottom:.8rem; }
     .page-content a { color:var(--cyan); } .page-content a:hover { text-decoration:underline; }
@@ -106,10 +105,10 @@
 </header>
 
 <main id="main">
-<article class="page-wrap">
+<section class="sec">
   <div class="inner">
-    <div class="page-content">
-      <h1>Impressum</h1>
+    <article class="page-content measure">
+      <h1 class="page-h1">Impressum</h1>
       <h2>Angaben gemäß § 5 DDG</h2>
       <p>Andreas Grundke IT-Service<br>Beethovenring 16<br>85630 Grasbrunn</p>
       <h2>Rechtsform</h2>
@@ -133,9 +132,28 @@
       <h2>Hosting</h2>
       <p>Diese Website wird auf <strong>GitHub Pages</strong> gehostet, einem Dienst der GitHub, Inc. (88 Colin P Kelly Jr St, San Francisco, CA 94107, USA), einem Tochterunternehmen der Microsoft Corporation. Die Datenübertragung in die USA wird auf Grundlage des EU-U.S. Data Privacy Framework (DPF) gestützt. Weitere Informationen finden Sie in meiner <a href="/datenschutz/">Datenschutzerklärung</a>.</p>
       <p style="margin-top:3rem;font-size:.75rem;color:var(--text3);">Quelle: eRecht24 · zuletzt aktualisiert 2026-06-15</p>
+    </article>
+  </div>
+</section>
+<section class="cta-sec">
+  <div class="inner">
+    <h2 class="cta-h">Problem? <em>Ich bin dran.</em></h2>
+    <p class="cta-sub">Ruf an, schreib auf WhatsApp oder per Mail. Am anderen Ende bin ich, Andreas Grundke. Gerne per Du.</p>
+    <div class="cta-btns">
+      <a href="tel:+491782584438" class="btn-tel"><svg width="20" height="20" aria-hidden="true"><use href="#ico-phone"/></svg> 0178 258 44 38</a>
+      <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20habe%20ein%20IT-Problem%20und%20komme%20%C3%BCber%20deine%20Website." target="_blank" rel="noopener" class="btn-wa"><svg width="20" height="20" aria-hidden="true"><use href="#ico-wa"/></svg> WhatsApp</a>
+      <a href="mailto:info@grundke-it.de?subject=Anfrage%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0AMein%20Anliegen%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F)." class="btn-email"><svg width="20" height="20" aria-hidden="true"><use href="#ico-mail"/></svg> E-Mail schreiben</a>
+    </div>
+    <div class="hc-qr cta-qr">
+      <a href="/kontakt/" title="Alle Kontaktwege"><img src="/assets/img/qr-tree.png" alt="QR-Code: Kontaktseite aufs Handy holen" width="88" height="88"/></a>
+      <p><strong>Scan mich. Dann reden wir.</strong>Alle Kontaktwege direkt aufs Handy.</p>
+    </div>
+    <div class="cta-author">
+      <span class="ava" aria-hidden="true">AG</span>
+      <p><strong>Andreas Grundke</strong> · Fachinformatiker für Systemintegration · über 20 Jahre IT</p>
     </div>
   </div>
-</article>
+</section>
 </main>
 
 <footer class="site-footer">

@@ -40,14 +40,15 @@
   <meta name="application-name" content="Grundke IT"/>
   <meta name="msapplication-TileColor" content="#0c4da2"/>
   <meta name="msapplication-TileImage" content="/android-chrome-192x192.png"/>
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/Manrope-latin.woff2"/>
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/SpaceGrotesk-latin.woff2"/>
   <link rel="stylesheet" href="../assets/css/fonts.css"/>
   <link rel="stylesheet" href="/assets/css/style.css?v=2026.10.c"/>
   <style>
-    .page-wrap { margin-top:var(--nav-h); padding:clamp(3rem,8vw,6rem) 0; }
-    .agb-box { max-width:600px; background:var(--bg2); border:1px solid var(--border); border-radius:16px; padding:3rem; text-align:center; }
+    .agb-box { background:var(--bg2); border:1px solid var(--border); border-radius:16px; padding:clamp(1.25rem,6vw,3rem); text-align:center; }
     .agb-ico { font-size:3rem; margin-bottom:1.5rem; }
-    .agb-box h1 { font-family:var(--fh); font-size:1.8rem; font-weight:800; color:var(--text); letter-spacing:-.03em; margin-bottom:1rem; }
     .agb-box p { font-size:.9rem; color:var(--text2); line-height:1.7; margin-bottom:2rem; }
+    .agb-dl { white-space:normal; justify-content:center; }
     .agb-links { display:flex; flex-direction:column; gap:.8rem; align-items:center; }
     .agb-hint { font-size:.75rem; color:var(--text3); font-family:var(--fm); margin-top:1.5rem; }
   </style>
@@ -107,21 +108,40 @@
 </header>
 
 <main id="main">
-<article class="page-wrap">
-  <div class="inner" style="display:flex;justify-content:center;">
-    <div class="agb-box">
+<section class="sec">
+  <div class="inner">
+    <article class="agb-box measure">
       <div class="agb-ico">&#128196;</div>
-      <h1>Allgemeine Geschäftsbedingungen</h1>
+      <h1 class="page-h1">Allgemeine Geschäfts&shy;bedingungen</h1>
       <p>Die AGB von Grundke IT-Service stehen als PDF zum Download bereit. Mit der Beauftragung von Grundke IT-Service erkennen Sie diese AGB an.</p>
       <div class="agb-links">
-        <a href="/assets/agb/AGB-Grundke-IT-Service.pdf" class="btn-p" download style="display:inline-flex;align-items:center;gap:.5rem;">
+        <a href="/assets/agb/AGB-Grundke-IT-Service.pdf" class="btn-p agb-dl" download>
           AGB als PDF herunterladen
         </a>
       </div>
       <p class="agb-hint">Stand: März 2024 · PDF, ca. 92 KB</p>
+    </article>
+  </div>
+</section>
+<section class="cta-sec">
+  <div class="inner">
+    <h2 class="cta-h">Problem? <em>Ich bin dran.</em></h2>
+    <p class="cta-sub">Ruf an, schreib auf WhatsApp oder per Mail. Am anderen Ende bin ich, Andreas Grundke. Gerne per Du.</p>
+    <div class="cta-btns">
+      <a href="tel:+491782584438" class="btn-tel"><svg width="20" height="20" aria-hidden="true"><use href="#ico-phone"/></svg> 0178 258 44 38</a>
+      <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20habe%20ein%20IT-Problem%20und%20komme%20%C3%BCber%20deine%20Website." target="_blank" rel="noopener" class="btn-wa"><svg width="20" height="20" aria-hidden="true"><use href="#ico-wa"/></svg> WhatsApp</a>
+      <a href="mailto:info@grundke-it.de?subject=Anfrage%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0AMein%20Anliegen%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F)." class="btn-email"><svg width="20" height="20" aria-hidden="true"><use href="#ico-mail"/></svg> E-Mail schreiben</a>
+    </div>
+    <div class="hc-qr cta-qr">
+      <a href="/kontakt/" title="Alle Kontaktwege"><img src="/assets/img/qr-tree.png" alt="QR-Code: Kontaktseite aufs Handy holen" width="88" height="88"/></a>
+      <p><strong>Scan mich. Dann reden wir.</strong>Alle Kontaktwege direkt aufs Handy.</p>
+    </div>
+    <div class="cta-author">
+      <span class="ava" aria-hidden="true">AG</span>
+      <p><strong>Andreas Grundke</strong> · Fachinformatiker für Systemintegration · über 20 Jahre IT</p>
     </div>
   </div>
-</article>
+</section>
 </main>
 
 <footer class="site-footer">
