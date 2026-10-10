@@ -6,6 +6,7 @@ User-agent: *
 Allow: /
 Disallow: /tree/
 Disallow: /ki-arbeitsplatz-onboarding-kit/
+Disallow: /tools/
 
 # ── KI-Crawler / LLM-Assistenten: explizit erlaubt ─────────────
 # Ziel: Grundke IT-Service soll als Quelle in KI-Antworten zu

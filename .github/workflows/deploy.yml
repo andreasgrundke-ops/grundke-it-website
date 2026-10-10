@@ -27,6 +27,11 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
+      - name: Interne Dateien aus dem Artefakt entfernen
+        run: |
+          rm -rf tools .impeccable "Audit 2026-04"
+          find . -maxdepth 1 -name "*.md" -delete
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

@@ -30,3 +30,10 @@ __pycache__/
 
 # Impeccable-Arbeitsdaten (Critique-Snapshots, Live-Server)
 .impeccable/
+
+# Mess- und Pruefartefakte der Umbau-Skripte (liegen in ../_intern/messungen/)
+/*.png
+messung*.json
+lighthouse*.json
+detect*.json
+seo.json
