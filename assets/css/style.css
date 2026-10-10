@@ -769,8 +769,9 @@ blockquote.testi-txt { margin-top:0; margin-left:0; margin-right:0; }
 .page-head .lp-crumbs a, .page-head .lp-crumbs [aria-current] { display:inline-block; line-height:2.2rem; }
 /* Unter 480 px ohne das letzte Glied (die Seite selbst, ihr Name steht gleich darunter als H1): fuer Screenreader
    bleibt es lesbar (sr-only-Muster), das Trennzeichen davor faellt mit weg. Lange Seitennamen brachen sonst in eine
-   zweite Zeile und schoben die Belegzeile unter die Kontaktleiste (AK6, Task 7 Fix-Runde 1). */
-@media (max-width:479px) { .lp-crumbs li[aria-current] { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; } }
+   zweite Zeile und schoben die Belegzeile unter die Kontaktleiste (AK6, Task 7 Fix-Runde 1). Nur ab drei Ebenen:
+   bei zwei Ebenen bliebe sonst „Startseite“ allein stehen (Fix-Runde 2). */
+@media (max-width:479px) { .lp-crumbs li[aria-current]:nth-child(n+3) { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; } }
 .page-head .s-sub { margin:0 0 1.4rem; }
 .page-head .hc-ctas { margin:0 0 1.3rem; }
 .page-head .hc-proof { margin:0; }
