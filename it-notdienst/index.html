@@ -35,44 +35,12 @@
   <link rel="stylesheet" href="/assets/css/style.css?v=2026.10.b"/>
 
   <style>
-    .lp-wrap { margin-top:var(--nav-h); padding:clamp(3rem,8vw,6rem) 0; }
-    .lp-content { max-width:880px; }
-    .lp-crumbs ol { display:flex; flex-wrap:wrap; gap:.35rem; list-style:none; margin:0 0 1.4rem; padding:0; font-size:.8rem; color:var(--text3); }
-    .lp-crumbs li + li::before { content:"/"; margin-right:.35rem; color:var(--border); }
-    .lp-crumbs a { color:var(--text2); text-decoration:none; }
-    .lp-crumbs a:hover { color:var(--cyan); }
-    .lp-crumbs [aria-current] { color:var(--text); }
-    .lp-content h2 { font-family:var(--fh); font-size:clamp(1.3rem,3vw,1.8rem); font-weight:800; color:var(--text); letter-spacing:-.02em; margin:2.6rem 0 1rem; }
-    .lp-content p { font-size:1.0667rem; color:var(--text2); line-height:1.8; margin-bottom:1rem; }
+    .lp-content { max-width:68ch; }
+    .lp-content p { font-size:1.0667rem; color:var(--text2); line-height:1.75; margin:0 0 1rem; }
+    .lp-content p:last-child { margin-bottom:0; }
     .lp-content strong { color:var(--text); }
-    .lp-cta-row { display:flex; flex-wrap:wrap; gap:1rem; margin:2rem 0; }
-    .lp-content .faq-wrap { margin-top:1.2rem; }
+    .lp-content p a, .lp-content li a { color:var(--cyan); }
     .lp-related { margin-top:2rem; }
-    .lp-content p a { color:var(--cyan); text-underline-offset:.2em; }
-    @media (max-width:560px) { .lp-cta-row .btn-p, .lp-cta-row .btn-g { width:100%; justify-content:center; } }
-    .lp-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1rem; margin:1.5rem 0; }
-    .lp-card { background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:1.3rem; }
-    .lp-card h3 { font-family:var(--fh); font-size:1rem; font-weight:700; color:var(--text); margin-bottom:.4rem; }
-    .lp-card p { font-size:.85rem; color:var(--text2); line-height:1.6; margin:0; }
-    .lp-price-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1rem; margin:1.5rem 0; }
-    .lp-price { background:var(--bg2); border:1px solid var(--border); border-radius:14px; padding:1.5rem; text-align:center; }
-    .lp-price.feat { border-color:var(--cyan); box-shadow:0 8px 24px rgba(38,189,239,.10); }
-    .lp-price .tier { font-family:var(--fm); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--text3); }
-    .lp-price .amount { font-family:var(--fh); font-size:1.8rem; font-weight:800; color:var(--text); margin:.4rem 0; }
-    .lp-price .amount span { display:block; margin-top:.2rem; font-size:.8rem; font-weight:500; color:var(--text3); }
-    .lp-price .desc { font-size:.82rem; color:var(--text2); line-height:1.6; }
-    .lp-places { display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0; }
-    .lp-place { font-family:var(--fm); font-size:.78rem; background:var(--bg2); border:1px solid var(--border); border-radius:999px; padding:.35rem .9rem; color:var(--text2); text-decoration:none; }
-    .lp-place:hover { border-color:var(--cyan); color:var(--cyan); }
-    .lp-place.here { border-color:var(--cyan); color:var(--cyan); }
-    .lp-trust { background:var(--bg2); border:1px solid var(--border); border-radius:16px; padding:1.6rem; margin:2rem 0; font-size:.9rem; color:var(--text2); line-height:1.7; }
-    .lp-author { display:flex; gap:1.1rem; align-items:flex-start; background:var(--bg2); border:1px solid var(--border); border-radius:14px; padding:1.4rem 1.5rem; margin:2.5rem 0 1rem; }
-    .lp-author img { width:56px; height:56px; border-radius:50%; flex-shrink:0; background:var(--bg); object-fit:contain; border:1px solid var(--border); }
-    .lp-author-body { font-size:.88rem; color:var(--text2); line-height:1.7; }
-    .lp-author-name { font-family:var(--fh); font-weight:800; color:var(--text); font-size:1rem; }
-    .lp-author-role { display:block; font-size:.8rem; color:var(--text3); margin:.1rem 0 .6rem; }
-    .lp-author-meta { margin-top:.7rem; font-size:.78rem; color:var(--text3); }
-    .lp-author-meta a { color:var(--cyan); text-decoration:underline; text-underline-offset:.2em; }
   </style>
   <script type="application/ld+json">
 {
@@ -181,7 +149,7 @@
     "@id": "https://grundke-it.de/#website"
   },
   "datePublished": "2026-06-15",
-  "dateModified": "2026-10-09",
+  "dateModified": "2026-10-10",
   "author": {
     "@type": "Person",
     "@id": "https://grundke-it.de/#andreas",
@@ -239,57 +207,108 @@
 </header>
 
 <main id="main">
-<article class="lp-wrap">
-  <div class="inner">
-    <div class="lp-content">
+<section class="sec sec--glow page-head">
+  <div class="inner page-head-grid page-head-grid--chat">
+    <div class="page-head-copy">
       <nav class="lp-crumbs" aria-label="Brotkrumen"><ol><li><a href="/">Startseite</a></li><li aria-current="page">IT-Notdienst</li></ol></nav>
-      <div class="s-label">Wenn die IT steht</div>
-      <h1 class="s-title">IT-Notdienst für Unternehmen</h1>
-      <p class="s-sub">Dein ITler geht nicht ran? Ich schon. Hilfe bei IT-Störungen, per Fernwartung oder vor Ort.</p>
-
-      <div class="lp-cta-row">
-        <a href="tel:+491782584438" class="btn-p">Kostenloses Erstgespräch</a>
-        <a href="/kontakt/" class="btn-g">Anfrage senden</a>
+      <h1 class="page-h1">IT-Notdienst für Unternehmen</h1>
+      <p class="page-k">Dein ITler geht nicht ran? Ich schon. Betreue ich euch bereits, kenne ich eure Systeme und schaue per Fernwartung nach, ohne lange Erklärungen.</p>
+      <p class="s-sub measure">Im IT-Notdienst helfe ich als Grundke IT-Service aus Grasbrunn Betrieben im Münchner Osten bei Störungen per Fernwartung oder vor Ort, ad hoc für 110 € netto je Stunde im 15-Minuten-Takt und ohne Zuschlag am Abend oder Wochenende. Eine feste Reaktionszeit sage ich nicht zu.</p>
+      <div class="hc-ctas">
+        <a href="tel:+491782584438" class="btn-p hc-call"><svg width="18" height="18" aria-hidden="true"><use href="#ico-phone"/></svg>Anrufen <span class="hc-num">0178 258 44 38</span></a>
+        <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20komme%20%C3%BCber%20deine%20Seite%20%E2%80%9EIT-Notdienst%E2%80%9C." target="_blank" rel="noopener" class="hc-wa"><svg width="18" height="18" aria-hidden="true"><use href="#ico-wa"/></svg>WhatsApp</a>
       </div>
+      <ul class="hc-proof">
+        <li><svg class="is-star" aria-hidden="true"><use href="#ico-star"/></svg><a href="/#bewertungen-herkunft" data-proof>5,0 bei 5 Google-Bewertungen</a></li>
+      </ul>
+    </div>
+    <ol class="mini-chat" aria-label="Beispiel aus dem Alltag">
+      <li class="mini-chat-h"><span class="ava" aria-hidden="true">AG</span><span class="mini-chat-who">Andreas IT<small>Beispiel aus dem Alltag</small></span></li>
+      <li class="hc-msg is-me"><span class="sr-only">Kunde: </span>Im Büro kommt keiner mehr an die Dateien, der Server reagiert nicht.</li>
+      <li class="hc-msg is-ag"><span class="sr-only">Andreas: </span>Ich habe euren Zugang und schaue per Fernwartung auf Server, Netz und Datensicherung.</li>
+      <li class="hc-msg is-ag"><span class="sr-only">Andreas: </span>Ein Dienst hing nach dem letzten Update. Neu gestartet, die Laufwerke sind wieder da.</li>
+    </ol>
+  </div>
+</section>
 
+<section class="sec sec--alt">
+  <div class="inner">
+    <h2 class="s-title">Das steckt drin</h2>
+    <div class="lp-content">
       <p>Wenn die IT steht, zählt jede Minute. Viele Störungen löse ich per Fernwartung, sobald wir telefoniert haben; bei größeren Problemen komme ich vorbei, die Wege im Münchner Osten sind kurz. Eine feste Reaktionszeit sage ich nicht zu, Vertragskunden werden bevorzugt behandelt. Kein Ticketsystem, keine Warteschleife – du erreichst direkt die Person, die das Problem löst. Was du in den ersten Minuten selbst tun kannst, steht im Ratgeber <a href="/ratgeber/">Die ersten 15 Minuten</a>.</p>
+    </div>
+    <div class="card-grid">
+      <div class="card"><h3>Hilfe per Fernwartung</h3><p>Über meine eigene Fernwartung verbinde ich mich mit deinem Bildschirm und löse das Problem direkt. Sie läuft verschlüsselt über meinen Server in Deutschland.</p></div>
+      <div class="card"><h3>Vor-Ort-Einsatz</h3><p>Lässt sich etwas nicht aus der Ferne lösen, komme ich vorbei.</p></div>
+      <div class="card"><h3>Daten- &amp; Systemrettung</h3><p>Hilfe bei Datenverlust, defekten Festplatten und nicht startenden Systemen.</p></div>
+      <div class="card"><h3>Virenbefall &amp; Ransomware</h3><p>Bereinigung befallener Systeme und Wiederherstellung aus dem Backup.</p></div>
+    </div>
+    <div class="card-box"><p><strong>Einheitlicher Stundensatz von 110 € netto, Abrechnung im 15-Minuten-Takt, keine versteckten Kosten.</strong> Kein klassischer Kundendienst, sondern ein fester persönlicher Ansprechpartner mit über 20 Jahren IT-Erfahrung – im Raum München Ost, datenschutzgerecht und auf Wunsch self-hosted.</p></div>
+  </div>
+</section>
 
-      <h2>Das steckt drin</h2>
-      <div class="lp-grid">
-        <div class="lp-card"><h3>Hilfe per Fernwartung</h3><p>Über meine eigene Fernwartung verbinde ich mich mit deinem Bildschirm und löse das Problem direkt. Sie läuft verschlüsselt über meinen Server in Deutschland.</p></div>
-        <div class="lp-card"><h3>Vor-Ort-Einsatz</h3><p>Lässt sich etwas nicht aus der Ferne lösen, komme ich vorbei.</p></div>
-        <div class="lp-card"><h3>Daten- &amp; Systemrettung</h3><p>Hilfe bei Datenverlust, defekten Festplatten und nicht startenden Systemen.</p></div>
-        <div class="lp-card"><h3>Virenbefall &amp; Ransomware</h3><p>Bereinigung befallener Systeme und Wiederherstellung aus dem Backup.</p></div>
-      </div>
+<section class="sec">
+  <div class="inner">
+    <h2 class="s-title">Was andere über mich sagen</h2>
+    <div class="testi-grid testi-grid--few">
+      <figure class="testi-card">
+        <div class="stars" role="img" aria-label="5 von 5 Sternen"><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg></div>
+        <blockquote class="testi-txt">
+          <p>„Man merkt gar nicht, dass man selber überhaupt keine Ahnung hat. Perfekt“</p>
+        </blockquote>
+        <figcaption>
+          <div class="testi-who">Martina Polednik</div>
+          <div class="testi-role">Google-Bewertung</div>
+        </figcaption>
+      </figure>
+      <figure class="testi-card">
+        <div class="stars" role="img" aria-label="5 von 5 Sternen"><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg></div>
+        <blockquote class="testi-txt">
+          <p>„Sehr nette und kompetente Unterstützung! Empfehle ich uneingeschränkt.“</p>
+        </blockquote>
+        <figcaption>
+          <div class="testi-who">Verena K.</div>
+          <div class="testi-role">Google-Bewertung</div>
+        </figcaption>
+      </figure>
+    </div>
+    <p class="testi-source"><a href="/#bewertungen-herkunft">Woher die Stimmen kommen</a></p>
+  </div>
+</section>
 
-      <div class="lp-trust">
-        <strong>Einheitlicher Stundensatz von 110 € netto, Abrechnung im 15-Minuten-Takt, keine versteckten Kosten.</strong> Kein klassischer Kundendienst, sondern ein fester persönlicher Ansprechpartner mit über 20 Jahren IT-Erfahrung – im Raum München Ost, datenschutzgerecht und auf Wunsch self-hosted.
-      </div>
-
-      <h2>Häufige Fragen</h2>
+<section class="sec sec--alt">
+  <div class="inner">
+    <h2 class="s-title">Häufige Fragen</h2>
       <div class="faq-wrap">
         <details class="faq-item"><summary>Wie schnell bekomme ich im Notfall Hilfe? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Das hängt davon ab, woran ich gerade arbeite. Feste Reaktionszeiten sage ich nicht zu; Vertragskunden werden bevorzugt behandelt, Premium-Kunden zuerst. Viele Störungen lassen sich per Fernwartung lösen, ohne dass jemand anfahren muss.</div></details>
         <details class="faq-item"><summary>Was kostet der IT-Notdienst? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Ad hoc 110 Euro netto je Stunde im 15-Minuten-Takt, ohne Zuschlag für Abend oder Wochenende. Du zahlst nur die tatsächlich benötigte Zeit.</div></details>
         <details class="faq-item"><summary>Wie funktioniert die Fernwartung? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Auf der Seite „Fernwartung starten“ lädst du ein kleines Programm für Windows oder Linux herunter, die Anleitung führt dich Schritt für Schritt. Am Mac richten wir es beim ersten Mal zusammen am Telefon ein. Du siehst alles mit, und auf Zuruf entferne ich den Zugang wieder. Die Verbindung läuft verschlüsselt über meinen eigenen Server in Deutschland.</div></details>
         <details class="faq-item"><summary>Hilfst du auch Privatkunden? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Nein. Mein Angebot richtet sich an Unternehmen, Selbstständige und Freiberufler. Alle Preise verstehen sich zuzüglich Mehrwertsteuer.</div></details>
       </div>
+  </div>
+</section>
 
-      <div class="lp-author">
-        <img src="/assets/img/logo-grundke-it-badge-112.webp" alt="Logo Andreas Grundke IT-Service" width="56" height="56" loading="lazy"/>
-        <div class="lp-author-body">
-          <span class="lp-author-name">Andreas Grundke</span>
-          <span class="lp-author-role">Inhaber · Fachinformatiker für Systemintegration</span>
-          Die externe IT-Abteilung für kleine und mittlere Betriebe im Münchner Osten: IT-Betreuung, KI im Betrieb, Software nach Maß und Websites. Über 20 Jahre in der IT, ein Ansprechpartner für alles Technische.
-          <div class="lp-author-meta">Zuletzt aktualisiert: 9. Oktober 2026 · <a href="/kontakt/">Kontakt aufnehmen</a></div>
-        </div>
-      </div>
-      <div class="lp-cta-row" style="margin-top:2.5rem;">
-        <a href="tel:+491782584438" class="btn-p">Jetzt anrufen · 0178 258 44 38</a>
-        <a href="/it-service-grasbrunn/" class="btn-g">IT-Service in deiner Region</a>
-      </div>
+<section class="cta-sec">
+  <div class="inner">
+    <h2 class="cta-h">Problem? <em>Ich bin dran.</em></h2>
+    <p class="cta-sub">Ruf an, schreib auf WhatsApp oder per Mail. Am anderen Ende bin ich, Andreas Grundke. Gerne per Du.</p>
+    <div class="cta-btns inline-cta-mobile">
+      <a href="tel:+491782584438" class="btn-tel"><svg width="20" height="20" aria-hidden="true"><use href="#ico-phone"/></svg> 0178 258 44 38</a>
+      <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20komme%20%C3%BCber%20deine%20Seite%20%E2%80%9EIT-Notdienst%E2%80%9C." target="_blank" rel="noopener" class="btn-wa"><svg width="20" height="20" aria-hidden="true"><use href="#ico-wa"/></svg> WhatsApp</a>
+      <a href="mailto:info@grundke-it.de?subject=Anfrage%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0AMein%20Anliegen%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F)." class="btn-email"><svg width="20" height="20" aria-hidden="true"><use href="#ico-mail"/></svg> E-Mail schreiben</a>
+    </div>
+    <div class="hc-qr cta-qr">
+      <a href="/kontakt/" title="Alle Kontaktwege"><img src="/assets/img/qr-tree.png" alt="QR-Code: Kontaktseite aufs Handy holen" width="88" height="88"/></a>
+      <p><strong>Scan mich. Dann reden wir.</strong>Alle Kontaktwege direkt aufs Handy.</p>
+    </div>
+    <p class="cta-next"><a href="/it-service-grasbrunn/">IT-Service in deiner Region<svg width="16" height="16" aria-hidden="true"><use href="#ico-arrow-r"/></svg></a></p>
+    <div class="cta-author">
+      <span class="ava" aria-hidden="true">AG</span>
+      <p><strong>Andreas Grundke</strong> · Fachinformatiker für Systemintegration · über 20 Jahre IT<br><span class="cta-date">Zuletzt aktualisiert: 10. Oktober 2026</span></p>
     </div>
   </div>
-</article>
+</section>
+
 </main>
 
 <footer class="site-footer">

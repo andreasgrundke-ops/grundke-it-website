@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 build_landingpages.py
-Version : 2.2
+Version : 2.3
 Autor   : Andreas Grundke IT-Service (Grundke IT-Service)
 Datum   : 2026-10-10
 Zweck   : Generiert aus einem gemeinsamen Template + Datenlisten die Orts- und
@@ -43,6 +43,10 @@ Aenderungen:
   2026-10-10  Release A Startseite: REVIEWS und HOME_FAQS als einzige Quelle, sync_home(),
               WhatsApp mit vorbefuelltem Satz je Einstieg (WA, WA_TEXT; auch Kontaktleiste
               und Fuss), Software-Betrieb ab 80 € (vorher 79 €), HOME_DATE fuer die Startseite.
+  2026-10-10  Release B, Task 5: Generator-Huelle render_shell (section, page_head, mini_chat,
+              voices_html, prices_html, closing) fuer managed-it-service, it-betreuer-wechseln und
+              it-notdienst (Schalter SHELL_SLUGS), K4/Antwortsatz/Chat/Stimmen aus dem Textblatt,
+              schlankes STYLE fuer diese Seiten, STYLE_LEGACY fuer die uebrigen bis Task 7.
 """
 
 import os
@@ -149,7 +153,21 @@ def eur(n):
 #  Gemeinsame Bausteine                                                        #
 # --------------------------------------------------------------------------- #
 
+# Seiten in der neuen Huelle (render_shell, SHELL_SLUGS) tragen im eigenen <style> nur noch die
+# Prosa-Regeln fuer den Fliesstext aus "intro" und "extra"; alle Bausteine (Kopf, Karten, Preise,
+# Stimmen, FAQ, Abschluss) kommen aus style.css (Spec AK1).
 STYLE = """  <style>
+    .lp-content { max-width:68ch; }
+    .lp-content p { font-size:1.0667rem; color:var(--text2); line-height:1.75; margin:0 0 1rem; }
+    .lp-content p:last-child { margin-bottom:0; }
+    .lp-content strong { color:var(--text); }
+    .lp-content p a, .lp-content li a { color:var(--cyan); }
+    .lp-related { margin-top:2rem; }
+  </style>"""
+
+# Bisherige Huelle (lp-wrap) fuer alle Seiten, die noch nicht in SHELL_SLUGS stehen.
+# Entfaellt mit Task 7, wenn alle Generator-Seiten umgestellt sind.
+STYLE_LEGACY = """  <style>
     .lp-wrap { margin-top:var(--nav-h); padding:clamp(3rem,8vw,6rem) 0; }
     .lp-content { max-width:880px; }
     .lp-crumbs ol { display:flex; flex-wrap:wrap; gap:.35rem; list-style:none; margin:0 0 1.4rem; padding:0; font-size:.8rem; color:var(--text3); }
@@ -598,8 +616,9 @@ def cards_html(cards):
 
 def page(head_html, schema_blocks, main_html, places, services, extra_style="", slug=""):
     """extra_style wird nur von Seiten genutzt, die eigene Bausteine mitbringen
-    (KI-Bereich). Alle uebrigen Seiten bleiben dadurch unveraendert."""
-    parts = [head_html, STYLE]
+    (KI-Bereich). Alle uebrigen Seiten bleiben dadurch unveraendert.
+    Seiten in SHELL_SLUGS bekommen das schlanke STYLE, alle anderen noch STYLE_LEGACY."""
+    parts = [head_html, STYLE if slug in SHELL_SLUGS else STYLE_LEGACY]
     if extra_style:
         parts.append(extra_style)
     for s in schema_blocks:
@@ -617,6 +636,200 @@ def page(head_html, schema_blocks, main_html, places, services, extra_style="", 
     parts.append(STICKY)
     parts.append("</body>\n</html>\n")
     return "\n".join(parts)
+
+
+# --------------------------------------------------------------------------- #
+#  Generator-Huelle (seit 10.10.2026, Website-Umbau Release B)                 #
+# --------------------------------------------------------------------------- #
+# Ein Aufbau fuer alle Generator-Seiten (Spec §6): Kopf (Krumen, H1, K4, Antwortsatz, Knoepfe,
+# Belegzeile, Beispiel-Chat) -> Abschnitte im Wechsel -> Stimmen -> Preise -> FAQ -> Abschluss K5
+# mit Autorzeile. Bausteine kommen nur aus style.css. SHELL_SLUGS schaltet Seite fuer Seite um
+# (Task 5: drei Kernseiten, Task 6: Orte und IT-Seiten, Task 7: Rest, danach entfaellt der Schalter).
+SHELL_SLUGS = ("managed-it-service", "it-betreuer-wechseln", "it-notdienst")
+# WhatsApp-Satz fuer Kopf und Abschluss einer Unterseite (Textblatt §4): die Seite ist das Merkmal
+WA_SEITE = "Hallo Andreas, ich komme über deine Seite „{nav}“."
+AUTHOR_ROLE = "Fachinformatiker für Systemintegration · über 20 Jahre IT"
+# Beispiel-Chat: Absender -> (Blasen-Klasse wie im Hero-Chat der Startseite, Name fuer Screenreader)
+CHAT_SENDER = {"kunde": ("is-me", "Kunde"), "andreas": ("is-ag", "Andreas")}
+H2_SPLIT_RE = re.compile(r"\s*<h2>(.*?)</h2>\s*", re.S)
+
+
+def section(content, alt=False, label="", title="", sid=""):
+    """Abschnitt der Huelle: .sec (Grundflaeche) oder .sec--alt (zweite Flaeche), optional mit
+    Kicker (label, Text), Ueberschrift (title, HTML aus den Daten wie bisher) und id."""
+    top = ""
+    if label:
+        top += '\n    <div class="s-label">' + esc(label) + '</div>'
+    if title:
+        top += '\n    <h2 class="s-title">' + title + '</h2>'
+    return '<section class="sec{a}"{i}>\n  <div class="inner">{t}{c}\n  </div>\n</section>'.format(
+        a=" sec--alt" if alt else "", i=' id="' + sid + '"' if sid else "", t=top, c=content)
+
+
+def mini_chat(lines):
+    """Kurzer Beispielverlauf (nur it-notdienst, managed-it-service, it-betreuer-wechseln), Kopfzeile
+    „Beispiel aus dem Alltag“ wie im Hero-Chat der Startseite, ohne Uhrzeiten (Textblatt §2).
+    lines: (Absender, Text), Absender "kunde" (rechts) oder "andreas" (links)."""
+    msgs = "".join('\n      <li class="hc-msg {c}"><span class="sr-only">{w}: </span>{t}</li>'.format(
+        c=CHAT_SENDER[who][0], w=CHAT_SENDER[who][1], t=esc(text)) for who, text in lines)
+    return ('\n    <ol class="mini-chat" aria-label="Beispiel aus dem Alltag">'
+            '\n      <li class="mini-chat-h"><span class="ava" aria-hidden="true">AG</span>'
+            '<span class="mini-chat-who">Andreas IT<small>Beispiel aus dem Alltag</small></span></li>'
+            + msgs + '\n    </ol>')
+
+
+def page_head(s, crumbs):
+    """Seitenkopf in fester Reihenfolge (Textblatt §1): Krumen, H1 (Text wie bisher, bei Hubs die
+    Akzentzeile als <em>), K4 (.page-k), Antwortsatz (.s-sub), Knoepfe Anrufen + WhatsApp (am Handy
+    uebernimmt die Kontaktleiste), Belegzeile mit Link zur Herkunft der Bewertungen. Daneben
+    optional der Beispiel-Chat, bei Hubs darunter die Wege zu den Unterseiten."""
+    hero = s.get("hero")
+    h1 = s["h1"] + (" <em>" + hero["accent"] + "</em>" if hero else "")
+    side = mini_chat(s["chat"]) if s.get("chat") else ""
+    if hero:
+        side += ('\n    <nav class="lp-paths" aria-label="{l}">\n      <h2 class="lp-paths-h">{l}</h2>\n      <ul>{p}'
+                 '\n      </ul>\n    </nav>').format(l=esc(hero["paths_label"]), p="".join(
+                     '\n        <li><a href="{h}"><span class="lp-path-t">{t}</span><span class="lp-path-d">{d}</span></a></li>'
+                     .format(h=h, t=esc(t), d=esc(d)) for t, d, h in hero["paths"]))
+    return """<section class="sec sec--glow page-head">
+  <div class="inner page-head-grid{grid}">
+    <div class="page-head-copy">
+      {crumbs}
+      <h1 class="page-h1">{h1}</h1>
+      <p class="page-k">{k}</p>
+      <p class="s-sub measure">{answer}</p>
+      <div class="hc-ctas">
+        <a href="tel:{tel}" class="btn-p hc-call"><svg width="18" height="18" aria-hidden="true"><use href="#ico-phone"/></svg>Anrufen <span class="hc-num">{phone}</span></a>
+        <a href="{wa}" target="_blank" rel="noopener" class="hc-wa"><svg width="18" height="18" aria-hidden="true"><use href="#ico-wa"/></svg>WhatsApp</a>
+      </div>
+      <ul class="hc-proof">
+        <li><svg class="is-star" aria-hidden="true"><use href="#ico-star"/></svg><a href="/#bewertungen-herkunft" data-proof>5,0 bei {n} Google-Bewertungen</a></li>
+      </ul>
+    </div>{side}
+  </div>
+</section>""".format(grid=" page-head-grid--chat" if s.get("chat") else "", crumbs=crumbs, h1=h1,
+                     k=esc(s["k"]), answer=esc(s["answer"]), tel=PHONE, phone=PHONE_DISP,
+                     wa=WA(WA_SEITE.format(nav=s["nav"])), n=REVIEW_COUNT_GOOGLE, side=side)
+
+
+def card_grid(cards):
+    """Karten (Titel, Text) als Baustein .card der Startseite."""
+    return '\n    <div class="card-grid">' + "".join(
+        '\n      <div class="card"><h3>{h}</h3><p>{t}</p></div>'.format(h=esc(h), t=esc(t))
+        for h, t in cards) + '\n    </div>'
+
+
+def voices_html(ids):
+    """1-2 Kundenstimmen einer Unterseite aus REVIEWS, woertlich und mit Quelle auf der Karte, darunter
+    der Link zur Herkunft auf der Startseite. Nur Google-Bewertungen: die direkt uebermittelte Stimme
+    steht nur auf der Startseite (Andreas 10.10.2026)."""
+    by_id = {r["id"]: r for r in REVIEWS}
+    cards = []
+    for i in ids:
+        r = by_id.get(i)
+        if not r or r["source"] != "Google-Bewertung":
+            raise SystemExit("voices_html: '" + i + "' fehlt in REVIEWS oder ist keine Google-Bewertung")
+        cards.append(voice_card(r))
+    return ('\n    <div class="testi-grid testi-grid--few">\n' + "\n".join(cards) + '\n    </div>'
+            '\n    <p class="testi-source"><a href="/#bewertungen-herkunft">Woher die Stimmen kommen</a></p>')
+
+
+def prices_html(s):
+    """Preise einer Unterseite als .price-card (Baustein der Startseite). Eintrag wie bisher:
+    (Stufe, Betrag, Beschreibung, hervorgehoben[, Einheit]); ohne Einheit gilt der Monatspreis der
+    Betreuungspakete. Jede Einheit muss „zzgl. MwSt.“ nennen."""
+    cards = []
+    for pr in s["prices"]:
+        tier, amount, desc, feat = pr[:4]
+        unit = pr[4] if len(pr) > 4 else "/Monat zzgl. MwSt."
+        if "zzgl. MwSt." not in unit:
+            raise SystemExit("prices_html: Einheit ohne 'zzgl. MwSt.' auf " + s["slug"] + ": " + unit)
+        val = (esc(amount[:-2]) + '<span class="price-cur">&nbsp;€</span>') if amount.endswith(" €") else esc(amount)
+        cards.append(('\n      <div class="price-card{f}">{b}\n        <h3 class="price-name">{t}</h3>'
+                      '\n        <div class="price-val">{v}</div>\n        <div class="price-per">{u}</div>'
+                      '\n        <p class="price-desc">{d}</p>\n      </div>').format(
+                          f=" feat" if feat else "", t=esc(tier), v=val, u=esc(unit), d=esc(desc),
+                          b='\n        <div class="price-badge">Empfohlen</div>' if feat else ""))
+    grid = "price-grid price-grid--3" if len(cards) == 3 else "price-grid"
+    return '\n    <div class="{g}">{c}\n    </div>'.format(g=grid, c="".join(cards))
+
+
+def closing(mod_disp, wa=None, next_link=None):
+    """Abschluss K5 wie auf der Startseite (Knoepfe ab 768 px, am Handy die Kontaktleiste; QR zur
+    Kontaktseite ab 1025 px) mit kompakter Autorzeile und dem Datum der Seite. wa: WhatsApp-Link
+    (Satz der Seite), next_link: (href, Text) als Weg zur passenden naechsten Seite."""
+    nxt = ""
+    if next_link:
+        nxt = ('\n    <p class="cta-next"><a href="{h}">{t}<svg width="16" height="16" aria-hidden="true">'
+               '<use href="#ico-arrow-r"/></svg></a></p>').format(h=next_link[0], t=esc(next_link[1]))
+    return """<section class="cta-sec">
+  <div class="inner">
+    <h2 class="cta-h">Problem? <em>Ich bin dran.</em></h2>
+    <p class="cta-sub">Ruf an, schreib auf WhatsApp oder per Mail. Am anderen Ende bin ich, Andreas Grundke. Gerne per Du.</p>
+    <div class="cta-btns inline-cta-mobile">
+      <a href="tel:{tel}" class="btn-tel"><svg width="20" height="20" aria-hidden="true"><use href="#ico-phone"/></svg> {phone}</a>
+      <a href="{wa}" target="_blank" rel="noopener" class="btn-wa"><svg width="20" height="20" aria-hidden="true"><use href="#ico-wa"/></svg> WhatsApp</a>
+      <a href="{mailto}" class="btn-email"><svg width="20" height="20" aria-hidden="true"><use href="#ico-mail"/></svg> E-Mail schreiben</a>
+    </div>
+    <div class="hc-qr cta-qr">
+      <a href="/kontakt/" title="Alle Kontaktwege"><img src="/assets/img/qr-tree.png" alt="QR-Code: Kontaktseite aufs Handy holen" width="88" height="88"/></a>
+      <p><strong>Scan mich. Dann reden wir.</strong>Alle Kontaktwege direkt aufs Handy.</p>
+    </div>{nxt}
+    <div class="cta-author">
+      <span class="ava" aria-hidden="true">AG</span>
+      <p><strong>Andreas Grundke</strong> · {role}<br><span class="cta-date">Zuletzt aktualisiert: {mod}</span></p>
+    </div>
+  </div>
+</section>""".format(tel=PHONE, phone=PHONE_DISP, wa=wa or WA(WA_TEXT["abschluss"]), mailto=MAILTO_PREFILLED,
+                     nxt=nxt, role=AUTHOR_ROLE, mod=mod_disp)
+
+
+def extra_blocks(extra):
+    """Zerlegt den Zusatz-HTML-Block ("extra") an seinen <h2> in (Titel, Inhalt) fuer eigene
+    Abschnitte. Text vor der ersten Ueberschrift kommt mit leerem Titel zurueck."""
+    parts = H2_SPLIT_RE.split(extra.strip())
+    blocks = [("", parts[0])] if parts[0].strip() else []
+    return blocks + [(parts[k], parts[k + 1]) for k in range(1, len(parts), 2)]
+
+
+def prose(html_part):
+    """Fliesstext aus den Daten (intro, extra) in der Lesebreite, mit den Prosa-Regeln aus STYLE."""
+    return '\n    <div class="lp-content">\n      ' + html_part.strip() + '\n    </div>'
+
+
+def render_shell(s, places, services):
+    """Leistungsseite in der neuen Huelle. Kopf (<head>) und Schema wie bisher (service_head_schema),
+    Inhalte aus denselben Daten; neu sind k, answer, chat und voices (Textblatt)."""
+    slug = s["slug"]
+    h, schema = service_head_schema(s)
+    intro = s["intro"] if s.get("raw_intro") else esc(s["intro"])
+    blocks = [(s.get("cards_h2", "Das steckt drin") if s.get("cards") else "",
+               prose(intro if intro.lstrip().startswith("<div") else "<p>" + intro + "</p>")
+               + (card_grid(s["cards"]) if s.get("cards") else ""))]
+    for title, body in extra_blocks(s.get("extra", "")):
+        if title:
+            blocks.append((title, prose(body)))
+        else:
+            blocks[-1] = (blocks[-1][0], blocks[-1][1] + prose(body))
+    trust = s.get("trust", TRUST_DEFAULT)
+    trust_box = '\n    <div class="card-box"><p>' + trust + '</p></div>' if trust else ""
+    if not s.get("prices"):
+        blocks[-1] = (blocks[-1][0], blocks[-1][1] + trust_box)
+    if s.get("voices"):
+        blocks.append(("Was andere über mich sagen", voices_html(s["voices"])))
+    if s.get("prices"):
+        blocks.append((s.get("prices_h2", "Pakete &amp; Preise"),
+                       '\n    <p class="s-sub measure">' + s.get("prices_intro", "Transparente Monatspauschalen – "
+                       "welches Paket passt, klären wir im kostenlosen Erstgespräch:") + '</p>'
+                       + prices_html(s) + s.get("prices_after", "") + trust_box))
+    related = related_html(slug, services)
+    blocks.append((s.get("faq_h2", "Häufige Fragen"), faq_html(s["faqs"]) + (prose(related) if related else "")))
+    # Flaechen im Wechsel, der erste Abschnitt nach dem Kopf auf der zweiten Flaeche
+    secs = [page_head(s, crumbs_html(s["nav"], slug))]
+    secs += [section(content, alt=k % 2 == 0, title=title) for k, (title, content) in enumerate(blocks)]
+    secs.append(closing(s.get("modified_disp", TODAY_DISP), WA(WA_SEITE.format(nav=s["nav"])),
+                        (s.get("cta2_href", "/it-service-grasbrunn/"), s.get("cta2_text", "IT-Service in deiner Region"))))
+    return page(h, schema, "\n\n".join(secs) + "\n", places, services, slug=slug)
 
 
 # --------------------------------------------------------------------------- #
@@ -974,11 +1187,22 @@ SERVICES = [
         "slug": "managed-it-service", "nav": "Managed IT-Service",
         "title": "Managed IT-Service für KMU | München Ost – Andreas Grundke IT-Service",
         "h1": "Managed IT-Service für kleine &amp; mittlere Unternehmen",
-        "label": "Laufende IT-Betreuung", "service_type": "Managed IT-Service",
+        "service_type": "Managed IT-Service",
+        "modified": "2026-10-10", "modified_disp": "10. Oktober 2026",
         "desc": ("Managed IT-Service für kleine & mittlere Unternehmen im Raum München Ost: laufende "
                  "IT-Betreuung, bevorzugter Support, ein persönlicher Ansprechpartner. Planbare "
                  "Monatspakete statt teurer Ausfälle."),
-        "sub": "Deine komplette IT in einer Hand – proaktiv betreut, mit bevorzugtem Support und einem persönlichen Ansprechpartner, der zurückruft.",
+        # Kopf der Huelle (Textblatt §1-3, freigegeben 10.10.2026): K4, Antwortsatz, Beispiel-Chat, Stimmen
+        "k": "Ich behalte je nach Paket Updates, Datensicherung und Virenschutz im Blick, damit seltener etwas ausfällt.",
+        "answer": ("Managed IT-Service bei Grundke IT-Service in Grasbrunn heißt: Ich betreue die IT eures Betriebs "
+                   "im Münchner Osten laufend zu einer planbaren Monatspauschale ab 149 € netto, mit Wartung, "
+                   "bevorzugtem Support und Betreuung von Microsoft 365 und Datensicherung, monatlich kündbar."),
+        "chat": [
+            ("andreas", "Kurze Info: Die letzte Datensicherung ist fehlgeschlagen, eine Platte im NAS meldet Fehler."),
+            ("kunde", "Muss ich etwas tun?"),
+            ("andreas", "Nein. Die Ersatzplatte ist bestellt, den Einbau stimme ich mit dir ab. Bis dahin läuft die Kopie außer Haus weiter."),
+        ],
+        "voices": ["polednik"],
         "intro": ("Die meisten kleinen Unternehmen rufen erst an, wenn die IT schon steht – und dann "
                   "wird es teuer. <strong>Managed IT-Service dreht das um:</strong> Ich kümmere mich "
                   "laufend um deine Rechner, Server, E-Mails und Sicherheit, bevor etwas ausfällt. "
@@ -994,6 +1218,8 @@ SERVICES = [
             ("IT-Sicherheit", "Virenschutz, Firewall, VPN und Schutz vor Ransomware & Phishing."),
             ("Bevorzugter Support", "Vertragskunden kommen vor Ad-hoc-Anfragen dran, Premium-Kunden zuerst."),
             ("Beratung & Einkauf", "Hardware-Empfehlungen und Beschaffung ohne Aufschlag-Spielchen."),
+            # Textblatt L9b: stand bis 10.10.2026 im Abschnitt "Leistungen" der Startseite
+            ("Umstieg und Erneuerung", "Umstieg auf Windows 11, Microsoft 365 oder neue Server, Ablösung veralteter Router und Firewalls und eine IT-Dokumentation für den Notfall."),
         ],
         "prices": [
             ("Starter", "149 €", "Laufende Betreuung für kleine Teams & Einzelplätze.", False),
@@ -1158,13 +1384,23 @@ SERVICES = [
     },
     {
         "slug": "it-notdienst", "nav": "IT-Notdienst",
-        "modified": "2026-10-09", "modified_disp": "9. Oktober 2026",
+        "modified": "2026-10-10", "modified_disp": "10. Oktober 2026",
         "title": "IT-Notdienst für Firmen im Münchner Osten | Grundke IT",
         "h1": "IT-Notdienst für Unternehmen",
-        "label": "Wenn die IT steht", "service_type": "IT-Notdienst",
+        "service_type": "IT-Notdienst",
         "desc": ("IT-Notdienst für Unternehmen im Münchner Osten: Hilfe bei Störungen, Viren und Datenverlust "
                  "per Fernwartung oder vor Ort. Dein ITler geht nicht ran? Ich schon."),
-        "sub": "Dein ITler geht nicht ran? Ich schon. Hilfe bei IT-Störungen, per Fernwartung oder vor Ort.",
+        "k": ("Dein ITler geht nicht ran? Ich schon. Betreue ich euch bereits, kenne ich eure Systeme und schaue "
+              "per Fernwartung nach, ohne lange Erklärungen."),
+        "answer": ("Im IT-Notdienst helfe ich als Grundke IT-Service aus Grasbrunn Betrieben im Münchner Osten bei "
+                   "Störungen per Fernwartung oder vor Ort, ad hoc für 110 € netto je Stunde im 15-Minuten-Takt und "
+                   "ohne Zuschlag am Abend oder Wochenende. Eine feste Reaktionszeit sage ich nicht zu."),
+        "chat": [
+            ("kunde", "Im Büro kommt keiner mehr an die Dateien, der Server reagiert nicht."),
+            ("andreas", "Ich habe euren Zugang und schaue per Fernwartung auf Server, Netz und Datensicherung."),
+            ("andreas", "Ein Dienst hing nach dem letzten Update. Neu gestartet, die Laufwerke sind wieder da."),
+        ],
+        "voices": ["polednik", "verena-k"],
         "intro": ("Wenn die IT steht, zählt jede Minute. Viele Störungen löse ich per Fernwartung, sobald "
                   "wir telefoniert haben; bei größeren Problemen komme ich vorbei, die Wege im Münchner "
                   "Osten sind kurz. Eine feste Reaktionszeit sage ich nicht zu, Vertragskunden werden "
@@ -1630,20 +1866,30 @@ SERVICES = [
         "slug": "it-betreuer-wechseln", "nav": "IT-Betreuer wechseln", "group": "it",
         "title": "IT-Dienstleister wechseln: geordnete Übernahme | Grundke IT",
         "h1": "IT-Betreuer wechseln: so läuft eine geordnete Übernahme",
-        "label": "Wechsel und Übernahme", "service_type": "Übernahme der IT-Betreuung von einem anderen Dienstleister",
-        "published": NEW_DATE, "modified": NEW_DATE, "modified_disp": NEW_DATE_DISP,
-        "extra_style": NEW_PAGE_STYLE,
+        "service_type": "Übernahme der IT-Betreuung von einem anderen Dienstleister",
+        "published": NEW_DATE, "modified": "2026-10-10", "modified_disp": "10. Oktober 2026",
         "cta2_href": "/managed-it-service/", "cta2_text": "Laufende IT-Betreuung",
         "desc": ("Dein IT-Dienstleister ist nicht erreichbar oder hört auf? Übernahme-Checkliste, was du "
                  "vom alten Betreuer brauchst und wie eine geordnete Übernahme läuft."),
-        "sub": "Dein ITler geht nicht ran? Ich schon. Und wenn du wechseln willst, sorge ich für eine geordnete Übernahme.",
+        "k": ("Dein ITler geht nicht ran? Ich schon. Beim Wechsel sorge ich dafür, dass Kennwörter, Lizenzen und "
+              "Netzwerkplan danach bei euch liegen."),
+        "answer": ("Bei Grundke IT-Service in Grasbrunn läuft der Wechsel für Betriebe im Münchner Osten in vier "
+                   "Schritten: kostenloser IT-Schnellcheck, Übergabe der Zugänge mit Checkliste, Datensicherung "
+                   "testen und alte Zugänge abschalten, danach Betreuung ab 149 € netto im Monat."),
+        "chat": [
+            ("kunde", "Unser IT-Betreuer meldet sich seit Wochen nicht mehr. Kannst du übernehmen?"),
+            ("andreas", "Ja. Zuerst prüfe ich, ob eure Datensicherung läuft, danach übernehmen wir die Zugänge."),
+            ("andreas", "Was wir vom alten Betreuer brauchen, steht in der Checkliste unten. Meldet er sich nicht, "
+                        "holen wir die Zugänge über die Hersteller zurück."),
+        ],
+        "voices": ["dietz"],
         "intro": ("Den IT-Dienstleister wechselt niemand aus Lust. Meistens hat sich etwas angesammelt: "
                   "Anrufe, die keiner annimmt, Rückrufe nach Tagen, Rechnungen, die keiner nachvollziehen "
                   "kann. Oder der Kollege, der die IT nebenbei gemacht hat, ist nicht mehr da. Schwierig ist "
                   "dabei nicht der Wechsel selbst, sondern das Wissen, das beim alten Betreuer liegt: "
                   "Kennwörter, Lizenzen, wie das Netzwerk aufgebaut ist und wohin die Datensicherung läuft. "
                   "<strong>Ich übernehme deine IT so, dass dieses Wissen bei dir landet</strong>, "
-                  "aufgeschrieben und mit einem Ansprechpartner, der zurückruft."),
+                  "aufgeschrieben und mit einem Ansprechpartner, der deine IT danach kennt."),
         "raw_intro": True,
         "cards_h2": "IT-Dienstleister wechseln: was bei der Übernahme passiert",
         "cards": [
@@ -2500,7 +2746,26 @@ SERVICES = [
 ]
 
 
-def render_service(s, places, services):
+def related_html(slug, services):
+    """Querverweise am Seitenende: KI-Unterseiten zum Hub und untereinander, Ratgeber untereinander."""
+    if slug.startswith("ki-") and slug != KI_HUB[1]:
+        # Rueckweg zum Hub und Querverweise zwischen den KI-Bereichen
+        siblings = [sv for sv in services if sv["slug"].startswith("ki-")
+                    and sv["slug"] not in (slug, KI_HUB[1])]
+        links = " und ".join('<a href="/{s}/">{n}</a>'.format(s=sv["slug"], n=esc(sv["nav"])) for sv in siblings)
+        return ('<p class="lp-related">Mehr aus dem Bereich <a href="/{hub}/">{hubn}</a>: '
+                '{links}.</p>').format(hub=KI_HUB[1], hubn=esc(KI_HUB[0]), links=links)
+    if slug.startswith(RATGEBER_HUB[1] + "/"):
+        siblings = [sv for sv in services if sv["slug"].startswith(RATGEBER_HUB[1] + "/")
+                    and sv["slug"] != slug]
+        links = ", ".join('<a href="/{s}/">{n}</a>'.format(s=sv["slug"], n=esc(sv["nav"])) for sv in siblings)
+        return ('<p class="lp-related">Weitere Ratgeber aus der Reihe <a href="/{hub}/">Die ersten '
+                '15 Minuten</a>: {links}.</p>').format(hub=RATGEBER_HUB[1], links=links)
+    return ""
+
+
+def service_head_schema(s):
+    """<head> und JSON-LD einer Leistungsseite (gemeinsam fuer bisherige Huelle und render_shell)."""
     slug = s["slug"]
     # Voller Titel fuer OG und Schema: beim Hub steht der zweite Teil als Akzentzeile
     # im Einstieg, inhaltlich bleibt die Ueberschrift dieselbe wie vorher.
@@ -2549,6 +2814,14 @@ def render_service(s, places, services):
                              s.get("published"), s.get("modified"))]
     # Optionale Zusatzknoten (z. B. der kostenlose KI-Potenzialcheck als eigener Service)
     schema.extend(s.get("extra_schema", []))
+    return h, schema
+
+
+def render_service(s, places, services):
+    slug = s["slug"]
+    if slug in SHELL_SLUGS:
+        return slug, render_shell(s, places, services)
+    h, schema = service_head_schema(s)
 
     price_html = ""
     if s.get("prices"):
@@ -2621,20 +2894,8 @@ def render_service(s, places, services):
 """.format(crumbs=crumbs_html(s["nav"], slug), label=esc(s["label"]), h1=s["h1"], sub=esc(s["sub"]),
            cta_row=cta_row)
 
-    related = ""
-    if slug.startswith("ki-") and slug != KI_HUB[1]:
-        # Rueckweg zum Hub und Querverweise zwischen den KI-Bereichen
-        siblings = [sv for sv in services if sv["slug"].startswith("ki-")
-                    and sv["slug"] not in (slug, KI_HUB[1])]
-        links = " und ".join('<a href="/{s}/">{n}</a>'.format(s=sv["slug"], n=esc(sv["nav"])) for sv in siblings)
-        related = ('\n      <p class="lp-related">Mehr aus dem Bereich <a href="/{hub}/">{hubn}</a>: '
-                   '{links}.</p>\n').format(hub=KI_HUB[1], hubn=esc(KI_HUB[0]), links=links)
-    elif slug.startswith(RATGEBER_HUB[1] + "/"):
-        siblings = [sv for sv in services if sv["slug"].startswith(RATGEBER_HUB[1] + "/")
-                    and sv["slug"] != slug]
-        links = ", ".join('<a href="/{s}/">{n}</a>'.format(s=sv["slug"], n=esc(sv["nav"])) for sv in siblings)
-        related = ('\n      <p class="lp-related">Weitere Ratgeber aus der Reihe <a href="/{hub}/">Die ersten '
-                   '15 Minuten</a>: {links}.</p>\n').format(hub=RATGEBER_HUB[1], links=links)
+    related = related_html(slug, services)
+    related = "\n      " + related + "\n" if related else ""
 
     cards_block = ""
     if s.get("cards"):
