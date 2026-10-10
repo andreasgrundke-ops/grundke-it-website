@@ -70,6 +70,7 @@ Aenderungen:
               vorhandenen <section class="cta-sec"> ersetzen, sonst vor </main> einfuegen; Startseite und empfehlungen
               ausgenommen) und den Font-Preload aus head() in deren Kopf (preload_fonts, idempotent). closing() mit
               Autorzeile ohne Datum (mod_disp None) und Knoepfen auch am Handy, wenn die Seite keine Kontaktleiste hat.
+              Asset-Version 2026.10.d (Release C1).
 """
 
 import os
@@ -104,7 +105,7 @@ NEW_DATE_DISP = "7. Oktober 2026"
 # als ASSET_VER im Pre-Cache von sw.js. Bei JEDEM Release erhoehen, zusammen mit
 # CACHE_NAME/RUNTIME_CACHE in sw.js. Neue URLs laufen am alten Cache des Service Workers
 # vorbei, ein wiederkehrender Besucher bekommt nie neues HTML mit altem CSS.
-ASSET_VER = "2026.10.c"
+ASSET_VER = "2026.10.d"
 # Bewertungen im Google-Unternehmensprofil (Stand 10.10.2026). Eine weitere Stimme kam
 # direkt und zaehlt hier nicht mit. Einzige Quelle fuer die Zahl auf allen Seiten.
 REVIEW_COUNT_GOOGLE = 5

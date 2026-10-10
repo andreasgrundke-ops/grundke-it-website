@@ -97,11 +97,14 @@
  *   1.25.0 / 2026-10-10 — Release B Website-Umbau: alle Unterseiten in der Generator-Huelle
  *                        (IT-, Orts-, KI-, Software-, Websites- und Ratgeberseiten), Bausteine des
  *                        KI-Bereichs in style.css, Asset-Version 2026.10.c.
+ *   1.26.0 / 2026-10-10 — Release C1 Website-Umbau: Schulung im Generator, Kontakt, Fernwartung,
+ *                        Rechtsseiten und 404 in der Huelle mit Abschluss, Font-Preload auf den
+ *                        Handseiten, style.css (Preiskarten Schulung), Asset-Version 2026.10.d.
  */
 
-const CACHE_NAME    = 'grundke-it-v1.25.0';
-const RUNTIME_CACHE = 'grundke-it-runtime-v32';
-const ASSET_VER     = '2026.10.c';   // muss ASSET_VER im Generator entsprechen
+const CACHE_NAME    = 'grundke-it-v1.26.0';
+const RUNTIME_CACHE = 'grundke-it-runtime-v33';
+const ASSET_VER     = '2026.10.d';   // muss ASSET_VER im Generator entsprechen
 
 /* Pre-Cache: minimaler Kern fuer Offline-First-Boot */
 const PRECACHE_URLS = [
