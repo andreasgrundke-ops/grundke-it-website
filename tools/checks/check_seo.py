@@ -1,5 +1,6 @@
 """SEO-Paritaet je Seite: title, description, robots, canonical, og/twitter, H1-Text, H2-Liste, Schema-@type, interne Links.
---baseline DIR schreibt seo.json; --compare DIR vergleicht; --allow FILE erlaubt freigegebene Abweichungen {"/pfad/": ["h2", ...]}."""
+--baseline DIR schreibt seo.json; --compare DIR vergleicht; --allow FILE erlaubt freigegebene Abweichungen {"/pfad/": ["h2", ...]}
+oder {"/pfad/": {"h2": "Grund", "links": ["/verlorener-link/", ...]}} (Liste = nur diese Links duerfen fehlen)."""
 import json, re, sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
@@ -48,7 +49,10 @@ if __name__ == "__main__":
         for k in o:
             if k == "links":
                 lost = set(o[k]) - set(n[k])
-                if lost and k not in allow.get(u, []):
+                # "links": ["/pfad/", …] erlaubt genau diese verlorenen Links; Altformat (Text/true) erlaubt alle
+                ok = allow.get(u, {}).get(k) if isinstance(allow.get(u), dict) else (k in allow.get(u, []))
+                lost -= set(ok) if isinstance(ok, list) else (lost if ok else set())
+                if lost:
                     print(f"{u}: interne Links weg: {sorted(lost)[:5]}"); bad += 1
             elif o[k] != n[k] and k not in allow.get(u, []):
                 print(f"{u}: {k} geaendert"); bad += 1

@@ -59,6 +59,9 @@ Aenderungen:
               zugeklappte Teile (content_blocks, more_html). KI_STYLE/NEW_STYLE nach style.css; STYLE_LEGACY,
               SHELL_SLUGS, author_box, cards_html, die alte Huelle in render_service und RATGEBER_CTA entfernt.
               Asset-Version 2026.10.c.
+              Fix-Runde 1: Abbruch beim Bauen bei falschen Marken (check_markers, Reste nach dem Ersetzen) und
+              bei Feldern, die ein Ratgeber-Artikel nicht darstellen kann (check_ratgeber, RATGEBER_KEYS);
+              <!--more:Beschriftung-->, intro_h2 fuer den Einstieg ohne Karten, kind "ratgeber-hub" statt "hub".
 """
 
 import os
@@ -618,9 +621,16 @@ SPLIT_RE = re.compile(r"<!--split(-wide)?-->")
 # Marke in einem extra-Abschnitt (Task 7): Text zwischen <!--more--> und <!--/more--> steht im HTML, ist aber
 # zugeklappt (<details class="more">, Baustein der Startseite). Fuer lange Abschnitte, deren Anfang reicht: KI-Hub
 # (Vorgabe Release B) und KI sicher einsetzen (sonst am Handy ueber 8.000 px, AK5). Kaesten mit Handlung
-# (Potenzialcheck, Website-Check) bleiben ausserhalb.
-MORE_RE = re.compile(r"<!--more-->(.*?)<!--/more-->", re.S)
+# (Potenzialcheck, Website-Check) bleiben ausserhalb. Beschriftung „Mehr dazu“, mit <!--more:Text--> eine eigene
+# (Bedienlabel nach dem Inhalt, z. B. wenn davor ein Doppelpunkt auf den zugeklappten Teil zeigt).
+# Regeln (check_markers, Abbruch beim Bauen): paarweise, nicht ueber eine <h2> hinweg, kein <!--split--> darin.
+MORE_RE = re.compile(r"<!--more(?::([^>]*?))?-->(.*?)<!--/more-->", re.S)
 MORE_SUMMARY = "Mehr dazu"
+MARKER_RE = re.compile(r"<!--(/?)more(?::[^>]*?)?-->|<!--split[^>]*-->|<h2>")
+# Ratgeber-Artikel (kind "ratgeber") kennen nur diese Felder; alles andere (cards, prices, trust, voices, k, chat,
+# Marken …) kann die Lesespalte nicht darstellen und bricht den Bau ab (check_ratgeber).
+RATGEBER_KEYS = {"slug", "nav", "group", "kind", "title", "h1", "service_type", "published", "modified",
+                 "modified_disp", "cta2_href", "cta2_text", "desc", "lead", "intro", "raw_intro", "extra", "faqs"}
 
 
 def section(content, alt=False, label="", title="", sid="", aside=False):
@@ -668,10 +678,10 @@ def page_head(s, crumbs):
     1024 px rechts, darunter unter dem Kopf. Ohne Chat und ohne Wege ab 1024 px ein Raster: H1 ueber beide
     Spalten, darunter links K4, rechts Antwortsatz, Knoepfe und Belegzeile; die Reihenfolge im HTML bleibt
     dieselbe (erste 300 Zeichen, Screenreader).
-    Ratgeber (kind "hub" und "ratgeber", Task 7): kein K4, statt Antwortsatz der bisherige Vorspann ("lead"),
+    Ratgeber (kind "ratgeber-hub" und "ratgeber", Task 7): kein K4, statt Antwortsatz der bisherige Vorspann ("lead"),
     nur der Anruf-Knopf, keine Belegzeile; der Kopf bleibt einspaltig (ohne K4 gaebe es keine linke Spalte)."""
     hero = s.get("hero")
-    ratgeber = s.get("kind") in ("hub", "ratgeber")
+    ratgeber = s.get("kind") in ("ratgeber-hub", "ratgeber")
     h1 = s["h1"]
     if s.get("h1_nowrap"):
         if s["h1_nowrap"] not in h1:
@@ -817,9 +827,49 @@ def split(left, right, wide=False):
 
 
 def more_html(m):
-    """<!--more-->…<!--/more--> -> zugeklappter Teil (<details class="more">, Inhalt bleibt im HTML)."""
-    return ('<details class="more">\n        <summary>' + MORE_SUMMARY + '</summary>\n        '
-            + m.group(1).strip() + '\n      </details>')
+    """<!--more-->…<!--/more--> -> zugeklappter Teil (<details class="more">, Inhalt bleibt im HTML); Beschriftung
+    „Mehr dazu“ oder der Text aus <!--more:Text-->."""
+    return ('<details class="more">\n        <summary>' + esc(m.group(1) or MORE_SUMMARY) + '</summary>\n        '
+            + m.group(2).strip() + '\n      </details>')
+
+
+def check_markers(slug, extra):
+    """Marken in "extra" pruefen, bevor gebaut wird (Task 7 Fix-Runde 1): <!--more--> und <!--/more--> stehen
+    paarweise, ein Paar reicht nicht ueber eine <h2> (dort wird in Abschnitte zerlegt) und enthaelt kein
+    <!--split-->. Sonst Abbruch mit Seite und Grund."""
+    inside = False
+    for m in MARKER_RE.finditer(extra):
+        tok = m.group(0)
+        if tok.startswith("<!--more"):
+            if inside:
+                raise SystemExit("Generator: <!--more--> ohne <!--/more--> vor dem naechsten <!--more--> auf " + slug)
+            inside = True
+        elif tok.startswith("<!--/more"):
+            if not inside:
+                raise SystemExit("Generator: <!--/more--> ohne <!--more--> davor auf " + slug)
+            inside = False
+        elif inside and tok == "<h2>":
+            raise SystemExit("Generator: <!--more--> reicht ueber eine <h2> hinweg auf " + slug)
+        elif inside:
+            raise SystemExit("Generator: " + tok + " steht innerhalb von <!--more--> auf " + slug)
+    if inside:
+        raise SystemExit("Generator: <!--more--> ohne <!--/more--> auf " + slug)
+
+
+def check_ratgeber(s):
+    """Ratgeber-Artikel: nur die Felder aus RATGEBER_KEYS, intro als HTML (raw_intro=True), keine Marken in intro
+    und extra (die Lesespalte kennt weder <!--more--> noch <!--split-->). Sonst Abbruch mit Seite und Grund."""
+    extra_keys = sorted(set(s) - RATGEBER_KEYS)
+    if extra_keys:
+        raise SystemExit("Generator: Ratgeber-Artikel " + s["slug"] + " mit nicht unterstuetzten Feldern: "
+                         + ", ".join(extra_keys))
+    if s.get("raw_intro") is not True:
+        raise SystemExit("Generator: Ratgeber-Artikel " + s["slug"] + " braucht raw_intro=True (Kurzantwort als HTML)")
+    for key in ("lead", "intro", "faqs"):
+        if not s.get(key):
+            raise SystemExit("Generator: Ratgeber-Artikel " + s["slug"] + " ohne " + key)
+    if re.search(r"<!--/?(more|split)", s["intro"] + s.get("extra", "")):
+        raise SystemExit("Generator: Marke <!--more--> oder <!--split--> im Ratgeber-Artikel " + s["slug"])
 
 
 def content_blocks(s):
@@ -835,7 +885,8 @@ def content_blocks(s):
     elif trust_box and not s.get("prices"):
         # Vertrauenstext neben dem Einstieg statt als Kasten am Ende (Desktop zweispaltig)
         lead, trust_box = split(lead, trust_box), ""
-    blocks = [(s.get("cards_h2", "Das steckt drin") if s.get("cards") else "",
+    # Ueberschrift des Einstiegs: mit Karten cards_h2 (Standard „Das steckt drin“), sonst intro_h2 (Ratgeber-Hub)
+    blocks = [(s.get("cards_h2", "Das steckt drin") if s.get("cards") else s.get("intro_h2", ""),
                lead + (feat_rows(s["cards"]) if s.get("cards") else ""))]
     for title, body in extra_blocks(s.get("extra", "")):
         body = MORE_RE.sub(more_html, body)
@@ -895,10 +946,12 @@ def render_shell(s, places, services, head_schema=None):
     slug = s["slug"]
     h, schema = head_schema or service_head_schema(s)
     if s.get("kind") == "ratgeber":
+        check_ratgeber(s)
         blocks = [("", '\n    <article class="lp-content measure lp-article">\n      '
                    + (s["intro"] + s.get("extra", "")).strip() + '\n    </article>')]
         aside = {s.get("faq_h2", "Häufige Fragen")}
     else:
+        check_markers(slug, s.get("extra", ""))
         blocks, aside = content_blocks(s)
     related = related_html(slug, services)
     blocks.append((s.get("faq_h2", "Häufige Fragen"), faq_html(s["faqs"]) + (prose(related) if related else "")))
@@ -908,7 +961,10 @@ def render_shell(s, places, services, head_schema=None):
              for k, (title, content) in enumerate(blocks)]
     secs.append(closing(s.get("modified_disp", TODAY_DISP), WA(WA_SEITE.format(nav=s["nav"])),
                         (s.get("cta2_href", "/it-service-grasbrunn/"), s.get("cta2_text", "IT-Service in deiner Region"))))
-    return page(h, schema, "\n\n".join(secs) + "\n", places, services, slug=slug)
+    main_html = "\n\n".join(secs) + "\n"
+    if "<!--more" in main_html or "<!--/more" in main_html:
+        raise SystemExit("Generator: nach dem Ersetzen steht noch eine Marke <!--more--> auf " + slug)
+    return page(h, schema, main_html, places, services, slug=slug)
 
 
 # --------------------------------------------------------------------------- #
@@ -1667,12 +1723,12 @@ SERVICES = [
 
       <h2>Wie so ein Projekt abläuft</h2>
       <p>Am Anfang steht kein Angebot, sondern ein Blick auf den Ablauf, um den es geht. Meist zeigt sich schon dabei, ob die Sache klein oder groß ist.</p>
-      <div class="card-grid card-grid--4">
-        <div class="card"><h3>1. Ablauf ansehen</h3><p>Wir gehen den Weg der Daten einmal gemeinsam durch, so wie er heute läuft. Mit den echten Dateien, nicht mit einem Beispiel.</p></div>
-        <div class="card"><h3>2. Aufwand schätzen</h3><p>Du bekommst eine Einschätzung, wie lange die Umsetzung dauert und wie viel Zeit sie im Monat spart. Beides schriftlich.</p></div>
-        <div class="card"><h3>3. Klein anfangen</h3><p>Erst läuft ein Teilstück, das nachweisbar funktioniert. Danach wird erweitert. Kein Projekt, das ein halbes Jahr im Dunkeln läuft.</p></div>
-        <div class="card"><h3>4. Übergabe und Betreuung</h3><p>Die Anwendung wird dokumentiert und läuft bei dir. Ich bleibe der Ansprechpartner, wenn sich etwas ändert.</p></div>
-      </div>
+      <ol class="lp-steps">
+        <li><strong>Ablauf ansehen:</strong> Wir gehen den Weg der Daten einmal gemeinsam durch, so wie er heute läuft. Mit den echten Dateien, nicht mit einem Beispiel.</li>
+        <li><strong>Aufwand schätzen:</strong> Du bekommst eine Einschätzung, wie lange die Umsetzung dauert und wie viel Zeit sie im Monat spart. Beides schriftlich.</li>
+        <li><strong>Klein anfangen:</strong> Erst läuft ein Teilstück, das nachweisbar funktioniert. Danach wird erweitert. Kein Projekt, das ein halbes Jahr im Dunkeln läuft.</li>
+        <li><strong>Übergabe und Betreuung:</strong> Die Anwendung wird dokumentiert und läuft bei dir. Ich bleibe der Ansprechpartner, wenn sich etwas ändert.</li>
+      </ol>
 
       <div class="ki-check">
         <h3>Kostenloser KI-Potenzialcheck</h3>
@@ -1845,7 +1901,7 @@ SERVICES = [
         "extra": """
       <h2>KI-Start: die Hürde nehmen wir gemeinsam</h2>
       <p>Viele Inhaber lassen die Finger von KI, während im selben Betrieb vielleicht schon jemand Kundendaten in einen privaten ChatGPT-Zugang tippt. Das Risiko verschwindet nicht, indem man KI verbietet, sondern indem man sie ordentlich einführt. Das Paket KI-Start hat sieben Schritte:</p>
-      <!--more-->
+      <!--more:Die sieben Schritte-->
       <ol class="lp-steps">
         <li><strong>Bestandsaufnahme:</strong> Wer nutzt heute schon welche KI, mit welchen Daten und über welche Konten?</li>
         <li><strong>Werkzeug mit Vertrag:</strong> eine bezahlte Business-Version mit Auftragsverarbeitungsvertrag und klaren Nutzungsbedingungen, etwa Microsoft 365 Copilot, ChatGPT Business oder Claude Team, möglichst mit Verarbeitung in der EU. Oder eine lokale KI im Haus, wenn die Daten den Betrieb nicht verlassen sollen.</li>
@@ -1860,7 +1916,7 @@ SERVICES = [
 
       <h2>Drei Wege, und wann welcher passt</h2>
       <p>Die wichtigste Entscheidung fällt vor der ersten Zeile Code: wo die Daten verarbeitet werden. Danach richtet sich alles Weitere.</p>
-      <!--more-->
+      <!--more:Die drei Wege im Vergleich-->
       <div class="ki-tbl-wrap">
         <table class="ki-tbl">
           <thead><tr><th scope="col">Weg</th><th scope="col">Wie es funktioniert</th><th scope="col">Wofür geeignet</th></tr></thead>
@@ -2588,7 +2644,7 @@ SERVICES = [
     #  Liegen unter /ratgeber/<thema>/ (eine Ebene tiefer, siehe up()).         #
     # ----------------------------------------------------------------------- #
     {
-        "slug": "ratgeber", "nav": "Ratgeber", "group": "ratgeber", "kind": "hub",
+        "slug": "ratgeber", "nav": "Ratgeber", "group": "ratgeber", "kind": "ratgeber-hub",
         "title": "Ratgeber IT-Notfall: die ersten 15 Minuten | Grundke IT-Service",
         "h1": "Die ersten 15 Minuten",
         "hero": {
@@ -2607,6 +2663,8 @@ SERVICES = [
         "desc": ("Server ausgefallen, Phishing-Mail geklickt, E-Mails kommen nicht an, NAS defekt: was du in den "
                  "ersten 15 Minuten selbst tun kannst und wann du anrufst."),
         "lead": "Was du in den ersten Minuten selbst tun kannst, was du besser lässt, und ab wann ein Anruf schneller ist.",
+        # H2 des Einstiegs (Design-Review Task 7, Fix-Runde 1): einziger Abschnitt ohne Ueberschrift
+        "intro_h2": "So sind die Ratgeber aufgebaut",
         "intro": ("Die meisten Störungen beginnen mit einer Suche nach „… was tun“. Wer in dem Moment das "
                   "Richtige macht, spart oft Stunden, und wer das Falsche macht, verliert manchmal Daten. Jeder "
                   "Ratgeber hier hat denselben Aufbau: zuerst die kurze Antwort, dann die Schritte, die du "
@@ -2918,7 +2976,7 @@ def service_head_schema(s):
             "publisher": {"@type": "Organization", "@id": BUSINESS_ID, "name": "Andreas Grundke IT-Service"},
             "image": DOMAIN + "/assets/img/og-image.png",
         }
-    elif s.get("kind") == "hub":
+    elif s.get("kind") == "ratgeber-hub":
         main_schema = None
     else:
         main_schema = service_schema

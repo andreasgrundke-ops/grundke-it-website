@@ -116,7 +116,7 @@ def ak2():
 
 def ak2b():
     """Kopf je Seitenart (Task 7): Hubs (Daten mit "hero") zeigen die Wege zu allen Unterseiten als
-    nav.lp-paths im Kopf und die Akzentzeile als <em> in der H1. Ratgeber (kind "hub"/"ratgeber") ohne
+    nav.lp-paths im Kopf und die Akzentzeile als <em> in der H1. Ratgeber (kind "ratgeber-hub"/"ratgeber") ohne
     K4 (.page-k) und im Kopf nur den Anruf-Knopf (kein WhatsApp, keine Belegzeile); Ratgeber-Artikel in
     einer Lesespalte (.measure) mit der Kurzantwort (.lp-answer). Kaesten mit Handlung (.ki-check:
     Potenzialcheck, Website-Check) stehen nie in einem zugeklappten <details>."""
@@ -131,7 +131,7 @@ def ak2b():
                 errs.append(f"{rel(p)}: Wege (nav.lp-paths) im Kopf fehlen {missing or ''}")
             if "<em>" not in first(r"(<h1[^>]*>.*?</h1>)", head):
                 errs.append(f"{rel(p)}: Akzentzeile der H1 nicht als <em>")
-        if d.get("kind") in ("hub", "ratgeber"):
+        if d.get("kind") in ("ratgeber-hub", "ratgeber"):
             if "page-k" in s:
                 errs.append(f"{rel(p)}: Ratgeber mit K4 (.page-k)")
             if "hc-call" not in head or "hc-wa" in head or "hc-proof" in head:
@@ -229,10 +229,8 @@ def ak9b():
     REVIEW_COUNT_GOOGLE, Belegzeile [data-proof] nennt REVIEW_COUNT_GOOGLE.
     Unterseiten: nur Google-Stimmen (die direkt uebermittelte steht nur auf der Startseite), jede
     Person auf hoechstens VOICE_MAX_PAGES Unterseiten."""
-    sys.path.insert(0, str(ROOT / "tools"))
     try:
-        import build_landingpages as gen
-        reviews, n_google = gen.REVIEWS, gen.REVIEW_COUNT_GOOGLE
+        reviews, n_google = gen().REVIEWS, gen().REVIEW_COUNT_GOOGLE
     except (ImportError, AttributeError) as e:
         return [f"Generator ohne REVIEWS/REVIEW_COUNT_GOOGLE: {e}"]
     by_name = {r["name"]: r for r in reviews}

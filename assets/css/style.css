@@ -767,6 +767,10 @@ blockquote.testi-txt { margin-top:0; margin-left:0; margin-right:0; }
 /* Brotkrumen im Kopf: 15 px, Tippflaeche 33 px; der Chat beginnt am Desktop auf Hoehe der H1 (Krumen + Abstand) */
 .page-head .lp-crumbs ol { margin-bottom:.9rem; font-size:1rem; }
 .page-head .lp-crumbs a, .page-head .lp-crumbs [aria-current] { display:inline-block; line-height:2.2rem; }
+/* Unter 480 px ohne das letzte Glied (die Seite selbst, ihr Name steht gleich darunter als H1): fuer Screenreader
+   bleibt es lesbar (sr-only-Muster), das Trennzeichen davor faellt mit weg. Lange Seitennamen brachen sonst in eine
+   zweite Zeile und schoben die Belegzeile unter die Kontaktleiste (AK6, Task 7 Fix-Runde 1). */
+@media (max-width:479px) { .lp-crumbs li[aria-current] { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; } }
 .page-head .s-sub { margin:0 0 1.4rem; }
 .page-head .hc-ctas { margin:0 0 1.3rem; }
 .page-head .hc-proof { margin:0; }
@@ -916,6 +920,10 @@ blockquote.testi-txt { margin-top:0; margin-left:0; margin-right:0; }
 .lp-content > h3, .lp-content > .more > h3 { font-family:var(--fh); font-size:1.15rem; font-weight:700; line-height:1.3; color:var(--text); margin:1.8rem 0 .6rem; }
 .lp-content > h3:first-child, .lp-content > .more > summary + h3 { margin-top:.4rem; }
 .lp-content > .more { max-width:68ch; }
+.lp-content > .more:has(> .ki-tbl-wrap) { max-width:none; }  /* Tabelle darin ueber die volle Breite wie ohne Zuklappen */
+.lp-content > .more > p { max-width:68ch; }
+.lp-content > .more + p { margin-top:1.2rem; }  /* Absatz nach einem zugeklappten Teil nicht an dessen Linie */
+.inner > .lp-content > .lp-steps { max-width:68ch; }  /* Ablauf ausserhalb einer Spalte in Lesebreite wie die Absaetze */
 /* Karten und Fallbeispiele im Fliesstext ueber die volle Breite (statt 68ch wie Absaetze); auf der zweiten Flaeche
    eine Stufe heller, damit die Karte sich abhebt */
 .sec .card-grid { max-width:none; margin-top:1.6rem; }
@@ -949,7 +957,7 @@ blockquote.testi-txt { margin-top:0; margin-left:0; margin-right:0; }
 .lp-answer p + p, .lp-content .lp-answer p + p { margin-top:.7rem; color:var(--text2); }
 .lp-article > h2 { font-family:var(--fh); font-size:clamp(1.45rem,2.6vw,1.9rem); font-weight:800; line-height:1.2; letter-spacing:-.03em; color:var(--text); margin:2.6rem 0 1rem; }
 .sec .lp-article .lp-dont, .sec .lp-article .lp-checklist { display:block; }
-.sec--alt .lp-article .ki-note { background:var(--bg3); }
+.sec--alt .ki-note { background:var(--bg3); }  /* Hinweis auf der zweiten Flaeche heller, wie .card und .ki-case */
 /* ══════════════════════════════════════════════════════════════════════════════════ */
 
 

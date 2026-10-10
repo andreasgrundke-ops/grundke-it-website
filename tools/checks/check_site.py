@@ -28,12 +28,18 @@ MEASURE = """() => {
     return c.backgroundColor === 'rgb(38, 189, 239)' && r.height >= 40; }).length;
   const vis = sel => { const e = document.querySelector(sel); if (!e) return false;
     const r = e.getBoundingClientRect(); return r.height > 0 && r.top < innerHeight && r.bottom > 0; };
+  // Beleg (AK6): nur sichtbar, wenn er ganz ueber der Kontaktleiste endet, sofern die Leiste unten quer liegt
+  // (Handy/Tablet); am Desktop steht sie rechts am Rand und verdeckt den Kopf nicht.
+  const bar = document.querySelector('.sticky-contact'), br = bar ? bar.getBoundingClientRect() : null;
+  const barTop = br && br.height > 0 && br.width >= innerWidth - 1 && br.top < innerHeight ? br.top : innerHeight;
+  const visAbove = sel => { const e = document.querySelector(sel); if (!e) return false;
+    const r = e.getBoundingClientRect(); return r.height > 0 && r.top >= 0 && r.bottom <= barTop; };
   const top = id => { const e = document.getElementById(id); return e ? Math.round(e.getBoundingClientRect().top + scrollY) : null; };
   return { height: document.documentElement.scrollHeight, overflow: document.documentElement.scrollWidth > innerWidth + 1,
     h1: fs(document.querySelector('h1')), stitle: fs(document.querySelector('main .s-title')),
     p_median: sizes.length ? sizes[Math.floor(sizes.length/2)] : 0,
     btn_bg: btn ? getComputedStyle(btn).backgroundColor : null, cyan_buttons: cyan,
-    first: { h1: vis('h1'), k: vis('.page-k'), contact: vis('.sticky-contact') || vis('main a[href^="tel:"]'), proof: vis('[data-proof]') },
+    first: { h1: vis('h1'), k: vis('.page-k'), contact: vis('.sticky-contact') || vis('main a[href^="tel:"]'), proof: visAbove('[data-proof]') },
     schnellcheck_top: top('schnellcheck'), preise_top: top('preise') };
 }"""
 
