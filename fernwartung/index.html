@@ -29,16 +29,18 @@
   <meta name="mobile-web-app-capable" content="yes"/>
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
   <meta name="apple-mobile-web-app-title" content="Grundke IT"/>
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/Manrope-latin.woff2"/>
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/SpaceGrotesk-latin.woff2"/>
   <link rel="stylesheet" href="../assets/css/fonts.css"/>
   <link rel="stylesheet" href="/assets/css/style.css?v=2026.10.c"/>
   <!-- Vor dem ersten Bild: mit JS nur die Windows-Anleitung zeigen, bis fernwartung.js umschaltet -->
   <script>document.documentElement.classList.add('js');</script>
   <style>
-    /* Aufbau wie die uebrigen Unterseiten: linksbuendige Textspalte, Eyebrow +
-       s-title + s-sub aus dem globalen Stylesheet, Karten mit cyanfarbener
-       Kante. Eigene Klassen nur dort, wo die Seite wirklich etwas Eigenes
-       braucht — die Schrittfolge und der Handlungsknopf. */
-    .fw-wrap { margin-top: var(--nav-h); padding: clamp(3rem,8vw,6rem) 0 clamp(3rem,6vw,5rem); }
+    /* Huelle wie die uebrigen Seiten (seit Task 9, Release C1): section.sec mit Krumen, H1 (.page-h1) und
+       s-sub, Knoepfe und Abschluss aus style.css. Eigene Klassen nur dort, wo die Seite wirklich
+       etwas Eigenes braucht: Umschalter, Schrittfolge, Handlungskasten. Kaesten mit 1-px-Rahmen, ohne
+       farbige Seitenstreifen; Cyan nur als Akzent. Blaues Licht oben rechts wie im Kopf der Unterseiten. */
+    .fw-sec { background-image: radial-gradient(900px 560px at 85% 0%, rgba(0,0,254,.15), transparent 72%), radial-gradient(520px 340px at 88% 4%, rgba(38,189,239,.06), transparent 70%); }
     .fw-content { max-width: 780px; }
     .fw-content h2 {
       font-family: var(--fh);
@@ -49,20 +51,10 @@
       margin: 3rem 0 1.25rem;
     }
 
-    /* Knopf-Stile wie auf den Landingpages. Sie stehen dort im Seiten-CSS und
-       nicht im globalen Stylesheet — deshalb hier dieselbe Definition, damit
-       die Knoepfe aussehen wie ueberall sonst. */
-    .lp-btn { display:inline-flex; align-items:center; gap:.6rem; padding:.9rem 1.6rem; border-radius:8px; font-family:var(--fh); font-weight:700; font-size:.95rem; text-decoration:none; transition:transform .2s,box-shadow .2s; }
-    .lp-btn.primary { background:var(--cyan); color:#04263a; }
-    .lp-btn.primary:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(38,189,239,.25); }
-    .lp-btn.ghost { border:1px solid var(--border); color:var(--text); }
-    .lp-btn.ghost:hover { border-color:var(--cyan); }
-
     /* ── Handlungsknopf: das Wichtigste zuerst, nicht im dritten Absatz ── */
     .fw-action {
       background: var(--bg2);
-      border: 1px solid var(--border);
-      border-left: 3px solid var(--cyan);
+      border: 1px solid rgba(38,189,239,.3);
       border-radius: 16px;
       padding: clamp(1.25rem,4vw,1.75rem);
       margin: 2rem 0 1rem;
@@ -71,7 +63,8 @@
     .fw-dl {
       font-size: 1.05rem;
       padding: 1rem 1.8rem;
-      box-shadow: 0 6px 20px rgba(38,189,239,.18);
+      box-shadow: 0 6px 20px var(--blue-vi-glow);
+      white-space: normal;
     }
     .fw-dl svg { flex-shrink: 0; }
     .fw-meta {
@@ -93,6 +86,7 @@
       counter-increment: fwstep;
       position: relative;
       padding: 0 0 1.75rem 3.25rem;
+      font-size: 1.0667rem;
     }
     .fw-step::before {
       content: counter(fwstep);
@@ -129,7 +123,7 @@
     }
     .fw-step p {
       margin: 0 0 .6rem;
-      font-size: var(--fs-body);
+      font-size: 1.0667rem;
       color: var(--text2);
       line-height: var(--lh-body);
     }
@@ -140,7 +134,6 @@
     .fw-hint {
       background: rgba(245,158,11,.07);
       border: 1px solid rgba(245,158,11,.28);
-      border-left: 3px solid var(--warning);
       border-radius: 12px;
       padding: .9rem 1.1rem;
       margin-top: .9rem;
@@ -163,7 +156,7 @@
     .fw-hint ol { margin: .5rem 0 0 1.15rem; padding: 0; }
     .fw-hint li { margin-bottom: .25rem; }
     .fw-hint li:last-child { margin-bottom: 0; }
-    .fw-hint-fine { margin: .6rem 0 0; font-size: .78rem; color: var(--text3); }
+    .fw-hint .fw-hint-fine { margin: .6rem 0 0; font-size: .78rem; color: var(--text3); }  /* gewinnt gegen .fw-step p */
 
     /* ── Hilfe-Karte ── */
     .fw-help {
@@ -173,7 +166,6 @@
       gap: 1rem 1.5rem;
       background: var(--bg2);
       border: 1px solid var(--border);
-      border-left: 3px solid var(--accent);
       border-radius: 16px;
       padding: 1.4rem 1.5rem;
       margin: 2.5rem 0 1rem;
@@ -265,7 +257,7 @@
       color: var(--warning);
       font-size: .76rem; font-weight: 600;
     }
-    .fw-action-text { margin: 0 0 1.1rem; font-size: var(--fs-body); color: var(--text2); line-height: var(--lh-body); }
+    .fw-action-text { margin: 0 0 1.1rem; font-size: 1.0667rem; color: var(--text2); line-height: var(--lh-body); }
     .fw-action-text strong { color: var(--text); }
 
     /* Befehlszeile fuer das Linux-Terminal mit Kopierknopf */
@@ -300,7 +292,7 @@
     .fw-copy[hidden] { display: none; }
     .fw-sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
     .fw-copy.is-done { border-color: var(--success); color: var(--success); }
-    .fw-list { margin: 0 0 .6rem 1.15rem; padding: 0; font-size: var(--fs-body); color: var(--text2); line-height: var(--lh-body); }
+    .fw-list { margin: 0 0 .6rem 1.15rem; padding: 0; font-size: 1.0667rem; color: var(--text2); line-height: var(--lh-body); }
     .fw-list li { margin-bottom: .2rem; }
     .fw-step kbd {
       font-family: var(--fm); font-size: .82em;
@@ -396,12 +388,12 @@
 </header>
 
 <main id="main">
-<article class="fw-wrap">
+<section class="sec page-head fw-sec">
   <div class="inner">
     <div class="fw-content">
 
-      <div class="s-label fw-rise">Hilfe per Fernwartung</div>
-      <h1 class="s-title fw-rise">Fernwartung starten</h1>
+      <nav class="lp-crumbs" aria-label="Brotkrumen"><ol><li><a href="/">Startseite</a></li><li aria-current="page">Fernwartung</li></ol></nav>
+      <h1 class="page-h1 fw-rise">Fernwartung starten</h1>
       <p class="s-sub fw-rise">Ich schalte mich direkt auf deinen Rechner und löse das Problem, während du zusiehst. Wähl unten dein System, dann führt dich die Anleitung Schritt für Schritt.</p>
 
       <!-- Betriebssystem-Umschalter (seit 09.10.2026). Ohne JS bleibt er verborgen und alle
@@ -419,7 +411,7 @@
       <!-- Windows: eigenes Programm (RustDesk + Anmeldung beim MSP Manager) -->
       <section class="fw-panel" id="fw-windows" data-tab="fwTabWindows">
         <div class="fw-action">
-          <a href="https://msp.grundke-it.de/dist/grundke-support.exe" class="lp-btn primary fw-dl" id="fwDownloadBtn">
+          <a href="https://msp.grundke-it.de/dist/grundke-support.exe" class="btn-p fw-dl" id="fwDownloadBtn">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M5 21h14"/></svg>
             Fernwartung herunterladen
           </a>
@@ -479,7 +471,7 @@
            Quelle git-platform/agent/cmd/support-helper-linux. RustDesk bleibt danach als Dienst. -->
       <section class="fw-panel" id="fw-linux" data-tab="fwTabLinux">
         <div class="fw-action">
-          <a href="https://msp.grundke-it.de/dist/grundke-support-linux-amd64" class="lp-btn primary fw-dl" download>
+          <a href="https://msp.grundke-it.de/dist/grundke-support-linux-amd64" class="btn-p fw-dl" download>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M5 21h14"/></svg>
             Fernwartung für Linux herunterladen
           </a>
@@ -540,7 +532,7 @@
         <div class="fw-action">
           <p class="fw-badge"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>Neu: noch in Erprobung</p>
           <p class="fw-action-text">Am Mac richten wir die Fernwartung beim ersten Mal <strong>zusammen am Telefon</strong> ein. Die Vorbereitung kannst du schon selbst machen.</p>
-          <a href="https://github.com/rustdesk/rustdesk/releases/latest" target="_blank" rel="noopener" class="lp-btn primary fw-dl">
+          <a href="https://github.com/rustdesk/rustdesk/releases/latest" target="_blank" rel="noopener" class="btn-p fw-dl">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
             RustDesk für macOS herunterladen
           </a>
@@ -596,8 +588,8 @@
           <p>Ruf einfach an – wir gehen es gemeinsam durch. Kein Grund, lange zu probieren.</p>
         </div>
         <div class="fw-help-actions">
-          <a href="tel:+491782584438" class="lp-btn primary">0178 258 44 38</a>
-          <a href="https://wa.me/491782584438" target="_blank" rel="noopener" class="lp-btn ghost">WhatsApp</a>
+          <a href="tel:+491782584438" class="btn-p">0178 258 44 38</a>
+          <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20komme%20%C3%BCber%20deine%20Seite%20%E2%80%9EFernwartung%E2%80%9C." target="_blank" rel="noopener" class="btn-g">WhatsApp</a>
         </div>
       </div>
 
@@ -609,7 +601,26 @@
 
     </div>
   </div>
-</article>
+</section>
+<section class="cta-sec">
+  <div class="inner">
+    <h2 class="cta-h">Problem? <em>Ich bin dran.</em></h2>
+    <p class="cta-sub">Ruf an, schreib auf WhatsApp oder per Mail. Am anderen Ende bin ich, Andreas Grundke. Gerne per Du.</p>
+    <div class="cta-btns inline-cta-mobile">
+      <a href="tel:+491782584438" class="btn-tel"><svg width="20" height="20" aria-hidden="true"><use href="#ico-phone"/></svg> 0178 258 44 38</a>
+      <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20komme%20%C3%BCber%20deine%20Seite%20%E2%80%9EFernwartung%E2%80%9C." target="_blank" rel="noopener" class="btn-wa"><svg width="20" height="20" aria-hidden="true"><use href="#ico-wa"/></svg> WhatsApp</a>
+      <a href="mailto:info@grundke-it.de?subject=Anfrage%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0AMein%20Anliegen%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F)." class="btn-email"><svg width="20" height="20" aria-hidden="true"><use href="#ico-mail"/></svg> E-Mail schreiben</a>
+    </div>
+    <div class="hc-qr cta-qr">
+      <a href="/kontakt/" title="Alle Kontaktwege"><img src="/assets/img/qr-tree.png" alt="QR-Code: Kontaktseite aufs Handy holen" width="88" height="88"/></a>
+      <p><strong>Scan mich. Dann reden wir.</strong>Alle Kontaktwege direkt aufs Handy.</p>
+    </div>
+    <div class="cta-author">
+      <span class="ava" aria-hidden="true">AG</span>
+      <p><strong>Andreas Grundke</strong> · Fachinformatiker für Systemintegration · über 20 Jahre IT<br><span class="cta-date">Zuletzt aktualisiert: 9. Oktober 2026</span></p>
+    </div>
+  </div>
+</section>
 </main>
 
 <footer class="site-footer">
