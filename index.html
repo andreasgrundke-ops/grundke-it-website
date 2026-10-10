@@ -249,7 +249,6 @@
   /* ── Platzhalter: live komplett ausblenden bis echte Google-Stimmen vorliegen.
      HTML bleibt erhalten, damit Namen/Branche nach dem Einpflegen nur die
      Klasse verlieren muessen. ── */
-  .placeholder-marker { display: none !important; }
 
   /* ── IT-Betreuung (Probleme + USP zusammengefasst) ── */
   .itb { background:var(--bg); }
@@ -258,24 +257,11 @@
   .itb-list > div { padding-top:1.1rem; border-top:1px solid var(--border); }
   .itb-list dt { font-family:var(--fh); font-weight:700; font-size:1.06rem; color:var(--text); margin-bottom:.45rem; }
   .itb-list dd { margin:0; font-size:.92rem; color:var(--text2); line-height:1.7; max-width:62ch; }
-  .itb-list dd a, .kih-more a, .sc-hint a { color:var(--cyan); text-underline-offset:.2em; }
-  .itb .usp-grid { margin-top:0; }
-  .u-chk svg { color:var(--success); }
+  .itb-list dd a, .sc-hint a { color:var(--cyan); text-underline-offset:.2em; }
 
   /* ── KI: Querverweise unter den drei Karten ── */
-  .kih-more { margin:1.4rem 0 0; font-size:.9rem; color:var(--text2); line-height:1.8; }
 
   /* ── Websites und Schulung als schmale Zeile: Text links, Handlung rechts ── */
-  .web-sec { background:var(--bg2); }
-  .web-row { display:grid; grid-template-columns:minmax(0,1fr); gap:1.8rem; align-items:center; }
-  @media (min-width:900px) { .web-row { grid-template-columns:minmax(0,1.35fr) minmax(0,1fr); gap:3rem; } }
-  .web-row .s-sub { margin-bottom:0; }
-  .web-cta { background:var(--bg3); border:1px solid var(--border); border-radius:16px; padding:1.5rem; display:flex; flex-direction:column; gap:1.1rem; align-items:flex-start; }
-  .web-cta p { margin:0; font-size:.9rem; color:var(--text2); line-height:1.65; }
-  .web-cta p strong { display:block; color:var(--text); font-weight:700; margin-bottom:.3rem; }
-  .sch-mini { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:.7rem; }
-  .sch-mini li { font-size:.9rem; color:var(--text2); line-height:1.55; }
-  .sch-mini strong { display:block; color:var(--text); }
 
   /* ── Schnellcheck: Ablauf in drei Schritten ── */
   .sc-steps { margin-top:2.2rem; }
@@ -293,7 +279,6 @@
   .faq-more .btn-wa { padding:.7rem 1.4rem; font-size:.88rem; }
 
   /* ── Abschluss: QR nur am Desktop ── */
-  .cta-qr { justify-content:center; margin-top:2rem; position:relative; text-align:left; }
 
   /* ── Hero „Der Chat" (seit 02.10.2026, ersetzt den Foto-Slider) ──
      Links Botschaft, Belege und zwei Kontaktwege. Rechts ein in CSS gezeichnetes
@@ -326,29 +311,8 @@
   }
   .hc-h1 { font-family:var(--fh); font-weight:800; font-size:clamp(2.1rem, 4.6vw, 3.7rem); line-height:1.04; letter-spacing:-.04em; color:var(--text); margin:0 0 1.2rem; }
   .hc-h1 em { font-style:normal; color:var(--cyan); }
-  .hc-sub { font-size:clamp(1rem, 1.3vw, 1.15rem); color:var(--text2); line-height:1.65; max-width:33rem; margin:0 0 1.5rem; }
-  .hc-sub strong { color:var(--text); font-weight:600; }
-  .hc-proof { list-style:none; display:flex; flex-wrap:wrap; gap:.55rem 1.5rem; margin:0 0 2.1rem; padding:0; font-size:.92rem; color:var(--text); }
-  .hc-proof li { display:inline-flex; align-items:center; gap:.45rem; }
-  .hc-proof svg { width:16px; height:16px; color:var(--cyan); flex-shrink:0; }
-  .hc-proof .is-star { color:#f5b301; }
-  .hc-proof a { color:inherit; text-decoration:underline; text-decoration-color:rgba(38,189,239,.5); text-decoration-thickness:1px; text-underline-offset:.28em; transition:text-decoration-color .2s; }
-  .hc-proof a:hover { text-decoration-color:var(--cyan); }
-  .hc-ctas { display:flex; flex-wrap:wrap; gap:.75rem; align-items:center; }
-  .hc-call { padding:.8rem 1.2rem; font-size:.93rem; gap:.55rem; }
-  .hc-num { font-weight:600; padding-left:.65rem; margin-left:.1rem; border-left:1px solid rgba(255,255,255,.35); font-variant-numeric:tabular-nums; }
-  .hc-wa { display:inline-flex; align-items:center; gap:.55rem; padding:.8rem 1.15rem; border-radius:8px; border:1px solid rgba(37,211,102,.5); background:rgba(37,211,102,.07); color:var(--text); font-family:var(--fb); font-weight:700; font-size:.93rem; white-space:nowrap; transition:border-color .2s, background .2s, transform .15s; }
-  .hc-wa svg { color:#25d366; }
-  .hc-wa:hover { border-color:#25d366; background:rgba(37,211,102,.13); transform:translateY(-2px); }
-  .hc-call:focus-visible, .hc-wa:focus-visible, .hc-proof a:focus-visible, .hc-qr a:focus-visible { outline:2px solid var(--cyan); outline-offset:3px; }
-  .hc-qr { display:flex; align-items:center; gap:1rem; margin-top:1.8rem; }
   /* QR ruhig: kein dritter blauer Block neben „Anrufen" – das Bild (weiss auf Blau) wird
      per Graustufe zu weiss auf Fast-Schwarz, der Rahmen nimmt denselben Ton auf */
-  .hc-qr a { display:block; flex-shrink:0; border-radius:10px; background:#121212; padding:6px; border:1px solid var(--border); transition:border-color .2s; }
-  .hc-qr a:hover { border-color:#4a5568; }
-  .hc-qr img { width:88px; height:88px; display:block; border-radius:6px; filter:grayscale(1); }
-  .hc-qr p { margin:0; font-size:.88rem; line-height:1.5; color:var(--text2); }
-  .hc-qr strong { display:block; color:var(--text); font-weight:600; }
 
   /* Buehne rechts: Uhrzeit-Zeile, Handy, Pause-Knopf */
   .hc-stage { display:flex; flex-direction:column; align-items:center; gap:1rem; }
@@ -392,12 +356,7 @@
   .hc-thread { list-style:none; flex:1; display:flex; flex-direction:column; justify-content:flex-end; gap:8px; margin:0; padding:14px 12px 16px; overflow:hidden; transition:opacity .55s ease; background:radial-gradient(rgba(255,255,255,.035) 1px, transparent 1.2px) 0 0 / 18px 18px; -webkit-mask-image:linear-gradient(to bottom, transparent 0, #000 40px); mask-image:linear-gradient(to bottom, transparent 0, #000 40px); }
   .hc-thread.is-out { opacity:0; }
   .hc-day { align-self:center; margin-bottom:2px; padding:3px 11px; border-radius:8px; background:#182229; font-size:.72rem; color:#8696a0; }
-  .hc-msg { max-width:84%; padding:6px 9px 5px 10px; border-radius:9px; font-size:.86rem; line-height:1.4; color:#e9edef; box-shadow:0 1px .5px rgba(0,0,0,.25); }
-  .hc-msg time { display:block; margin-top:1px; text-align:right; font-size:.68rem; color:rgba(233,237,239,.6); font-variant-numeric:tabular-nums; }
   /* Gelesen-Haken an den Nachrichten des Kunden */
-  .hc-msg.is-me time::after { content:''; display:inline-block; width:16px; height:9px; margin-left:4px; vertical-align:-1px; background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Cpath d='M1 4.8l2.6 2.6L9.4 1.2M6.4 7.4l.4.4 6.6-6.6' fill='none' stroke='%2353bdeb' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center / contain; }
-  .hc-msg.is-me { align-self:flex-end; background:#005c4b; border-top-right-radius:2px; transform-origin:100% 100%; }
-  .hc-msg.is-ag { align-self:flex-start; background:#1f2c34; border-top-left-radius:2px; transform-origin:0 100%; }
   .hc-typing { display:flex; gap:5px; padding:11px 13px; }
   .hc-typing i { width:6px; height:6px; border-radius:50%; background:#aebac1; animation:hcDot 1.1s ease-in-out infinite; }
   .hc-typing i:nth-child(2) { animation-delay:.15s; }
@@ -456,7 +415,6 @@
   @media (max-width:1024px) {
     .hc-inner { gap:2rem; }
     .hc-phone { width:clamp(250px, 30vw, 290px); }
-    .hc-qr { display:none; }
   }
   /* Schmales Tablet: neben dem Handy ist kein Platz, rechts liegt die feste Kontaktleiste -
      Pause-Knopf mittig unter das Handy; das Handy darf hier hoeher werden, damit die
@@ -472,7 +430,6 @@
     .hc-inner { grid-template-columns:1fr; gap:1.6rem; min-height:0; padding:2rem 1.2rem 2.4rem; }
     .hc-h1 { font-size:clamp(2rem, 9vw, 2.6rem); margin-bottom:1rem; }
     .hc-proof { margin-bottom:0; font-size:.88rem; gap:.5rem 1.1rem; }
-    .hc-ctas { display:none; }
     .hc-stage { align-items:stretch; gap:.6rem; }
     .hc-clock { text-align:left; font-size:.86rem; }
       .hc-phone { width:auto; aspect-ratio:auto; height:400px; min-height:0; max-height:none; padding:0; border-radius:18px; background:none; box-shadow:none; }
@@ -498,23 +455,8 @@
   }
 
   /* ── Hero-spezifische Button-Klassen ── */
-  .btn-email {
-    display:inline-flex; align-items:center; gap:.45rem;
-    padding:clamp(.7rem,.9rem,1rem) clamp(1.2rem,1.8rem,2rem);
-    border-radius:8px; border:none;
-    background:#b45309; color:#fff;
-    font-family:var(--fb); font-weight:700; font-size:clamp(.82rem,.9rem,1rem);
-    cursor:pointer; transition:background .2s,transform .15s,box-shadow .2s; white-space:nowrap;
-  }
-  .btn-email:hover { background:#92400e; transform:translateY(-2px); box-shadow:0 8px 24px rgba(180,83,9,.35); }
 
   /* USP */
-  .usp { background:var(--bg2); }
-  .usp-grid { display:grid; grid-template-columns:1fr 1fr; gap:clamp(2rem,5vw,5rem); align-items:center; margin-top:3rem; }
-  .usp-quote { font-family:var(--fh); font-size:clamp(1.1rem,2vw,1.4rem); font-weight:700; color:var(--text); line-height:1.45; margin:0 0 1.8rem; }
-  .usp-list { list-style:none; display:flex; flex-direction:column; gap:.9rem; }
-  .usp-list li { display:flex; align-items:flex-start; gap:.8rem; font-size:.9rem; color:var(--text2); }
-  .u-chk { width:20px; height:20px; flex-shrink:0; background:rgba(34,197,94,.12); border:1px solid rgba(34,197,94,.25); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.6rem; color:var(--success); margin-top:2px; }
   .compare-box { background:var(--bg3); border:1px solid var(--border); border-radius:16px; overflow:hidden; }
   .compare-hd { display:grid; grid-template-columns:1fr 24px 1fr; padding:.9rem 1.4rem .7rem; border-bottom:1px solid var(--border); font-family:var(--fm); font-size:.75rem; letter-spacing:.08em; text-transform:uppercase; }
   .compare-hd .bh { color:#f87171; } .compare-hd .mh { color:var(--text3); text-align:center; } .compare-hd .gh { color:var(--success); text-align:right; }
@@ -553,10 +495,6 @@
     color:var(--text); letter-spacing:-.03em; line-height:1.15; margin-bottom:.9rem;
   }
   .sc-card .sc-title em { font-style:normal; color:var(--cyan); }
-  .sc-sub {
-    font-size:clamp(.9rem,1.4vw,1rem); color:var(--text2); line-height:1.7;
-    max-width:680px; margin-bottom:2.2rem;
-  }
   .sc-grid {
     display:grid; grid-template-columns:1.1fr 1fr; gap:clamp(1.5rem,3vw,2.5rem);
     margin-bottom:2rem;
@@ -813,67 +751,13 @@
   }
 
   /* Services */
-  .services { background:var(--bg); }
-  .srv-grid {
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));
-    gap:clamp(.85rem,3vw,1.25rem);
-    margin-top:clamp(2rem,5vw,3rem);
-  }
-  .srv-card {
-    background:var(--bg2); border:1px solid var(--border); border-radius:var(--r);
-    padding:clamp(1rem,3vw,1.5rem);
-    transition:border-color .2s,transform .2s,box-shadow .2s;
-  }
-  .srv-card:hover { border-color:var(--cyan); transform:translateY(-3px); box-shadow:0 8px 28px rgba(38,189,239,.07); }
   /* Kachel als Link (KI & Automatisierung): Grid-Verhalten erhalten, Klickbarkeit zeigen */
-  a.srv-card { display:block; text-decoration:none; color:inherit; }
-  a.srv-card .srv-name::after { content:" →"; color:var(--cyan); }
-  a.srv-card:hover .srv-name { color:var(--cyan); }
-  .srv-ico {
-    width:clamp(2.25rem,6vw,2.85rem); height:clamp(2.25rem,6vw,2.85rem);
-    background:rgba(12,77,162,.18); border:1px solid rgba(12,77,162,.3); border-radius:10px;
-    display:flex; align-items:center; justify-content:center;
-    font-size:1.25rem; margin-bottom:clamp(.7rem,2vw,1rem); color:var(--cyan);
-  }
-  .srv-ico svg { width:22px; height:22px; }
-  .srv-name { font-family:var(--fh); font-size:.95rem; font-weight:700; color:var(--text); margin-bottom:.45rem; }
-  .srv-desc { font-size:.83rem; color:var(--text2); line-height:1.6; }
 
   /* Variante B: Warning-Akzent-Card fuer "Sicherheits-Updates & Handlungsbedarf"
      Bewusster Bruch mit dem Primary-Blau, gelb statt rot - beruhigend, nicht alarmierend.
      Border + Icon-Bg in Warning #cc8800, Card-Look sonst identisch zum Standard. */
-  .srv-card.srv-warn { border-color:rgba(204,136,0,.45); }
-  .srv-card.srv-warn:hover { border-color:#cc8800; box-shadow:0 8px 28px rgba(204,136,0,.18); }
-  .srv-card.srv-warn .srv-ico {
-    background:rgba(204,136,0,.15); border-color:rgba(204,136,0,.4); color:#e8a814;
-  }
-  .srv-warn-list {
-    list-style:none; display:flex; flex-direction:column; gap:.35rem;
-    margin-top:.7rem; padding-top:.6rem; border-top:1px dashed rgba(204,136,0,.3);
-  }
-  .srv-warn-list li {
-    position:relative; padding-left:.95rem; font-size:.74rem;
-    color:var(--text2); line-height:1.4;
-  }
-  .srv-warn-list li::before {
-    content:''; position:absolute; left:0; top:.55rem;
-    width:4px; height:4px; border-radius:50%; background:#cc8800;
-  }
 
   /* Bullet-Liste fuer Standard-Leistungs-Kacheln (Cyan-Punkte, dezent) */
-  .srv-bullet-list {
-    list-style:none; display:flex; flex-direction:column; gap:.35rem;
-    margin-top:.7rem; padding-top:.6rem; border-top:1px dashed rgba(38,189,239,.25);
-  }
-  .srv-bullet-list li {
-    position:relative; padding-left:.95rem; font-size:.74rem;
-    color:var(--text2); line-height:1.4;
-  }
-  .srv-bullet-list li::before {
-    content:''; position:absolute; left:0; top:.55rem;
-    width:4px; height:4px; border-radius:50%; background:var(--cyan);
-  }
 
   /* "Aus der Praxis"-Story-Block (Task 5 Release 1) - eigene Section */
   .praxis { background:var(--bg2); position:relative; overflow:hidden; }
@@ -933,223 +817,50 @@
   }
 
   /* BSI-Info-Banner unter dem Leistungs-Grid (Task 4 Release 1) */
-  .bsi-info {
-    margin-top:2rem; padding:1.4rem 1.6rem;
-    background:linear-gradient(135deg,rgba(12,77,162,.12),rgba(38,189,239,.05));
-    border:1px solid var(--border); border-left:4px solid var(--cyan);
-    border-radius:12px;
-    display:flex; gap:1.2rem; align-items:flex-start;
-  }
-  .bsi-info-ico {
-    width:36px; height:36px; flex-shrink:0; border-radius:8px;
-    background:rgba(38,189,239,.12); border:1px solid rgba(38,189,239,.3);
-    color:var(--cyan); display:flex; align-items:center; justify-content:center;
-  }
-  .bsi-info-ico svg { width:18px; height:18px; }
-  .bsi-info-body { flex:1; min-width:0; }
-  .bsi-info-body strong {
-    display:block; font-family:var(--fh); font-size:.88rem; font-weight:700;
-    color:var(--text); margin-bottom:.3rem;
-  }
-  .bsi-info-body p {
-    font-size:.82rem; color:var(--text2); line-height:1.65;
-  }
-  .bsi-info-body a {
-    display:inline-flex; align-items:center; gap:.3rem;
-    margin-top:.5rem; font-size:.78rem; color:var(--cyan);
-    font-family:var(--fm); font-weight:600; text-decoration:none;
-    border-bottom:1px dashed rgba(38,189,239,.35);
-  }
-  .bsi-info-body a:hover { color:#fff; border-bottom-color:var(--blue-vi); }
-  @media (max-width:600px) {
-    .bsi-info { flex-direction:column; gap:.8rem; padding:1.2rem 1.3rem; }
-  }
 
   /* Leistungs-Detail-Blöcke (8 Themenbereiche, abgeleitet aus 496 realen Einsätzen) */
-  .leist-intro { text-align:center; margin:3.5rem 0 2rem; }
-  .leist-intro h3 { font-family:var(--fh); font-size:clamp(1.3rem,2.5vw,1.7rem); font-weight:800; color:var(--text); margin:.4rem 0 .6rem; letter-spacing:-.02em; }
-  .leist-intro p { font-size:.88rem; color:var(--text2); max-width:640px; margin:0 auto; line-height:1.65; }
-  .leist-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr)); gap:1rem; }
-  .leist-group { background:var(--bg2); border:1px solid var(--border); border-radius:var(--r); padding:1.4rem 1.5rem 1.5rem; transition:border-color .2s,transform .2s,box-shadow .2s; }
-  .leist-group:hover { border-color:var(--blue-vi); transform:translateY(-2px); box-shadow:0 8px 28px var(--blue-vi-glow); }
-  .leist-group-alert { border-color:rgba(239,68,68,.35); background:linear-gradient(180deg,rgba(239,68,68,.05),var(--bg2)); }
-  .leist-group-alert:hover { border-color:var(--danger); box-shadow:0 8px 28px rgba(239,68,68,.15); }
-  .leist-group-highlight { border-color:rgba(0,0,254,.45); background:linear-gradient(180deg,rgba(0,0,254,.07),var(--bg2)); }
-  .leist-head { display:flex; align-items:center; gap:.6rem; font-family:var(--fh); font-size:.92rem; font-weight:800; color:var(--text); margin-bottom:.9rem; padding-bottom:.7rem; border-bottom:1px solid var(--border); }
-  .leist-head svg { width:18px; height:18px; color:var(--cyan); flex-shrink:0; }
-  .leist-group-alert .leist-head svg { color:var(--danger); }
-  .leist-group-highlight .leist-head svg { color:var(--blue-vi); }
-  .leist-list { list-style:none; display:flex; flex-direction:column; gap:.5rem; }
-  .leist-list li { position:relative; padding-left:1.1rem; font-size:.82rem; color:var(--text2); line-height:1.55; }
-  .leist-list li::before { content:''; position:absolute; left:0; top:.55rem; width:5px; height:5px; border-radius:50%; background:var(--cyan); }
-  .leist-group-alert .leist-list li::before { background:var(--danger); }
-  .leist-group-highlight .leist-list li::before { background:var(--blue-vi); }
-  .leist-link { display:inline-flex; align-items:center; gap:.3rem; margin-top:.9rem; font-size:.78rem; color:var(--cyan); font-family:var(--fm); font-weight:600; text-decoration:none; }
-  .leist-link:hover { color:#fff; }
-  .leist-link svg { width:12px; height:12px; }
 
   /* Preise */
   .pricing { background:var(--bg2); }
-  .price-grid {
-    display:grid; grid-template-columns:repeat(4,1fr);
-    gap:clamp(1rem,3vw,1.5rem);
-    margin-top:clamp(2rem,5vw,3rem);
-  }
-  @media (max-width:1100px) { .price-grid { grid-template-columns:repeat(2,1fr) !important; } }
-  @media (max-width:600px) { .price-grid { grid-template-columns:1fr !important; } }
-  .price-card {
-    background:var(--bg3); border:1px solid var(--border); border-radius:16px;
-    padding:clamp(1.25rem,3.5vw,2rem);
-    position:relative; transition:border-color .2s,transform .2s;
-  }
-  .price-card:hover { transform:translateY(-4px); }
-  .price-card.feat { border-color:var(--cyan); box-shadow:0 0 0 1px var(--cyan),0 16px 48px rgba(38,189,239,.1); }
-  .price-badge { position:absolute; top:-12px; left:50%; transform:translateX(-50%); background:var(--cyan); color:#0f1117; font-family:var(--fm); font-size:.75rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; padding:.22rem .9rem; border-radius:20px; white-space:nowrap; }
-  .price-tier { font-family:var(--fm); font-size:.75rem; letter-spacing:.1em; text-transform:uppercase; color:var(--text3); margin-bottom:.4rem; }
-  .price-name { font-family:var(--fh); font-size:1.3rem; font-weight:800; color:var(--text); margin-bottom:1.2rem; }
-  .price-val { font-family:var(--fm); font-size:2.4rem; font-weight:600; color:var(--cyan); letter-spacing:-.04em; line-height:1; }
-  .price-val sup { font-size:1rem; vertical-align:super; }
-  .price-per { font-size:.8rem; color:var(--text3); margin:.2rem 0 .1rem; }
-  .price-note { font-size:.73rem; color:var(--text3); margin-bottom:1.6rem; }
-  .price-div { border:none; border-top:1px solid var(--border); margin:1.2rem 0; }
-  .price-feats { list-style:none; display:flex; flex-direction:column; gap:.65rem; margin-bottom:1.8rem; }
-  .price-feats li { display:flex; align-items:flex-start; gap:.55rem; font-size:.84rem; color:var(--text2); }
-  .pfy { color:var(--success); flex-shrink:0; font-weight:700; } .pfn { color:var(--text3); flex-shrink:0; }
-  .price-btn { display:block; width:100%; padding:.85rem; border-radius:8px; font-family:var(--fb); font-weight:700; font-size:.88rem; text-align:center; transition: background .2s, border-color .2s, color .2s, transform .2s, box-shadow .2s, opacity .2s; cursor:pointer; }
-  .price-btn.solid { background:var(--cyan); color:#0f1117; border:none; }
-  .price-btn.solid:hover { background:#3dd5ff; box-shadow:0 4px 16px rgba(38,189,239,.3); }
-  .price-btn.out { background:transparent; color:var(--cyan); border:1px solid var(--border); }
-  .price-btn.out:hover { border-color:var(--cyan); background:var(--cyan-dim); }
-  .hourly-box { margin-top:2rem; background:var(--bg); border:1px solid var(--border); border-radius:var(--r); padding:1.4rem clamp(1rem,3vw,2rem); display:flex; align-items:center; flex-wrap:wrap; gap:1.5rem; justify-content:space-between; }
-  .hourly-info strong { font-family:var(--fh); font-size:.98rem; color:var(--text); display:block; margin-bottom:.25rem; }
-  .hourly-info span { font-size:.8rem; color:var(--text3); }
-  .hourly-val { font-family:var(--fm); font-size:2rem; font-weight:600; color:var(--cyan); letter-spacing:-.03em; }
-  .hourly-val small { font-family:var(--fb); font-size:.78rem; color:var(--text3); font-weight:400; }
 
   /* Testimonials */
   .testimonials { background:var(--bg2); }
   /* Feste Spaltenzahl statt auto-fit: bei vier kurzen Stimmen plus der vollen
      Reihe der .testi-wide-Karte bleibt sonst je nach Fensterbreite eine Zelle
      leer. 2 oder 4 Spalten gehen bei vier Karten immer auf. */
-  .testi-grid { display:grid; grid-template-columns:1fr; gap:1.5rem; margin-top:3rem; }
-  @media (min-width:680px)  { .testi-grid { grid-template-columns:repeat(2,1fr); } }
-  @media (min-width:1150px) { .testi-grid { grid-template-columns:repeat(4,1fr); } }
   /* Flex-Spalte, damit Name und Rolle in allen Karten einer Reihe auf gleicher
      Hoehe stehen, auch wenn die Zitate unterschiedlich lang sind. */
-  .testi-card { background:var(--bg2); border:1px solid var(--border); border-radius:16px; padding:1.8rem; position:relative; display:flex; flex-direction:column; }
-  .testi-card::before { content:'"'; position:absolute; top:1rem; right:1.4rem; font-family:var(--fh); font-size:3.5rem; color:var(--border); line-height:1; }
-  .stars { display:flex; gap:2px; color:var(--warning); margin-bottom:.9rem; }
-  .stars svg { width:14px; height:14px; }
-  .testi-txt { font-size:.88rem; color:var(--text2); line-height:1.7; font-style:italic; margin-bottom:1.3rem; flex:1 1 auto; }
-  .testi-who { font-weight:700; font-size:.86rem; color:var(--text); }
-  .testi-role { font-size:.75rem; color:var(--text2); font-family:var(--fm); }
   /* Ausfuehrliche Stimme: volle Grid-Breite, Zitat bleibt auf Lesemass begrenzt.
      Ohne das Deko-Anfuehrungszeichen — in der breiten Karte haengt es sonst
      losgeloest ueber der freien Flaeche rechts. */
-  .testi-wide { grid-column:1/-1; }
-  .testi-wide::before { content:none; }
-  .testi-wide .testi-txt { font-size:.95rem; max-width:66ch; }
   /* Mehrabsaetzige Stimme (blockquote mit <p>): Abstand nur zwischen den Absaetzen */
-  figure.testi-card { margin:0; }
-  blockquote.testi-txt { margin-top:0; margin-left:0; margin-right:0; }
-  .testi-txt p { margin:0; }
-  .testi-txt p + p { margin-top:.85em; }
-  .testi-ctx { font-size:.78rem; color:var(--text2); margin-top:.55rem; line-height:1.45; }
   /* Herkunft der Bewertungen (§ 5b Abs. 3 UWG): sichtbar, aber unter den Karten zurueckgenommen */
-  .testi-source { margin-top:1.6rem; max-width:72ch; font-size:.8rem; color:var(--text2); line-height:1.65; }
-  .testi-source strong { color:var(--text); font-weight:600; }
-  .testi-source a { color:var(--cyan); text-underline-offset:.2em; }
-  @media (min-width:900px) {
-    .testi-wide { display:grid; grid-template-columns:minmax(0,auto) 14rem; justify-content:start; gap:2.5rem; align-items:center; }
-    .testi-wide .testi-txt { margin-bottom:0; }
-    .testi-wide-who { border-left:1px solid var(--border); padding-left:2rem; }
-  }
 
   /* FAQ — Release-2 (Schritt 5): natives <details>/<summary>, kein JS noetig */
   .faq { background:var(--bg2); }
 
   /* CTA Final */
-  .cta-sec { background:var(--bg); padding:clamp(4rem,10vw,8rem) 0; text-align:center; position:relative; overflow:hidden; }
-  .cta-sec::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 70% 60% at 50% 110%,rgba(12,77,162,.22),transparent); pointer-events:none; }
-  .cta-h { font-family:var(--fh); font-size:clamp(1.8rem,4.5vw,3rem); font-weight:800; color:var(--text); letter-spacing:-.04em; margin-bottom:.8rem; position:relative; }
-  .cta-h em { font-style:normal; color:var(--cyan); }
-  .cta-sub { font-size:clamp(.9rem,1.5vw,1.05rem); color:var(--text2); max-width:440px; margin:0 auto 2.5rem; line-height:1.7; position:relative; }
-  .cta-btns { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; position:relative; }
-  .btn-tel { display:inline-flex; align-items:center; gap:.55rem; padding:1rem 2rem; border-radius:8px; background:var(--cyan); color:#0f1117; font-family:var(--fb); font-weight:700; font-size:.95rem; border:none; cursor:pointer; transition: background .2s, border-color .2s, color .2s, transform .2s, box-shadow .2s, opacity .2s; }
-  .btn-tel:hover { background:#3dd5ff; transform:translateY(-2px); box-shadow:0 8px 28px rgba(38,189,239,.35); }
-  .btn-mail { display:inline-flex; align-items:center; gap:.55rem; padding:1rem 2rem; border-radius:8px; background:transparent; color:var(--text); border:1px solid var(--border); font-family:var(--fb); font-weight:600; font-size:.95rem; cursor:pointer; transition: background .2s, border-color .2s, color .2s, transform .2s, box-shadow .2s, opacity .2s; }
-  .btn-mail:hover { border-color:var(--cyan); color:var(--cyan); background:var(--cyan-dim); }
-  .btn-wa { display:inline-flex; align-items:center; gap:.55rem; padding:1rem 2rem; border-radius:8px; background:#15803d; color:#fff; font-family:var(--fb); font-weight:700; font-size:.95rem; border:none; cursor:pointer; transition: background .2s, border-color .2s, color .2s, transform .2s, box-shadow .2s, opacity .2s; }
-  .btn-wa:hover { background:#166534; transform:translateY(-2px); }
-  .cta-region { margin-top:1.8rem; font-family:var(--fm); font-size:.7rem; color:var(--text3); letter-spacing:.05em; position:relative; }
 
   /* Responsive */
-  @media (max-width:1023px) { .usp-grid { grid-template-columns:1fr; gap:2rem; } }
   @media (max-width:767px) {
-    .steps-wrap { grid-template-columns:1fr; gap:1rem; }
-    .steps-wrap::before { display:none; }
-    .step-item { flex-direction:row; text-align:left; gap:1rem; align-items:flex-start; }
-    .step-n { flex-shrink:0; margin-bottom:0; }
-    .cta-btns { flex-direction:column; align-items:center; }
-    .btn-tel, .btn-mail, .btn-wa, .btn-email { width:100%; max-width:320px; justify-content:center; }
+    .btn-tel, .btn-wa, .btn-email { width:100%; max-width:320px; justify-content:center; }
   }
   @media (max-width:480px) {
-    .btn-p, .btn-g, .btn-email, .btn-wa { width:100%; justify-content:center; }
-    .hourly-box { flex-direction:column; align-items:flex-start; }
+    .btn-p, .btn-email, .btn-wa { width:100%; justify-content:center; }
   }
 
   /* ═══════════════════════════════════════════════
      VERGLEICH: #0000FE als zweite Akzentfarbe
      "Visitenkarten-Blau" – CI-Erweiterung
   ═══════════════════════════════════════════════ */
-  :root {
-    --blue-vi: #0000FE;           /* Visitenkarten-Blau */
-    --blue-vi-dim: rgba(0,0,254,.12);
-    --blue-vi-glow: rgba(0,0,254,.25);
-  }
 
   /* ── Ticker: Visitenkarten-Blau Dots + Akzent ── */
-  .ticker {
-    background: linear-gradient(90deg, var(--bg2), rgba(0,0,254,.06), var(--bg2)) !important;
-    border-bottom-color: rgba(0,0,254,.2) !important;
-  }
-  .ticker-item .tdot {
-    background: var(--blue-vi) !important;
-    box-shadow: 0 0 6px rgba(0,0,254,.5);
-  }
 
   /* ── Kontakt-Bar: Blau-Gradient mit Visitenkarten-Blau ── */
-  .contact-bar {
-    background: linear-gradient(135deg, var(--accent), var(--blue-vi), #0a0a80) !important;
-  }
-  .contact-bar::before {
-    background: radial-gradient(ellipse 50% 100% at 80% 50%, rgba(38,189,239,.1), transparent) !important;
-  }
 
   /* ── Buttons .btn-p: Visitenkarten-Blau mit weißer Schrift ── */
-  .price-btn.solid {
-    background: var(--blue-vi) !important;
-    color: #fff !important;
-  }
-  .price-btn.solid:hover {
-    background: #2222ff !important;
-    box-shadow: 0 4px 20px var(--blue-vi-glow) !important;
-  }
-  .price-btn.out:hover {
-    border-color: var(--blue-vi) !important;
-    color: #fff !important;
-    background: var(--blue-vi-dim) !important;
-  }
 
   /* ── Preis-Highlight-Card: Visitenkarten-Blau Rand ── */
-  .price-card.feat {
-    border-color: var(--blue-vi) !important;
-    box-shadow: 0 0 0 1px var(--blue-vi), 0 16px 48px var(--blue-vi-glow) !important;
-  }
-  .price-badge {
-    background: var(--blue-vi) !important;
-    color: #fff !important;
-  }
 
   /* ── Section Labels: Blau-Akzent ── */
   .s-label::after {
@@ -1157,61 +868,23 @@
   }
 
   /* ── Nav CTA Button ── */
-  .nav-cta {
-    background: var(--blue-vi) !important;
-    color: #fff !important;
-    display: inline-flex !important;
-    align-items: center;
-    gap: .45rem;
-  }
-  .nav-cta svg { stroke: currentColor; fill: none; }
 
   /* ── Flip-Card Farben ── */
-  .flip-back {
-    background: linear-gradient(135deg, var(--blue-vi), #0a0a80) !important;
-    border-color: var(--blue-vi) !important;
-  }
-  .flip-front:hover, .flip-wrap:hover .flip-front {
-    border-color: var(--blue-vi) !important;
-  }
 
   /* ── Service-Cards Hover ── */
-  .srv-card:hover {
-    border-color: var(--blue-vi) !important;
-    box-shadow: 0 8px 28px var(--blue-vi-glow) !important;
-  }
 
   /* btn-p (Visitenkarten-Blau, weiße Schrift) steht seit 07.10.2026 zentral in style.css */
 
   /* ── Kontakt-Bar Telefon-Button ── */
-  .cb-phone {
-    background: rgba(255,255,255,.18) !important;
-    border-color: rgba(255,255,255,.3) !important;
-  }
 
   /* ── btn-tel (CTA-Sektion) ── */
-  .btn-tel {
-    background: var(--blue-vi) !important;
-    color: #fff !important;
-  }
-  .btn-tel:hover {
-    background: #2222ff !important;
-    box-shadow: 0 8px 28px var(--blue-vi-glow) !important;
-  }
 
   /* ── H1 Schriften: ein Tick kleiner ── */
   .s-title {
     font-size: clamp(1.4rem, 3.2vw, 2.3rem) !important;
   }
-  .cta-h {
-    font-size: clamp(1.6rem, 4vw, 2.6rem) !important;
-  }
 
   /* ── Step-Nummern Hover ── */
-  .step-item:hover .step-n {
-    border-color: var(--blue-vi) !important;
-    background: var(--blue-vi-dim) !important;
-  }
 
   /* ── Scroll-to-Top Button ── */
   .scroll-top {
@@ -1231,16 +904,6 @@
   }
 
     /* ── KI im Betrieb (Sektion #ki) ─────────────────────────────────────── */
-    .kih-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(270px,1fr)); gap:1.2rem; margin:2.2rem 0 0; }
-    .kih-card { background:var(--bg2); border:1px solid var(--border); border-radius:14px; padding:1.5rem 1.6rem; }
-    .kih-tag { font-family:var(--fm); font-size:.7rem; letter-spacing:.08em; text-transform:uppercase; color:var(--cyan); display:block; margin-bottom:.6rem; }
-    .kih-card h3 { font-family:var(--fh); font-size:1.05rem; font-weight:800; color:var(--text); margin:0 0 .6rem; letter-spacing:-.01em; line-height:1.3; }
-    .kih-card p { font-size:.9rem; color:var(--text2); line-height:1.7; margin:0; }
-    .kih-box { background:var(--bg2); border:1px solid var(--cyan); border-radius:16px; padding:1.8rem; margin-top:1.6rem; box-shadow:0 8px 28px rgba(38,189,239,.10); }
-    .kih-box h3 { font-family:var(--fh); font-size:1.15rem; font-weight:800; color:var(--text); margin:0 0 .6rem; }
-    .kih-box p { font-size:.92rem; color:var(--text2); line-height:1.75; margin:0 0 1.2rem; max-width:64ch; }
-    .kih-cta { display:flex; flex-wrap:wrap; gap:.9rem; }
-    @media (max-width:560px) { .kih-cta .btn-p, .kih-cta .btn-g { width:100%; justify-content:center; } }
 
   /* ═══════════════════════════════════════════════
      Startseite Release A (seit 10.10.2026): Kuemmerer-Botschaft, Handy zuerst.
@@ -1448,7 +1111,9 @@
   .geo-text { margin:.9rem 0 .4rem; padding:1.1rem 1.2rem; font-size:1.0667rem; line-height:1.75; color:var(--text2); background:var(--bg3); border:1px solid var(--border); border-radius:var(--r); }
   .geo-text strong { color:var(--text); }
 
-  </style>
+    /* Startseite: .hc-qr (1.8rem) schlaegt .cta-qr (2rem) wie bisher; in style.css steht .cta-qr hinter .hc-qr */
+  .hc-qr.cta-qr { margin-top:1.8rem; }
+</style>
 </head>
 <body class="has-sticky-call">
 <a class="skip-link" href="#main">Zum Inhalt springen</a>
