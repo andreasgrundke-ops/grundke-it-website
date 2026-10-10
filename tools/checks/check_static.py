@@ -134,7 +134,7 @@ def legal_text(page_html):
     col = re.search(r"<main.*?</main>", page_html, re.S).group(0)
     col = re.sub(r"<nav[^>]*>.*?</nav>", " ", col, flags=re.S)
     col = re.sub(r"<header[^>]*>.*?</header>", " ", col, flags=re.S)
-    col = re.sub(r"<section[^>]*cta-sec[^>]*>.*?</section>", " ", col, flags=re.S)
+    col = re.sub(r"<section[^>]*\bcta-sec\b[^>]*>.*?</section>", " ", col, flags=re.S)
     return text_of(col)
 
 
@@ -150,9 +150,7 @@ def ak14():
     if base.exists():
         old = json.loads(base.read_text(encoding="utf-8"))
         for p in legal_pages():
-            col = re.search(r"<main.*?</main>", read(p), re.S).group(0)
-            body = re.sub(r"<(nav|header|section class=\"[^\"]*cta-sec)[^>]*>.*?</\1>", " ", col, flags=re.S)
-            h = hashlib.sha256(text_of(body).encode()).hexdigest()
+            h = hashlib.sha256(legal_text(read(p)).encode()).hexdigest()
             if old.get(rel(p)) != h:
                 errs.append(f"{rel(p)}: Rechtstext geaendert")
     fw = read(ROOT / "fernwartung/index.html")
