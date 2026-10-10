@@ -644,16 +644,17 @@ RATGEBER_KEYS = {"slug", "nav", "group", "kind", "title", "h1", "service_type", 
                  "modified_disp", "cta2_href", "cta2_text", "desc", "lead", "intro", "raw_intro", "extra", "faqs"}
 
 
-def section(content, alt=False, label="", title="", sid="", aside=False):
+def section(content, alt=False, label="", title="", sid="", aside=False, title_cls=""):
     """Abschnitt der Huelle: .sec (Grundflaeche) oder .sec--alt (zweite Flaeche), optional mit
     Kicker (label, Text), Ueberschrift (title, HTML aus den Daten wie bisher) und id.
     aside=True (FAQ, eine einzelne Stimme): ab 1024 px steht die Ueberschrift links, der Inhalt in
-    der breiteren rechten Spalte (.sec--aside), statt einer schmalen Spalte mit leerer rechter Haelfte."""
+    der breiteren rechten Spalte (.sec--aside), statt einer schmalen Spalte mit leerer rechter Haelfte.
+    title_cls: zusaetzliche Klasse der Ueberschrift (s-title--long fuer lange seitliche Ueberschriften)."""
     top = ""
     if label:
         top += '\n    <div class="s-label">' + esc(label) + '</div>'
     if title:
-        top += '\n    <h2 class="s-title">' + title + '</h2>'
+        top += '\n    <h2 class="s-title{c}">'.format(c=" " + title_cls if title_cls else "") + title + '</h2>'
     if aside:
         content = '\n    <div class="sec-aside-body">' + content + '\n    </div>'
     return '<section class="sec{a}{s}"{i}>\n  <div class="inner">{t}{c}\n  </div>\n</section>'.format(
@@ -778,8 +779,9 @@ def price_card(pr, slug):
     Beschreibung, hervorgehoben[, Einheit[, Zusatz]]); ohne Einheit gilt der Monatspreis der Betreuungspakete.
     Jede Einheit muss „zzgl. MwSt.“ nennen.
     Zusatz (dict, seit Task 8, Schulung): "add" zweite Preiszeile unter der Einheit (z. B. Preis je Mitarbeiter,
-    ebenfalls mit „zzgl. MwSt.“), "feats" Leistungen als .price-feats, "badge" Text des Abzeichens statt „Empfohlen“,
-    "btn" (Text, href wie im HTML, also mit &amp;) Knopf .price-btn, solid bei hervorgehobener Karte, sonst out.
+    ebenfalls mit „zzgl. MwSt.“), "feats" Leistungen als .price-feats, "badge" Text des Abzeichens statt „Empfohlen“
+    (None: hervorgehobene Karte ohne Abzeichen), "btn" (Text, href wie im HTML, also mit &amp;) Knopf .price-btn,
+    solid bei hervorgehobener Karte, sonst out.
     Leistungen und Knopf stehen unter der Beschreibung, abgesetzt durch .price-div. Andere Felder: Abbruch."""
     tier, amount, desc, feat = pr[:4]
     unit = pr[4] if len(pr) > 4 else "/Monat zzgl. MwSt."
@@ -802,17 +804,22 @@ def price_card(pr, slug):
             h=opt["btn"][1], k="solid" if feat else "out", t=esc(opt["btn"][0]))
     if more:
         more = '\n        <hr class="price-div">' + more
+    badge = opt.get("badge", "Empfohlen")
     return ('\n      <div class="price-card{f}">{b}\n        <h3 class="price-name">{t}</h3>'
             '\n        <div class="price-val">{v}</div>\n        <div class="price-per">{u}</div>{a}'
             '\n        <p class="price-desc">{d}</p>{m}\n      </div>').format(
                 f=" feat" if feat else "", t=esc(tier), v=val, u=eur_nbsp(unit), d=esc(desc), a=add, m=more,
-                b='\n        <div class="price-badge">{}</div>'.format(esc(opt.get("badge", "Empfohlen"))) if feat else "")
+                b='\n        <div class="price-badge">{}</div>'.format(esc(badge)) if feat and badge else "")
 
 
 def prices_html(s):
-    """Alle Preise einer Unterseite als Raster aus .price-card."""
+    """Alle Preise einer Unterseite als Raster aus .price-card. prices_wide (Task 8 Fix-Runde 1, Karten mit
+    Leistungen und Knopf): price-grid--wide, bis 1023 px eine Spalte in Lesebreite, ab 1024 px drei, Knopf unten."""
     cards = [price_card(pr, s["slug"]) for pr in s["prices"]]
-    grid = "price-grid price-grid--3" if len(cards) == 3 else "price-grid"
+    if s.get("prices_wide"):
+        grid = "price-grid price-grid--wide"
+    else:
+        grid = "price-grid price-grid--3" if len(cards) == 3 else "price-grid"
     return '\n    <div class="{g}">{c}\n    </div>'.format(g=grid, c="".join(cards))
 
 
@@ -968,10 +975,19 @@ def content_blocks(s):
                 esc(s["price_line"][0]), eur_nbsp(s["price_line"][1]))
         # prices_after (Satz unter den Preisen, z. B. Foerderhinweis) im Fliesstext-Stil (Task 7)
         after = prose(s["prices_after"]) if s.get("prices_after") else ""
-        blocks.append((s.get("prices_h2", "Pakete &amp; Preise"),
+        price_block = (s.get("prices_h2", "Pakete &amp; Preise"),
                        '\n    <p class="s-sub measure">' + s.get("prices_intro", "Transparente Monatspauschalen – "
                        "welches Paket passt, klären wir im kostenlosen Erstgespräch:") + '</p>'
-                       + prices_html(s) + line + after + trust_box))
+                       + prices_html(s) + line + after + trust_box)
+        # prices_before (Task 8 Fix-Runde 1, schulung): Preise vor dem Abschnitt mit diesem Titel statt am Ende,
+        # z. B. damit der Hinweis „in Vorbereitung“ bei den Preisen vor der Beschreibung des Portals steht
+        if s.get("prices_before"):
+            titles = [t for t, _c in blocks]
+            if s["prices_before"] not in titles:
+                raise SystemExit("content_blocks: prices_before '" + s["prices_before"] + "' fehlt auf " + slug)
+            blocks.insert(titles.index(s["prices_before"]), price_block)
+        else:
+            blocks.append(price_block)
     return blocks, aside
 
 
@@ -1001,7 +1017,11 @@ def render_shell(s, places, services, head_schema=None):
     blocks.append((s.get("faq_h2", "Häufige Fragen"), faq_html(s["faqs"]) + (prose(related) if related else "")))
     # Flaechen im Wechsel, der erste Abschnitt nach dem Kopf auf der zweiten Flaeche
     secs = [page_head(s, crumbs_html(s["nav"], slug))]
-    secs += [section(content, alt=k % 2 == 0, title=title, aside=bool(title) and title in aside)
+    # aside_long (Task 8 Fix-Runde 1): seitliche Ueberschriften mit einem langen Wort (schulung: FAQ-Titel mit
+    # „IT-Sicherheitsschulung“ in .nowrap) ab 1024 px kleiner, damit sie in der linken Spalte bleiben
+    long_cls = "s-title--long" if s.get("aside_long") else ""
+    secs += [section(content, alt=k % 2 == 0, title=title, aside=bool(title) and title in aside,
+                     title_cls=long_cls if bool(title) and title in aside else "")
              for k, (title, content) in enumerate(blocks)]
     secs.append(closing(s.get("modified_disp", TODAY_DISP), WA(WA_SEITE.format(nav=s["nav"])),
                         (s.get("cta2_href", "/it-service-grasbrunn/"), s.get("cta2_text", "IT-Service in deiner Region"))))
@@ -2281,8 +2301,9 @@ SERVICES = [
         "answer": ("Die IT-Sicherheitsschulung von Grundke IT-Service aus Grasbrunn läuft live per Microsoft Teams, dauert "
                    "rund 1,5 Stunden, kostet 135 € netto pauschal und jeder Teilnehmer bekommt einen Teilnahmenachweis als "
                    "PDF. Das Online-Portal ist in Vorbereitung und lässt sich vormerken."),
-        # Beleg der Seite aus der FAQ „Hilft die Schulung bei der DSGVO …?“
-        "proof2": ("ico-shield", "Anerkannte Maßnahme nach Art. 32 DSGVO"),
+        # Beleg der Seite aus der FAQ „Hilft die Schulung bei der DSGVO …?“ (Fix-Runde 1: „Organisatorische“ statt
+        # „Anerkannte“, liest sich sonst wie eine Zertifizierung)
+        "proof2": ("ico-shield", "Organisatorische Maßnahme nach Art. 32 DSGVO"),
         "cards_h2": "Was dein Team lernt",
         "cards": [
             ("Phishing erkennen", "Gefälschte E-Mails, Links und Anhänge identifizieren – mit echten Beispielen aus der Praxis.", "ico-mail"),
@@ -2310,14 +2331,20 @@ SERVICES = [
         <li>PDF-Zertifikat als Teilnahmenachweis</li>
       </ul>
 """,
-        # Hinweis zum Portal direkt ueber den Preiskarten (wie bisher in der Naehe der Preise)
+        # Hinweis zum Portal direkt ueber den Preiskarten (wie bisher in der Naehe der Preise). Fix-Runde 1 (Design-Review):
+        # Preise vor „Das Online-Portal im Detail“, damit „in Vorbereitung“ vor der Beschreibung des Portals steht;
+        # Karten bis 1023 px untereinander (prices_wide); hervorgehoben ist das buchbare Angebot (Live-Schulung) ohne
+        # Abzeichen, Portal und Kombi ohne Hervorhebung und ohne Abzeichen („Beste Wahl“ entfaellt).
+        "prices_before": "Das Online-Portal im Detail",
+        "prices_wide": True,
         "prices_intro": ("<strong>Das Online-Portal ist in Vorbereitung.</strong> Portal und Kombi-Paket kannst du schon "
                          "vormerken, ich melde mich, sobald es startet. Die Live-Schulung ist schon buchbar."),
         "prices": [
             ("Live-Schulung", "135 €",
              "Interaktive Schulung mit Präsentation, echten Beispielen und Raum für Fragen. Direkt auf dein Unternehmen "
-             "zugeschnitten – für Teams jeder Größe.", False, "pauschal (1,5h) · danach 110 €/h, zzgl. MwSt.",
-             {"feats": ["1:1 oder Gruppenformat per Microsoft Teams", "Phishing, Passwörter, Social Engineering, DSGVO",
+             "zugeschnitten – für Teams jeder Größe.", True, "pauschal (1,5h) · danach 110 €/h, zzgl. MwSt.",
+             {"badge": None,
+              "feats": ["1:1 oder Gruppenformat per Microsoft Teams", "Phishing, Passwörter, Social Engineering, DSGVO",
                         "Empfohlene Dauer: 1,5 Stunden", "Unterlagen als PDF zum Nachschlagen"],
               "btn": ("Schulung anfragen", MAILTO_SCHULUNG["live"])}),
             ("Online-Portal (in Vorbereitung)", "49 €",
@@ -2329,8 +2356,8 @@ SERVICES = [
               "btn": ("Portal vormerken", MAILTO_SCHULUNG["portal"])}),
             ("Kombi-Paket (in Vorbereitung)", "ab 165 €",
              "Die Live-Schulung bringt alle auf denselben Stand, das Portal frischt das Wissen danach jedes Halbjahr auf.",
-             True, "/ Halbjahr (statt 184 €), zzgl. MwSt.",
-             {"add": "Inkl. Live-Schulung + Portal + 4,50 €/Mitarbeiter, zzgl. MwSt.", "badge": "Beste Wahl",
+             False, "/ Halbjahr (statt 184 €), zzgl. MwSt.",
+             {"add": "Inkl. Live-Schulung + Portal + 4,50 €/Mitarbeiter, zzgl. MwSt.",
               "feats": ["Live-Schulung per Teams (1,5h)", "Portal-Zugang für alle Mitarbeiter",
                         "Quiz, Zertifikate & Teilnahmeliste", "10% Rabatt auf den Gesamtpreis"],
               "btn": ("Kombi-Paket vormerken", MAILTO_SCHULUNG["kombi"])}),
@@ -2343,7 +2370,9 @@ SERVICES = [
                          '      <p><strong>Noch Fragen?</strong> Schreib mir – ich berate dich gerne, welche Variante für '
                          'dein Team passt.</p>\n'),
         "extra_schema": [SCHULUNG_COURSE],
-        "faq_h2": "Häufige Fragen zur IT-Sicherheitsschulung",
+        # „IT-Sicherheitsschulung“ bricht sonst nach „IT-“ um (.s-title .nowrap); seitlich ab 1024 px kleiner (aside_long)
+        "faq_h2": 'Häufige Fragen zur <span class="nowrap">IT-Sicherheitsschulung</span>',
+        "aside_long": True,
         "faqs": [
             ("Was kostet eine IT-Sicherheitsschulung?",
              "Die Live-Schulung per Microsoft Teams kostet 135 € pauschal für rund 1,5 Stunden (jede weitere Stunde "
