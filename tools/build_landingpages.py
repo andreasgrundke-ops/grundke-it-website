@@ -157,7 +157,7 @@ def eur(n):
 # Prosa-Regeln fuer den Fliesstext aus "intro" und "extra"; alle Bausteine (Kopf, Karten, Preise,
 # Stimmen, FAQ, Abschluss) kommen aus style.css (Spec AK1).
 STYLE = """  <style>
-    .lp-content { max-width:68ch; }
+    .lp-content > p, .lp-content > div { max-width:68ch; }
     .lp-content p { font-size:1.0667rem; color:var(--text2); line-height:1.75; margin:0 0 1rem; }
     .lp-content p:last-child { margin-bottom:0; }
     .lp-content strong { color:var(--text); }
@@ -238,8 +238,9 @@ PHONE_SVG = ('<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke
              '2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.8a16 16 0 0 0 6 6l.94-.94a2 2 0 0 1 2.11-.45 '
              '12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>')
 
-# Icon-Sprite fuer alle Seiten (seit 10.10.2026): die acht Symbole, die die gemeinsamen
-# Bausteine brauchen (Belegzeile, Knoepfe, Sterne). Pfade 1:1 aus dem Sprite der Startseite.
+# Icon-Sprite fuer alle Seiten (seit 10.10.2026): die Symbole, die die gemeinsamen Bausteine
+# brauchen (Belegzeile, Knoepfe, Sterne; ab ico-tools die Kacheln der Leistungszeilen in der
+# Generator-Huelle). Pfade 1:1 aus dem Sprite der Startseite.
 # page() und sync_shared() setzen es direkt vor den <header>. Die Startseite bekommt es nicht:
 # ihr eigenes Sprite enthaelt dieselben Symbole, ein zweites ergaebe doppelte IDs.
 ICON_SPRITE = ('<svg xmlns="http://www.w3.org/2000/svg" id="icon-sprite" style="display:none" aria-hidden="true">\n'
@@ -251,6 +252,16 @@ ICON_SPRITE = ('<svg xmlns="http://www.w3.org/2000/svg" id="icon-sprite" style="
                '  <symbol id="ico-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></symbol>\n'
                '  <symbol id="ico-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>\n'
                '  <symbol id="ico-user-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="m16 11 2 2 4-4"/></symbol>\n'
+               '  <symbol id="ico-tools" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></symbol>\n'
+               '  <symbol id="ico-cloud" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/></symbol>\n'
+               '  <symbol id="ico-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>\n'
+               '  <symbol id="ico-handshake" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></symbol>\n'
+               '  <symbol id="ico-monitor" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><path d="M8 21h8m-4-4v4"/></symbol>\n'
+               '  <symbol id="ico-server-crash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 10H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"/><path d="M6 14H4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2h-2"/><path d="M6 6h.01"/><path d="M6 18h.01"/><path d="m13 6-4 6h6l-4 6"/></symbol>\n'
+               '  <symbol id="ico-list" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/><path d="M13 6h8"/><path d="M13 12h8"/><path d="M13 18h8"/></symbol>\n'
+               '  <symbol id="ico-key" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.3 9.3"/><path d="m18 5 3-3"/><path d="m15 8 3-3"/></symbol>\n'
+               '  <symbol id="ico-file-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></symbol>\n'
+               '  <symbol id="ico-search-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m8 11 2 2 4-4"/><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>\n'
                '</svg>')
 
 
@@ -668,23 +679,39 @@ def section(content, alt=False, label="", title="", sid=""):
 
 def mini_chat(lines):
     """Kurzer Beispielverlauf (nur it-notdienst, managed-it-service, it-betreuer-wechseln), Kopfzeile
-    „Beispiel aus dem Alltag“ wie im Hero-Chat der Startseite, ohne Uhrzeiten (Textblatt §2).
-    lines: (Absender, Text), Absender "kunde" (rechts) oder "andreas" (links)."""
-    msgs = "".join('\n      <li class="hc-msg {c}"><span class="sr-only">{w}: </span>{t}</li>'.format(
+    „Beispiel aus dem Alltag“ wie im Hero-Chat der Startseite, ohne Uhrzeiten (Textblatt §2). Die
+    Kopfzeile ist die Bildunterschrift, die Liste enthaelt nur die Nachrichten (Screenreader zaehlen
+    so nur diese). lines: (Absender, Text), Absender "kunde" (rechts) oder "andreas" (links)."""
+    msgs = "".join('\n        <li class="hc-msg {c}"><span class="sr-only">{w}: </span>{t}</li>'.format(
         c=CHAT_SENDER[who][0], w=CHAT_SENDER[who][1], t=esc(text)) for who, text in lines)
-    return ('\n    <ol class="mini-chat" aria-label="Beispiel aus dem Alltag">'
-            '\n      <li class="mini-chat-h"><span class="ava" aria-hidden="true">AG</span>'
-            '<span class="mini-chat-who">Andreas IT<small>Beispiel aus dem Alltag</small></span></li>'
-            + msgs + '\n    </ol>')
+    return ('\n    <figure class="mini-chat-box">'
+            '\n      <figcaption class="mini-chat-h"><span class="ava" aria-hidden="true">AG</span>'
+            '<span class="mini-chat-who">Andreas IT<small>Beispiel aus dem Alltag</small></span></figcaption>'
+            '\n      <ol class="mini-chat">' + msgs + '\n      </ol>\n    </figure>')
+
+
+def eur_nbsp(text):
+    """Leerzeichen vor dem Eurozeichen geschuetzt (wie auf der Startseite: 149&nbsp;€)."""
+    return esc(text).replace(" €", "&nbsp;€")
 
 
 def page_head(s, crumbs):
     """Seitenkopf in fester Reihenfolge (Textblatt §1): Krumen, H1 (Text wie bisher, bei Hubs die
-    Akzentzeile als <em>), K4 (.page-k), Antwortsatz (.s-sub), Knoepfe Anrufen + WhatsApp (am Handy
-    uebernimmt die Kontaktleiste), Belegzeile mit Link zur Herkunft der Bewertungen. Daneben
-    optional der Beispiel-Chat, bei Hubs darunter die Wege zu den Unterseiten."""
+    Akzentzeile als <em>; h1_nowrap haelt einen Begriff in einer Zeile), K4 (.page-k), Antwortsatz
+    (.s-sub), Knoepfe Anrufen + WhatsApp (am Handy uebernimmt die Kontaktleiste), Belegzeile: zuerst
+    die Google-Bewertungen mit Link zur Herkunft, dann ein Beleg der Seite (proof2: Symbol, Text).
+    Daneben optional der Beispiel-Chat, bei Hubs darunter die Wege zu den Unterseiten."""
     hero = s.get("hero")
-    h1 = s["h1"] + (" <em>" + hero["accent"] + "</em>" if hero else "")
+    h1 = s["h1"]
+    if s.get("h1_nowrap"):
+        if s["h1_nowrap"] not in h1:
+            raise SystemExit("page_head: h1_nowrap steht nicht in der H1 von " + s["slug"])
+        h1 = h1.replace(s["h1_nowrap"], '<span class="nowrap">' + s["h1_nowrap"] + "</span>", 1)
+    h1 += " <em>" + hero["accent"] + "</em>" if hero else ""
+    proof2 = ""
+    if s.get("proof2"):
+        proof2 = '\n        <li><svg aria-hidden="true"><use href="#{i}"/></svg>{t}</li>'.format(
+            i=s["proof2"][0], t=eur_nbsp(s["proof2"][1]))
     side = mini_chat(s["chat"]) if s.get("chat") else ""
     if hero:
         side += ('\n    <nav class="lp-paths" aria-label="{l}">\n      <h2 class="lp-paths-h">{l}</h2>\n      <ul>{p}'
@@ -703,20 +730,22 @@ def page_head(s, crumbs):
         <a href="{wa}" target="_blank" rel="noopener" class="hc-wa"><svg width="18" height="18" aria-hidden="true"><use href="#ico-wa"/></svg>WhatsApp</a>
       </div>
       <ul class="hc-proof">
-        <li><svg class="is-star" aria-hidden="true"><use href="#ico-star"/></svg><a href="/#bewertungen-herkunft" data-proof>5,0 bei {n} Google-Bewertungen</a></li>
+        <li><svg class="is-star" aria-hidden="true"><use href="#ico-star"/></svg><a href="/#bewertungen-herkunft" data-proof>5,0 bei {n} Google-Bewertungen</a></li>{proof2}
       </ul>
     </div>{side}
   </div>
 </section>""".format(grid=" page-head-grid--chat" if s.get("chat") else "", crumbs=crumbs, h1=h1,
                      k=esc(s["k"]), answer=esc(s["answer"]), tel=PHONE, phone=PHONE_DISP,
-                     wa=WA(WA_SEITE.format(nav=s["nav"])), n=REVIEW_COUNT_GOOGLE, side=side)
+                     wa=WA(WA_SEITE.format(nav=s["nav"])), n=REVIEW_COUNT_GOOGLE, proof2=proof2, side=side)
 
 
-def card_grid(cards):
-    """Karten (Titel, Text) als Baustein .card der Startseite."""
-    return '\n    <div class="card-grid">' + "".join(
-        '\n      <div class="card"><h3>{h}</h3><p>{t}</p></div>'.format(h=esc(h), t=esc(t))
-        for h, t in cards) + '\n    </div>'
+def feat_rows(cards):
+    """Leistungen als Zeilen mit Haarlinie (wie „Typische Anrufe“ der Startseite): Symbol-Kachel aus
+    dem Sprite, Titel, Text; am Desktop zweispaltig, am Handy ohne Rahmen. cards: (Titel, Text[, Symbol])."""
+    return '\n    <ul class="feat-rows">' + "".join(
+        ('\n      <li><span class="feat-ico" aria-hidden="true"><svg><use href="#{i}"/></svg></span>'
+         '<div><h3>{h}</h3><p>{t}</p></div></li>').format(i=c[2] if len(c) > 2 else "ico-check", h=esc(c[0]), t=esc(c[1]))
+        for c in cards) + '\n    </ul>'
 
 
 def voices_html(ids):
@@ -731,25 +760,28 @@ def voices_html(ids):
             raise SystemExit("voices_html: '" + i + "' fehlt in REVIEWS oder ist keine Google-Bewertung")
         cards.append(voice_card(r))
     return ('\n    <div class="testi-grid testi-grid--few">\n' + "\n".join(cards) + '\n    </div>'
-            '\n    <p class="testi-source"><a href="/#bewertungen-herkunft">Woher die Stimmen kommen</a></p>')
+            '\n    <p class="testi-source testi-source--link"><a href="/#bewertungen-herkunft">Woher die Stimmen kommen</a></p>')
+
+
+def price_card(pr, slug):
+    """Ein Preis als .price-card (Baustein der Startseite). Eintrag wie bisher: (Stufe, Betrag,
+    Beschreibung, hervorgehoben[, Einheit]); ohne Einheit gilt der Monatspreis der Betreuungspakete.
+    Jede Einheit muss „zzgl. MwSt.“ nennen."""
+    tier, amount, desc, feat = pr[:4]
+    unit = pr[4] if len(pr) > 4 else "/Monat zzgl. MwSt."
+    if "zzgl. MwSt." not in unit:
+        raise SystemExit("price_card: Einheit ohne 'zzgl. MwSt.' auf " + slug + ": " + unit)
+    val = (esc(amount[:-2]) + '<span class="price-cur">&nbsp;€</span>') if amount.endswith(" €") else esc(amount)
+    return ('\n      <div class="price-card{f}">{b}\n        <h3 class="price-name">{t}</h3>'
+            '\n        <div class="price-val">{v}</div>\n        <div class="price-per">{u}</div>'
+            '\n        <p class="price-desc">{d}</p>\n      </div>').format(
+                f=" feat" if feat else "", t=esc(tier), v=val, u=esc(unit), d=esc(desc),
+                b='\n        <div class="price-badge">Empfohlen</div>' if feat else "")
 
 
 def prices_html(s):
-    """Preise einer Unterseite als .price-card (Baustein der Startseite). Eintrag wie bisher:
-    (Stufe, Betrag, Beschreibung, hervorgehoben[, Einheit]); ohne Einheit gilt der Monatspreis der
-    Betreuungspakete. Jede Einheit muss „zzgl. MwSt.“ nennen."""
-    cards = []
-    for pr in s["prices"]:
-        tier, amount, desc, feat = pr[:4]
-        unit = pr[4] if len(pr) > 4 else "/Monat zzgl. MwSt."
-        if "zzgl. MwSt." not in unit:
-            raise SystemExit("prices_html: Einheit ohne 'zzgl. MwSt.' auf " + s["slug"] + ": " + unit)
-        val = (esc(amount[:-2]) + '<span class="price-cur">&nbsp;€</span>') if amount.endswith(" €") else esc(amount)
-        cards.append(('\n      <div class="price-card{f}">{b}\n        <h3 class="price-name">{t}</h3>'
-                      '\n        <div class="price-val">{v}</div>\n        <div class="price-per">{u}</div>'
-                      '\n        <p class="price-desc">{d}</p>\n      </div>').format(
-                          f=" feat" if feat else "", t=esc(tier), v=val, u=esc(unit), d=esc(desc),
-                          b='\n        <div class="price-badge">Empfohlen</div>' if feat else ""))
+    """Alle Preise einer Unterseite als Raster aus .price-card."""
+    cards = [price_card(pr, s["slug"]) for pr in s["prices"]]
     grid = "price-grid price-grid--3" if len(cards) == 3 else "price-grid"
     return '\n    <div class="{g}">{c}\n    </div>'.format(g=grid, c="".join(cards))
 
@@ -793,35 +825,57 @@ def extra_blocks(extra):
 
 
 def prose(html_part):
-    """Fliesstext aus den Daten (intro, extra) in der Lesebreite, mit den Prosa-Regeln aus STYLE."""
+    """Fliesstext aus den Daten (intro, extra) mit den Prosa-Regeln aus STYLE (Absaetze in Lesebreite)."""
     return '\n    <div class="lp-content">\n      ' + html_part.strip() + '\n    </div>'
+
+
+def split(left, right):
+    """Zwei Spalten nebeneinander ab 1024 px (darunter untereinander), z. B. Text und Preis."""
+    return '\n    <div class="sec-split">\n    <div>' + left + '\n    </div>\n    <div>' + right + '\n    </div>\n    </div>'
 
 
 def render_shell(s, places, services):
     """Leistungsseite in der neuen Huelle. Kopf (<head>) und Schema wie bisher (service_head_schema),
-    Inhalte aus denselben Daten; neu sind k, answer, chat und voices (Textblatt)."""
+    Inhalte aus denselben Daten; neu sind k, answer, chat, voices (Textblatt) und die Darstellung:
+    proof2 (zweiter Beleg im Kopf), h1_nowrap, intro_price (Preis neben dem Einstieg), price_line
+    (Zeile unter den Paketen), row (zwei Abschnitte aus "extra" nebeneinander). Ein Vertrauens-
+    kasten erscheint nur mit eigenem "trust"; der allgemeine TRUST_DEFAULT gilt nur in der alten Huelle."""
     slug = s["slug"]
     h, schema = service_head_schema(s)
     intro = s["intro"] if s.get("raw_intro") else esc(s["intro"])
+    lead = prose(intro if intro.lstrip().startswith("<div") else "<p>" + intro + "</p>")
+    if s.get("intro_price"):
+        lead = split(lead, price_card(s["intro_price"], slug))
     blocks = [(s.get("cards_h2", "Das steckt drin") if s.get("cards") else "",
-               prose(intro if intro.lstrip().startswith("<div") else "<p>" + intro + "</p>")
-               + (card_grid(s["cards"]) if s.get("cards") else ""))]
+               lead + (feat_rows(s["cards"]) if s.get("cards") else ""))]
     for title, body in extra_blocks(s.get("extra", "")):
         if title:
             blocks.append((title, prose(body)))
         else:
             blocks[-1] = (blocks[-1][0], blocks[-1][1] + prose(body))
-    trust = s.get("trust", TRUST_DEFAULT)
-    trust_box = '\n    <div class="card-box"><p>' + trust + '</p></div>' if trust else ""
+    if s.get("row"):
+        # zwei Abschnitte aus "extra" als eine Zeile, in der Reihenfolge von "row" (links, rechts)
+        pos = {t: k for k, (t, _c) in enumerate(blocks)}
+        if not all(t in pos for t in s["row"]):
+            raise SystemExit("render_shell: row-Titel fehlen in extra auf " + slug)
+        cols = ['\n    <h2 class="s-title">' + t + '</h2>' + blocks[pos[t]][1] for t in s["row"]]
+        at = min(pos[t] for t in s["row"])
+        blocks = [b for b in blocks if b[0] not in s["row"]]
+        blocks.insert(at, ("", split(cols[0], cols[1])))
+    trust_box = '\n    <div class="card-box"><p>' + s["trust"] + '</p></div>' if s.get("trust") else ""
     if not s.get("prices"):
         blocks[-1] = (blocks[-1][0], blocks[-1][1] + trust_box)
     if s.get("voices"):
         blocks.append(("Was andere über mich sagen", voices_html(s["voices"])))
     if s.get("prices"):
+        line = ""
+        if s.get("price_line"):
+            line = '\n    <p class="price-line"><strong>{}</strong> {}</p>'.format(
+                esc(s["price_line"][0]), eur_nbsp(s["price_line"][1]))
         blocks.append((s.get("prices_h2", "Pakete &amp; Preise"),
                        '\n    <p class="s-sub measure">' + s.get("prices_intro", "Transparente Monatspauschalen – "
                        "welches Paket passt, klären wir im kostenlosen Erstgespräch:") + '</p>'
-                       + prices_html(s) + s.get("prices_after", "") + trust_box))
+                       + prices_html(s) + line + s.get("prices_after", "") + trust_box))
     related = related_html(slug, services)
     blocks.append((s.get("faq_h2", "Häufige Fragen"), faq_html(s["faqs"]) + (prose(related) if related else "")))
     # Flaechen im Wechsel, der erste Abschnitt nach dem Kopf auf der zweiten Flaeche
@@ -1203,23 +1257,27 @@ SERVICES = [
             ("andreas", "Nein. Die Ersatzplatte ist bestellt, den Einbau stimme ich mit dir ab. Bis dahin läuft die Kopie außer Haus weiter."),
         ],
         "voices": ["polednik"],
+        # Darstellung in der Huelle (Fix-Runde 1, 10.10.2026)
+        "h1_nowrap": "Managed IT-Service",
+        "proof2": ("ico-check", "Monatspauschale ab 149 € netto"),
+        "price_line": ("Ad hoc", "110 € netto je Stunde im 15-Minuten-Takt, zzgl. MwSt."),
         "intro": ("Die meisten kleinen Unternehmen rufen erst an, wenn die IT schon steht – und dann "
                   "wird es teuer. <strong>Managed IT-Service dreht das um:</strong> Ich kümmere mich "
-                  "laufend um deine Rechner, Server, E-Mails und Sicherheit, bevor etwas ausfällt. "
+                  "laufend um eure Rechner, Server, E-Mails und Sicherheit, bevor etwas ausfällt. "
                   "Du zahlst einen festen, planbaren Monatsbetrag statt unkalkulierbarer "
                   "Notfall-Rechnungen – und hast einen <strong>Single Point of Contact</strong> für "
                   "alles rund um IT. Wechselst du gerade von einem anderen Dienstleister, steht der "
                   "Ablauf auf der Seite <a href=\"/it-betreuer-wechseln/\">IT-Betreuer wechseln</a>."),
         "raw_intro": True,
         "cards": [
-            ("Proaktive Wartung", "Updates, Monitoring und Pflege deiner Systeme – bevor Probleme entstehen."),
-            ("Microsoft 365", "Postfächer, Teams, Lizenzen und Sicherheit zentral verwaltet."),
-            ("Backup & Wiederherstellung", "Automatische Datensicherung nach 3-2-1 – inklusive Test der Rücksicherung."),
-            ("IT-Sicherheit", "Virenschutz, Firewall, VPN und Schutz vor Ransomware & Phishing."),
-            ("Bevorzugter Support", "Vertragskunden kommen vor Ad-hoc-Anfragen dran, Premium-Kunden zuerst."),
-            ("Beratung & Einkauf", "Hardware-Empfehlungen und Beschaffung ohne Aufschlag-Spielchen."),
+            ("Proaktive Wartung", "Updates, Monitoring und Pflege eurer Systeme – bevor Probleme entstehen.", "ico-tools"),
+            ("Microsoft 365", "Postfächer, Teams, Lizenzen und Sicherheit zentral verwaltet.", "ico-mail"),
+            ("Backup & Wiederherstellung", "Automatische Datensicherung nach 3-2-1 – inklusive Test der Rücksicherung.", "ico-cloud"),
+            ("IT-Sicherheit", "Virenschutz, Firewall, VPN und Schutz vor Ransomware & Phishing.", "ico-shield"),
+            ("Bevorzugter Support", "Vertragskunden kommen vor Ad-hoc-Anfragen dran, Premium-Kunden zuerst.", "ico-user-check"),
+            ("Beratung & Einkauf", "Hardware-Empfehlungen und Beschaffung ohne Aufschlag-Spielchen.", "ico-handshake"),
             # Textblatt L9b: stand bis 10.10.2026 im Abschnitt "Leistungen" der Startseite
-            ("Umstieg und Erneuerung", "Umstieg auf Windows 11, Microsoft 365 oder neue Server, Ablösung veralteter Router und Firewalls und eine IT-Dokumentation für den Notfall."),
+            ("Umstieg und Erneuerung", "Umstieg auf Windows 11, Microsoft 365 oder neue Server, Ablösung veralteter Router und Firewalls und eine IT-Dokumentation für den Notfall.", "ico-monitor"),
         ],
         "prices": [
             ("Starter", "149 €", "Laufende Betreuung für kleine Teams & Einzelplätze.", False),
@@ -1233,9 +1291,9 @@ SERVICES = [
         ],
         "faqs": [
             ("Was ist Managed IT-Service?",
-             "Managed IT-Service bedeutet, dass ich mich laufend um deine gesamte IT kümmere – "
+             "Managed IT-Service bedeutet, dass ich mich laufend um eure gesamte IT kümmere – "
              "Wartung, Updates, Microsoft 365, Backup und Sicherheit – zu einem festen monatlichen "
-             "Preis. Statt erst beim Ausfall zu reagieren, halte ich deine Systeme proaktiv am Laufen."),
+             "Preis. Statt erst beim Ausfall zu reagieren, halte ich eure Systeme proaktiv am Laufen."),
             ("Für welche Unternehmensgröße lohnt sich das?",
              "Besonders für Betriebe mit etwa 5 bis 50 Arbeitsplätzen, die keine eigene IT-Abteilung "
              "haben, aber auf funktionierende IT angewiesen sind – Handwerk, Büros, Praxen, Kanzleien "
@@ -1401,6 +1459,9 @@ SERVICES = [
             ("andreas", "Ein Dienst hing nach dem letzten Update. Neu gestartet, die Laufwerke sind wieder da."),
         ],
         "voices": ["polednik", "verena-k"],
+        # Darstellung in der Huelle (Fix-Runde 1, 10.10.2026): Preis neben dem Einstieg statt Vertrauenskasten
+        "proof2": ("ico-clock", "Ad hoc 110 € netto/Std. im 15-Minuten-Takt"),
+        "intro_price": ("Ad hoc", "110 €", "Abrechnung im 15-Minuten-Takt.", False, "netto/Std. zzgl. MwSt."),
         "intro": ("Wenn die IT steht, zählt jede Minute. Viele Störungen löse ich per Fernwartung, sobald "
                   "wir telefoniert haben; bei größeren Problemen komme ich vorbei, die Wege im Münchner "
                   "Osten sind kurz. Eine feste Reaktionszeit sage ich nicht zu, Vertragskunden werden "
@@ -1409,10 +1470,10 @@ SERVICES = [
                   "Ratgeber <a href=\"/ratgeber/\">Die ersten 15 Minuten</a>."),
         "raw_intro": True,
         "cards": [
-            ("Hilfe per Fernwartung", "Über meine eigene Fernwartung verbinde ich mich mit deinem Bildschirm und löse das Problem direkt. Sie läuft verschlüsselt über meinen Server in Deutschland."),
-            ("Vor-Ort-Einsatz", "Lässt sich etwas nicht aus der Ferne lösen, komme ich vorbei."),
-            ("Daten- & Systemrettung", "Hilfe bei Datenverlust, defekten Festplatten und nicht startenden Systemen."),
-            ("Virenbefall & Ransomware", "Bereinigung befallener Systeme und Wiederherstellung aus dem Backup."),
+            ("Hilfe per Fernwartung", "Über meine eigene Fernwartung verbinde ich mich mit deinem Bildschirm und löse das Problem direkt. Sie läuft verschlüsselt über meinen Server in Deutschland.", "ico-monitor"),
+            ("Vor-Ort-Einsatz", "Lässt sich etwas nicht aus der Ferne lösen, komme ich vorbei.", "ico-tools"),
+            ("Daten- & Systemrettung", "Hilfe bei Datenverlust, defekten Festplatten und nicht startenden Systemen.", "ico-server-crash"),
+            ("Virenbefall & Ransomware", "Bereinigung befallener Systeme und Wiederherstellung aus dem Backup.", "ico-shield"),
         ],
         "faqs": [
             ("Wie schnell bekomme ich im Notfall Hilfe?",
@@ -1883,6 +1944,9 @@ SERVICES = [
                         "holen wir die Zugänge über die Hersteller zurück."),
         ],
         "voices": ["dietz"],
+        # Darstellung in der Huelle (Fix-Runde 1, 10.10.2026): Ablauf links, „Und wenn …“ rechts
+        "proof2": ("ico-user-check", "Über 20 Jahre IT-Erfahrung"),
+        "row": ("So läuft der Wechsel", "Und wenn der alte Betreuer gar nicht mehr reagiert?"),
         "intro": ("Den IT-Dienstleister wechselt niemand aus Lust. Meistens hat sich etwas angesammelt: "
                   "Anrufe, die keiner annimmt, Rückrufe nach Tagen, Rechnungen, die keiner nachvollziehen "
                   "kann. Oder der Kollege, der die IT nebenbei gemacht hat, ist nicht mehr da. Schwierig ist "
@@ -1893,16 +1957,16 @@ SERVICES = [
         "raw_intro": True,
         "cards_h2": "IT-Dienstleister wechseln: was bei der Übernahme passiert",
         "cards": [
-            ("Bestandsaufnahme", "Welche Geräte, Programme, Lizenzen und Verträge es gibt, wer welche Zugänge hat und wo die Daten liegen. Schriftlich."),
-            ("Zugänge auf dich", "Administrator-Kennwörter, Microsoft-365-Konten, Domain, Router und Firewall gehören dem Betrieb, nicht dem Dienstleister. So richte ich es ein."),
-            ("Datensicherung prüfen", "Läuft die Sicherung, und lässt sie sich zurückspielen? Das teste ich, bevor ich irgendetwas umbaue."),
-            ("Geordneter Übergang", "Der alte Betreuer bleibt zuständig, bis die Übergabe steht. Umgestellt wird in Ruhe und nicht am Montagmorgen."),
-            ("Dokumentation", "Am Ende hast du eine Übersicht deiner IT, die auch ohne mich lesbar ist."),
-            ("Laufende Betreuung", "Danach geht es mit einer planbaren Monatspauschale weiter. Vertragskunden werden bevorzugt behandelt."),
+            ("Bestandsaufnahme", "Welche Geräte, Programme, Lizenzen und Verträge es gibt, wer welche Zugänge hat und wo die Daten liegen. Schriftlich.", "ico-list"),
+            ("Zugänge auf dich", "Administrator-Kennwörter, Microsoft-365-Konten, Domain, Router und Firewall gehören dem Betrieb, nicht dem Dienstleister. So richte ich es ein.", "ico-key"),
+            ("Datensicherung prüfen", "Läuft die Sicherung, und lässt sie sich zurückspielen? Das teste ich, bevor ich irgendetwas umbaue.", "ico-search-check"),
+            ("Geordneter Übergang", "Der alte Betreuer bleibt zuständig, bis die Übergabe steht. Umgestellt wird in Ruhe und nicht am Montagmorgen.", "ico-handshake"),
+            ("Dokumentation", "Am Ende hast du eine Übersicht eurer IT, die auch ohne mich lesbar ist.", "ico-file-text"),
+            ("Laufende Betreuung", "Danach geht es mit einer planbaren Monatspauschale weiter. Vertragskunden werden bevorzugt behandelt.", "ico-user-check"),
         ],
         "extra": """
       <h2>Übernahme-Checkliste: Was du vom alten IT-Betreuer brauchst</h2>
-      <p>Diese Liste kannst du deinem bisherigen Dienstleister so weitergeben. Je mehr davon vorliegt, desto schneller und billiger wird die Übernahme.</p>
+      <p>Diese Liste kannst du eurem bisherigen Dienstleister so weitergeben. Je mehr davon vorliegt, desto schneller und billiger wird die Übernahme.</p>
       <ul class="lp-checklist">
         <li><strong>Administrator-Zugänge</strong> zu Servern, PCs und zum Netzwerk: Router, Firewall, WLAN, Switches.</li>
         <li><strong>Microsoft 365:</strong> ein Konto mit globaler Administratorrolle und die Liste der Lizenzen.</li>
@@ -1922,12 +1986,12 @@ SERVICES = [
 
       <h2>So läuft der Wechsel</h2>
       <ol class="lp-steps">
-        <li><strong>Kennenlernen:</strong> Beim kostenlosen IT-Schnellcheck sehe ich mir deine IT 30 bis 45 Minuten vor Ort an. Du bekommst einen schriftlichen Bericht, auch wenn wir danach nicht zusammenarbeiten.</li>
+        <li><strong>Kennenlernen:</strong> Beim kostenlosen IT-Schnellcheck sehe ich mir eure IT 30 bis 45 Minuten vor Ort an. Du bekommst einen schriftlichen Bericht, auch wenn wir danach nicht zusammenarbeiten.</li>
         <li><strong>Übergabe:</strong> Mit der Checkliste oben holen wir die Zugänge und Unterlagen vom alten Betreuer. Bis das steht, bleibt er zuständig.</li>
         <li><strong>Absichern:</strong> Datensicherung testen, Zugänge auf den Betrieb umstellen, alte Fernwartungszugänge abschalten.</li>
         <li><strong>Betreuung:</strong> Danach eine planbare Monatspauschale ab 149 € netto, monatlich kündbar.</li>
       </ol>
-      <p>Nicht gleich wechseln? Ich springe auch als Vertretung ein, wenn dein IT-Betreuer im Urlaub oder krank ist, abgerechnet nach Aufwand.</p>
+      <p>Nicht gleich wechseln? Ich springe auch als Vertretung ein, wenn euer IT-Betreuer im Urlaub oder krank ist, abgerechnet nach Aufwand.</p>
 """,
         "faqs": [
             ("Wie lange dauert ein Wechsel des IT-Betreuers?",
