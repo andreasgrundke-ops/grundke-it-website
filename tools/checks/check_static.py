@@ -16,6 +16,10 @@ PROMISES = ["sofort", "immer erreichbar", "ich geh ran", "rund um die uhr", "24/
             "erreichbar, wenn", "erreichbar, wann"]
 NEW_BLOCKS = r'class="[^"]*\b(page-k|mini-chat|cta-sec|k3-block|cta-h|cta-sub)\b'
 PROTECTED = ["Angebot ausschließlich für Unternehmen", "ohne garantierte Reaktionszeit", "Warum ein Paket?"]
+# AK11a (Spec §7, Textblatt §1): Region und Anbieter in den ersten 300 Zeichen ab <main>
+REGIONS = ("münchner osten", "münchen ost", "grasbrunn")
+PROVIDERS = ("grundke it-service", "andreas grundke")
+VOICE_MAX_PAGES = 4   # je Person hoechstens auf 4 Unterseiten (Textblatt §3, Startseite zaehlt nicht)
 
 
 def pages():
@@ -155,7 +159,9 @@ def ak9b():
     Text woertlich und ungekuerzt in <blockquote class="testi-txt">; Sterne (.stars) nur bei
     Google-Stimmen. Startseite zusaetzlich: jede Stimme genau einmal, review[]/reviewBody im Schema =
     REVIEWS, reviewRating nur bei Google-Stimmen, aggregateRating reviewCount = ratingCount =
-    REVIEW_COUNT_GOOGLE, Belegzeile [data-proof] nennt REVIEW_COUNT_GOOGLE."""
+    REVIEW_COUNT_GOOGLE, Belegzeile [data-proof] nennt REVIEW_COUNT_GOOGLE.
+    Unterseiten: nur Google-Stimmen (die direkt uebermittelte steht nur auf der Startseite), jede
+    Person auf hoechstens VOICE_MAX_PAGES Unterseiten."""
     sys.path.insert(0, str(ROOT / "tools"))
     try:
         import build_landingpages as gen
@@ -164,6 +170,7 @@ def ak9b():
         return [f"Generator ohne REVIEWS/REVIEW_COUNT_GOOGLE: {e}"]
     by_name = {r["name"]: r for r in reviews}
     errs = []
+    sub_pages = {}
     if sum(r["source"] == "Google-Bewertung" for r in reviews) > n_google:
         errs.append("REVIEWS: mehr Google-Stimmen als REVIEW_COUNT_GOOGLE")
     for p in pages():
@@ -185,6 +192,10 @@ def ak9b():
             if r["source"] != "Google-Bewertung" and re.search(r'class="stars\b', c):
                 errs.append(f"{rel(p)}: Sterne bei {who}, die Stimme ist keine Google-Bewertung")
         if rel(p) != "index.html":
+            for who in set(seen):
+                sub_pages.setdefault(who, []).append(rel(p))
+                if by_name[who]["source"] != "Google-Bewertung":
+                    errs.append(f"{rel(p)}: {who} ist keine Google-Bewertung und steht nur auf der Startseite")
             continue
         if sorted(seen) != sorted(by_name):
             errs.append(f"index.html: Stimmen sichtbar {sorted(seen)} != REVIEWS {sorted(by_name)}")
@@ -205,6 +216,30 @@ def ak9b():
         proof = re.search(r"bei (\d+) Google-Bewertungen", text_of(first(r"(<a[^>]*\bdata-proof\b.*?</a>)", s)))
         if not proof or int(proof.group(1)) != n_google:
             errs.append(f"index.html: Belegzeile [data-proof] nennt nicht {n_google} Google-Bewertungen")
+    for who, where in sub_pages.items():
+        if len(where) > VOICE_MAX_PAGES:
+            errs.append(f"{who} steht auf {len(where)} Unterseiten (hoechstens {VOICE_MAX_PAGES}): {where}")
+    return errs
+
+
+def ak11a():
+    """Die ersten 300 Zeichen Text ab <main> (Dokumentreihenfolge: Krumen, H1, K4, Antwortsatz)
+    nennen Leistung, Region und Anbieter (Spec §7, AK11). Leistung = aktuelle Brotkrume (sonst H1),
+    Region = REGIONS oder auf Ortsseiten der Ort, Anbieter = PROVIDERS. Startseite ausgenommen."""
+    errs = []
+    for p in kuemmerer_pages():
+        if rel(p) == "index.html":
+            continue
+        main = first(r"(<main.*?</main>)", read(p))
+        text = text_of(main)[:300].lower()
+        service = text_of(first(r'<li aria-current="page">(.*?)</li>', main) or first(r"<h1[^>]*>(.*?)</h1>", main))
+        slug = rel(p).split("/")[0]
+        regions = REGIONS + ((slug[len("it-service-"):],) if slug.startswith("it-service-") else ())
+        missing = [name for name, ok in (("Leistung", bool(service) and service.lower() in text),
+                                         ("Region", any(r in text for r in regions)),
+                                         ("Anbieter", any(a in text for a in PROVIDERS))) if not ok]
+        if missing:
+            errs.append(f"{rel(p)}: erste 300 Zeichen ohne {', '.join(missing)}")
     return errs
 
 
@@ -265,6 +300,7 @@ def write_legal_baseline():
 CHECKS = {"AK1": ak1, "AK2": ak2, "AK7": ak7, "AK8": ak8, "AK9": ak9, "AK14": ak14}
 CHECKS["AK13"] = ak13
 CHECKS["AK9b"] = ak9b
+CHECKS["AK11a"] = ak11a
 
 if __name__ == "__main__":
     if "--legal-baseline" in sys.argv:
