@@ -83,10 +83,11 @@
  *   1.23.0 / 2026-10-09 — Sofort-Reparatur: Schulungs-Knoepfe (Bausteine in style.css),
  *                        404 mit Schriften, Kartenabstand, Fernwartung als Menuepunkt
  *                        (main.js 1.4.0), Bilder fuer die E-Mail-Signatur.
+ *   1.23.1 / 2026-10-10 — Fakten: 5 Google-Bewertungen, Schulungsportal in Vorbereitung.
  */
 
-const CACHE_NAME    = 'grundke-it-v1.23.0';
-const RUNTIME_CACHE = 'grundke-it-runtime-v29';
+const CACHE_NAME    = 'grundke-it-v1.23.1';
+const RUNTIME_CACHE = 'grundke-it-runtime-v30';
 
 /* Pre-Cache: minimaler Kern fuer Offline-First-Boot */
 const PRECACHE_URLS = [
