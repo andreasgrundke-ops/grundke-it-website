@@ -2378,6 +2378,7 @@ SERVICES = [
         ],
         "extra": """
       <h2>Das Online-Portal im Detail</h2>
+      <p>Das Portal ist in Vorbereitung. So ist es geplant:</p>
       <h3>Für den Firmeninhaber</h3>
       <ul class="lp-checklist">
         <li>Eigener Admin-Zugang</li>
@@ -2410,14 +2411,14 @@ SERVICES = [
                         "Empfohlene Dauer: 1,5 Stunden", "Unterlagen als PDF zum Nachschlagen"],
               "btn": ("Schulung anfragen", MAILTO_SCHULUNG["live"])}),
             ("Online-Portal (in Vorbereitung)", "49 €",
-             "Deine Mitarbeiter arbeiten die Schulung eigenständig durch – wann und wo sie wollen. Inhalte werden "
-             "mindestens halbjährlich an aktuelle Bedrohungen angepasst.", False, "Grundpauschale / Halbjahr, zzgl. MwSt.",
+             "Geplant: Deine Mitarbeiter arbeiten die Schulung eigenständig durch, wann und wo sie wollen. Die Inhalte sollen "
+             "mindestens halbjährlich an aktuelle Bedrohungen angepasst werden.", False, "Grundpauschale / Halbjahr, zzgl. MwSt.",
              {"add": "+ 5 € pro Mitarbeiter / Halbjahr, zzgl. MwSt.",
               "feats": ["Eigener Firmenzugang mit Mitarbeiterverwaltung", "Inhalte mindestens alle 6 Monate aktualisiert",
                         "Quiz + PDF-Zertifikat pro Teilnehmer", "Teilnahmeliste als Nachweis für den Inhaber"],
               "btn": ("Portal vormerken", MAILTO_SCHULUNG["portal"])}),
             ("Kombi-Paket (in Vorbereitung)", "ab 165 €",
-             "Die Live-Schulung bringt alle auf denselben Stand, das Portal frischt das Wissen danach jedes Halbjahr auf.",
+             "Geplant: Die Live-Schulung bringt alle auf denselben Stand, das Portal frischt das Wissen danach jedes Halbjahr auf.",
              False, "/ Halbjahr (statt 184 €), zzgl. MwSt.",
              {"add": "Inkl. Live-Schulung + Portal + 4,50 €/Mitarbeiter, zzgl. MwSt.",
               "feats": ["Live-Schulung per Teams (1,5h)", "Portal-Zugang für alle Mitarbeiter",
@@ -2438,8 +2439,8 @@ SERVICES = [
         "faqs": [
             ("Was kostet eine IT-Sicherheitsschulung?",
              "Die Live-Schulung per Microsoft Teams kostet 135 € pauschal für rund 1,5 Stunden (jede weitere Stunde "
-             "110 €). Das Online-Portal kostet 49 € Grundpauschale pro Halbjahr plus 5 € je Mitarbeiter und Halbjahr. "
-             "Das Kombi-Paket aus Live-Schulung und Portal startet bei 165 € pro Halbjahr. Alle Preise verstehen sich "
+             "110 €). Für das Online-Portal, das gerade entsteht, sind 49 € Grundpauschale pro Halbjahr plus 5 € je Mitarbeiter und Halbjahr geplant. "
+             "Das Kombi-Paket aus Live-Schulung und Portal ist ab 165 € pro Halbjahr geplant. Alle Preise verstehen sich "
              "zzgl. MwSt."),
             ("Wie läuft die Live-Schulung ab?",
              "Die Live-Schulung findet interaktiv per Microsoft Teams statt und dauert rund 1,5 Stunden. Inhalte sind "
@@ -2447,26 +2448,26 @@ SERVICES = [
              "Umgang mit KI-Werkzeugen – mit echten Beispielen und Raum für Fragen. Die Unterlagen erhältst du "
              "anschließend als PDF zum Nachschlagen."),
             ("Bekommen die Mitarbeiter einen Nachweis?",
-             "Ja. Jeder Teilnehmer erhält ein PDF-Zertifikat als Teilnahmenachweis. Über das Online-Portal lädst du als "
-             "Inhaber zusätzlich eine Teilnahmeliste herunter – ein verwertbarer Nachweis für Versicherung und "
-             "Auditierung."),
+             "Ja. Jeder Teilnehmer erhält ein PDF-Zertifikat als Teilnahmenachweis. Sobald das Online-Portal startet, kannst du dort als "
+             "Inhaber zusätzlich eine Teilnahmeliste herunterladen, als Nachweis für Versicherung und "
+             "Audit."),
             ("Für wen ist die Schulung geeignet?",
              "Für kleine und mittlere Unternehmen, Handwerksbetriebe, Praxen, Kanzleien und Büros. Die Inhalte sind "
              "verständlich und praxisnah aufbereitet – ein IT-Fachwissen ist nicht nötig."),
             ("Wie aktuell sind die Schulungsinhalte?",
-             "Die Inhalte des Online-Portals werden mindestens alle sechs Monate an aktuelle Bedrohungen angepasst, "
+             "Das Online-Portal ist in Vorbereitung. Seine Inhalte sollen mindestens alle sechs Monate an aktuelle Bedrohungen angepasst werden, "
              "damit dein Team über neue Betrugsmaschen und Angriffswege informiert bleibt."),
             ("Findet die Schulung online oder vor Ort statt?",
              "Die Live-Schulung findet online per Microsoft Teams statt – so sind alle Teilnehmer ortsunabhängig dabei, "
-             "auch aus dem Home-Office. Das Online-Portal bearbeiten deine Mitarbeiter ebenfalls ortsunabhängig im "
-             "Browser, wann und wo es ihnen passt."),
+             "auch aus dem Home-Office. Auch das Online-Portal läuft, sobald es startet, im "
+             "Browser: Deine Mitarbeiter bearbeiten es, wann und wo es ihnen passt."),
             ("Wie lange dauert eine Schulung?",
-             "Die Live-Schulung dauert rund 1,5 Stunden. Die Inhalte im Online-Portal bearbeiten deine Mitarbeiter im "
-             "eigenen Tempo – jederzeit unterbrechbar und ohne Zeitdruck."),
+             "Die Live-Schulung dauert rund 1,5 Stunden. Im Online-Portal arbeiten deine Mitarbeiter später im "
+             "eigenen Tempo, jederzeit unterbrechbar und ohne Zeitdruck."),
             ("Hilft die Schulung bei der DSGVO und anderen Compliance-Pflichten?",
              "Ja. Die Sensibilisierung der Mitarbeiter ist eine anerkannte organisatorische Maßnahme nach Art. 32 DSGVO "
-             "und ein häufig geforderter Baustein für Cyber-Versicherungen und Audits. Mit dem PDF-Zertifikat und der "
-             "Teilnahmeliste hast du den Nachweis schriftlich in der Hand."),
+             "und ein häufig geforderter Baustein für Cyber-Versicherungen und Audits. Mit dem PDF-Teilnahmenachweis hast du den "
+             "Nachweis schriftlich in der Hand; die Teilnahmeliste kommt mit dem Online-Portal dazu."),
         ],
     },
     {

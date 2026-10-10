@@ -100,10 +100,11 @@
  *   1.26.0 / 2026-10-10 — Release C1 Website-Umbau: Schulung im Generator, Kontakt, Fernwartung,
  *                        Rechtsseiten und 404 in der Huelle mit Abschluss, Font-Preload auf den
  *                        Handseiten, style.css (Preiskarten Schulung), Asset-Version 2026.10.d.
+ *   1.26.1 (2026-10-10) Schulung: Portal-Saetze als geplant, Datenschutz-Stand im Kopf.
  */
 
-const CACHE_NAME    = 'grundke-it-v1.26.0';
-const RUNTIME_CACHE = 'grundke-it-runtime-v33';
+const CACHE_NAME    = 'grundke-it-v1.26.1';
+const RUNTIME_CACHE = 'grundke-it-runtime-v34';
 const ASSET_VER     = '2026.10.d';   // muss ASSET_VER im Generator entsprechen
 
 /* Pre-Cache: minimaler Kern fuer Offline-First-Boot */
