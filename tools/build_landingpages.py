@@ -676,10 +676,9 @@ AUTHOR_ROLE = "Fachinformatiker für Systemintegration · über 20 Jahre IT"
 # Beispiel-Chat: Absender -> (Blasen-Klasse wie im Hero-Chat der Startseite, Name fuer Screenreader)
 CHAT_SENDER = {"kunde": ("is-me", "Kunde"), "andreas": ("is-ag", "Andreas")}
 H2_SPLIT_RE = re.compile(r"\s*<h2>(.*?)</h2>\s*", re.S)
-# Marke in einem extra-Abschnitt: Text davor links, danach rechts (<!--split--> 1,3 : 1, <!--split-even--> 1 : 1),
-# optional bis <!--/split-->; was danach folgt, steht wieder unter beiden Spalten.
-SPLIT_RE = re.compile(r"<!--split(-even)?-->")
-SPLIT_END = "<!--/split-->"
+# Marke in einem extra-Abschnitt: Text davor links, danach rechts (<!--split--> 1,3 : 1; <!--split-wide-->
+# 1 : 1,35 mit breiterer rechter Spalte, wenn rechts Hinweis und Kasten stehen)
+SPLIT_RE = re.compile(r"<!--split(-wide)?-->")
 
 
 def section(content, alt=False, label="", title="", sid="", aside=False):
@@ -721,7 +720,8 @@ def page_head(s, crumbs):
     """Seitenkopf in fester Reihenfolge (Textblatt §1): Krumen, H1 (Text wie bisher, bei Hubs die
     Akzentzeile als <em>; h1_nowrap haelt einen Begriff in einer Zeile), K4 (.page-k), Antwortsatz
     (.s-sub), Knoepfe Anrufen + WhatsApp (am Handy uebernimmt die Kontaktleiste), Belegzeile: zuerst
-    die Google-Bewertungen mit Link zur Herkunft, dann ein Beleg der Seite (proof2: Symbol, Text).
+    die Google-Bewertungen mit Link zur Herkunft, dann ein Beleg der Seite (proof2: Symbol, Text) und
+    optional ein dritter (proof3, gleiches Format).
     Daneben optional der Beispiel-Chat, bei Hubs darunter die Wege zu den Unterseiten. Ohne Chat und
     ohne Wege ab 1024 px ein Raster: H1 ueber beide Spalten, darunter links K4, rechts Antwortsatz,
     Knoepfe und Belegzeile; die Reihenfolge im HTML bleibt dieselbe (erste 300 Zeichen, Screenreader)."""
@@ -732,10 +732,9 @@ def page_head(s, crumbs):
             raise SystemExit("page_head: h1_nowrap steht nicht in der H1 von " + s["slug"])
         h1 = h1.replace(s["h1_nowrap"], '<span class="nowrap">' + s["h1_nowrap"] + "</span>", 1)
     h1 += " <em>" + hero["accent"] + "</em>" if hero else ""
-    proof2 = ""
-    if s.get("proof2"):
-        proof2 = '\n        <li><svg aria-hidden="true"><use href="#{i}"/></svg>{t}</li>'.format(
-            i=s["proof2"][0], t=eur_nbsp(s["proof2"][1]))
+    # proof2: Beleg der Seite, proof3 (optional): weiterer Beleg dahinter, z. B. der Stundensatz
+    proof2 = "".join('\n        <li><svg aria-hidden="true"><use href="#{i}"/></svg>{t}</li>'.format(
+        i=s[key][0], t=eur_nbsp(s[key][1])) for key in ("proof2", "proof3") if s.get(key))
     side = mini_chat(s["chat"]) if s.get("chat") else ""
     if hero:
         side += ('\n    <nav class="lp-paths" aria-label="{l}">\n      <h2 class="lp-paths-h">{l}</h2>\n      <ul>{p}'
@@ -859,10 +858,10 @@ def prose(html_part):
     return '\n    <div class="lp-content">\n      ' + html_part.strip() + '\n    </div>'
 
 
-def split(left, right, even=False):
+def split(left, right, wide=False):
     """Zwei Spalten nebeneinander ab 1024 px (darunter untereinander), z. B. Text und Preis.
-    Standard 1,3 : 1; even=True 1 : 1 (wenn die rechte Spalte sonst deutlich laenger waere)."""
-    return '\n    <div class="sec-split{e}">\n    <div>'.format(e=" sec-split--even" if even else "") + left + \
+    Standard 1,3 : 1; wide=True 1 : 1,35 (rechte Spalte mit Hinweis und Kasten, sonst deutlich laenger)."""
+    return '\n    <div class="sec-split{w}">\n    <div>'.format(w=" sec-split--wide" if wide else "") + left + \
         '\n    </div>\n    <div>' + right + '\n    </div>\n    </div>'
 
 
@@ -873,8 +872,7 @@ def render_shell(s, places, services, head_schema=None):
     Kopf), h1_nowrap, intro_price (Preis neben dem Einstieg), price_line (Zeile unter den Paketen),
     row (zwei Abschnitte nebeneinander, auch der Stimmen-Abschnitt und tail_blocks), voices_h2 (eigene
     Ueberschrift ueber den Stimmen), tail_blocks ((Titel, HTML) nach den Stimmen), "<!--split-->" bzw.
-    "<!--split-even-->" in einem extra-Abschnitt (Text links, Rest rechts, optional bis "<!--/split-->",
-    danach wieder volle Breite). Ein Vertrauenskasten erscheint nur mit eigenem
+    "<!--split-wide-->" in einem extra-Abschnitt (Text links, Rest rechts). Ein Vertrauenskasten erscheint nur mit eigenem
     "trust" (ohne Preise neben dem Einstieg); der allgemeine TRUST_DEFAULT gilt nur in der alten Huelle."""
     slug = s["slug"]
     h, schema = head_schema or service_head_schema(s)
@@ -891,10 +889,7 @@ def render_shell(s, places, services, head_schema=None):
     for title, body in extra_blocks(s.get("extra", "")):
         mark = SPLIT_RE.search(body)
         if mark:
-            right, _end, after = body[mark.end():].partition(SPLIT_END)
-            body_html = split(prose(body[:mark.start()]), prose(right), even=bool(mark.group(1)))
-            if after.strip():
-                body_html += prose(after)   # nach <!--/split--> wieder ueber die volle Breite
+            body_html = split(prose(body[:mark.start()]), prose(body[mark.end():]), wide=bool(mark.group(1)))
         else:
             body_html = prose(body)
         if title:
@@ -948,6 +943,8 @@ def render_shell(s, places, services, head_schema=None):
 # Haar und Baldham mit den freigegebenen Ersatzsaetzen (Textblatt, Frage 5) statt Minuten- und
 # Rueckruf-Zusagen. Fix-Runde 1: Haar ohne die unbelegte Aussage „einer der gewerbestärksten Orte“,
 # Grasbrunn-Einstieg beginnt nicht mehr wortgleich mit dem K4 („Mein Sitz ist im Beethovenring 16 …“).
+# rows_order (Fix-Runde 2): Leistungszeilen in der Reihenfolge, in der der Antwortsatz sie nennt (place_rows);
+# Baldham und Zorneding nennen keine Leistung und behalten die Grundreihenfolge.
 PLACE_DATE = "2026-10-10"            # dateModified, Sitemap und „Zuletzt aktualisiert“ aller Ortsseiten
 PLACE_DATE_DISP = "10. Oktober 2026"
 PLACES = [
@@ -959,6 +956,7 @@ PLACES = [
         "answer": ("Als Grundke IT-Service betreue ich in Grasbrunn, Neukeferloh und Harthausen Büros, Werkstätten und "
                    "Praxen mit 5 bis 50 Arbeitsplätzen: Rechner, Server, Microsoft 365 und Datensicherung, ad hoc für "
                    "110 € netto je Stunde oder ab 149 € netto im Monat."),
+        "rows_order": ("IT-Betreuung & Wartung", "Microsoft 365 & E-Mail", "Backup & IT-Sicherheit"),
         "voice": "dietz",
         "intro": ("Ich arbeite von Neukeferloh aus, also direkt in der "
                   "Gemeinde Grasbrunn. Wenn bei dir im Büro, in der Werkstatt oder in der Praxis "
@@ -978,6 +976,7 @@ PLACES = [
         "answer": ("Als Grundke IT-Service aus Grasbrunn betreue ich Betriebe in Vaterstetten, Baldham und Parsdorf mit "
                    "5 bis 50 Arbeitsplätzen: Microsoft 365, Netzwerk, Datensicherung und sicherer Zugriff aus dem "
                    "Home-Office, vor Ort oder per Fernwartung."),
+        "rows_order": ("Microsoft 365 & E-Mail", "Netzwerk & WLAN", "Backup & IT-Sicherheit"),
         "voice": "verena-k",
         "intro": ("Vaterstetten ist mit Baldham und Parsdorf eine der größten Gemeinden im Münchner "
                   "Osten – viele Pendler, Büros, Praxen und Handwerksbetriebe. Von meinem Sitz in "
@@ -1033,6 +1032,7 @@ PLACES = [
         "answer": ("In Haar betreue ich als Grundke IT-Service aus Grasbrunn die IT von Büros, Praxen und "
                    "Handwerksbetrieben: Netzwerk und WLAN, Microsoft 365, Virenschutz und Datensicherung, laufend "
                    "mit Monatspauschale oder bei Bedarf im 15-Minuten-Takt."),
+        "rows_order": ("Netzwerk & WLAN", "Microsoft 365 & E-Mail", "Backup & IT-Sicherheit"),
         "voice": "polednik",
         "intro": ("Haar grenzt direkt an München, und hier arbeiten ganz unterschiedliche Betriebe, "
                   "vom Büro über die Praxis bis zum Handwerksbetrieb. Von Neukeferloh aus ist "
@@ -1050,6 +1050,7 @@ PLACES = [
         "answer": ("Betriebe in Putzbrunn und Solalinden betreue ich als Grundke IT-Service aus Grasbrunn: "
                    "IT-Betreuung, Microsoft 365, Netzwerk, Datensicherung und IT-Sicherheit zum einheitlichen "
                    "Stundensatz von 110 € netto im 15-Minuten-Takt oder als Monatspauschale ab 149 € netto."),
+        "rows_order": ("IT-Betreuung & Wartung", "Microsoft 365 & E-Mail", "Netzwerk & WLAN", "Backup & IT-Sicherheit"),
         "voice": "verena-k",
         "intro": ("Putzbrunn mit Solalinden hat ein lebhaftes Gewerbegebiet mit vielen KMU und "
                   "Handwerksbetrieben. Ich biete hier persönliche IT-Betreuung mit einem festen "
@@ -1069,11 +1070,23 @@ PLACE_CARDS = [
     ("Netzwerk & WLAN", "Stabiles WLAN und sichere Netzwerke mit professioneller UniFi-Technik.", "ico-wifi"),
     ("Backup & IT-Sicherheit", "Datensicherung nach 3-2-1-Strategie, Virenschutz und Schutz vor Ransomware.", "ico-shield"),
 ]
-# Zweiter Beleg im Kopf mit dem Stundensatz: Ortsseiten, it-notdienst und die IT-Leistungsseiten ohne
-# eigenen Preisbaustein (seit Task 6, Fix-Runde 1, gleicher Wortlaut ueberall). Der fruehere Vertrauens-
-# kasten der Ortsseiten entfaellt (Fakten stehen in diesem Beleg und im Abschluss).
+# Beleg im Kopf mit dem Stundensatz, gleicher Wortlaut ueberall: als proof2 auf Ortsseiten, it-notdienst und
+# Netzwerk, als proof3 hinter dem eigenen Beleg auf Microsoft 365, IT-Sicherheit und Lizenzen (Task 6,
+# Fix-Runden 1/2). Der fruehere Vertrauenskasten der Ortsseiten entfaellt (Fakten in Beleg und Abschluss).
 PROOF_ADHOC = ("ico-clock", "Ad hoc 110 € netto/Std. im 15-Minuten-Takt")
 PLACE_NEAR_H2 = "Auch in deiner Nähe im Einsatz"
+
+
+def place_rows(p):
+    """Leistungszeilen eines Orts: zuerst die Titel aus rows_order (Reihenfolge, in der der Antwortsatz des
+    Orts die Leistungen nennt), danach die uebrigen in der Reihenfolge von PLACE_CARDS. Text und Symbol
+    bleiben gleich; ohne rows_order gilt die Grundreihenfolge."""
+    by_title = {c[0]: c for c in PLACE_CARDS}
+    first = list(p.get("rows_order", ()))
+    unknown = [t for t in first if t not in by_title]
+    if unknown:
+        raise SystemExit("place_rows: unbekannte Zeile(n) " + ", ".join(unknown) + " bei " + p["slug"])
+    return [by_title[t] for t in first] + [c for c in PLACE_CARDS if c[0] not in first]
 
 
 def place_faqs(p):
@@ -1141,7 +1154,7 @@ def render_place(p, places, services):
     s = {
         "slug": slug, "nav": "IT-Service " + p["name"], "h1": "IT-Service in " + esc(p["title_name"]),
         "h1_nowrap": "IT-Service", "k": p["k"], "answer": p["answer"], "proof2": PROOF_ADHOC,
-        "intro": p["intro"], "cards_h2": "IT-Leistungen für " + name, "cards": PLACE_CARDS,
+        "intro": p["intro"], "cards_h2": "IT-Leistungen für " + name, "cards": place_rows(p),
         "voices": [p["voice"]], "tail_blocks": [near],
         "row": ("Was andere über mich sagen", PLACE_NEAR_H2),
         "faqs": faqs, "faq_h2": "Häufige Fragen zum IT-Service in " + name,
@@ -1387,7 +1400,8 @@ SERVICES = [
                    "und zusätzlicher Datensicherung im Monatspaket ab 149 € netto."),
         "voices": ["fleischmann"],
         "h1_nowrap": "Microsoft 365",
-        "proof2": PROOF_ADHOC,
+        "proof2": ("ico-check", "Betreuung im Monatspaket ab 149 € netto"),
+        "proof3": PROOF_ADHOC,
         "intro": ("Microsoft 365 ist schnell gebucht – aber sauber eingerichtet, abgesichert und "
                   "DSGVO-konform betrieben ist es eine andere Sache. Ich übernehme die Ersteinrichtung, "
                   "die Migration von alten Postfächern oder Servern und die laufende Betreuung deiner "
@@ -1435,7 +1449,8 @@ SERVICES = [
                    "Team, das Phishing erkennt. Ich richte das ein und betreue es weiter."),
         "voices": ["fleischmann"],
         "h1_nowrap": "IT-Sicherheit",
-        "proof2": PROOF_ADHOC,
+        "proof2": ("ico-cloud", "Datensicherung nach 3-2-1 mit Kopie außer Haus"),
+        "proof3": PROOF_ADHOC,
         "intro": ("Ein einziger verschlüsselter Server oder ein gelöschtes Verzeichnis kann ein "
                   "kleines Unternehmen tagelang lahmlegen. Ich sorge dafür, dass es gar nicht erst so "
                   "weit kommt – und dass du im Ernstfall deine Daten zurückbekommst. Dazu gehören eine "
@@ -2108,7 +2123,8 @@ SERVICES = [
                    "Grundke IT-Service in Grasbrunn, mit Einrichtung, Verwaltung und Datensicherung auf einer Rechnung. "
                    "ChatGPT Business und Claude Team schließt ihr direkt beim Anbieter ab, ich richte sie ein."),
         "voices": ["verena-k"],
-        "proof2": PROOF_ADHOC,
+        "proof2": ("ico-file-text", "Lizenzen und Betreuung auf einer Rechnung"),
+        "proof3": PROOF_ADHOC,
         "row": ("Was kosten ChatGPT oder Copilot für Unternehmen?", "Warum nicht einfach selbst online bestellen?"),
         "intro": ("Microsoft 365 kann jeder online bestellen. Was dabei fehlt, merkt man später: Konten ohne "
                   "Zwei-Faktor-Anmeldung, Lizenzen für Leute, die längst weg sind, Virenschutz, der nur auf "
@@ -2464,12 +2480,11 @@ SERVICES = [
         <li><strong>Lag dein Gesamtumsatz 2026 über 800.000 Euro?</strong> Dann musst du ab 1. Januar 2027 ausstellen, sonst ab 1. Januar 2028. Die Zahl kennt deine Steuerberatung.</li>
         <li><strong>Schreibst du Rechnungen heute in Word, Excel oder einem Programm ohne E-Rechnung?</strong> Dann ist jetzt der Zeitpunkt, umzustellen, und nicht im Dezember.</li>
       </ol>
-<!--split-even-->
       <p>Vom Ausstellen ausgenommen sind unter anderem Kleinbetragsrechnungen bis 250 Euro brutto, Fahrausweise und Kleinunternehmer. Empfangen können müssen auch sie E-Rechnungen.</p>
+<!--split-wide-->
       <div class="ki-note">
         <p><strong>Zur Einordnung:</strong> Das ist die allgemeine Rechtslage nach dem zweiten Schreiben des Bundesfinanzministeriums zur E-Rechnung vom 15. Oktober 2025, das das erste Schreiben von 2024 ersetzt, und keine Steuerberatung. Ob und ab wann die Pflicht deinen Betrieb genau trifft, klärst du mit deiner Steuerberatung. Ich baue die Umsetzung.</p>
       </div>
-<!--/split-->
       {preise}
 """.replace("{preise}", (
             '<div class="card-box">\n        <h3>Umstellung zum Festpreis</h3>\n'
