@@ -22,7 +22,12 @@ Umbau „Ein Stil, der Kümmerer, Handy zuerst“ (10.10.2026) ist bis auf `/emp
   `sync_shared()` schreibt Abschluss und Font-Preload auch in die Handseiten. Fernwartung: Knöpfe
   `.btn-p/.btn-g`, Seitenspalte ab 1100 px, Platz des Umschalters vor dem Skript reserviert
   (CLS 0,103 → 0). Rechtsseiten nur neue Hülle, Text per AK14 gegen Commit 865b00a geprüft.
-- **Versionen:** `sw.js` 1.26.1 / runtime v34, `ASSET_VER` 2026.10.d.
+- **Release C2 (Kandidat, Branch `umbau/c2-empfehlungen`):** `/empfehlungen/` mit Einrichtungs-Pauschalen
+  (Richtwerte „ca.“, Beispiele und Erfahrungswerte), Zubehör für den Arbeitsplatz, private Produkte entfallen.
+  Dazu Fix-Runden aus dem Gesamt-Review: schärfere Prüfungen (Zusagewörter, Schlüssel der Seitendaten,
+  H2-Ausnahmen je Seite, Pre-Cache-Dateien), ein Unternehmensknoten im Schema, Service Worker cached nur
+  erfolgreiche Antworten und leitet offline auf die Startseite, `check_static.py --ci` läuft im Deploy.
+- **Versionen:** live `sw.js` 1.26.1 / runtime v34, `ASSET_VER` 2026.10.d; Kandidat C2 1.27.0 / v35 / 2026.10.e.
 - **Prüfwerkzeuge** in `tools/checks/` (nicht im Deploy): `check_static.py` (AK1–AK14),
   `check_site.py` (Länge ≤ 8.000 px bei 390, erster Bildschirm, Überlauf), `check_seo.py`
   (Parität zu `../_intern/messungen/vorher`, Ausnahmen in `../_intern/messungen/seo-ausnahmen.json`),
@@ -41,13 +46,13 @@ Umbau „Ein Stil, der Kümmerer, Handy zuerst“ (10.10.2026) ist bis auf `/emp
 - 27.07.2026: kanonische Domain non-www.
 
 ## Nächster Schritt
-- `/empfehlungen/` als Einrichtungs-Pauschalen (Release C2): Preise der Pauschalen stehen zur
-  Freigabe aus; „Arbeitsplatz-Zubehör“ bleibt, private Produkte entfallen.
-- Danach Gesamtabnahme aller Kriterien und Kontrolle in der Search Console nach zwei und vier Wochen.
+- Release C2 nach Vorschau-Abnahme mergen und live prüfen; danach Lighthouse und LCP/CLS live auf den
+  Stichproben. Gesamtabnahme liegt vor (abgenommen mit Auflagen, erledigt bis auf Andreas' Freigaben).
+- Search Console nach zwei und vier Wochen prüfen.
 - Offen: Linux-Fernwartung auf echtem Mint testen; AGB-PDF von 2024 aktualisieren.
 
 ## Blocker
-- Release C2 wartet auf die Freigabe der Pauschalen-Preise.
+- Release C2 wartet auf die Vorschau-Abnahme durch Andreas.
 
 ---
 *Regel: Diese Datei bei jedem Arbeitsblock aktualisieren – sie füttert Mission Control und Jarvis.*

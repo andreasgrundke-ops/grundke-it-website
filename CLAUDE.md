@@ -55,11 +55,12 @@ geaendert hat, nicht wegen eines neuen Footer-Links.
   am Handy rund 10.300 px. B: alle Generator-Seiten in der Huelle `render_shell` (Kopf, Abschnitte im
   Wechsel, Abschluss `closing()`), alter Seitenweg entfernt, Font-Preload. C1: Schulung im Generator,
   Kontakt, Fernwartung, Rechtsseiten (nur Huelle), 404; `sync_shared()` schreibt auch Abschluss und
-  Font-Preload in die Handseiten. `sw.js` 1.26.1 / runtime v34, `ASSET_VER` 2026.10.d.
+  Font-Preload in die Handseiten. Live `sw.js` 1.26.1 / runtime v34, `ASSET_VER` 2026.10.d;
+  Kandidat C2 (Empfehlungen + Fix-Runden) 1.27.0 / v35 / 2026.10.e. `check_static.py --ci` laeuft im Deploy.
 - **Pruefen vor jedem Release:** `tools/checks/` (check_static, check_site, check_seo mit
   `--allow ../_intern/messungen/seo-ausnahmen.json`, check_visual), Python 3.13 mit Playwright.
   AK14 vergleicht die Rechtstexte mit Commit 865b00a; Rechtstext nie aendern ohne neue Baseline.
-- **Offen:** `/empfehlungen/` als Einrichtungs-Pauschalen (Release C2) wartet auf Andreas' Preisfreigabe.
+- **Offen:** Release C2 (`/empfehlungen/` mit Einrichtungs-Pauschalen) wartet auf Andreas' Vorschau-Abnahme.
   Linux-Fernwartung auf echtem Mint testen. Danach Gesamtabnahme und Search Console nach 2/4 Wochen.
 - Details in `STATUS.md`; Spec, Plan, Textblatt, Messungen und Fachwissen ausserhalb des Repos in
   `../_intern/` (Repo ist oeffentlich).

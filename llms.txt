@@ -70,7 +70,7 @@ Unternehmen.
   Online-Portal in Vorbereitung, geplant ab 49 EUR netto/Halbjahr plus 5 EUR je Mitarbeiter),
   mit Modul „KI sicher nutzen“
 
-## Preise für Projekte (netto, Richtwerte, Stand 10.10.2026)
+## Preise für Projekte (netto, Richtwerte, Stand 11.10.2026)
 
 - Software nach Maß, kleine Anwendung: ab 3.000 EUR, Betrieb ab 80 EUR/Monat
 - Software nach Maß, Pilot mit Schnittstelle: ab 6.000 EUR, Betrieb ab 150 EUR/Monat
@@ -82,6 +82,10 @@ Unternehmen.
 - KI-Start (KI sicher einsetzen): ab 1.500 EUR je nach Betriebsgröße
 - E-Rechnung umstellen: ab 1.500 EUR, mit eigenem Export ab 4.000 EUR (Lizenz des
   Rechnungsprogramms zahlt der Kunde direkt beim Anbieter)
+- Geräte einrichten (der Kunde kauft die Geräte, wo er will; Beispiele und Erfahrungswerte, im
+  Einzelfall abweichend): Arbeitsplatz-PC oder Notebook ca. 250 EUR, NAS mit Datensicherung
+  ca. 400 EUR, Mini-PC als kleiner Server ca. 450 EUR, UniFi-Gateway/Firewall ca. 450 EUR,
+  Switch oder WLAN-Access-Point ca. 100 EUR je Gerät; Anfahrt bis 5 km inklusive
 - Kostenlos: IT-Schnellcheck, KI-Potenzialcheck, Website- und KI-Sichtbarkeits-Check
 
 ## KI im Betrieb (Schwerpunkt)
