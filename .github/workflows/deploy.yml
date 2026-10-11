@@ -24,12 +24,27 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Statische Pruefungen vor dem Ausliefern (Spec §9). --ci laesst AK13v und AK14r aus: die brauchen
+      # ../_intern/ bzw. Git-Historie, beides gibt es hier nicht. Schlaegt eine Pruefung fehl, endet der
+      # Lauf hier und nichts wird hochgeladen.
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Statische Pruefungen (check_static --ci)
+        run: python -B tools/checks/check_static.py --ci
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
+      # Nicht ausliefern: Generator und Pruefskripte, Arbeitsdaten, Markdown im Wurzelordner und
+      # Dotfiles (.gitignore nannte interne Dateinamen und war live abrufbar; .github schliesst
+      # upload-pages-artifact zwar selbst aus, hier trotzdem ausdruecklich).
       - name: Interne Dateien aus dem Artefakt entfernen
         run: |
-          rm -rf tools .impeccable "Audit 2026-04"
+          rm -rf tools .impeccable "Audit 2026-04" .github
+          rm -f .gitignore
           find . -maxdepth 1 -name "*.md" -delete
 
       - name: Upload artifact

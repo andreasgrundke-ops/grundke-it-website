@@ -31,8 +31,13 @@ __pycache__/
 # Impeccable-Arbeitsdaten (Critique-Snapshots, Live-Server)
 .impeccable/
 
-# Mess- und Pruefartefakte der Umbau-Skripte (liegen in ../_intern/messungen/)
-/*.png
+# Mess- und Pruefartefakte der Umbau-Skripte (liegen in ../_intern/messungen/): Aufnahmen
+# heissen <seite>_<breite>.png bzw. messung*.png. Bewusst nicht /*.png - das traf auch die
+# getrackten Icons im Wurzelordner (android-chrome-*, apple-touch-icon, favicon-*); ein neues
+# Icon waere still nicht committet worden.
+/*_[0-9][0-9][0-9].png
+/*_[0-9][0-9][0-9][0-9].png
+/messung*.png
 messung*.json
 lighthouse*.json
 detect*.json
