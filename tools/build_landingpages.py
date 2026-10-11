@@ -378,7 +378,11 @@ HAND_CLOSING = {
 CLOSING_RE = re.compile(r'<section class="cta-sec".*?</section>', re.S)
 # Font-Preload wie in head() der Generator-Seiten, vor dem fonts.css-Link der Handseite und mit dessen Pfad
 # (../assets/… oder /assets/… bei der 404), damit die URL der des @font-face in fonts.css entspricht
-FONTS_CSS_RE = re.compile(r'( *)<link rel="stylesheet" href="((?:\.\./)*|/)assets/css/fonts\.css"/?>')
+FONTS_CSS_RE = re.compile(r'( *)<link rel="stylesheet" href="((?:\.\./)*|/)assets/css/fonts\.css(?:\?v=[^"]*)?"/?>')
+# fonts.css behaelt den relativen Pfad (die Font-Preloads leiten ihren Pfad davon ab) und bekommt nur ?v=
+FONTS_CSS_VER_RE = re.compile(r'(href="(?:(?:\.\./)*|/)assets/css/fonts\.css)(?:\?v=[^"]*)?"')
+LENIS_JS_RE = re.compile(r'src="(?:\.\./)*/?assets/js/lenis\.min\.js(?:\?v=[^"]*)?"')
+HERO_JS_RE = re.compile(r'src="(?:\.\./)*/?assets/js/hero-chat\.js(?:\?v=[^"]*)?"')
 FONT_PRELOADS = ("Manrope-latin.woff2", "SpaceGrotesk-latin.woff2")
 
 
@@ -424,6 +428,9 @@ def sync_shared(places, services):
         html_new = STYLE_CSS_RE.sub(lambda _m: 'href="' + asset("css/style.css") + '"', html_new)
         html_new = MAIN_JS_RE.sub(lambda _m: 'src="' + asset("js/main.js") + '"', html_new)
         html_new = FW_JS_RE.sub(lambda _m: 'src="' + asset("js/fernwartung.js") + '"', html_new)
+        html_new = LENIS_JS_RE.sub(lambda _m: 'src="' + asset("js/lenis.min.js") + '"', html_new)
+        html_new = HERO_JS_RE.sub(lambda _m: 'src="' + asset("js/hero-chat.js") + '"', html_new)
+        html_new = FONTS_CSS_VER_RE.sub(lambda m: m.group(1) + "?v=" + ASSET_VER + '"', html_new)
         if not home:
             sprite = ICON_SPRITE.replace("\n", nl)
             if SPRITE_RE.search(html_new):
@@ -527,12 +534,12 @@ def head(title, desc, slug, og_title, og_desc, og_alt, tw_desc=None, tw_alt=None
   <meta name="msapplication-TileColor" content="#0c4da2"/>
   <link rel="preload" as="font" type="font/woff2" crossorigin href="{up}assets/fonts/Manrope-latin.woff2"/>
   <link rel="preload" as="font" type="font/woff2" crossorigin href="{up}assets/fonts/SpaceGrotesk-latin.woff2"/>
-  <link rel="stylesheet" href="{up}assets/css/fonts.css"/>
+  <link rel="stylesheet" href="{up}assets/css/fonts.css?v={ver}"/>
   <link rel="stylesheet" href="{css}"/>
 """.format(title=esc(title), desc=esc_attr(desc), canonical=canonical,
            og_title=esc_attr(og_title), og_desc=esc_attr(og_desc), og_alt=esc_attr(og_alt),
            tw_desc=esc_attr(tw_desc or og_desc), tw_alt=tw_alt_html,
-           domain=DOMAIN, up=up(slug), css=asset("css/style.css"))
+           domain=DOMAIN, up=up(slug), css=asset("css/style.css"), ver=ASSET_VER)
 
 
 MAILTO_PREFILLED = "mailto:info@grundke-it.de?subject=Anfrage%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0AMein%20Anliegen%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F)."
@@ -886,6 +893,8 @@ def voices_html(ids):
 
 # Zusatzfeld einer Preiskarte (sechstes Element, dict, seit Task 8): siehe price_card
 PRICE_OPT_KEYS = {"add", "feats", "badge", "btn"}
+# Satzende = Punkt/!/? plus Leerraum plus Grossbuchstabe; „zzgl. MwSt.“ bricht keinen Satz ab
+SENTENCE_SPLIT_RE = re.compile(r"(?<!zzgl\.)(?<=[.!?])\s+(?=[A-ZÄÖÜ])")
 EUR_AMOUNT_RE = re.compile(r"\d[\d.,]*\s*(?:€|&nbsp;€|Euro\b)")
 
 
@@ -909,7 +918,7 @@ def price_card(pr, slug):
         raise SystemExit("price_card: Zusatzpreis ohne 'zzgl. MwSt.' auf " + slug + ": " + opt["add"])
     # Betraege in der Beschreibung (z. B. Monatspreis fuer den Betrieb) brauchen im selben Satz „netto“ oder
     # „zzgl. MwSt.“; die Einheit der Karte gilt nur fuer den Betrag oben (Fix-Runde B, M1)
-    for sentence in re.split(r"(?<=[.!?])\s+", desc):
+    for sentence in SENTENCE_SPLIT_RE.split(desc):
         if EUR_AMOUNT_RE.search(sentence) and "netto" not in sentence and "zzgl. MwSt." not in sentence:
             raise SystemExit("price_card: Betrag ohne 'netto'/'zzgl. MwSt.' in der Beschreibung auf " + slug + ": "
                              + sentence)

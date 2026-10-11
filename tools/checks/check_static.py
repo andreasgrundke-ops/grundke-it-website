@@ -24,7 +24,8 @@ OLD_WRAPPERS = ("lp-wrap", "page-wrap", "kontakt-wrap", "fw-wrap", "emp-hero", "
 PROMISE_PATTERNS = [r"\w*schnell(?!check)\w*", r"\w*sofort\w*", r"\w*garanti\w*", r"\binnerhalb\b", r"\bbinnen\b",
                     r"\bjederzeit\b", r"\brund um die uhr\b", r"(?<!\d)24\s*/\s*7(?!\d)", r"\bimmer erreichbar\b",
                     r"\bich geh\w* ran\b", r"\bam selben tag\b", r"\bheute noch\b", r"\bnoch heute\b",
-                    r"\bin (?:wenigen |\d+ )?(?:sekunden|minuten|stunden)\b", r"\bzurückruf\w*", r"\bumgehend\w*",
+                    r"\bin (?:wenigen |einer |\d+ |\w+ )?(?:sekunden?|minuten?|stunden?)\b",
+                    r"\bzeitnah\w*", r"\bam gleichen tag\b", r"\b24 stunden\b", r"\bzurückruf\w*", r"\bumgehend\w*",
                     r"\bkurzfristig\w*", r"\bbleib\w* dran\b", r"\berreichbar, wenn\b", r"\berreichbar, wann\b"]
 PROMISE_RE = re.compile("|".join("(?:" + p + ")" for p in PROMISE_PATTERNS), re.I)
 # Geprueft wird (Fix-Runde B) der ganze sichtbare Text in <main> jeder Seite ausser den Rechtsseiten, also jeder
@@ -48,7 +49,7 @@ AK8_ALLOW = [
      "FAQ-Frage, die Antwort verneint feste Reaktionszeiten"),
     ("index.html", "Websites, die am Handy schnell laden", "Ladezeit der Website"),
     ("index.html", "wer hilft mir kurzfristig?",
-     "Frage in Worten des Besuchers unter ‚Typische Anrufe‘, keine Zusage (Controller 11.10.2026)"),
+     "FAQ-Frage in Worten des Besuchers; die Antwort nennt keine Zeit (Controller 11.10.2026, Hinweis an Andreas)"),
     ("index.html", "ohne garantierte Reaktionszeit", "verneint eine Reaktionszeit (geschuetzter Satz, Spec §5)"),
     ("digitalbonus-bayern/index.html", "Umsetzung innerhalb von 18 Monaten nach der Bewilligung",
      "Frist des Foerderprogramms"),
@@ -310,7 +311,7 @@ def _has_class(attrs, cls):
 
 def ak8_sources(p):
     """(Quelle, Text) einer Seite fuer AK8: sichtbarer Text in <main> (ohne Kundenzitate und Ratgeber-Lesespalte),
-    die <summary> im Fuss, Meta-, og- und twitter-Description."""
+    die <summary> im Fuss, <title>, Meta-, og- und twitter-Description sowie og/twitter:title."""
     s = re.sub(r'<blockquote class="testi-txt".*?</blockquote>', " ", read(p), flags=re.S)
     main = first(r"(<main\b.*?</main>)", s)
     for _n, frag in elements(main, lambda tag, a: tag == "article" and _has_class(a, "lp-article") and "Lesespalte"):
@@ -318,7 +319,10 @@ def ak8_sources(p):
     out = [("main", text_of(main).replace(AK8_LEITZEILE, " "))]
     foot = first(r'(<footer class="site-footer">.*?</footer>)', s)
     out += [("Fuss summary", text_of(f)) for _n, f in elements(foot, lambda tag, a: tag == "summary" and "summary")]
-    for attr, name in (("name", "description"), ("property", "og:description"), ("name", "twitter:description")):
+    for m in re.finditer(r"<title>(.*?)</title>", s, re.S):
+        out.append(("title", html.unescape(m.group(1))))
+    for attr, name in (("name", "description"), ("property", "og:description"), ("name", "twitter:description"),
+                       ("property", "og:title"), ("name", "twitter:title")):
         for m in re.finditer(r'<meta\s+' + attr + r'="' + re.escape(name) + r'"\s+content="([^"]*)"', s):
             out.append(("meta " + name, html.unescape(m.group(1))))
     return out
@@ -640,19 +644,48 @@ def ak14r():
     return errs
 
 
-def ak13():
-    """style.css, main.js und fernwartung.js tragen ueberall ?v=, alle dieselbe Version wie ASSET_VER in sw.js."""
+VERSIONED_ASSETS = r"(?:style\.css|main\.js|fernwartung\.js|fonts\.css|lenis\.min\.js|hero-chat\.js)"
+
+
+def precache_urls():
+    """Eintraege aus PRECACHE_URLS in sw.js (nur die Zeichenketten; '… + ASSET_VER' bleibt als ?v= erkennbar)."""
+    block = re.search(r"const PRECACHE_URLS\s*=\s*\[(.*?)\];", read(ROOT / "sw.js"), re.S)
+    if not block:
+        return None
+    return re.findall(r"'([^']*)'", block.group(1))
+
+
+def precache_target(url):
+    """URL aus dem Pre-Cache -> Datei im Repo: ?v= ab, '/' = index.html, Verzeichnis-URL = index.html darin."""
+    path = url.split("?", 1)[0].lstrip("/")
+    if path == "" or path.endswith("/"):
+        path += "index.html"
+    return ROOT / path
+
+
+def ak13(urls=None, root_check=None):
+    """style.css, main.js, fernwartung.js, fonts.css, lenis.min.js und hero-chat.js tragen ueberall ?v=, alle dieselbe
+    Version wie ASSET_VER in sw.js. Dazu: jede Datei im Pre-Cache von sw.js muss im Repo existieren (sonst wirft
+    cache.addAll beim Install und jedes spaetere Service-Worker-Update bleibt still haengen)."""
     errs = []
     for p in pages():
-        for ref in re.findall(r'href="([^"]*style\.css[^"]*)"|src="([^"]*(?:main|fernwartung)\.js[^"]*)"', read(p)):
+        for ref in re.findall(r'href="([^"]*' + VERSIONED_ASSETS + r'[^"]*)"|src="([^"]*' + VERSIONED_ASSETS + r'[^"]*)"',
+                              read(p)):
             r = ref[0] or ref[1]
             if "?v=" not in r:
                 errs.append(f"{rel(p)}: {r} ohne Version")
     # Pre-Cache des Service Workers muss dieselbe Version tragen wie die Seiten
-    vers = {v for p in pages() for v in re.findall(r'(?:style\.css|main\.js|fernwartung\.js)\?v=([\w.-]+)"', read(p))}
+    vers = {v for p in pages() for v in re.findall(VERSIONED_ASSETS + r'\?v=([\w.-]+)"', read(p))}
     sw = re.search(r"const ASSET_VER\s*=\s*'([^']+)'", read(ROOT / "sw.js"))
     if not sw or vers != {sw.group(1)}:
         errs.append(f"sw.js: ASSET_VER {sw.group(1) if sw else 'fehlt'} passt nicht zu den Seiten {sorted(vers)}")
+    urls = precache_urls() if urls is None else urls
+    if not urls:
+        errs.append("sw.js: PRECACHE_URLS nicht gefunden oder leer")
+    exists = root_check or (lambda f: f.is_file())
+    for u in urls or []:
+        if not exists(precache_target(u)):
+            errs.append(f"sw.js: Pre-Cache-Eintrag {u!r} hat keine Datei im Repo (Install wuerfe, Updates blockiert)")
     return errs
 
 
