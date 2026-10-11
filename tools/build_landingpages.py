@@ -2726,7 +2726,7 @@ SERVICES = [
             offer_from("Laufender Betrieb", PRICES["website_betrieb"], "Optional: Hosting, Updates, Sicherheit, Bericht; je Monat netto.", monthly=True, approx=True),
         ] if SHOW_FROM_PRICES else [],
         "cta2_href": "/kontakt/", "cta2_text": "Sichtbarkeits-Check anfragen",
-        "desc": ("Website erstellen lassen oder modernisieren: schnell, fürs Handy gebaut, für Google und "
+        "desc": ("Website erstellen lassen oder modernisieren: fürs Handy gebaut, für Google und "
                  "KI-Assistenten lesbar aufgebaut. Technische Umsetzung, Raum München Ost."),
         "intro": ("Viele Betriebs-Websites sind irgendwann entstanden und seitdem stehen geblieben. Am Handy "
                   "rutscht alles durcheinander, Google zeigt sie auf Seite drei, und wenn jemand ChatGPT nach "

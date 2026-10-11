@@ -109,6 +109,7 @@
  *                        mit res.ok landen im Cache, offline zeigt eine Navigation die Startseite
  *                        statt 404.html. style.css ohne tote Klassen, fernwartung.js mit Rueckfall,
  *                        Asset-Version 2026.10.e.
+ *   1.27.0 (2026-10-11) Offline: Umleitung auf die Startseite statt fremder URL.
  */
 
 const CACHE_NAME    = 'grundke-it-v1.27.0';
@@ -189,7 +190,9 @@ self.addEventListener('fetch', event => {
         /* offline: die Seite aus dem Cache, sonst die Startseite (404.html hiesse
            „Die Seite gibt's nicht (mehr)“, das stimmt offline nicht) */
         .catch(() => caches.match(req)
-          .then(cached => cached || caches.match('/'))
+          .then(cached => cached || caches.match('/').then(home =>
+            /* Startseite nicht unter fremder URL ausliefern (relative Pfade braechen): umleiten */
+            home ? Response.redirect('/', 302) : undefined))
         )
     );
     return;

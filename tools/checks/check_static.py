@@ -47,6 +47,8 @@ AK8_ALLOW = [
     ("index.html", "Wie schnell bist du bei einem IT-Notfall erreichbar? + Feste Reaktionszeiten sage ich nicht zu",
      "FAQ-Frage, die Antwort verneint feste Reaktionszeiten"),
     ("index.html", "Websites, die am Handy schnell laden", "Ladezeit der Website"),
+    ("index.html", "wer hilft mir kurzfristig?",
+     "Frage in Worten des Besuchers unter ‚Typische Anrufe‘, keine Zusage (Controller 11.10.2026)"),
     ("index.html", "ohne garantierte Reaktionszeit", "verneint eine Reaktionszeit (geschuetzter Satz, Spec §5)"),
     ("digitalbonus-bayern/index.html", "Umsetzung innerhalb von 18 Monaten nach der Bewilligung",
      "Frist des Foerderprogramms"),
@@ -103,14 +105,7 @@ AK8_ALLOW = [
 # Offene Zusagen: Treffer, die eine Zusage sind oder so gelesen werden koennen, Entscheidung bei Andreas (Text in
 # dieser Runde nicht geaendert). Sie halten AK8 nicht rot, werden aber bei jedem Lauf als WARNUNG gemeldet.
 # Gleiches Format wie AK8_ALLOW; nach Andreas' Entscheidung Text aendern und Eintrag loeschen (oder nach AK8_ALLOW).
-AK8_OPEN = [
-    ("index.html", "wer hilft mir kurzfristig?",
-     "FAQ-Frage in Worten des Besuchers; die Antwort bejaht die Hilfe, ohne eine Zeit zu verneinen (Fix-Runde B)"),
-    ("fernwartung/index.html", "dein IT-Betreuer verbindet sich in wenigen Sekunden",
-     "Meta-Description: Zeitangabe, wann Andreas sich verbindet (Fix-Runde B)"),
-    ("websites-fuer-betriebe/index.html", "Website erstellen lassen oder modernisieren: schnell,",
-     "Meta-, og- und twitter-Description: liest sich im Suchergebnis als Lieferzeit, gemeint ist die Ladezeit (Fix-Runde B)"),
-]
+AK8_OPEN = []
 PROTECTED = ["Angebot ausschließlich für Unternehmen", "ohne garantierte Reaktionszeit", "Warum ein Paket?",
              "Alle Preise zzgl. MwSt."]
 # AK14 seit Fix-Runde B (M10, Spec §5): Herkunftshinweis wortgleich ({n} = Zahlwort + Verb aus dem Generator,
