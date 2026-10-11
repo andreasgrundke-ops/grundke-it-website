@@ -101,10 +101,13 @@
  *                        Rechtsseiten und 404 in der Huelle mit Abschluss, Font-Preload auf den
  *                        Handseiten, style.css (Preiskarten Schulung), Asset-Version 2026.10.d.
  *   1.26.1 (2026-10-10) Schulung: Portal-Saetze als geplant, Datenschutz-Stand im Kopf.
+ *   1.27.0 / 2026-10-11 — Release C2 Website-Umbau: Empfehlungen in der Huelle mit Einrichtungs-
+ *                        Pauschalen je Geraetegruppe und Abschluss, private Produkte entfernt.
+ *                        style.css und JS unveraendert, Asset-Version bleibt 2026.10.d.
  */
 
-const CACHE_NAME    = 'grundke-it-v1.26.1';
-const RUNTIME_CACHE = 'grundke-it-runtime-v34';
+const CACHE_NAME    = 'grundke-it-v1.27.0';
+const RUNTIME_CACHE = 'grundke-it-runtime-v35';
 const ASSET_VER     = '2026.10.d';   // muss ASSET_VER im Generator entsprechen
 
 /* Pre-Cache: minimaler Kern fuer Offline-First-Boot */
