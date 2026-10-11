@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 build_landingpages.py
-Version : 2.6
+Version : 2.7
 Autor   : Andreas Grundke IT-Service (Grundke IT-Service)
 Datum   : 2026-10-11
 Zweck   : Generiert aus einem gemeinsamen Template + Datenlisten die Orts- und
@@ -21,7 +21,8 @@ Ablauf:
      handgebauten Seiten (HAND_PAGES) geschrieben -> ein Menue fuer die ganze Site.
   6. sync_home() schreibt in die Startseite: Kundenstimmen (REVIEWS) samt review[] im
      Schema, FAQ (HOME_FAQS) samt FAQPage-Schema, WhatsApp-Links (data-wa), Preise
-     (data-price), Bewertungszahl der Belegzeile (data-proof) und das Seitendatum.
+     (data-price), Bewertungszahl der Belegzeile (data-proof) und des Herkunftshinweises
+     (#bewertungen-herkunft) und das Seitendatum.
 
 Aufruf: python tools/build_landingpages.py
 
@@ -76,6 +77,13 @@ Aenderungen:
               statt Blitz-Zeichen und Inline-Style.
   2026-10-11  Release C2, Task 10: empfehlungen bekommt den Abschluss K5 (HAND_CLOSING) mit EMPF_DATE_DISP; EMPF_DATE
               als lastmod der Sitemap. Asset-Version bleibt 2026.10.d (style.css und JS unveraendert).
+  2026-10-11  Release C2, Task 11 (Fix-Runde B aus dem Gesamt-Review): Abbruch bei unbekannten Feldern in SERVICES und
+              PLACES (SERVICE_KEYS, PLACE_KEYS, check_keys), bei HTML in intro ohne raw_intro und bei doppelter loc in
+              der Sitemap; esc_attr fuer Attribute (Anfuehrungszeichen); Preiskarte prueft auch die Beschreibung auf
+              €-Betraege ohne netto/zzgl. MwSt. (Software: „netto“ ergaenzt); Schema: Ortsseiten, Kontakt und
+              Course.provider mit @id des Unternehmens, Offers mit valueAddedTaxIncluded false; sync_home setzt die
+              Bewertungszahl im Herkunftshinweis (review_count_phrase); sync_shared versioniert auch fernwartung.js;
+              KI_DATE/KI_DATE_DISP entfernt. Asset-Version 2026.10.e (style.css ohne tote Klassen, fernwartung.js).
 """
 
 import os
@@ -94,11 +102,8 @@ PUB_DATE = "2026-06-15"       # datePublished (Ersterstellung der Landingpages)
 PERSON_ID = DOMAIN + "/#andreas"          # @id der Person Andreas Grundke (Startseite)
 BUSINESS_ID = DOMAIN + "/#localbusiness"  # @id des Unternehmens (Startseite)
 WEBSITE_ID = DOMAIN + "/#website"         # @id der Website (Startseite)
-# Der KI-Bereich ist juenger als die uebrigen Landingpages und fuehrt deshalb eigene
-# Datumsangaben. So bleibt dateModified der Orts-/Leistungsseiten ehrlich (kein
-# kuenstliches Hochsetzen der Freshness-Signale nur wegen eines neuen Footer-Links).
-KI_DATE = "2026-09-23"          # dateModified der KI-Seiten
-KI_DATE_DISP = "23. September 2026"
+# Der KI-Bereich ist juenger als die uebrigen Landingpages: eigenes datePublished. dateModified steht je Seite
+# in SERVICES ("modified"), nur hochsetzen, wenn sich der Inhalt der Seite wirklich aendert.
 KI_PUB_DATE = "2026-08-22"      # datePublished der KI-Seiten
 # Seiten vom 07.10.2026 (Software, Websites, IT-Betreuer wechseln, E-Rechnung, Digitalbonus,
 # Lizenzen, Ratgeber) und die dafuer inhaltlich erweiterten Seiten tragen dieses Datum.
@@ -106,14 +111,28 @@ NEW_DATE = "2026-10-07"
 NEW_DATE_DISP = "7. Oktober 2026"
 
 # Asset-Version (seit 10.10.2026): haengt als ?v= an style.css und main.js ALLER Seiten
-# (generierte Seiten, Startseite und Handseiten ueber sync_shared) und steht gleichlautend
-# als ASSET_VER im Pre-Cache von sw.js. Bei JEDEM Release erhoehen, zusammen mit
-# CACHE_NAME/RUNTIME_CACHE in sw.js. Neue URLs laufen am alten Cache des Service Workers
-# vorbei, ein wiederkehrender Besucher bekommt nie neues HTML mit altem CSS.
-ASSET_VER = "2026.10.d"
+# (generierte Seiten, Startseite und Handseiten ueber sync_shared, seit Fix-Runde B auch an
+# fernwartung.js) und steht gleichlautend als ASSET_VER im Pre-Cache von sw.js. Erhoehen, sobald
+# sich etwas unter assets/css/ oder assets/js/ gegenueber dem Live-Stand aendert (check_static
+# AK13v prueft das gegen origin/main), zusammen mit CACHE_NAME/RUNTIME_CACHE in sw.js. Neue URLs
+# laufen am alten Cache des Service Workers vorbei, ein wiederkehrender Besucher bekommt nie neues
+# HTML mit altem CSS.
+ASSET_VER = "2026.10.e"
 # Bewertungen im Google-Unternehmensprofil (Stand 10.10.2026). Eine weitere Stimme kam
-# direkt und zaehlt hier nicht mit. Einzige Quelle fuer die Zahl auf allen Seiten.
+# direkt und zaehlt hier nicht mit. Einzige Quelle fuer die Zahl auf allen Seiten (llms.txt
+# schreibt der Generator nicht; check_static AK9b vergleicht die Zahl dort).
 REVIEW_COUNT_GOOGLE = 5
+COUNT_WORDS = ("", "Eine", "Zwei", "Drei", "Vier", "Fünf", "Sechs", "Sieben", "Acht", "Neun", "Zehn", "Elf", "Zwölf")
+
+
+def review_count_phrase(n):
+    """Satzanfang im Herkunftshinweis der Startseite: 1 -> 'Eine stammt', 2-12 -> Zahlwort + 'stammen'
+    ('Fünf stammen'), sonst Ziffern + 'stammen' ('13 stammen')."""
+    if n == 1:
+        return "Eine stammt"
+    return (COUNT_WORDS[n] if 2 <= n <= 12 else str(n)) + " stammen"
+
+
 # Startseite: Stand fuer WebPage.dateModified, Sitemap und 'Zuletzt aktualisiert' im Fuss
 # (sync_home). Nur hochsetzen, wenn sich der Inhalt der Startseite wirklich aendert.
 HOME_DATE = "2026-10-10"
@@ -340,6 +359,7 @@ SPRITE_RE = re.compile(r'<svg[^>]*\bid="icon-sprite"[^>]*>.*?</svg>', re.S)
 # style.css/main.js in jeder Schreibweise (relativ, ../, absolut, mit oder ohne ?v=)
 STYLE_CSS_RE = re.compile(r'href="(?:\.\./)*/?assets/css/style\.css(?:\?v=[^"]*)?"')
 MAIN_JS_RE = re.compile(r'src="(?:\.\./)*/?assets/js/main\.js(?:\?v=[^"]*)?"')
+FW_JS_RE = re.compile(r'src="(?:\.\./)*/?assets/js/fernwartung\.js(?:\?v=[^"]*)?"')   # nur /fernwartung/
 # Abschluss K5 auf den Handseiten (seit Task 9, Release C1): sync_shared ersetzt einen vorhandenen Abschluss
 # (CLOSING_RE) oder setzt ihn vor </main>. Pfad -> (Seitenname fuer den WhatsApp-Satz nach Textblatt §4, None:
 # allgemeiner Abschluss-Satz; Datum der Autorzeile, None: ohne „Zuletzt aktualisiert“). Kontakt traegt das Datum
@@ -379,7 +399,7 @@ def preload_fonts(html, nl):
 
 def sync_shared(places, services):
     """Schreibt den gemeinsamen Header und Footer in die handgebauten Seiten, setzt dort
-    style.css/main.js auf die versionierte Form (ASSET_VER) und das Icon-Sprite vor den
+    style.css/main.js/fernwartung.js auf die versionierte Form (ASSET_VER) und das Icon-Sprite vor den
     Header (nicht auf der Startseite, siehe ICON_SPRITE).
     Ein vorhandenes 'Zuletzt aktualisiert' im Fuss (Startseite) bleibt erhalten."""
     for rel, current in HAND_PAGES.items():
@@ -403,6 +423,7 @@ def sync_shared(places, services):
             html_new = rx.sub(lambda _m, b=block: b, html_new, count=1)
         html_new = STYLE_CSS_RE.sub(lambda _m: 'href="' + asset("css/style.css") + '"', html_new)
         html_new = MAIN_JS_RE.sub(lambda _m: 'src="' + asset("js/main.js") + '"', html_new)
+        html_new = FW_JS_RE.sub(lambda _m: 'src="' + asset("js/fernwartung.js") + '"', html_new)
         if not home:
             sprite = ICON_SPRITE.replace("\n", nl)
             if SPRITE_RE.search(html_new):
@@ -449,6 +470,12 @@ def esc(t):
     return t.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
 
+def esc_attr(t):
+    """Escaping fuer Attributwerte in doppelten Anfuehrungszeichen (Meta-Tags): wie esc(), dazu " -> &quot;.
+    Ein " in description/og/twitter zerschnitt sonst das Tag (Fix-Runde B, M8)."""
+    return esc(t).replace('"', "&quot;")
+
+
 def schema_script(d):
     return ('  <script type="application/ld+json">\n'
             + json.dumps(d, ensure_ascii=False, indent=2)
@@ -464,7 +491,7 @@ def head(title, desc, slug, og_title, og_desc, og_alt, tw_desc=None, tw_alt=None
     """<head> bis einschliesslich style.css. tw_desc/tw_alt (seit Task 8, aus meta_extra): eigene
     twitter:description und twitter:image:alt; ohne sie twitter:description = og_desc und kein Alt-Text."""
     canonical = DOMAIN + "/" + slug + "/"
-    tw_alt_html = '\n  <meta name="twitter:image:alt" content="{}"/>'.format(esc(tw_alt)) if tw_alt else ""
+    tw_alt_html = '\n  <meta name="twitter:image:alt" content="{}"/>'.format(esc_attr(tw_alt)) if tw_alt else ""
     return """<!DOCTYPE html>
 <html lang="de">
 <head>
@@ -502,9 +529,9 @@ def head(title, desc, slug, og_title, og_desc, og_alt, tw_desc=None, tw_alt=None
   <link rel="preload" as="font" type="font/woff2" crossorigin href="{up}assets/fonts/SpaceGrotesk-latin.woff2"/>
   <link rel="stylesheet" href="{up}assets/css/fonts.css"/>
   <link rel="stylesheet" href="{css}"/>
-""".format(title=esc(title), desc=esc(desc), canonical=canonical,
-           og_title=esc(og_title), og_desc=esc(og_desc), og_alt=esc(og_alt),
-           tw_desc=esc(tw_desc or og_desc), tw_alt=tw_alt_html,
+""".format(title=esc(title), desc=esc_attr(desc), canonical=canonical,
+           og_title=esc_attr(og_title), og_desc=esc_attr(og_desc), og_alt=esc_attr(og_alt),
+           tw_desc=esc_attr(tw_desc or og_desc), tw_alt=tw_alt_html,
            domain=DOMAIN, up=up(slug), css=asset("css/style.css"))
 
 
@@ -708,6 +735,27 @@ MARKER_RE = re.compile(r"<!--(/?)more(?::[^>]*?)?-->|<!--split[^>]*-->|<h2>")
 # Marken …) kann die Lesespalte nicht darstellen und bricht den Bau ab (check_ratgeber).
 RATGEBER_KEYS = {"slug", "nav", "group", "kind", "title", "h1", "service_type", "published", "modified",
                  "modified_disp", "cta2_href", "cta2_text", "desc", "lead", "intro", "raw_intro", "extra", "faqs"}
+# Alle Felder, die render_service/render_shell fuer einen SERVICES-Eintrag kennen, und alle Felder eines PLACES-Eintrags
+# (render_place). Ein Tippfehler im Feldnamen ("voice" statt "voices") liess bis Fix-Runde B (I3) still einen Abschnitt
+# wegfallen; jetzt bricht check_keys den Bau mit Seite und Feld ab. Neues Feld: hier eintragen UND im Code auswerten.
+SERVICE_KEYS = {"slug", "nav", "group", "kind", "title", "name", "h1", "h1_em", "h1_nowrap", "hero", "service_type",
+                "published", "modified", "modified_disp", "desc", "meta_extra", "k", "answer", "lead", "chat", "proof2",
+                "proof3", "intro", "raw_intro", "intro_h2", "intro_price", "cards", "cards_h2", "extra", "trust",
+                "voices", "voices_h2", "tail_blocks", "row", "prices", "prices_h2", "prices_intro", "prices_wide",
+                "prices_before", "prices_after", "price_line", "offers", "extra_schema", "faqs", "faq_h2", "aside_long",
+                "cta2_href", "cta2_text"}
+PLACE_KEYS = {"slug", "name", "title_name", "area", "k", "answer", "rows_order", "voice", "intro", "near_q", "near_a"}
+# Markup in Fliesstext ohne raw_intro: Tag oder Entity (content_blocks)
+MARKUP_RE = re.compile(r"<\s*/?[a-zA-Z][^>]*>|&(?:[a-zA-Z]+|#\d+|#x[0-9a-fA-F]+);")
+
+
+def check_keys(what, entry, allowed):
+    """Abbruch bei Feldern, die der Generator nicht kennt (Tippfehler), mit Seite und Feldname."""
+    unknown = sorted(set(entry) - allowed)
+    if unknown:
+        raise SystemExit("Generator: unbekanntes Feld " + ", ".join(repr(k) for k in unknown) + " im " + what
+                         + "-Eintrag " + str(entry.get("slug", "?")) + " (Tippfehler? erlaubt: siehe "
+                         + ("SERVICE_KEYS" if what == "SERVICES" else "PLACE_KEYS") + ")")
 
 
 def section(content, alt=False, label="", title="", sid="", aside=False, title_cls=""):
@@ -777,8 +825,8 @@ def page_head(s, crumbs):
         i=s[key][0], t=eur_nbsp(s[key][1])) for key in ("proof2", "proof3") if s.get(key))
     side = mini_chat(s["chat"]) if s.get("chat") else ""
     if hero:
-        side += ('\n    <nav class="lp-paths" aria-label="{l}">\n      <h2 class="lp-paths-h">{l}</h2>\n      <ul>{p}'
-                 '\n      </ul>\n    </nav>').format(l=esc(hero["paths_label"]), p="".join(
+        side += ('\n    <nav class="lp-paths" aria-label="{la}">\n      <h2 class="lp-paths-h">{l}</h2>\n      <ul>{p}'
+                 '\n      </ul>\n    </nav>').format(la=esc_attr(hero["paths_label"]), l=esc(hero["paths_label"]), p="".join(
                      '\n        <li><a href="{h}"><span class="lp-path-t">{t}</span><span class="lp-path-d">{d}</span></a></li>'
                      .format(h=h, t=esc(t), d=esc(d)) for t, d, h in hero["paths"]))
     two = not side and not ratgeber   # kein Chat, keine Wege: Kopf selbst zweispaltig
@@ -838,6 +886,7 @@ def voices_html(ids):
 
 # Zusatzfeld einer Preiskarte (sechstes Element, dict, seit Task 8): siehe price_card
 PRICE_OPT_KEYS = {"add", "feats", "badge", "btn"}
+EUR_AMOUNT_RE = re.compile(r"\d[\d.,]*\s*(?:€|&nbsp;€|Euro\b)")
 
 
 def price_card(pr, slug):
@@ -858,6 +907,12 @@ def price_card(pr, slug):
         raise SystemExit("price_card: unbekannte Felder " + ", ".join(sorted(set(opt) - PRICE_OPT_KEYS)) + " auf " + slug)
     if opt.get("add") and "zzgl. MwSt." not in opt["add"]:
         raise SystemExit("price_card: Zusatzpreis ohne 'zzgl. MwSt.' auf " + slug + ": " + opt["add"])
+    # Betraege in der Beschreibung (z. B. Monatspreis fuer den Betrieb) brauchen im selben Satz „netto“ oder
+    # „zzgl. MwSt.“; die Einheit der Karte gilt nur fuer den Betrag oben (Fix-Runde B, M1)
+    for sentence in re.split(r"(?<=[.!?])\s+", desc):
+        if EUR_AMOUNT_RE.search(sentence) and "netto" not in sentence and "zzgl. MwSt." not in sentence:
+            raise SystemExit("price_card: Betrag ohne 'netto'/'zzgl. MwSt.' in der Beschreibung auf " + slug + ": "
+                             + sentence)
     val = (esc(amount[:-2]) + '<span class="price-cur">&nbsp;€</span>') if amount.endswith(" €") else esc(amount)
     add = '\n        <div class="price-per">{}</div>'.format(eur_nbsp(opt["add"])) if opt.get("add") else ""
     more = ""
@@ -997,6 +1052,10 @@ def content_blocks(s):
     # der Abschnitt beginnt direkt mit den Zeilen)
     intro = s.get("intro", "")
     if intro and not s.get("raw_intro"):
+        # Tags oder Entities ohne raw_intro wuerden escaped und stuenden als Markup sichtbar auf der Seite (M8)
+        if MARKUP_RE.search(intro):
+            raise SystemExit("Generator: intro mit HTML, aber ohne raw_intro=True auf " + slug + ": "
+                             + MARKUP_RE.search(intro).group(0))
         intro = esc(intro)
     lead = prose(intro if intro.lstrip().startswith("<div") else "<p>" + intro + "</p>") if intro else ""
     trust_box = '\n    <div class="card-box"><p>' + s["trust"] + '</p></div>' if s.get("trust") else ""
@@ -1276,6 +1335,7 @@ def render_place(p, places, services):
     """Ortsseite in der Generator-Huelle (seit 10.10.2026): eigener <head> und LocalBusiness-Schema wie
     bisher, Inhalt ueber render_shell. Abschnitte: Leistungen (Einstieg, Zeilen), Stimme und Nachbarorte
     nebeneinander, FAQ (near_q/near_a + drei gemeinsame Fragen), Abschluss."""
+    check_keys("PLACES", p, PLACE_KEYS)
     slug = "it-service-" + p["slug"]
     title = "IT-Service {tn} | Andreas Grundke IT-Service".format(tn=p["title_name"])
     # Description: „schnelle Hilfe“ durch den freigegebenen Ersatz (Textblatt, Frage 5; seo-ausnahmen.json)
@@ -1287,14 +1347,17 @@ def render_place(p, places, services):
 
     h = head(title, desc, slug, og_title, og_desc, "IT-Service {n} – Andreas Grundke IT-Service".format(n=p["name"]))
 
+    # Dasselbe Unternehmen wie auf der Startseite (@id BUSINESS_ID, url der Startseite), mit dem Einsatzgebiet dieses
+    # Orts (areaServed). Bis Fix-Runde B (M3) ein eigener Knoten ohne @id mit der Ortsseite als url.
     lb = {
         "@context": "https://schema.org",
         "@type": ["LocalBusiness", "ProfessionalService"],
+        "@id": BUSINESS_ID,
         "name": "Andreas Grundke IT-Service",
         "alternateName": "Grundke IT-Service",
         "description": ("Persönlicher IT-Service für {tn}: IT-Betreuung, Microsoft 365, Netzwerk, "
                         "Backup und IT-Sicherheit für KMU, Handwerk und Büros.").format(tn=p["title_name"]),
-        "url": DOMAIN + "/" + slug + "/",
+        "url": DOMAIN,
         "telephone": "+49-178-2584438",
         "email": "info@grundke-it.de",
         "address": {"@type": "PostalAddress", "streetAddress": "Beethovenring 16",
@@ -1351,7 +1414,9 @@ POTENZIALCHECK_SCHEMA = {
                    ["Grasbrunn", "Vaterstetten", "Haar", "Ottobrunn", "München"]],
     "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR",
                "availability": "https://schema.org/InStock",
-               "description": "Kostenlos und unverbindlich, das schriftliche Ergebnis bleibt beim Kunden."},
+               "description": "Kostenlos und unverbindlich, das schriftliche Ergebnis bleibt beim Kunden.",
+               "priceSpecification": {"@type": "PriceSpecification", "price": "0", "priceCurrency": "EUR",
+                                      "valueAddedTaxIncluded": False}},
 }
 
 # KI_STYLE und NEW_STYLE (bis Task 7 per "extra_style" im <style> der KI-, Software-, Websites- und
@@ -1396,8 +1461,9 @@ TRUST_FESTPREIS = ("<strong>Festpreis für das Projekt, fester Monatsbetrag für
                    "Was außerhalb davon anfällt, kostet 110 € netto je Stunde im 15-Minuten-Takt. Du sprichst "
                    "von der ersten Frage bis zum laufenden Betrieb mit mir, Andreas Grundke.")
 
-# Schulung (Task 8, bis 10.10.2026 Handseite): Course-Knoten unveraendert aus dem JSON-LD der Handseite, inklusive
-# availability PreOrder am Portal-Angebot; Mail-Links der drei Preiskarten zeichengleich (Betreff und Text wie bisher).
+# Schulung (Task 8, bis 10.10.2026 Handseite): Course-Knoten aus dem JSON-LD der Handseite, inklusive availability
+# PreOrder am Portal-Angebot; seit Fix-Runde B (M3) provider mit @id des Unternehmens und Offers als netto gekennzeichnet.
+# Mail-Links der drei Preiskarten zeichengleich (Betreff und Text wie bisher).
 SCHULUNG_COURSE = {
     "@context": "https://schema.org",
     "@type": "Course",
@@ -1407,16 +1473,22 @@ SCHULUNG_COURSE = {
                     "Arbeitsalltag. Live per Microsoft Teams oder als Online-Portal mit Quiz und PDF-Zertifikat."),
     "provider": {
         "@type": "Organization",
+        "@id": BUSINESS_ID,
         "name": "Andreas Grundke IT-Service",
         "alternateName": "Grundke IT-Service",
         "url": "https://grundke-it.de",
     },
     "inLanguage": "de-DE",
+    # Preise netto (Fix-Runde B, M3): priceSpecification mit valueAddedTaxIncluded false, price am Offer bleibt
     "offers": [
         {"@type": "Offer", "name": "Live-Schulung per Microsoft Teams", "price": "135.00", "priceCurrency": "EUR",
-         "category": "Pauschale"},
+         "category": "Pauschale",
+         "priceSpecification": {"@type": "PriceSpecification", "price": "135.00", "priceCurrency": "EUR",
+                                "valueAddedTaxIncluded": False}},
         {"@type": "Offer", "name": "Online-Portal (Grundpauschale/Halbjahr)", "price": "49.00", "priceCurrency": "EUR",
-         "category": "Halbjahr", "availability": "https://schema.org/PreOrder"},
+         "category": "Halbjahr", "availability": "https://schema.org/PreOrder",
+         "priceSpecification": {"@type": "UnitPriceSpecification", "price": "49.00", "priceCurrency": "EUR",
+                                "unitText": "Halbjahr", "valueAddedTaxIncluded": False}},
     ],
 }
 _SCHULUNG_MAIL_END = ("%0A%0AMein%20Unternehmen%20%2F%20meine%20Situation%3A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich"
@@ -2500,11 +2572,12 @@ SERVICES = [
                          "Ablauf zusammen angesehen haben."),
         "prices": [
             ("Kleine Anwendung", "ab " + eur(PRICES["software_klein"]),
-             "Eine Liste, ein Formular, ein Ablauf. Betrieb und Pflege ab " + eur(PRICES["software_betrieb"]) + " im Monat.",
+             "Eine Liste, ein Formular, ein Ablauf. Betrieb und Pflege ab " + eur(PRICES["software_betrieb"])
+             + " netto im Monat.",
              False, EINMALIG),
             ("Pilot mit Schnittstelle", "ab " + eur(PRICES["software_pilot"]),
              "Mehrere Rollen, Anbindung an Lexware Office oder ein anderes Programm, Abbruchpunkt nach der ersten "
-             "Stufe. Betrieb ab " + eur(PRICES["software_pilot_betrieb"]) + " im Monat.", False, EINMALIG),
+             "Stufe. Betrieb ab " + eur(PRICES["software_pilot_betrieb"]) + " netto im Monat.", False, EINMALIG),
             ("Ablauf-Check vor Ort", "ab " + eur(PRICES["ablauf_check"]),
              "Ein halber bis ganzer Tag im Betrieb: wo Zeit verloren geht und was sich automatisieren lässt, mit "
              "Festpreisangebot. Wird bei Auftrag angerechnet.", False, EINMALIG),
@@ -3281,9 +3354,13 @@ def service_head_schema(s):
                        ["Grasbrunn", "Vaterstetten", "Haar", "Ottobrunn", "München"]],
     }
     if s.get("offers"):
+        # Tupel (Name, Preis, Text) = Monatspaket (managed-it-service): seit Fix-Runde B (M3) mit Einheit Monat und
+        # valueAddedTaxIncluded false wie die Offers aus offer_from(); price am Offer bleibt
         service_schema["offers"] = [
             o if isinstance(o, dict) else
-            {"@type": "Offer", "name": o[0], "price": o[1], "priceCurrency": "EUR", "description": o[2]}
+            {"@type": "Offer", "name": o[0], "price": o[1], "priceCurrency": "EUR", "description": o[2],
+             "priceSpecification": {"@type": "UnitPriceSpecification", "price": o[1], "priceCurrency": "EUR",
+                                    "unitCode": "MON", "unitText": "Monat", "valueAddedTaxIncluded": False}}
             for o in s["offers"]]
     if s.get("kind") == "ratgeber":
         # Ratgeber-Artikel: Article statt Service, Autor und Herausgeber wie auf allen Seiten
@@ -3315,6 +3392,7 @@ def service_head_schema(s):
 
 def render_service(s, places, services):
     """Leistungs-, KI- und Ratgeberseite: seit Task 7 alle in der Huelle (render_shell)."""
+    check_keys("SERVICES", s, SERVICE_KEYS)
     return s["slug"], render_shell(s, places, services)
 
 
@@ -3443,6 +3521,8 @@ REVIEW_ARRAY_RE = re.compile(r'("review":\[\n).*?(\n        \])', re.S)
 REVIEW_COUNT_RE = re.compile(r'"reviewCount":"\d+"')
 RATING_COUNT_RE = re.compile(r'"ratingCount":"\d+"')
 PROOF_RE = re.compile(r'(<a\b[^>]*\bdata-proof\b[^>]*>)5,0 bei \d+ Google-Bewertungen(</a>)')
+HERKUNFT_RE = re.compile(r'(<p class="testi-source" id="bewertungen-herkunft"><strong>Woher die Stimmen kommen:</strong> )'
+                         r'\w+ (?:stammen|stammt)( aus meinem Google-Unternehmensprofil)')
 WA_LINK_RE = re.compile(r'<a\b[^>]*\bdata-wa="([\w-]+)"[^>]*>')
 PRICE_SPAN_RE = re.compile(r'(<span data-price="(\w+)">)[^<]*(</span>)')
 HOME_MODIFIED_RE = re.compile(r'("dateModified":")[0-9-]+(")')
@@ -3566,6 +3646,9 @@ def sync_home():
     s = one(RATING_COUNT_RE, lambda m: '"ratingCount":"{}"'.format(REVIEW_COUNT_GOOGLE), s, "ratingCount")
     s = one(PROOF_RE, lambda m: m.group(1) + "5,0 bei {} Google-Bewertungen".format(REVIEW_COUNT_GOOGLE) + m.group(2),
             s, "Belegzeile data-proof")
+    # Herkunftshinweis: „Fünf stammen aus meinem Google-Unternehmensprofil“ aus REVIEW_COUNT_GOOGLE (M14)
+    s = one(HERKUNFT_RE, lambda m: m.group(1) + review_count_phrase(REVIEW_COUNT_GOOGLE) + m.group(2), s,
+            "Herkunftshinweis #bewertungen-herkunft")
     s = one(HOME_MODIFIED_RE, lambda m: m.group(1) + HOME_DATE + m.group(2), s, "dateModified")
     s = one(UPDATED_RE, lambda m: "<span>Zuletzt aktualisiert: " + HOME_DATE_DISP + "</span>", s,
             "'Zuletzt aktualisiert' im Fuss")
@@ -3601,6 +3684,11 @@ def write_sitemap(places, services):
         urls.append(("/" + s["slug"] + "/", s.get("modified", TODAY), "0.8"))
     for p in places:
         urls.append(("/it-service-" + p["slug"] + "/", PLACE_DATE, "0.8"))
+    # Jede URL genau einmal (beim Umzug von /schulung/ in den Generator stand sie fast doppelt drin; M8)
+    locs = [u[0] for u in urls]
+    dup = sorted({u for u in locs if locs.count(u) > 1})
+    if dup:
+        raise SystemExit("write_sitemap: doppelte loc " + ", ".join(dup) + " (STATIC_URLS und SERVICES/PLACES pruefen)")
     body = []
     body.append('<?xml version="1.0" encoding="UTF-8"?>')
     body.append("<!--")

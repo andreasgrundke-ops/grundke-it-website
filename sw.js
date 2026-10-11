@@ -10,8 +10,8 @@
  *   - Static Assets (CSS, JS, Bilder, Fonts, Manifest, Icons)
  *     -> Cache-First, Background-Update
  *   - HTML-Navigation
- *     -> Network-First mit Cache-Fallback und 404.html als
- *        Offline-Fallback
+ *     -> Network-First mit Cache-Fallback und der Startseite '/'
+ *        als Offline-Fallback (404.html nur noch fuer echte 404)
  *
  * Cache-Versionierung ueber CACHE_NAME — bei jedem Release
  * den Suffix erhoehen, dann werden alte Caches beim activate
@@ -103,12 +103,17 @@
  *   1.26.1 (2026-10-10) Schulung: Portal-Saetze als geplant, Datenschutz-Stand im Kopf.
  *   1.27.0 / 2026-10-11 — Release C2 Website-Umbau: Empfehlungen in der Huelle mit Einrichtungs-
  *                        Pauschalen je Geraetegruppe und Abschluss, private Produkte entfernt.
- *                        style.css und JS unveraendert, Asset-Version bleibt 2026.10.d.
+ *                        Fix-Runde B (noch vor dem Push, deshalb ohne neuen Cache-Namen): Install
+ *                        wirft bei fehlgeschlagenem Pre-Cache (der alte Service Worker bleibt
+ *                        aktiv, statt ohne Offline-Kern alle Caches zu loeschen), nur Antworten
+ *                        mit res.ok landen im Cache, offline zeigt eine Navigation die Startseite
+ *                        statt 404.html. style.css ohne tote Klassen, fernwartung.js mit Rueckfall,
+ *                        Asset-Version 2026.10.e.
  */
 
 const CACHE_NAME    = 'grundke-it-v1.27.0';
 const RUNTIME_CACHE = 'grundke-it-runtime-v35';
-const ASSET_VER     = '2026.10.d';   // muss ASSET_VER im Generator entsprechen
+const ASSET_VER     = '2026.10.e';   // muss ASSET_VER im Generator entsprechen
 
 /* Pre-Cache: minimaler Kern fuer Offline-First-Boot */
 const PRECACHE_URLS = [
@@ -130,15 +135,17 @@ const PRECACHE_URLS = [
   '/android-chrome-512x512.png'
 ];
 
-/* ── Install: Pre-Cache befuellen ── */
+/* ── Install: Pre-Cache befuellen ──
+   Schlaegt ein Eintrag fehl, verwirft addAll alles und die Promise wird abgelehnt: dann
+   scheitert die Installation, der bisherige Service Worker mit seinem Offline-Kern bleibt
+   aktiv und der Browser versucht es beim naechsten Besuch erneut. Vorher wurde der Fehler
+   nur geloggt, danach loeschte activate die alten Caches - ohne Offline-Kern. */
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       /* cache:'reload' umgeht den HTTP-Cache (max-age=600): sonst landet direkt
          nach einem Release die alte Datei im neuen Pre-Cache */
-      .then(cache => cache.addAll(PRECACHE_URLS.map(u => new Request(u, { cache: 'reload' }))).catch(err => {
-        console.warn('[SW] Pre-Cache teilweise fehlgeschlagen:', err);
-      }))
+      .then(cache => cache.addAll(PRECACHE_URLS.map(u => new Request(u, { cache: 'reload' }))))
       .then(() => self.skipWaiting())
   );
 });
@@ -172,13 +179,17 @@ self.addEventListener('fetch', event => {
     event.respondWith(
       fetch(req)
         .then(res => {
-          /* erfolgreiche Antwort cachen */
-          const copy = res.clone();
-          caches.open(RUNTIME_CACHE).then(c => c.put(req, copy));
+          /* nur erfolgreiche Antworten cachen (kein 404/5xx als Offline-Kopie) */
+          if (res.ok) {
+            const copy = res.clone();
+            caches.open(RUNTIME_CACHE).then(c => c.put(req, copy));
+          }
           return res;
         })
+        /* offline: die Seite aus dem Cache, sonst die Startseite (404.html hiesse
+           „Die Seite gibt's nicht (mehr)“, das stimmt offline nicht) */
         .catch(() => caches.match(req)
-          .then(cached => cached || caches.match('/404.html'))
+          .then(cached => cached || caches.match('/'))
         )
     );
     return;
@@ -193,6 +204,7 @@ self.addEventListener('fetch', event => {
       .then(hit => hit || caches.match(req))
       .then(cached => {
         const networkFetch = fetch(req).then(res => {
+          /* nur 200 (strenger als res.ok: eine 206-Teilantwort lehnt cache.put ab) */
           if (res && res.status === 200) {
             const copy = res.clone();
             caches.open(RUNTIME_CACHE).then(c => c.put(req, copy));

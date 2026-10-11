@@ -35,7 +35,7 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/Manrope-latin.woff2"/>
   <link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/SpaceGrotesk-latin.woff2"/>
   <link rel="stylesheet" href="../assets/css/fonts.css"/>
-  <link rel="stylesheet" href="/assets/css/style.css?v=2026.10.d"/>
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026.10.e"/>
 
   <style>
     .lp-content > p, .lp-content > div { max-width:68ch; }
@@ -206,6 +206,7 @@
   "description": "Praxisnahe IT-Sicherheits- und Datenschutz-Awareness-Schulung für kleine und mittlere Unternehmen: Phishing erkennen, sichere Passwörter, sicherer Umgang mit KI-Werkzeugen, richtiges Verhalten im Arbeitsalltag. Live per Microsoft Teams oder als Online-Portal mit Quiz und PDF-Zertifikat.",
   "provider": {
     "@type": "Organization",
+    "@id": "https://grundke-it.de/#localbusiness",
     "name": "Andreas Grundke IT-Service",
     "alternateName": "Grundke IT-Service",
     "url": "https://grundke-it.de"
@@ -217,7 +218,13 @@
       "name": "Live-Schulung per Microsoft Teams",
       "price": "135.00",
       "priceCurrency": "EUR",
-      "category": "Pauschale"
+      "category": "Pauschale",
+      "priceSpecification": {
+        "@type": "PriceSpecification",
+        "price": "135.00",
+        "priceCurrency": "EUR",
+        "valueAddedTaxIncluded": false
+      }
     },
     {
       "@type": "Offer",
@@ -225,7 +232,14 @@
       "price": "49.00",
       "priceCurrency": "EUR",
       "category": "Halbjahr",
-      "availability": "https://schema.org/PreOrder"
+      "availability": "https://schema.org/PreOrder",
+      "priceSpecification": {
+        "@type": "UnitPriceSpecification",
+        "price": "49.00",
+        "priceCurrency": "EUR",
+        "unitText": "Halbjahr",
+        "valueAddedTaxIncluded": false
+      }
     }
   ]
 }
@@ -522,7 +536,7 @@
     </div>
   </div>
 </footer>
-<script src="/assets/js/main.js?v=2026.10.d"></script>
+<script src="/assets/js/main.js?v=2026.10.e"></script>
 
 <div class="sticky-contact" id="stickyContact" role="navigation" aria-label="Kontakt-Optionen">
   <a href="tel:+491782584438" class="sc-btn sc-phone" aria-label="Anrufen">

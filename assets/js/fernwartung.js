@@ -1,9 +1,9 @@
 /**
  * ═══════════════════════════════════════════════════════════
  * Grundke IT-Service · fernwartung.js
- * Version: 1.0.0
+ * Version: 1.1.0
  * Autor: Andreas Grundke / Grundke IT-Service
- * Datum: 2026-10-09
+ * Datum: 2026-10-11
  * Beschreibung: Betriebssystem-Umschalter auf /fernwartung/ (Windows, Linux,
  *   macOS) und Kopierknopf fuer die Linux-Befehlszeile. Ohne JS stehen alle
  *   drei Anleitungen untereinander.
@@ -16,11 +16,16 @@
  *      die Sprungmarke in die Adresse, damit sich der Link weitergeben laesst.
  *      Die Bereiche heissen fw-windows usw., damit der Browser bei #linux nicht
  *      selbst dorthin springt und die Reiter verdeckt.
- *   5. Kopierknopf: Befehl in die Zwischenablage, kurz „Kopiert" anzeigen.
+ *   5. Umschalter fertig: data-fw-ready="1" an <html> melden. Fehlt die Meldung
+ *      3 s nach DOMContentLoaded (Skript blockiert, offline, Fehler), nimmt das
+ *      Inline-Skript im Kopf der Seite die Klasse js weg und zeigt alle drei.
+ *   6. Kopierknopf: Befehl in die Zwischenablage, kurz „Kopiert" anzeigen.
  * Aenderungshistorie:
  *   1.0.0 (2026-10-09) Erste Fassung. Nach Code-Review: Tab-Rollen erst per JS,
  *                      Rueckfall auf alle drei Anleitungen, wenn etwas fehlt,
  *                      Kopier-Rueckmeldung auch fuer Screenreader.
+ *   1.1.0 (2026-10-11) Meldung data-fw-ready fuer den Rueckfall im Kopf der
+ *                      Seite (sonst blieb ohne dieses Skript nur Windows sichtbar).
  * ═══════════════════════════════════════════════════════════
  */
 (function () {
@@ -114,6 +119,9 @@
     var os = fromHash();
     if (os) { select(os); hideAutoHint(); }
   });
+
+  /* Umschalter steht: dem Rueckfall im Kopf der Seite melden */
+  document.documentElement.setAttribute('data-fw-ready', '1');
 
   /* ── Kopierknopf ── */
   var copyBtns = document.querySelectorAll('[data-fw-copy]');
