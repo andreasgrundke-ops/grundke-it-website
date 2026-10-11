@@ -24,7 +24,7 @@
   <!-- Twitter / X Card -->
   <meta name="twitter:card" content="summary_large_image"/>
   <meta name="twitter:title" content="IT-Produktempfehlungen – Grundke IT-Service"/>
-  <meta name="twitter:description" content="Geräte die ich bei Kunden einsetze und selbst nutze – praxiserprobt."/>
+  <meta name="twitter:description" content="Geräte für Betriebe: kauft, wo ihr wollt, ich richte sie zur festen Pauschale ein. Richtwerte und Empfehlungen mit Amazon-Partnerlinks."/>
   <meta name="twitter:image" content="https://grundke-it.de/assets/img/og-image.png"/>
   <meta name="twitter:image:alt" content="Grundke IT-Service – IT-Produktempfehlungen"/>
   <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
@@ -46,14 +46,16 @@
   <link rel="stylesheet" href="/assets/css/style.css?v=2026.10.d"/>
   <style>
     /* Empfehlungen (seit Task 10, Release C2): Kopf, Preiskarten, Karten, Hinweise und Abschluss aus style.css.
-       Hier nur: Raster der Produkte (.emp-grid, Spalten wie .price-grid, damit Preis- und Produktkarten fluchten;
-       .emp-cols setzt beide ab 1101 px auf drei statt vier Spalten, sonst brechen Titel und Texte mehrfach um),
-       Produktkarte als Spalte mit dem Amazon-Knopf unten, ihre Datenzeile, der monatliche Anschluss unter den
+       Hier nur: Raster der Produkte (.emp-grid, Spalten wie .price-grid; ab 1101 px drei statt vier Spalten, sonst
+       brechen Titel und Texte mehrfach um), .emp-two haelt Preis- und Produktraster ab 1101 px zweispaltig (Netzwerk:
+       je zwei Karten fuellen eine Zeile; Arbeitsplatz: drei Pauschalen und der NUC als 2 x 2), Produktkarte als
+       Spalte mit dem Amazon-Knopf unten, ihre Datenzeile (Kategorie zuerst), der monatliche Anschluss unter den
        Pauschalen (.emp-month, in der Karte unten buendig) und der Partnerlink-Hinweis im Kopf. Keine Produktfotos. */
     .emp-aff { margin:1.1rem 0 0; font-size:.93rem; line-height:1.55; color:var(--text2); }
     .emp-grid { display:grid; grid-template-columns:minmax(0,1fr); gap:clamp(1rem,3vw,1.5rem); margin-top:clamp(1.6rem,4vw,2.4rem); }
     @media (min-width:601px) { .emp-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
-    @media (min-width:1101px) { .emp-grid, .emp-cols { grid-template-columns:repeat(3,minmax(0,1fr)); } }
+    @media (min-width:1101px) { .emp-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } }
+    @media (min-width:1101px) { .emp-two { grid-template-columns:repeat(2,minmax(0,1fr)); } }
     .emp-prod { display:flex; flex-direction:column; }
     .emp-specs { display:flex; flex-wrap:wrap; gap:.25rem .9rem; margin:1rem 0 1.4rem; font-family:var(--fm); font-size:.8rem; line-height:1.5; color:var(--text3); }
     .emp-buy { margin-top:auto; align-self:flex-start; }
@@ -160,8 +162,8 @@
 <section class="sec sec--alt">
   <div class="inner">
     <h2 class="s-title">Netzwerk &amp; WLAN</h2>
-    <p class="s-sub measure">Ubiquiti UniFi – das System das ich fast ausschließlich empfehle und einsetze.</p>
-    <div class="price-grid emp-cols">
+    <p class="s-sub measure">Ubiquiti UniFi – das System, das ich fast ausschließlich empfehle und einsetze.</p>
+    <div class="price-grid emp-two">
       <div class="price-card">
         <h3 class="price-name">Einrichtung UniFi-Gateway / Firewall</h3>
         <div class="price-val">ca. 450&nbsp;€</div>
@@ -177,19 +179,17 @@
     </div>
     <p class="emp-month emp-month--line"><svg width="18" height="18" aria-hidden="true"><use href="#ico-shield"/></svg><span>Danach behalte ich euer Netzwerk im <a href="/managed-it-service/">Betreuungspaket</a> im Blick.</span></p>
     <div class="card-box"><p><strong>Nur für Betriebe.</strong> Preise netto zzgl. MwSt. Die Beträge sind Beispiele und Erfahrungswerte und können im Einzelfall abweichen. Anfahrt bis 5 km inklusive.</p></div>
-    <div class="emp-grid">
+    <div class="emp-grid emp-two">
       <article class="card emp-prod">
-        <span class="card-tag">Router / Gateway</span>
         <h3>Ubiquiti Dream Machine Pro (UDM-Pro)</h3>
         <p>Die Zentrale eines UniFi-Netzwerks: Router, Firewall, VPN-Gateway, Netzwerkanalyse und Videorekorder in einem Gerät. Ideal für KMUs mit mehreren Netzsegmenten, Gastronomie oder Büros.</p>
-        <div class="emp-specs"><span>Rack-Mount</span><span>10 Gbit SFP+</span><span>UniFi Controller</span></div>
+        <div class="emp-specs"><span>Router / Gateway</span><span>Rack-Mount</span><span>10 Gbit SFP+</span><span>UniFi Controller</span></div>
         <a href="https://amzn.to/3JqdK75" target="_blank" rel="noopener sponsored" class="btn-g emp-buy">Bei Amazon ansehen *</a>
       </article>
       <article class="card emp-prod">
-        <span class="card-tag">Switch</span>
         <h3>Ubiquiti UniFi Switch 24 PoE (USW-24-PoE)</h3>
         <p>24 Gigabit-Ports, davon 16 mit PoE+ – versorgt Access Points, Kameras und VoIP-Telefone direkt mit Strom. Wird im UniFi Controller mit verwaltet.</p>
-        <div class="emp-specs"><span>24 Ports</span><span>16× PoE+</span><span>UniFi Controller</span></div>
+        <div class="emp-specs"><span>Switch</span><span>24 Ports</span><span>16× PoE+</span><span>UniFi Controller</span></div>
         <a href="https://amzn.to/47l4p9H" target="_blank" rel="noopener sponsored" class="btn-g emp-buy">Bei Amazon ansehen *</a>
       </article>
     </div>
@@ -200,7 +200,7 @@
   <div class="inner">
     <h2 class="s-title">Arbeitsplatzrechner &amp; Server</h2>
     <p class="s-sub measure">Kompakt, leise, leistungsstark – für moderne Arbeitsplätze und kleine On-Premise-Lösungen.</p>
-    <div class="price-grid emp-cols">
+    <div class="price-grid emp-two">
       <div class="price-card emp-pc">
         <h3 class="price-name">Einrichtung Arbeitsplatz-PC oder Notebook</h3>
         <div class="price-val">ca. 250&nbsp;€</div>
@@ -222,13 +222,10 @@
         <p class="price-desc">Grundsystem, Dienste, Datensicherung eingebunden.</p>
         <p class="emp-month"><svg width="18" height="18" aria-hidden="true"><use href="#ico-shield"/></svg><span>Überwachung und Datensicherung laufen danach im Betreuungspaket mit.</span></p>
       </div>
-    </div>
-    <div class="emp-grid">
       <article class="card emp-prod">
-        <span class="card-tag">Mini-PC</span>
         <h3>ASUS NUC 14 Pro · Intel Core Ultra 5</h3>
         <p>32 GB DDR5 RAM, 512 GB NVMe SSD, 4K-fähig, extrem leise. Passt auf jeden Schreibtisch oder hinter den Monitor. Ideal für Homeoffice, Büro und Multi-Monitor-Arbeitsplätze.</p>
-        <div class="emp-specs"><span>32 GB DDR5</span><span>Thunderbolt 4</span><span>WLAN 6E</span><span>Win 11</span></div>
+        <div class="emp-specs"><span>Mini-PC</span><span>32 GB DDR5</span><span>Thunderbolt 4</span><span>WLAN 6E</span><span>Win 11</span></div>
         <a href="https://amzn.to/3Lku75N" target="_blank" rel="noopener sponsored" class="btn-g emp-buy">Bei Amazon ansehen *</a>
       </article>
     </div>
@@ -238,47 +235,42 @@
 <section class="sec sec--alt">
   <div class="inner">
     <h2 class="s-title">Arbeitsplatz-Zubehör</h2>
-    <p class="s-sub measure">Kleine Helfer aus dem Alltag — von der Soundbar bis zur Dockingstation.</p>
+    <p class="s-sub measure">Für den Schreibtisch im Büro: von der Dockingstation bis zur Soundbar.</p>
     <p class="price-line">Dock, Hub oder Soundbar schließe ich im PC-Termin mit an; sonst nach Aufwand im 15-Minuten-Takt (110&nbsp;€ netto je Stunde).</p>
     <div class="emp-grid">
       <article class="card emp-prod">
-        <span class="card-tag">Dockingstation</span>
         <h3>HP USB-C Dockingstation G5</h3>
         <p>Ein USB-C-Kabel verbindet Strom (100W Power Delivery), Netzwerk, Peripherie und bis zu drei externe Monitore. Multi-OS-kompatibel mit Gigabit-LAN, USB-A, USB-C, HDMI und DisplayPort. Perfekt für Homeoffice und wechselnde Arbeitsplätze.</p>
-        <div class="emp-specs"><span>100W PD</span><span>3× Monitor</span><span>Gigabit LAN</span><span>Multi-OS</span></div>
+        <div class="emp-specs"><span>Dockingstation</span><span>100W PD</span><span>3× Monitor</span><span>Gigabit LAN</span><span>Multi-OS</span></div>
         <a href="https://amzn.to/48mga00" target="_blank" rel="noopener sponsored" class="btn-g emp-buy">Bei Amazon ansehen *</a>
       </article>
       <article class="card emp-prod">
-        <span class="card-tag">Lautsprecher</span>
         <h3>ZETIY USB Mini Soundbar</h3>
         <p>Ultra-kompakte USB-Soundbar mit 3D-Stereo-Klang. Plug &amp; Play ohne Treiber oder Netzteil. Passt perfekt unter jeden Monitor – ideal für Laptops mit schwachen Lautsprechern.</p>
-        <div class="emp-specs"><span>USB-Powered</span><span>3D-Stereo</span><span>Plug &amp; Play</span></div>
+        <div class="emp-specs"><span>Lautsprecher</span><span>USB-Powered</span><span>3D-Stereo</span><span>Plug &amp; Play</span></div>
         <a href="https://amzn.to/4oO4tES" target="_blank" rel="noopener sponsored" class="btn-g emp-buy">Bei Amazon ansehen *</a>
       </article>
       <article class="card emp-prod">
-        <span class="card-tag">Netzteil</span>
         <h3>100W USB-C Netzteil mit Ladekabel</h3>
         <p>Kompaktes 100W-USB-C-Netzteil für Laptop, Tablet und Smartphone. Klein, leicht und reisetauglich. Bitte vor der Bestellung die Kompatibilität mit dem eigenen Gerät prüfen.</p>
-        <div class="emp-specs"><span>100W</span><span>USB-C PD</span><span>Reise</span></div>
+        <div class="emp-specs"><span>Netzteil</span><span>100W</span><span>USB-C PD</span><span>Reise</span></div>
         <a href="https://amzn.to/4oTWDsW" target="_blank" rel="noopener sponsored" class="btn-g emp-buy">Bei Amazon ansehen *</a>
       </article>
       <article class="card emp-prod">
-        <span class="card-tag">USB-Hub</span>
         <h3>VEMONT 7-Port USB 3.0 Hub mit Netzteil</h3>
         <p>7 USB-3.0-Ports mit Smart-Ladeanschluss und externem 5V/3A Netzteil. Ideal für externe Festplatten, USB-Sticks und Peripherie. Integrierte Schutzmechanismen gegen Überstrom und Überspannung. Hot-Plug.</p>
-        <div class="emp-specs"><span>7 Ports</span><span>USB 3.0</span><span>Netzteil inkl.</span></div>
+        <div class="emp-specs"><span>USB-Hub</span><span>7 Ports</span><span>USB 3.0</span><span>Netzteil inkl.</span></div>
         <a href="https://amzn.to/48V9A0Y" target="_blank" rel="noopener sponsored" class="btn-g emp-buy">Bei Amazon ansehen *</a>
       </article>
       <article class="card emp-prod">
-        <span class="card-tag">Kabel</span>
         <h3>deleyCON 3,0m USB 3.0 Verlängerungskabel</h3>
         <p>USB-3.0-Verlängerungskabel mit zuverlässiger Übertragungsgeschwindigkeit bis 5 Gbps. Aluminium-Stecker, Nylonummantelung, flexible und robuste Verarbeitung. Nutze ich selbst täglich an Laptop, Dockingstation, Drucker und externen HDDs.</p>
-        <div class="emp-specs"><span>5 Gbps</span><span>3 Meter</span><span>Nylon</span></div>
+        <div class="emp-specs"><span>Kabel</span><span>5 Gbps</span><span>3 Meter</span><span>Nylon</span></div>
         <a href="https://amzn.to/3N3cl29" target="_blank" rel="noopener sponsored" class="btn-g emp-buy">Bei Amazon ansehen *</a>
       </article>
     </div>
     <div class="ki-note">
-      <p><strong>Hinweis:</strong> Diese Produktempfehlungen basieren auf meiner täglichen Arbeit als Fachinformatiker für Systemintegration und auf privaten Erfahrungen. Alle Geräte sind praxiserprobt und von mir oder in Kundenprojekten im Einsatz. Die Links führen zu Amazon, wo du die Produkte direkt vergleichen und kaufen kannst.</p>
+      <p><strong>Hinweis:</strong> Diese Produktempfehlungen basieren auf meiner täglichen Arbeit als Fachinformatiker für Systemintegration. Alle Geräte sind praxiserprobt und von mir oder in Kundenprojekten im Einsatz. Die Links führen zu Amazon, wo du die Produkte direkt vergleichen und kaufen kannst.</p>
       <p>Preis und Verfügbarkeit können variieren. Den aktuellen Preis findest du direkt auf Amazon.<br>
       <em>Als Amazon-Partner verdiene ich an qualifizierten Verkäufen — ohne Mehrkosten für dich.</em></p>
     </div>
