@@ -4,14 +4,14 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>IT-Produktempfehlungen – Grundke IT-Service</title>
-  <meta name="description" content="Geräte die ich bei Kunden einsetze und selbst nutze – von WLAN bis NAS. Amazon Affiliate Links."/>
+  <meta name="description" content="Geräte für Betriebe: kauft, wo ihr wollt, ich richte sie zur festen Pauschale ein. Richtwerte und Empfehlungen mit Amazon-Partnerlinks."/>
   <meta name="author" content="Andreas Grundke"/>
   <meta name="robots" content="index, follow, max-image-preview:large"/>
   <link rel="canonical" href="https://grundke-it.de/empfehlungen/"/>
 
   <!-- Open Graph -->
   <meta property="og:title" content="IT-Produktempfehlungen – Grundke IT-Service"/>
-  <meta property="og:description" content="Geräte die ich bei Kunden einsetze und selbst nutze – von WLAN bis NAS. Praxiserprobte Hardware-Tipps."/>
+  <meta property="og:description" content="Geräte für Betriebe: kauft, wo ihr wollt, ich richte sie zur festen Pauschale ein. Richtwerte und Empfehlungen mit Amazon-Partnerlinks."/>
   <meta property="og:url" content="https://grundke-it.de/empfehlungen/"/>
   <meta property="og:type" content="website"/>
   <meta property="og:locale" content="de_DE"/>
@@ -45,37 +45,23 @@
   <link rel="stylesheet" href="../assets/css/fonts.css"/>
   <link rel="stylesheet" href="/assets/css/style.css?v=2026.10.d"/>
   <style>
-    .emp-hero { margin-top:var(--nav-h); background:var(--bg2); border-bottom:1px solid var(--border); padding:clamp(3rem,6vw,5rem) 0; }
-    .emp-hero h1 { font-family:var(--fh); font-size:clamp(1.8rem,4vw,2.8rem); font-weight:800; color:var(--text); letter-spacing:-.04em; margin-bottom:.8rem; }
-    .emp-hero p { font-size:.95rem; color:var(--text2); max-width:620px; line-height:1.7; }
-    .affiliate-note { display:inline-block; margin-top:1rem; font-family:var(--fm); font-size:.7rem; color:var(--text3); background:var(--bg3); border:1px solid var(--border); padding:.35rem .8rem; border-radius:6px; }
-
-    .emp-section { padding:clamp(3rem,6vw,5rem) 0; }
-    .emp-section + .emp-section { border-top:1px solid var(--border); }
-    .emp-section-title { font-family:var(--fh); font-size:1.3rem; font-weight:700; color:var(--text); margin-bottom:.4rem; }
-    .emp-section-sub { font-size:.85rem; color:var(--text3); margin-bottom:2.5rem; }
-
-    .emp-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr)); gap:1.5rem; }
-
-    .emp-card { background:var(--bg2); border:1px solid var(--border); border-radius:16px; overflow:hidden; transition:border-color .2s,transform .2s,box-shadow .2s; display:flex; flex-direction:column; }
-    .emp-card:hover { border-color:var(--cyan); transform:translateY(-3px); box-shadow:0 12px 32px rgba(38,189,239,.08); }
-
-    .emp-img { width:100%; height:200px; object-fit:cover; background:var(--bg3); display:flex; align-items:center; justify-content:center; font-family:var(--fm); font-size:.7rem; color:var(--text3); }
-    .emp-img img { width:100%; height:100%; object-fit:cover; }
-
-    .emp-body { padding:1.5rem; flex:1; display:flex; flex-direction:column; }
-    .emp-cat { font-family:var(--fm); font-size:.65rem; color:var(--cyan); letter-spacing:.1em; text-transform:uppercase; margin-bottom:.4rem; }
-    .emp-name { font-family:var(--fh); font-size:1rem; font-weight:700; color:var(--text); margin-bottom:.6rem; line-height:1.3; }
-    .emp-desc { font-size:.83rem; color:var(--text2); line-height:1.65; flex:1; margin-bottom:1.2rem; }
-    .emp-tags { display:flex; flex-wrap:wrap; gap:.4rem; margin-bottom:1.2rem; }
-    .emp-tag { font-family:var(--fm); font-size:.65rem; color:var(--text3); background:var(--bg3); border:1px solid var(--border); padding:.2rem .55rem; border-radius:4px; }
-
-    .emp-link { display:flex; align-items:center; justify-content:center; gap:.5rem; padding:.75rem 1.2rem; border-radius:8px; background:var(--accent); color:#fff; font-weight:700; font-size:.85rem; transition:background .2s,transform .15s; border:none; cursor:pointer; text-decoration:none; }
-    .emp-link:hover { background:#0a3d82; transform:translateY(-1px); }
-    .emp-link svg { width:16px; height:16px; }
-
-    .disclaimer { background:var(--bg2); border:1px solid var(--border); border-radius:var(--r); padding:1.5rem 2rem; margin-top:3rem; font-size:.82rem; color:var(--text3); line-height:1.7; }
-    .disclaimer strong { color:var(--text2); }
+    /* Empfehlungen (seit Task 10, Release C2): Kopf, Preiskarten, Karten, Hinweise und Abschluss aus style.css.
+       Hier nur: Raster der Produkte (.emp-grid, Spalten wie .price-grid, damit Preis- und Produktkarten fluchten;
+       .emp-cols setzt beide ab 1101 px auf drei statt vier Spalten, sonst brechen Titel und Texte mehrfach um),
+       Produktkarte als Spalte mit dem Amazon-Knopf unten, ihre Datenzeile, der monatliche Anschluss unter den
+       Pauschalen (.emp-month, in der Karte unten buendig) und der Partnerlink-Hinweis im Kopf. Keine Produktfotos. */
+    .emp-aff { margin:1.1rem 0 0; font-size:.93rem; line-height:1.55; color:var(--text2); }
+    .emp-grid { display:grid; grid-template-columns:minmax(0,1fr); gap:clamp(1rem,3vw,1.5rem); margin-top:clamp(1.6rem,4vw,2.4rem); }
+    @media (min-width:601px) { .emp-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+    @media (min-width:1101px) { .emp-grid, .emp-cols { grid-template-columns:repeat(3,minmax(0,1fr)); } }
+    .emp-prod { display:flex; flex-direction:column; }
+    .emp-specs { display:flex; flex-wrap:wrap; gap:.25rem .9rem; margin:1rem 0 1.4rem; font-family:var(--fm); font-size:.8rem; line-height:1.5; color:var(--text3); }
+    .emp-buy { margin-top:auto; align-self:flex-start; }
+    .emp-pc { display:flex; flex-direction:column; }
+    .emp-pc > .price-desc { margin-bottom:1.2rem; }
+    .emp-month { display:flex; align-items:flex-start; gap:.6rem; margin:auto 0 0; padding-top:1rem; border-top:1px solid var(--border); font-size:1rem; line-height:1.55; color:var(--text2); }
+    .emp-month svg { flex-shrink:0; width:18px; height:18px; margin-top:.1rem; color:var(--cyan); }
+    .emp-month--line { margin:1.4rem 0 0; padding-top:0; border-top:0; max-width:68ch; }
   </style>
   <script type="application/ld+json">
 {
@@ -153,279 +139,171 @@
 </header>
 
 <main id="main">
-
-<!-- HERO -->
-<div class="emp-hero">
-  <div class="inner">
-    <div class="s-label">Praxiserprobte Technik</div>
-    <h1>Meine Produktempfehlungen</h1>
-    <p>Geräte, die ich regelmäßig bei Kunden einsetze oder selbst nutze – vom WLAN-Access-Point über NAS-Systeme bis hin zu Sicherheitslösungen. Ich empfehle nur, was ich selbst kenne. Einige Links sind Amazon-Partnerlinks (Hinweis unten).</p>
-    <span class="affiliate-note">* Amazon Affiliate-Links – bei Kauf erhalte ich eine kleine Provision, ohne Mehrkosten für dich.</span>
-  </div>
-</div>
-
-<!-- NETZWERK -->
-<section class="emp-section">
-  <div class="inner">
-    <div class="emp-section-title">Netzwerk &amp; WLAN</div>
-    <div class="emp-section-sub">Ubiquiti UniFi – das System das ich fast ausschließlich empfehle und einsetze.</div>
-    <div class="emp-grid">
-
-      <div class="emp-card">
-        <div class="emp-img"><img src="https://grundke-it.de/wp-content/uploads/2025/11/20250315_130445-1024x461.jpg" alt="Ubiquiti Dream Machine Pro" onerror="this.style.display='none'"/></div>
-        <div class="emp-body">
-          <div class="emp-cat">Router / Gateway</div>
-          <div class="emp-name">Ubiquiti Dream Machine Pro (UDM-Pro)</div>
-          <p class="emp-desc">Die Zentrale eines UniFi-Netzwerks: Router, Firewall, VPN-Gateway, Netzwerkanalyse und Videorekorder in einem Gerät. Ideal für KMUs mit mehreren Netzsegmenten, Gastronomie oder Büros.</p>
-          <div class="emp-tags">
-            <span class="emp-tag">Rack-Mount</span>
-            <span class="emp-tag">10 Gbit SFP+</span>
-            <span class="emp-tag">UniFi Controller</span>
-          </div>
-          <a href="https://amzn.to/3JqdK75" target="_blank" rel="noopener sponsored" class="emp-link">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 2H3v16h5v4l4-4h5l4-4V2zM9.5 10.5v-3h1.5v3H9.5zm4 0v-3H15v3h-1.5z"/></svg>
-            Bei Amazon ansehen *
-          </a>
+<section class="sec sec--glow page-head">
+  <div class="inner page-head-grid">
+    <div class="page-head-copy page-head-copy--two">
+      <nav class="lp-crumbs" aria-label="Brotkrumen"><ol><li><a href="/">Startseite</a></li><li aria-current="page">Empfehlungen</li></ol></nav>
+      <h1 class="page-h1">Meine Produktempfehlungen</h1>
+      <p class="page-k">Ihr kauft die Geräte, wo ihr wollt; ich richte sie zu einer festen Pauschale ein und binde sie in eure Datensicherung und Wartung ein.</p>
+      <div class="page-head-b">
+        <p class="s-sub measure">Geräte, die ich regelmäßig bei Kunden einsetze oder selbst nutze – vom WLAN-Access-Point über NAS-Systeme bis hin zu Sicherheitslösungen. Ich empfehle nur, was ich selbst kenne. Einige Links sind Amazon-Partnerlinks (Hinweis unten).</p>
+        <div class="hc-ctas">
+          <a href="tel:+491782584438" class="btn-p hc-call"><svg width="18" height="18" aria-hidden="true"><use href="#ico-phone"/></svg>Anrufen <span class="hc-num">0178 258 44 38</span></a>
+          <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20komme%20%C3%BCber%20deine%20Seite%20%E2%80%9EEmpfehlungen%E2%80%9C." target="_blank" rel="noopener" class="hc-wa"><svg width="18" height="18" aria-hidden="true"><use href="#ico-wa"/></svg>WhatsApp</a>
         </div>
+        <p class="emp-aff">* Amazon Affiliate-Links – bei Kauf erhalte ich eine kleine Provision, ohne Mehrkosten für dich.</p>
       </div>
-
-      <div class="emp-card">
-        <div class="emp-img"><img src="https://grundke-it.de/wp-content/uploads/2025/11/20250330_135125-scaled-e1762513205273-1024x458.jpg" alt="UniFi Switch 24 PoE" onerror="this.style.display='none'"/></div>
-        <div class="emp-body">
-          <div class="emp-cat">Switch</div>
-          <div class="emp-name">Ubiquiti UniFi Switch 24 PoE (USW-24-PoE)</div>
-          <p class="emp-desc">24 Gigabit-Ports, davon 16 mit PoE+ – versorgt Access Points, Kameras und VoIP-Telefone direkt mit Strom. Wird im UniFi Controller mit verwaltet.</p>
-          <div class="emp-tags">
-            <span class="emp-tag">24 Ports</span>
-            <span class="emp-tag">16× PoE+</span>
-            <span class="emp-tag">UniFi Controller</span>
-          </div>
-          <a href="https://amzn.to/47l4p9H" target="_blank" rel="noopener sponsored" class="emp-link">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 2H3v16h5v4l4-4h5l4-4V2zM9.5 10.5v-3h1.5v3H9.5zm4 0v-3H15v3h-1.5z"/></svg>
-            Bei Amazon ansehen *
-          </a>
-        </div>
-      </div>
-
     </div>
   </div>
 </section>
 
-<!-- ARBEITSPLATZ & SERVER -->
-<section class="emp-section">
+<section class="sec sec--alt">
   <div class="inner">
-    <div class="emp-section-title">Arbeitsplatzrechner &amp; Server</div>
-    <div class="emp-section-sub">Kompakt, leise, leistungsstark – für moderne Arbeitsplätze und kleine On-Premise-Lösungen.</div>
-    <div class="emp-grid">
-
-      <div class="emp-card">
-        <div class="emp-img"><img src="https://grundke-it.de/wp-content/uploads/2025/11/20251002_094559-scaled-e1762511200509-300x261.jpg" alt="ASUS NUC 14 Pro" onerror="this.style.display='none'"/></div>
-        <div class="emp-body">
-          <div class="emp-cat">Mini-PC</div>
-          <div class="emp-name">ASUS NUC 14 Pro · Intel Core Ultra 5</div>
-          <p class="emp-desc">32 GB DDR5 RAM, 512 GB NVMe SSD, 4K-fähig, extrem leise. Passt auf jeden Schreibtisch oder hinter den Monitor. Ideal für Homeoffice, Büro und Multi-Monitor-Arbeitsplätze.</p>
-          <div class="emp-tags">
-            <span class="emp-tag">32 GB DDR5</span>
-            <span class="emp-tag">Thunderbolt 4</span>
-            <span class="emp-tag">WLAN 6E</span>
-            <span class="emp-tag">Win 11</span>
-          </div>
-          <a href="https://amzn.to/3Lku75N" target="_blank" rel="noopener sponsored" class="emp-link">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 2H3v16h5v4l4-4h5l4-4V2zM9.5 10.5v-3h1.5v3H9.5zm4 0v-3H15v3h-1.5z"/></svg>
-            Bei Amazon ansehen *
-          </a>
-        </div>
+    <h2 class="s-title">Netzwerk &amp; WLAN</h2>
+    <p class="s-sub measure">Ubiquiti UniFi – das System das ich fast ausschließlich empfehle und einsetze.</p>
+    <div class="price-grid emp-cols">
+      <div class="price-card">
+        <h3 class="price-name">Einrichtung UniFi-Gateway / Firewall</h3>
+        <div class="price-val">ca. 450&nbsp;€</div>
+        <div class="price-per">netto zzgl. MwSt.</div>
+        <p class="price-desc">Netz, WLAN-Grundkonfiguration, Fernzugang.</p>
       </div>
-
+      <div class="price-card">
+        <h3 class="price-name">Einrichtung Switch oder WLAN-Access-Point</h3>
+        <div class="price-val">ca. 100&nbsp;€</div>
+        <div class="price-per">je Gerät, netto zzgl. MwSt.</div>
+        <p class="price-desc">Einbindung ins bestehende UniFi-Netz.</p>
+      </div>
+    </div>
+    <p class="emp-month emp-month--line"><svg width="18" height="18" aria-hidden="true"><use href="#ico-shield"/></svg><span>Danach behalte ich euer Netzwerk im <a href="/managed-it-service/">Betreuungspaket</a> im Blick.</span></p>
+    <div class="card-box"><p><strong>Nur für Betriebe.</strong> Preise netto zzgl. MwSt. Die Beträge sind Beispiele und Erfahrungswerte und können im Einzelfall abweichen. Anfahrt bis 5 km inklusive.</p></div>
+    <div class="emp-grid">
+      <article class="card emp-prod">
+        <span class="card-tag">Router / Gateway</span>
+        <h3>Ubiquiti Dream Machine Pro (UDM-Pro)</h3>
+        <p>Die Zentrale eines UniFi-Netzwerks: Router, Firewall, VPN-Gateway, Netzwerkanalyse und Videorekorder in einem Gerät. Ideal für KMUs mit mehreren Netzsegmenten, Gastronomie oder Büros.</p>
+        <div class="emp-specs"><span>Rack-Mount</span><span>10 Gbit SFP+</span><span>UniFi Controller</span></div>
+        <a href="https://amzn.to/3JqdK75" target="_blank" rel="noopener sponsored" class="btn-g emp-buy">Bei Amazon ansehen *</a>
+      </article>
+      <article class="card emp-prod">
+        <span class="card-tag">Switch</span>
+        <h3>Ubiquiti UniFi Switch 24 PoE (USW-24-PoE)</h3>
+        <p>24 Gigabit-Ports, davon 16 mit PoE+ – versorgt Access Points, Kameras und VoIP-Telefone direkt mit Strom. Wird im UniFi Controller mit verwaltet.</p>
+        <div class="emp-specs"><span>24 Ports</span><span>16× PoE+</span><span>UniFi Controller</span></div>
+        <a href="https://amzn.to/47l4p9H" target="_blank" rel="noopener sponsored" class="btn-g emp-buy">Bei Amazon ansehen *</a>
+      </article>
     </div>
   </div>
 </section>
 
-<!-- SONSTIGES & KURIOSES -->
-<section class="emp-section">
+<section class="sec">
   <div class="inner">
-    <div class="emp-section-title">Sonstiges &amp; Kurioses</div>
-    <div class="emp-section-sub">Kleine Helfer aus dem Alltag — von der Soundbar bis zur Dockingstation.</div>
+    <h2 class="s-title">Arbeitsplatzrechner &amp; Server</h2>
+    <p class="s-sub measure">Kompakt, leise, leistungsstark – für moderne Arbeitsplätze und kleine On-Premise-Lösungen.</p>
+    <div class="price-grid emp-cols">
+      <div class="price-card emp-pc">
+        <h3 class="price-name">Einrichtung Arbeitsplatz-PC oder Notebook</h3>
+        <div class="price-val">ca. 250&nbsp;€</div>
+        <div class="price-per">netto zzgl. MwSt.</div>
+        <p class="price-desc">Windows, Updates, Microsoft-365-Anmeldung, Drucker, Daten übernehmen.</p>
+        <p class="emp-month"><svg width="18" height="18" aria-hidden="true"><use href="#ico-shield"/></svg><span>Virenschutz und Patchmanagement laufen danach im Betreuungspaket mit.</span></p>
+      </div>
+      <div class="price-card emp-pc">
+        <h3 class="price-name">Einrichtung NAS mit Datensicherung</h3>
+        <div class="price-val">ca. 400&nbsp;€</div>
+        <div class="price-per">netto zzgl. MwSt.</div>
+        <p class="price-desc">Einrichtung, Freigaben, Datensicherung mit Kopie außer Haus.</p>
+        <p class="emp-month"><svg width="18" height="18" aria-hidden="true"><use href="#ico-shield"/></svg><span>Kopie außer Haus und Kontrolle der Sicherung laufen danach monatlich mit.</span></p>
+      </div>
+      <div class="price-card emp-pc">
+        <h3 class="price-name">Einrichtung Mini-PC als kleiner Server</h3>
+        <div class="price-val">ca. 450&nbsp;€</div>
+        <div class="price-per">netto zzgl. MwSt.</div>
+        <p class="price-desc">Grundsystem, Dienste, Datensicherung eingebunden.</p>
+        <p class="emp-month"><svg width="18" height="18" aria-hidden="true"><use href="#ico-shield"/></svg><span>Überwachung und Datensicherung laufen danach im Betreuungspaket mit.</span></p>
+      </div>
+    </div>
     <div class="emp-grid">
-
-      <div class="emp-card">
-        <div class="emp-img"><img src="https://grundke-it.de/wp-content/uploads/2025/11/20251118_162223-scaled-e1763479482669-300x289.jpg" alt="HP USB-C Dockingstation G5" onerror="this.style.display='none'"/></div>
-        <div class="emp-body">
-          <div class="emp-cat">Dockingstation</div>
-          <div class="emp-name">HP USB-C Dockingstation G5</div>
-          <p class="emp-desc">Ein USB-C-Kabel verbindet Strom (100W Power Delivery), Netzwerk, Peripherie und bis zu drei externe Monitore. Multi-OS-kompatibel mit Gigabit-LAN, USB-A, USB-C, HDMI und DisplayPort. Perfekt für Homeoffice und wechselnde Arbeitsplätze.</p>
-          <div class="emp-tags">
-            <span class="emp-tag">100W PD</span>
-            <span class="emp-tag">3× Monitor</span>
-            <span class="emp-tag">Gigabit LAN</span>
-            <span class="emp-tag">Multi-OS</span>
-          </div>
-          <a href="https://amzn.to/48mga00" target="_blank" rel="noopener sponsored" class="emp-link">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 2H3v16h5v4l4-4h5l4-4V2zM9.5 10.5v-3h1.5v3H9.5zm4 0v-3H15v3h-1.5z"/></svg>
-            Bei Amazon ansehen *
-          </a>
-        </div>
-      </div>
-
-      <div class="emp-card">
-        <div class="emp-body" style="padding-top:2rem;">
-          <div class="emp-cat">Lautsprecher</div>
-          <div class="emp-name">ZETIY USB Mini Soundbar</div>
-          <p class="emp-desc">Ultra-kompakte USB-Soundbar mit 3D-Stereo-Klang. Plug &amp; Play ohne Treiber oder Netzteil. Passt perfekt unter jeden Monitor – ideal für Laptops mit schwachen Lautsprechern.</p>
-          <div class="emp-tags">
-            <span class="emp-tag">USB-Powered</span>
-            <span class="emp-tag">3D-Stereo</span>
-            <span class="emp-tag">Plug &amp; Play</span>
-          </div>
-          <a href="https://amzn.to/4oO4tES" target="_blank" rel="noopener sponsored" class="emp-link">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 2H3v16h5v4l4-4h5l4-4V2zM9.5 10.5v-3h1.5v3H9.5zm4 0v-3H15v3h-1.5z"/></svg>
-            Bei Amazon ansehen *
-          </a>
-        </div>
-      </div>
-
-      <div class="emp-card">
-        <div class="emp-body" style="padding-top:2rem;">
-          <div class="emp-cat">Netzteil</div>
-          <div class="emp-name">100W USB-C Netzteil mit Ladekabel</div>
-          <p class="emp-desc">Kompaktes 100W-USB-C-Netzteil für Laptop, Tablet und Smartphone. Klein, leicht und reisetauglich. Bitte vor der Bestellung die Kompatibilität mit dem eigenen Gerät prüfen.</p>
-          <div class="emp-tags">
-            <span class="emp-tag">100W</span>
-            <span class="emp-tag">USB-C PD</span>
-            <span class="emp-tag">Reise</span>
-          </div>
-          <a href="https://amzn.to/4oTWDsW" target="_blank" rel="noopener sponsored" class="emp-link">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 2H3v16h5v4l4-4h5l4-4V2zM9.5 10.5v-3h1.5v3H9.5zm4 0v-3H15v3h-1.5z"/></svg>
-            Bei Amazon ansehen *
-          </a>
-        </div>
-      </div>
-
-      <div class="emp-card">
-        <div class="emp-body" style="padding-top:2rem;">
-          <div class="emp-cat">Kopfhörer</div>
-          <div class="emp-name">Beats Powerbeats Fit – Kabellos</div>
-          <p class="emp-desc">Kabellose Workout In-Ear Kopfhörer mit aktiver Geräuschunterdrückung, IPX4 Schweiß- und Wasserschutz, bis zu 30 Stunden Akkulaufzeit mit Ladecase. Kompatibel mit Apple und Android. Diamantschwarz.</p>
-          <div class="emp-tags">
-            <span class="emp-tag">Kabellos</span>
-            <span class="emp-tag">IPX4</span>
-            <span class="emp-tag">30h Akku</span>
-            <span class="emp-tag">ANC</span>
-          </div>
-          <a href="https://amzn.to/49lh2BB" target="_blank" rel="noopener sponsored" class="emp-link">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 2H3v16h5v4l4-4h5l4-4V2zM9.5 10.5v-3h1.5v3H9.5zm4 0v-3H15v3h-1.5z"/></svg>
-            Bei Amazon ansehen *
-          </a>
-        </div>
-      </div>
-
-      <div class="emp-card">
-        <div class="emp-body" style="padding-top:2rem;">
-          <div class="emp-cat">USB-Hub</div>
-          <div class="emp-name">VEMONT 7-Port USB 3.0 Hub mit Netzteil</div>
-          <p class="emp-desc">7 USB-3.0-Ports mit Smart-Ladeanschluss und externem 5V/3A Netzteil. Ideal für externe Festplatten, USB-Sticks und Peripherie. Integrierte Schutzmechanismen gegen Überstrom und Überspannung. Hot-Plug.</p>
-          <div class="emp-tags">
-            <span class="emp-tag">7 Ports</span>
-            <span class="emp-tag">USB 3.0</span>
-            <span class="emp-tag">Netzteil inkl.</span>
-          </div>
-          <a href="https://amzn.to/48V9A0Y" target="_blank" rel="noopener sponsored" class="emp-link">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 2H3v16h5v4l4-4h5l4-4V2zM9.5 10.5v-3h1.5v3H9.5zm4 0v-3H15v3h-1.5z"/></svg>
-            Bei Amazon ansehen *
-          </a>
-        </div>
-      </div>
-
-      <div class="emp-card">
-        <div class="emp-body" style="padding-top:2rem;">
-          <div class="emp-cat">Kabel</div>
-          <div class="emp-name">deleyCON 3,0m USB 3.0 Verlängerungskabel</div>
-          <p class="emp-desc">USB-3.0-Verlängerungskabel mit zuverlässiger Übertragungsgeschwindigkeit bis 5 Gbps. Aluminium-Stecker, Nylonummantelung, flexible und robuste Verarbeitung. Nutze ich selbst täglich an Laptop, Dockingstation, Drucker und externen HDDs.</p>
-          <div class="emp-tags">
-            <span class="emp-tag">5 Gbps</span>
-            <span class="emp-tag">3 Meter</span>
-            <span class="emp-tag">Nylon</span>
-          </div>
-          <a href="https://amzn.to/3N3cl29" target="_blank" rel="noopener sponsored" class="emp-link">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 2H3v16h5v4l4-4h5l4-4V2zM9.5 10.5v-3h1.5v3H9.5zm4 0v-3H15v3h-1.5z"/></svg>
-            Bei Amazon ansehen *
-          </a>
-        </div>
-      </div>
-
+      <article class="card emp-prod">
+        <span class="card-tag">Mini-PC</span>
+        <h3>ASUS NUC 14 Pro · Intel Core Ultra 5</h3>
+        <p>32 GB DDR5 RAM, 512 GB NVMe SSD, 4K-fähig, extrem leise. Passt auf jeden Schreibtisch oder hinter den Monitor. Ideal für Homeoffice, Büro und Multi-Monitor-Arbeitsplätze.</p>
+        <div class="emp-specs"><span>32 GB DDR5</span><span>Thunderbolt 4</span><span>WLAN 6E</span><span>Win 11</span></div>
+        <a href="https://amzn.to/3Lku75N" target="_blank" rel="noopener sponsored" class="btn-g emp-buy">Bei Amazon ansehen *</a>
+      </article>
     </div>
   </div>
 </section>
 
-<!-- AUTO & FAMILIE -->
-<section class="emp-section">
+<section class="sec sec--alt">
   <div class="inner">
-    <div class="emp-section-title">Auto, Familie &amp; Lifestyle</div>
-    <div class="emp-section-sub">Was sich abseits der IT bei mir bewährt hat.</div>
+    <h2 class="s-title">Arbeitsplatz-Zubehör</h2>
+    <p class="s-sub measure">Kleine Helfer aus dem Alltag — von der Soundbar bis zur Dockingstation.</p>
+    <p class="price-line">Dock, Hub oder Soundbar schließe ich im PC-Termin mit an; sonst nach Aufwand im 15-Minuten-Takt (110&nbsp;€ netto je Stunde).</p>
     <div class="emp-grid">
-
-      <div class="emp-card">
-        <div class="emp-body" style="padding-top:2rem;">
-          <div class="emp-cat">Auto-Zubehör</div>
-          <div class="emp-name">Handyhalterung kompatibel mit Skoda Fabia 3</div>
-          <p class="emp-desc">Passgenaue Halterung für den Skoda Fabia 3. Sitzt fest, wackelt nicht und kommt ohne Bohren oder Kleben aus.</p>
-          <div class="emp-tags">
-            <span class="emp-tag">Skoda Fabia 3</span>
-            <span class="emp-tag">Passgenau</span>
-            <span class="emp-tag">Plug-In</span>
-          </div>
-          <a href="https://amzn.to/3NbBtt3" target="_blank" rel="noopener sponsored" class="emp-link">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 2H3v16h5v4l4-4h5l4-4V2zM9.5 10.5v-3h1.5v3H9.5zm4 0v-3H15v3h-1.5z"/></svg>
-            Bei Amazon ansehen *
-          </a>
-        </div>
-      </div>
-
-      <div class="emp-card">
-        <div class="emp-body" style="padding-top:2rem;">
-          <div class="emp-cat">Kinderspielzeug</div>
-          <div class="emp-name">Ravensburger tiptoi Starter-Set</div>
-          <p class="emp-desc">Interaktives Starter-Set mit Stift und Buch „Meine schönsten Kinderlieder“ plus Ladestation. Kinder entdecken Lieder, Geräusche und Wissen intuitiv – einfach antippen und loslegen. Erhältlich in altersgerechten Varianten ab 2, 3, 4 oder 5 Jahren.</p>
-          <div class="emp-tags">
-            <span class="emp-tag">tiptoi</span>
-            <span class="emp-tag">Ravensburger</span>
-            <span class="emp-tag">Lernspiel</span>
-            <span class="emp-tag">ab 2 J.</span>
-          </div>
-          <a href="https://amzn.to/45xTJTE" target="_blank" rel="noopener sponsored" class="emp-link">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 2H3v16h5v4l4-4h5l4-4V2zM9.5 10.5v-3h1.5v3H9.5zm4 0v-3H15v3h-1.5z"/></svg>
-            Bei Amazon ansehen *
-          </a>
-        </div>
-      </div>
-
-      <div class="emp-card">
-        <div class="emp-body" style="padding-top:2rem;">
-          <div class="emp-cat">Fahrrad</div>
-          <div class="emp-name">nean Fahrradschloss – Rahmenschloss mit Kette</div>
-          <p class="emp-desc">Rahmenschloss/Ringschloss mit Kette, 5,5 × 900 mm, schwarz. Einfach, praktisch und sicher. Schnell am Rahmen montiert, Kette für die Verbindung zu festen Objekten.</p>
-          <div class="emp-tags">
-            <span class="emp-tag">Rahmenschloss</span>
-            <span class="emp-tag">+ Kette</span>
-            <span class="emp-tag">5,5×900 mm</span>
-          </div>
-          <a href="https://amzn.to/3YjSoMx" target="_blank" rel="noopener sponsored" class="emp-link">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 2H3v16h5v4l4-4h5l4-4V2zM9.5 10.5v-3h1.5v3H9.5zm4 0v-3H15v3h-1.5z"/></svg>
-            Bei Amazon ansehen *
-          </a>
-        </div>
-      </div>
-
+      <article class="card emp-prod">
+        <span class="card-tag">Dockingstation</span>
+        <h3>HP USB-C Dockingstation G5</h3>
+        <p>Ein USB-C-Kabel verbindet Strom (100W Power Delivery), Netzwerk, Peripherie und bis zu drei externe Monitore. Multi-OS-kompatibel mit Gigabit-LAN, USB-A, USB-C, HDMI und DisplayPort. Perfekt für Homeoffice und wechselnde Arbeitsplätze.</p>
+        <div class="emp-specs"><span>100W PD</span><span>3× Monitor</span><span>Gigabit LAN</span><span>Multi-OS</span></div>
+        <a href="https://amzn.to/48mga00" target="_blank" rel="noopener sponsored" class="btn-g emp-buy">Bei Amazon ansehen *</a>
+      </article>
+      <article class="card emp-prod">
+        <span class="card-tag">Lautsprecher</span>
+        <h3>ZETIY USB Mini Soundbar</h3>
+        <p>Ultra-kompakte USB-Soundbar mit 3D-Stereo-Klang. Plug &amp; Play ohne Treiber oder Netzteil. Passt perfekt unter jeden Monitor – ideal für Laptops mit schwachen Lautsprechern.</p>
+        <div class="emp-specs"><span>USB-Powered</span><span>3D-Stereo</span><span>Plug &amp; Play</span></div>
+        <a href="https://amzn.to/4oO4tES" target="_blank" rel="noopener sponsored" class="btn-g emp-buy">Bei Amazon ansehen *</a>
+      </article>
+      <article class="card emp-prod">
+        <span class="card-tag">Netzteil</span>
+        <h3>100W USB-C Netzteil mit Ladekabel</h3>
+        <p>Kompaktes 100W-USB-C-Netzteil für Laptop, Tablet und Smartphone. Klein, leicht und reisetauglich. Bitte vor der Bestellung die Kompatibilität mit dem eigenen Gerät prüfen.</p>
+        <div class="emp-specs"><span>100W</span><span>USB-C PD</span><span>Reise</span></div>
+        <a href="https://amzn.to/4oTWDsW" target="_blank" rel="noopener sponsored" class="btn-g emp-buy">Bei Amazon ansehen *</a>
+      </article>
+      <article class="card emp-prod">
+        <span class="card-tag">USB-Hub</span>
+        <h3>VEMONT 7-Port USB 3.0 Hub mit Netzteil</h3>
+        <p>7 USB-3.0-Ports mit Smart-Ladeanschluss und externem 5V/3A Netzteil. Ideal für externe Festplatten, USB-Sticks und Peripherie. Integrierte Schutzmechanismen gegen Überstrom und Überspannung. Hot-Plug.</p>
+        <div class="emp-specs"><span>7 Ports</span><span>USB 3.0</span><span>Netzteil inkl.</span></div>
+        <a href="https://amzn.to/48V9A0Y" target="_blank" rel="noopener sponsored" class="btn-g emp-buy">Bei Amazon ansehen *</a>
+      </article>
+      <article class="card emp-prod">
+        <span class="card-tag">Kabel</span>
+        <h3>deleyCON 3,0m USB 3.0 Verlängerungskabel</h3>
+        <p>USB-3.0-Verlängerungskabel mit zuverlässiger Übertragungsgeschwindigkeit bis 5 Gbps. Aluminium-Stecker, Nylonummantelung, flexible und robuste Verarbeitung. Nutze ich selbst täglich an Laptop, Dockingstation, Drucker und externen HDDs.</p>
+        <div class="emp-specs"><span>5 Gbps</span><span>3 Meter</span><span>Nylon</span></div>
+        <a href="https://amzn.to/3N3cl29" target="_blank" rel="noopener sponsored" class="btn-g emp-buy">Bei Amazon ansehen *</a>
+      </article>
     </div>
-
-    <div class="disclaimer">
-      <strong>Hinweis:</strong> Diese Produktempfehlungen basieren auf meiner täglichen Arbeit als Fachinformatiker für Systemintegration und auf privaten Erfahrungen. Alle Geräte sind praxiserprobt und von mir oder in Kundenprojekten im Einsatz. Die Links führen zu Amazon, wo du die Produkte direkt vergleichen und kaufen kannst.<br><br>
-      Preis und Verfügbarkeit können variieren. Den aktuellen Preis findest du direkt auf Amazon.<br>
-      <em>Als Amazon-Partner verdiene ich an qualifizierten Verkäufen — ohne Mehrkosten für dich.</em>
+    <div class="ki-note">
+      <p><strong>Hinweis:</strong> Diese Produktempfehlungen basieren auf meiner täglichen Arbeit als Fachinformatiker für Systemintegration und auf privaten Erfahrungen. Alle Geräte sind praxiserprobt und von mir oder in Kundenprojekten im Einsatz. Die Links führen zu Amazon, wo du die Produkte direkt vergleichen und kaufen kannst.</p>
+      <p>Preis und Verfügbarkeit können variieren. Den aktuellen Preis findest du direkt auf Amazon.<br>
+      <em>Als Amazon-Partner verdiene ich an qualifizierten Verkäufen — ohne Mehrkosten für dich.</em></p>
     </div>
   </div>
 </section>
 
+<section class="cta-sec">
+  <div class="inner">
+    <h2 class="cta-h">Problem? <em>Ich bin dran.</em></h2>
+    <p class="cta-sub">Ruf an, schreib auf WhatsApp oder per Mail. Am anderen Ende bin ich, Andreas Grundke. Gerne per Du.</p>
+    <div class="cta-btns inline-cta-mobile">
+      <a href="tel:+491782584438" class="btn-tel"><svg width="20" height="20" aria-hidden="true"><use href="#ico-phone"/></svg> 0178 258 44 38</a>
+      <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20komme%20%C3%BCber%20deine%20Seite%20%E2%80%9EEmpfehlungen%E2%80%9C." target="_blank" rel="noopener" class="btn-wa"><svg width="20" height="20" aria-hidden="true"><use href="#ico-wa"/></svg> WhatsApp</a>
+      <a href="mailto:info@grundke-it.de?subject=Anfrage%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0AMein%20Anliegen%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F)." class="btn-email"><svg width="20" height="20" aria-hidden="true"><use href="#ico-mail"/></svg> E-Mail schreiben</a>
+    </div>
+    <div class="hc-qr cta-qr">
+      <a href="/kontakt/" title="Alle Kontaktwege"><img src="/assets/img/qr-tree.png" alt="QR-Code: Kontaktseite aufs Handy holen" width="88" height="88"/></a>
+      <p><strong>Scan mich. Dann reden wir.</strong>Alle Kontaktwege direkt aufs Handy.</p>
+    </div>
+    <div class="cta-author">
+      <span class="ava" aria-hidden="true">AG</span>
+      <p><strong>Andreas Grundke</strong> · Fachinformatiker für Systemintegration · über 20 Jahre IT<br><span class="cta-date">Zuletzt aktualisiert: 11. Oktober 2026</span></p>
+    </div>
+  </div>
+</section>
 </main>
 
 <!-- FOOTER -->

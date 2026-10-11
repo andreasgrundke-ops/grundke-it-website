@@ -4,7 +4,7 @@
 build_landingpages.py
 Version : 2.6
 Autor   : Andreas Grundke IT-Service (Grundke IT-Service)
-Datum   : 2026-10-10
+Datum   : 2026-10-11
 Zweck   : Generiert aus einem gemeinsamen Template + Datenlisten die Orts- und
           Leistungs-Landingpages fuer grundke-it.de (statisches HTML, GitHub Pages)
           und aktualisiert die sitemap.xml.
@@ -74,6 +74,8 @@ Aenderungen:
               Fix-Runde 1: KONTAKT_DATE/KONTAKT_DATE_DISP (Abschluss-Datum und Sitemap aus einer Quelle), Preload-Pruefung
               je Schrift (nur fehlende einfuegen), Mobilmenue „Fernwartung starten“ mit Sprite-Symbol und Klasse .m-fw
               statt Blitz-Zeichen und Inline-Style.
+  2026-10-11  Release C2, Task 10: empfehlungen bekommt den Abschluss K5 (HAND_CLOSING) mit EMPF_DATE_DISP; EMPF_DATE
+              als lastmod der Sitemap. Asset-Version bleibt 2026.10.d (style.css und JS unveraendert).
 """
 
 import os
@@ -120,6 +122,10 @@ HOME_DATE_DISP = "10.10.2026"
 # (STATIC_URLS). Nur hochsetzen, wenn sich der Inhalt der Kontaktseite wirklich aendert.
 KONTAKT_DATE = "2026-10-10"
 KONTAKT_DATE_DISP = "10. Oktober 2026"
+# Empfehlungen (Handseite, seit Task 10): Stand fuer „Zuletzt aktualisiert“ im Abschluss (HAND_CLOSING) und lastmod der
+# Sitemap (STATIC_URLS). Nur hochsetzen, wenn sich der Inhalt der Seite wirklich aendert.
+EMPF_DATE = "2026-10-11"
+EMPF_DATE_DISP = "11. Oktober 2026"
 
 # WhatsApp mit vorbefuelltem Satz je Einstieg (Textblatt §4, seit 10.10.2026): Am Satz ist
 # erkennbar, ueber welchen Knopf eine Anfrage kam, ohne Tracking-Skript. Auf der Startseite
@@ -338,9 +344,10 @@ MAIN_JS_RE = re.compile(r'src="(?:\.\./)*/?assets/js/main\.js(?:\?v=[^"]*)?"')
 # (CLOSING_RE) oder setzt ihn vor </main>. Pfad -> (Seitenname fuer den WhatsApp-Satz nach Textblatt §4, None:
 # allgemeiner Abschluss-Satz; Datum der Autorzeile, None: ohne „Zuletzt aktualisiert“). Kontakt traegt das Datum
 # seiner Textaenderung, Fernwartung das der letzten Anleitung (09.10.2026); Rechtsseiten fuehren ihren Stand im
-# Text, die 404 hat keinen. Nicht hier: Startseite (eigener Abschluss) und empfehlungen (Task 10).
+# Text, die 404 hat keinen. Nicht hier: die Startseite (eigener Abschluss). Empfehlungen seit Task 10 (Release C2).
 HAND_CLOSING = {
     "kontakt/index.html": ("Kontakt", KONTAKT_DATE_DISP),
+    "empfehlungen/index.html": ("Empfehlungen", EMPF_DATE_DISP),
     "fernwartung/index.html": ("Fernwartung", "9. Oktober 2026"),
     "impressum/index.html": (None, None),
     "datenschutz/index.html": (None, None),
@@ -3581,7 +3588,7 @@ def sync_home():
 STATIC_URLS = [   # (Pfad, Prioritaet, lastmod) -- lastmod der Startseite = ihr dateModified
     ("/", "1.0", HOME_DATE),
     ("/kontakt/", "0.7", KONTAKT_DATE),   # Task 9: Erreichbarkeit, Untertitel und FAQ nach Textblatt-Anhang
-    ("/empfehlungen/", "0.7", "2026-05-01"),
+    ("/empfehlungen/", "0.7", EMPF_DATE),   # Task 10: Einrichtungs-Pauschalen, Gruppen neu
 ]   # /schulung/ steht seit Task 8 ueber SERVICES in der Sitemap
 
 
