@@ -1,6 +1,10 @@
-"""Statische Pruefungen (Spec §9: AK1, AK2, AK2b, AK7, AK8, AK9, AK9b, AK11a, AK13, AK14).
-Aufruf: python tools/checks/check_static.py [--only AK1,AK9]   Exit 1 bei Fehler."""
+"""Statische Pruefungen (Spec §9: AK1, AK2, AK2b, AK7, AK8, AK9, AK9b, AK11a, AK13, AK13v, AK14, AK14r).
+Aufruf: python tools/checks/check_static.py [--only AK1,AK9] [--ci]   Exit 1 bei Fehler.
+--ci: nur Pruefungen, die weder ../_intern/ noch Git-Historie brauchen (Deploy-Workflow); AK13v (Versionen gegen
+origin/main) und AK14r (Rechtstexte gegen Basis-Commit und legal_hash.json) werden dann sichtbar uebersprungen.
+Browser-Messungen stehen in check_site.py, nicht hier."""
 import hashlib, html, json, re, subprocess, sys
+from html.parser import HTMLParser
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -14,11 +18,117 @@ FORBIDDEN_SELECTORS = [".btn-p", ".btn-g", ".btn-wa", ".btn-email", ".btn-tel", 
                        ".ki-tbl", ".lp-steps", ".lp-checklist", ".lp-dont", ".lp-answer", ".lp-paths", ".lp-grid",
                        ".lp-hero", ".lp-cta-row", ".lp-trust", ".lp-author", ".lp-crumbs", ".more"]
 OLD_WRAPPERS = ("lp-wrap", "page-wrap", "kontakt-wrap", "fw-wrap", "emp-hero", "err-wrap")
-PROMISES = ["sofort", "immer erreichbar", "ich geh ran", "rund um die uhr", "24/7", "garantiert", "am selben tag",
-            "in minuten", "heute noch", "schnell", "zurückruft", "umgehend", "kurzfristig", "bleib dran",
-            "erreichbar, wenn", "erreichbar, wann"]
-NEW_BLOCKS = r'class="[^"]*\b(page-k|mini-chat|cta-sec|k3-block|cta-h|cta-sub)\b'
-PROTECTED = ["Angebot ausschließlich für Unternehmen", "ohne garantierte Reaktionszeit", "Warum ein Paket?"]
+# AK8 (Fix-Runde B): Wortstaemme statt Wortgrenze am Ende, damit Beugungen auffallen („schnelle Hilfe“, „sofortige“,
+# „garantierte“). Gross/klein egal, Treffer = ganzes Wort. Einzige Ausnahme im Muster: der Produktname
+# „(IT-)Schnellcheck“ (kostenloser Termin, keine Zeitzusage; sonst 14 gleichartige Eintraege in der Erlaubtliste).
+PROMISE_PATTERNS = [r"\w*schnell(?!check)\w*", r"\w*sofort\w*", r"\w*garanti\w*", r"\binnerhalb\b", r"\bbinnen\b",
+                    r"\bjederzeit\b", r"\brund um die uhr\b", r"(?<!\d)24\s*/\s*7(?!\d)", r"\bimmer erreichbar\b",
+                    r"\bich geh\w* ran\b", r"\bam selben tag\b", r"\bheute noch\b", r"\bnoch heute\b",
+                    r"\bin (?:wenigen |\d+ )?(?:sekunden|minuten|stunden)\b", r"\bzurückruf\w*", r"\bumgehend\w*",
+                    r"\bkurzfristig\w*", r"\bbleib\w* dran\b", r"\berreichbar, wenn\b", r"\berreichbar, wann\b"]
+PROMISE_RE = re.compile("|".join("(?:" + p + ")" for p in PROMISE_PATTERNS), re.I)
+# Geprueft wird (Fix-Runde B) der ganze sichtbare Text in <main> jeder Seite ausser den Rechtsseiten, also jeder
+# Baustein bis zu seinem Ende (K4, Kopf, Mini-Chat, K3, Abschluss K5, FAQ-<summary>, Hero-Chat der Startseite),
+# dazu die <summary> im Fuss, Meta-, og- und twitter-Description und die Texte aus assets/js/hero-chat.js.
+# Ausgenommen (Spec AK8): Kundenzitate (blockquote.testi-txt), die Lesespalte der Ratgeber-Artikel
+# (article.lp-article), Rechtstexte und die Leitzeile.
+AK8_HERO_JS = "assets/js/hero-chat.js"   # Texte des Hero-Chats (CASES, NIGHT_REPLY, updateClock)
+AK8_LEITZEILE = "Dein ITler geht nicht ran? Ich schon."
+# Erlaubte Treffer: (Seite, exakter Ausschnitt um den Treffer, Grund). Ein Treffer ist erlaubt, wenn der Ausschnitt
+# auf dieser Seite im geprueften Text steht und den Treffer enthaelt. Ein Eintrag ohne Treffer ist ein Fehler (Liste
+# bleibt genau). Seite = Pfad wie rel(), fuer den Hero-Chat AK8_HERO_JS.
+AK8_ALLOW = [
+    ("index.html", "„Es muss heute noch laufen.“", "typischer Anruf in Worten des Kunden (Typische Anrufe)"),
+    ("index.html", "„Ich muss heute noch fertig werden!“", "Ueberschrift der Praxisgeschichte, zitiert den Kunden"),
+    ("index.html", "Er muss heute noch ein wichtiges Projekt abgeben.", "Praxisgeschichte: Lage des Kunden"),
+    ("index.html", "ohne Garantie, dass es klappt", "verneint eine Garantie"),
+    ("index.html", "Top-3-Handlungsempfehlungen Sofort: Externes Backup", "Beispiel-Bericht: Dringlichkeit einer Empfehlung"),
+    ("index.html", "Innerhalb 3 Monate: FritzBox 7490 tauschen", "Beispiel-Bericht: Frist einer Empfehlung an den Kunden"),
+    ("index.html", "Wie schnell bist du bei einem IT-Notfall erreichbar? + Feste Reaktionszeiten sage ich nicht zu",
+     "FAQ-Frage, die Antwort verneint feste Reaktionszeiten"),
+    ("index.html", "Websites, die am Handy schnell laden", "Ladezeit der Website"),
+    ("index.html", "ohne garantierte Reaktionszeit", "verneint eine Reaktionszeit (geschuetzter Satz, Spec §5)"),
+    ("digitalbonus-bayern/index.html", "Umsetzung innerhalb von 18 Monaten nach der Bewilligung",
+     "Frist des Foerderprogramms"),
+    ("fernwartung/index.html", "beendest du die Sitzung jederzeit selbst", "der Kunde beendet die Sitzung selbst"),
+    ("it-betreuer-wechseln/index.html", "desto schneller und billiger wird die Übernahme",
+     "haengt an den Unterlagen des Kunden, keine Zusage"),
+    ("it-notdienst/index.html", "Wie schnell bekomme ich im Notfall Hilfe? + Das hängt davon ab",
+     "FAQ-Frage, die Antwort verneint feste Reaktionszeiten"),
+    ("it-service-baldham/index.html", "Wie schnell bekomme ich Hilfe? + Feste Reaktionszeiten sage ich nicht zu",
+     "FAQ-Frage, die Antwort verneint feste Reaktionszeiten"),
+    ("it-service-grasbrunn/index.html", "Wie schnell bekomme ich Hilfe? + Feste Reaktionszeiten sage ich nicht zu",
+     "FAQ-Frage, die Antwort verneint feste Reaktionszeiten"),
+    ("it-service-haar/index.html", "Wie schnell bekomme ich Hilfe? + Feste Reaktionszeiten sage ich nicht zu",
+     "FAQ-Frage, die Antwort verneint feste Reaktionszeiten"),
+    ("it-service-haar/index.html", "Wie schnell bist du bei einem IT-Notfall in Haar?",
+     "FAQ-Frage, die Antwort sagt „Eine feste Reaktionszeit sage ich nicht zu“"),
+    ("it-service-putzbrunn/index.html", "Wie schnell bekomme ich Hilfe? + Feste Reaktionszeiten sage ich nicht zu",
+     "FAQ-Frage, die Antwort verneint feste Reaktionszeiten"),
+    ("it-service-vaterstetten/index.html", "Wie schnell bekomme ich Hilfe? + Feste Reaktionszeiten sage ich nicht zu",
+     "FAQ-Frage, die Antwort verneint feste Reaktionszeiten"),
+    ("it-service-zorneding/index.html", "Wie schnell bekomme ich Hilfe? + Feste Reaktionszeiten sage ich nicht zu",
+     "FAQ-Frage, die Antwort verneint feste Reaktionszeiten"),
+    ("it-sicherheit-backup/index.html", "Sofort Gerät vom Netz trennen und mich anrufen.",
+     "Anweisung an den Kunden im Notfall"),
+    ("ki-dsgvo/index.html", "weil es schneller geht", "beschreibt das Verhalten von Mitarbeitern"),
+    ("ki-fuer-kmu/index.html", "Rechenzentrum innerhalb der EU", "Ort, keine Zeit"),
+    ("kontakt/index.html", "Wie schnell antwortest du auf eine Anfrage? + Vertragskunden werden bevorzugt behandelt",
+     "FAQ-Frage, die Antwort verneint pauschale Reaktionszeiten"),
+    ("microsoft-365-betreuung/index.html", "Microsoft 365 ist schnell gebucht – aber sauber eingerichtet",
+     "Buchung des Produkts beim Hersteller, keine Zusage"),
+    ("netzwerk-wlan-firewall/index.html", "Lückenloses, schnelles WLAN", "Eigenschaft des WLANs"),
+    ("ratgeber/e-mails-kommen-nicht-an/index.html", "Meist nicht sofort.", "Verhalten von Mailservern"),
+    ("ratgeber/e-mails-kommen-nicht-an/index.html", "So grenzt du in 15 Minuten ein",
+     "Reihe „Die ersten 15 Minuten“: Zeit des Lesers fuer die eigene Eingrenzung (Meta-Texte)"),
+    ("ratgeber/index.html", "ab wann ein Anruf schneller ist", "Ratgeber: ab wann Anrufen schneller ist als Selbsthilfe"),
+    ("ratgeber/phishing-mail-geklickt/index.html", "Dann sofort das Passwort von einem anderen Gerät aus ändern",
+     "Ratgeber-Anweisung an den Leser"),
+    ("ratgeber/phishing-mail-geklickt/index.html", "Datenschutzaufsicht innerhalb von 72 Stunden",
+     "Meldefrist nach Art. 33 DSGVO"),
+    ("ratgeber/server-ausgefallen/index.html", "Wie schnell läuft ein ausgefallener Server wieder? + Das hängt von der "
+     "Ursache ab.", "FAQ-Frage, die Antwort nennt keine Zusage"),
+    ("ratgeber/server-ausgefallen/index.html", "ein hängender Dienst ist in Minuten behoben, eine defekte Festplatte in "
+     "einem gespiegelten System in Stunden", "typische Reparaturdauer je Ursache, keine Reaktionszeit"),
+    ("schulung/index.html", "jederzeit unterbrechbar und ohne Zeitdruck", "Eigenschaft des Portals (Lerntempo)"),
+    ("software-nach-mass/index.html", "Eure Daten könnt ihr jederzeit exportieren.", "Datenhoheit des Kunden"),
+    ("software-nach-mass/index.html", "Deine Daten kannst du jederzeit exportieren.", "Datenhoheit des Kunden"),
+    ("software-nach-mass/index.html", "Das macht mich schneller.", "KI-Unterstuetzung beim Entwickeln, keine Lieferzusage"),
+    ("websites-fuer-betriebe/index.html", "so lässt sich eine alte Website schneller modernisieren",
+     "KI-Unterstuetzung beim Modernisieren, keine Lieferzusage"),
+    ("websites-fuer-betriebe/index.html", "Schlank und schnell Kein Baukasten", "Ladezeit der Seite (Leistungszeile)"),
+    ("websites-fuer-betriebe/index.html", "Die Seite lädt auch im Mobilnetz schnell.", "Ladezeit der Seite"),
+    ("websites-fuer-betriebe/index.html", "Wie schnell die Seite am Handy lädt", "Pruefpunkt im Website-Check (Ladezeit)"),
+]
+# Offene Zusagen: Treffer, die eine Zusage sind oder so gelesen werden koennen, Entscheidung bei Andreas (Text in
+# dieser Runde nicht geaendert). Sie halten AK8 nicht rot, werden aber bei jedem Lauf als WARNUNG gemeldet.
+# Gleiches Format wie AK8_ALLOW; nach Andreas' Entscheidung Text aendern und Eintrag loeschen (oder nach AK8_ALLOW).
+AK8_OPEN = [
+    ("index.html", "wer hilft mir kurzfristig?",
+     "FAQ-Frage in Worten des Besuchers; die Antwort bejaht die Hilfe, ohne eine Zeit zu verneinen (Fix-Runde B)"),
+    ("fernwartung/index.html", "dein IT-Betreuer verbindet sich in wenigen Sekunden",
+     "Meta-Description: Zeitangabe, wann Andreas sich verbindet (Fix-Runde B)"),
+    ("websites-fuer-betriebe/index.html", "Website erstellen lassen oder modernisieren: schnell,",
+     "Meta-, og- und twitter-Description: liest sich im Suchergebnis als Lieferzeit, gemeint ist die Ladezeit (Fix-Runde B)"),
+]
+PROTECTED = ["Angebot ausschließlich für Unternehmen", "ohne garantierte Reaktionszeit", "Warum ein Paket?",
+             "Alle Preise zzgl. MwSt."]
+# AK14 seit Fix-Runde B (M10, Spec §5): Herkunftshinweis wortgleich ({n} = Zahlwort + Verb aus dem Generator,
+# review_count_phrase(REVIEW_COUNT_GOOGLE)), alle price-per-Zeilen der Startseite mit Betrag (Pakete und ad hoc stehen
+# nicht in PRICES, deshalb hier), die Preissaetze mit data-price aus PRICES abgeleitet, Orte (mit PLZ) des Einsatzgebiets.
+HERKUNFT = ("Woher die Stimmen kommen: {n} aus meinem Google-Unternehmensprofil, eine hat mir eine Kundin direkt "
+            "geschickt. Ich gebe sie wörtlich und ungekürzt wieder. Hier stehen nur Stimmen von Betrieben und Menschen, "
+            "für die ich gearbeitet habe. Die Bewertungen bei Google prüft Google nach eigenen Regeln; ändern oder löschen "
+            "kann ich sie dort nicht. Alle Google-Bewertungen stehen im Google-Profil.")
+HOME_PRICE_LINES = ["110 € /Stunde zzgl. MwSt.", "149 € /Monat zzgl. MwSt.", "249 € /Monat zzgl. MwSt.",
+                    "449 € /Monat zzgl. MwSt."]
+HOME_PRICE_SENTENCES = [("Website-Betrieb {} netto im Monat", "website_betrieb"),
+                        ("Betrieb einer eigenen Anwendung ab {} netto im Monat", "software_betrieb"),
+                        ("Festpreis für den Bau, Betrieb ab {} netto im Monat", "software_betrieb"),
+                        ("Betrieb auf Wunsch {} netto im Monat", "website_betrieb")]
+GEO_PLACES = [("Grasbrunn", "85630"), ("Ottobrunn", "85521"), ("Vaterstetten", "85591"), ("Haar", "85540"),
+              ("Neubiberg", "85579"), ("Putzbrunn", "85640"), ("Hohenbrunn", "85662"), ("Baldham", ""),
+              ("Parsdorf", ""), ("Zorneding", ""), ("Eglharting", "")]
 # AK11a (Spec §7, Textblatt §1): Region und Anbieter in den ersten 300 Zeichen ab <main>
 REGIONS = ("münchner osten", "münchen ost", "grasbrunn")
 PROVIDERS = ("grundke it-service", "andreas grundke")
@@ -154,16 +264,129 @@ def ak7():
     return errs
 
 
-def ak8():
-    """Nur neue Bausteine pruefen; Zitate, Ratgeber, Rechtstexte, Leitzeile sind ausgenommen."""
-    errs = []
-    for p in pages():
-        s = read(p)
-        for m in re.finditer(NEW_BLOCKS + r'[^"]*"[^>]*>(.*?)</(p|div|section|ol)>', s, re.S):
-            low = text_of(m.group(0)).lower().replace("dein itler geht nicht ran? ich schon.", "")
-            for w in PROMISES:
-                if re.search(r"(?<![\w-])" + re.escape(w) + r"(?![\w-])", low):
-                    errs.append(f"{rel(p)}: Zusage-Wort '{w}' in neuem Baustein")
+VOID_TAGS = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "source", "track", "wbr"}
+
+
+class _Elements(HTMLParser):
+    """Ganze Elemente (Start- bis End-Tag, verschachtelte eingeschlossen), die want(tag, attrs) benennt.
+    Liefert (Name, HTML-Ausschnitt); in einem gefundenen Element wird nicht weiter gesucht."""
+
+    def __init__(self, src, want):
+        super().__init__(convert_charrefs=True)
+        self.src, self.want, self.stack, self.cap, self.out = src, want, [], None, []
+        self.line_starts = [0] + [m.end() for m in re.finditer("\n", src)]
+
+    def _off(self):
+        line, col = self.getpos()
+        return self.line_starts[line - 1] + col
+
+    def handle_starttag(self, tag, attrs):
+        if tag in VOID_TAGS:
+            return
+        self.stack.append(tag)
+        if self.cap is None:
+            name = self.want(tag, dict(attrs))
+            if name:
+                self.cap = (name, self._off(), len(self.stack))
+
+    def handle_endtag(self, tag):
+        if tag in VOID_TAGS or tag not in self.stack:
+            return
+        while self.stack:
+            t = self.stack.pop()
+            if self.cap and len(self.stack) < self.cap[2]:
+                end = self.src.index(">", self._off()) + 1
+                self.out.append((self.cap[0], self.src[self.cap[1]:end]))
+                self.cap = None
+            if t == tag:
+                break
+
+
+def elements(src, want):
+    parser = _Elements(src, want)
+    parser.feed(src)
+    parser.close()
+    return parser.out
+
+
+def _has_class(attrs, cls):
+    return cls in (attrs.get("class") or "").split()
+
+
+def ak8_sources(p):
+    """(Quelle, Text) einer Seite fuer AK8: sichtbarer Text in <main> (ohne Kundenzitate und Ratgeber-Lesespalte),
+    die <summary> im Fuss, Meta-, og- und twitter-Description."""
+    s = re.sub(r'<blockquote class="testi-txt".*?</blockquote>', " ", read(p), flags=re.S)
+    main = first(r"(<main\b.*?</main>)", s)
+    for _n, frag in elements(main, lambda tag, a: tag == "article" and _has_class(a, "lp-article") and "Lesespalte"):
+        main = main.replace(frag, " ")
+    out = [("main", text_of(main).replace(AK8_LEITZEILE, " "))]
+    foot = first(r'(<footer class="site-footer">.*?</footer>)', s)
+    out += [("Fuss summary", text_of(f)) for _n, f in elements(foot, lambda tag, a: tag == "summary" and "summary")]
+    for attr, name in (("name", "description"), ("property", "og:description"), ("name", "twitter:description")):
+        for m in re.finditer(r'<meta\s+' + attr + r'="' + re.escape(name) + r'"\s+content="([^"]*)"', s):
+            out.append(("meta " + name, html.unescape(m.group(1))))
+    return out
+
+
+def hero_chat_texts():
+    """Zeichenketten aus assets/js/hero-chat.js (Faelle, Nachtantwort, Saetze ueber der Uhr), ohne Kommentare."""
+    js = re.sub(r"/\*.*?\*/|(?<![:'\\])//[^\n]*", " ", read(ROOT / AK8_HERO_JS), flags=re.S)
+    return [("JS-Text", re.sub(r"\\(.)", r"\1", m.group(1)))
+            for m in re.finditer(r"'((?:[^'\\\n]|\\.)*)'", js)]
+
+
+def ak8_hits():
+    """Alle Treffer der Wortliste: (Seite, Quelle, Wort, Text, Start, Ende). Rechtsseiten ausgenommen (Spec AK8)."""
+    hits = []
+    sources = [(rel(p), ak8_sources(p)) for p in pages() if rel(p).split("/")[0] not in LEGAL]
+    sources.append((AK8_HERO_JS, hero_chat_texts()))
+    for page, items in sources:
+        for src, text in items:
+            text = re.sub(r"\s+", " ", text.replace("\u00ad", "")).strip()
+            for m in PROMISE_RE.finditer(text):
+                hits.append((page, src, m.group(0), text, m.start(), m.end()))
+    return hits
+
+
+def ak8_allowed(hit, allow):
+    page, _src, _w, text, a, b = hit
+    for k, (pg, snip, _why) in enumerate(allow):
+        if pg != page:
+            continue
+        i = text.find(snip)
+        while i >= 0:
+            if i <= a and b <= i + len(snip):
+                return k
+            i = text.find(snip, i + 1)
+    return None
+
+
+WARNINGS = []   # Hinweise, die keine Pruefung rot machen (am Ende ausgegeben)
+
+
+def ak8(allow=None, open_=None):
+    """Keine Zusagen (Spec AK8, Umfang siehe Kommentar ueber AK8_HERO_JS). Jeder Treffer der Wortliste ist ein Fehler, ausser er steht
+    in AK8_ALLOW (erlaubt) oder AK8_OPEN (offene Zusage, nur WARNUNG). Eintraege ohne Treffer sind ein Fehler."""
+    allow = AK8_ALLOW if allow is None else allow
+    open_ = AK8_OPEN if open_ is None else open_
+    errs, used_a, used_o = [], set(), set()
+    for hit in ak8_hits():
+        page, src, word, text, a, b = hit
+        where = f"{page}: Zusage-Wort '{word}' ({src}): …{text[max(0, a - 60):b + 60]}…"
+        k = ak8_allowed(hit, allow)
+        if k is not None:
+            used_a.add(k)
+            continue
+        k = ak8_allowed(hit, open_)
+        if k is not None:
+            used_o.add(k)
+            WARNINGS.append(f"AK8 offene Zusage (Entscheidung Andreas): {where}")
+            continue
+        errs.append(where)
+    for name, lst, used in (("AK8_ALLOW", allow, used_a), ("AK8_OPEN", open_, used_o)):
+        errs += [f"{name} ohne Treffer (veraltet): {pg}: {snip!r}" for k, (pg, snip, _w) in enumerate(lst)
+                 if k not in used]
     return errs
 
 
@@ -284,6 +507,10 @@ def ak9b():
     for who, where in sub_pages.items():
         if len(where) > VOICE_MAX_PAGES:
             errs.append(f"{who} steht auf {len(where)} Unterseiten (hoechstens {VOICE_MAX_PAGES}): {where}")
+    # llms.txt schreibt der Generator nicht; die Zahl dort muss trotzdem REVIEW_COUNT_GOOGLE sein (Fix-Runde B, M14)
+    m = re.search(r"Google-Bewertung: [\d,]+ / 5 bei (\d+) Rezensionen", read(ROOT / "llms.txt"))
+    if not m or int(m.group(1)) != n_google:
+        errs.append(f"llms.txt: nennt {m.group(1) if m else 'keine'} Google-Rezensionen, REVIEW_COUNT_GOOGLE = {n_google}")
     return errs
 
 
@@ -350,13 +577,53 @@ def legal_base_html(rel_path):
 
 
 def ak14():
+    """Geschuetzte Inhalte der Startseite (Spec §5, seit Fix-Runde B mit M10): PROTECTED, Herkunftshinweis wortgleich
+    (Zahl aus REVIEW_COUNT_GOOGLE), alle price-per-Zeilen samt Betrag, die Preissaetze aus PRICES (data-price),
+    Orte und PLZ des Einsatzgebiets; dazu die Fernwartungs-Downloads. Die Rechtstexte prueft AK14r."""
     errs = []
-    home = text_of(read(ROOT / "index.html"))
+    raw = read(ROOT / "index.html")
+    home = text_of(raw)
     for t in PROTECTED:
         if t not in home:
             errs.append(f"index.html: geschuetzter Satz fehlt: {t}")
-    if 'id="bewertungen-herkunft"' not in read(ROOT / "index.html"):
-        errs.append("index.html: #bewertungen-herkunft fehlt")
+    herkunft = [text_of(f) for _n, f in elements(raw, lambda tag, a: a.get("id") == "bewertungen-herkunft" and "h")]
+    want = HERKUNFT.format(n=gen().review_count_phrase(gen().REVIEW_COUNT_GOOGLE))
+    if herkunft != [want]:
+        errs.append(f"index.html: Herkunftshinweis #bewertungen-herkunft nicht wortgleich ({len(herkunft)}x): "
+                    f"{herkunft[0][:90] if herkunft else 'fehlt'}… statt {want[:90]}…")
+    per = re.findall(r'class="price-per"', raw)
+    if len(per) != len(HOME_PRICE_LINES):
+        errs.append(f"index.html: {len(per)} price-per-Zeilen statt {len(HOME_PRICE_LINES)}")
+    for line in HOME_PRICE_LINES:
+        if line not in home:
+            errs.append(f"index.html: Preiszeile fehlt: {line}")
+    prices, eur = gen().PRICES, gen().eur
+    spans = re.findall(r'<span data-price="(\w+)">([^<]*)</span>', raw)
+    for key, val in spans:
+        if key not in prices or val != eur(prices[key]):
+            errs.append(f"index.html: data-price {key} zeigt {val!r}, PRICES ergibt {eur(prices.get(key, 0))!r}")
+    for tpl, key in HOME_PRICE_SENTENCES:
+        line = tpl.format(eur(prices[key])).replace(" ", " ")
+        if line not in home:
+            errs.append(f"index.html: Preissatz aus PRICES fehlt: {line}")
+    geo = text_of(first(r'(<section[^>]*id="einsatzgebiet".*?</section>)', raw))
+    chips = text_of(first(r'(<div class="chips geo-chips">.*?</div>)', raw))
+    for name, plz in GEO_PLACES:
+        need = f"{name} (PLZ {plz})" if plz else name
+        if need not in geo:
+            errs.append(f"index.html: Einsatzgebiet ohne {need}")
+        if name not in chips.split():
+            errs.append(f"index.html: Orte-Chips ohne {name}")
+    fw = read(ROOT / "fernwartung/index.html")
+    for need in ("https://msp.grundke-it.de/dist/grundke-support.exe", "https://msp.grundke-it.de/dist/grundke-support-linux-amd64"):
+        if need not in fw:
+            errs.append(f"fernwartung: Download fehlt {need}")
+    return errs
+
+
+def ak14r():
+    """Rechtstexte zeichengleich zum Basis-Commit (braucht ../_intern/ und Git-Historie, nicht in --ci)."""
+    errs = []
     base = INTERN / "vorher" / "legal_hash.json"
     if not base.exists():
         errs.append(f"Rechtstexte: Baseline {base} fehlt, AK14 nicht pruefbar")
@@ -375,25 +642,78 @@ def ak14():
             diff = legal_diff(before, legal_text(read(p)))
             if diff:
                 errs.append(f"{rel(p)}: Rechtstext geaendert, {diff}")
-    fw = read(ROOT / "fernwartung/index.html")
-    for need in ("https://msp.grundke-it.de/dist/grundke-support.exe", "https://msp.grundke-it.de/dist/grundke-support-linux-amd64"):
-        if need not in fw:
-            errs.append(f"fernwartung: Download fehlt {need}")
     return errs
 
 
 def ak13():
+    """style.css, main.js und fernwartung.js tragen ueberall ?v=, alle dieselbe Version wie ASSET_VER in sw.js."""
     errs = []
     for p in pages():
-        for ref in re.findall(r'href="([^"]*style\.css[^"]*)"|src="([^"]*main\.js[^"]*)"', read(p)):
+        for ref in re.findall(r'href="([^"]*style\.css[^"]*)"|src="([^"]*(?:main|fernwartung)\.js[^"]*)"', read(p)):
             r = ref[0] or ref[1]
             if "?v=" not in r:
                 errs.append(f"{rel(p)}: {r} ohne Version")
     # Pre-Cache des Service Workers muss dieselbe Version tragen wie die Seiten
-    vers = {v for p in pages() for v in re.findall(r'(?:style\.css|main\.js)\?v=([\w.-]+)"', read(p))}
+    vers = {v for p in pages() for v in re.findall(r'(?:style\.css|main\.js|fernwartung\.js)\?v=([\w.-]+)"', read(p))}
     sw = re.search(r"const ASSET_VER\s*=\s*'([^']+)'", read(ROOT / "sw.js"))
     if not sw or vers != {sw.group(1)}:
         errs.append(f"sw.js: ASSET_VER {sw.group(1) if sw else 'fehlt'} passt nicht zu den Seiten {sorted(vers)}")
+    return errs
+
+
+# AK13v (Fix-Runde B, M5): Versionen gegen den Stand, der live ist (ORIGIN_REF). Ausgeliefert wird alles ausser dem,
+# was deploy.yml vor dem Hochladen entfernt (tools, .impeccable, Audit 2026-04, Markdown im Wurzelordner, .github,
+# .gitignore).
+ORIGIN_REF = "origin/main"
+DEPLOY_DROPPED = ("tools/", ".impeccable/", "Audit 2026-04/", ".github/")
+
+
+def deployable(path):
+    if path.startswith(DEPLOY_DROPPED) or path == ".gitignore":
+        return False
+    return not ("/" not in path and path.endswith(".md"))
+
+
+def git(*args):
+    out = subprocess.run(["git", "-C", str(ROOT), *args], capture_output=True)
+    if out.returncode:
+        raise RuntimeError(out.stderr.decode("utf-8", "replace").strip() or "git " + " ".join(args))
+    return out.stdout.decode("utf-8")
+
+
+def _const(rx, text):
+    m = re.search(rx, text, re.M)
+    return m.group(1) if m else None
+
+
+def ak13v():
+    """Geaenderte Dateien gegen ORIGIN_REF (Arbeitsbaum inkl. nicht versionierter Dateien): Aendert sich etwas unter
+    assets/css/ oder assets/js/, muss ASSET_VER im Generator und in sw.js anders sein als dort. Aendert sich irgendeine
+    ausgelieferte Datei, muessen CACHE_NAME und RUNTIME_CACHE in sw.js anders sein. Ohne git oder ORIGIN_REF: rot."""
+    try:
+        git("rev-parse", "--verify", "--quiet", ORIGIN_REF + "^{commit}")
+        changed = [f for f in git("diff", "--name-only", "-z", ORIGIN_REF, "--").split("\0") if f]
+        changed += [f for f in git("ls-files", "--others", "--exclude-standard", "-z").split("\0") if f]
+        old_gen = git("show", ORIGIN_REF + ":tools/build_landingpages.py")
+        old_sw = git("show", ORIGIN_REF + ":sw.js")
+    except (OSError, RuntimeError) as e:
+        return [f"AK13v nicht pruefbar: git oder {ORIGIN_REF} fehlt ({e}). Ohne Vergleich mit dem Live-Stand ist "
+                "nicht belegt, dass Asset- und Cache-Versionen erhoeht sind; 'git fetch origin' und erneut pruefen."]
+    errs, sw = [], read(ROOT / "sw.js")
+    assets = sorted(f for f in changed if f.startswith(("assets/css/", "assets/js/")))
+    if assets:
+        for where, old, new in (("Generator", _const(r'^ASSET_VER = "([^"]+)"', old_gen), gen().ASSET_VER),
+                                ("sw.js", _const(r"const ASSET_VER\s*=\s*'([^']+)'", old_sw),
+                                 _const(r"const ASSET_VER\s*=\s*'([^']+)'", sw))):
+            if old == new:
+                errs.append(f"{where}: ASSET_VER {new} wie auf {ORIGIN_REF}, obwohl geaendert: {', '.join(assets)}")
+    deploy = sorted(f for f in set(changed) if deployable(f))
+    if deploy:
+        for name in ("CACHE_NAME", "RUNTIME_CACHE"):
+            rx = r"const " + name + r"\s*=\s*'([^']+)'"
+            if _const(rx, old_sw) == _const(rx, sw):
+                errs.append(f"sw.js: {name} {_const(rx, sw)} wie auf {ORIGIN_REF}, obwohl {len(deploy)} ausgelieferte "
+                            f"Datei(en) geaendert sind, z. B. {', '.join(deploy[:3])}")
     return errs
 
 
@@ -405,21 +725,35 @@ def write_legal_baseline():
     (INTERN / "vorher" / "legal_hash.json").write_text(json.dumps(out, indent=1), encoding="utf-8")
 
 
-CHECKS = {"AK1": ak1, "AK2": ak2, "AK7": ak7, "AK8": ak8, "AK9": ak9, "AK14": ak14}
-CHECKS["AK13"] = ak13
-CHECKS["AK9b"] = ak9b
-CHECKS["AK11a"] = ak11a
-CHECKS["AK2b"] = ak2b
+# Name -> (Pruefung, braucht). braucht: "intern" = ../_intern/ (ausserhalb des Repos), "git" = Historie oder
+# origin/main. --ci laesst alles mit einer solchen Abhaengigkeit sichtbar aus (Deploy-Workflow, Fix-Runde B M16).
+CHECKS = {
+    "AK1": (ak1, ()), "AK2": (ak2, ()), "AK2b": (ak2b, ()), "AK7": (ak7, ()), "AK8": (ak8, ()), "AK9": (ak9, ()),
+    "AK9b": (ak9b, ()), "AK11a": (ak11a, ()), "AK13": (ak13, ()), "AK13v": (ak13v, ("git",)), "AK14": (ak14, ()),
+    "AK14r": (ak14r, ("intern", "git")),
+}
 
 if __name__ == "__main__":
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")
     if "--legal-baseline" in sys.argv:
         write_legal_baseline(); sys.exit(0)
     only = sys.argv[sys.argv.index("--only") + 1].split(",") if "--only" in sys.argv else list(CHECKS)
+    unknown = [k for k in only if k not in CHECKS]
+    if unknown:
+        print(f"Unbekannte Pruefung(en): {', '.join(unknown)}; vorhanden: {', '.join(CHECKS)}"); sys.exit(2)
+    skipped = [k for k in only if "--ci" in sys.argv and CHECKS[k][1]]
     bad = 0
     for k in only:
-        errs = CHECKS[k]()
+        if k in skipped:
+            continue
+        errs = CHECKS[k][0]()
         print(f"{k}: {'OK' if not errs else 'FEHLER (' + str(len(errs)) + ')'}")
         for e in errs[:40]:
             print("   ", e)
         bad += len(errs)
+    if skipped:
+        print(f"uebersprungen (--ci, braucht ../_intern/ oder Git-Historie): {', '.join(skipped)}")
+    for w in WARNINGS:
+        print("WARNUNG", w)
     sys.exit(1 if bad else 0)

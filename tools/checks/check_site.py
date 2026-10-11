@@ -1,5 +1,6 @@
 """Browser-Messungen (Spec §9: AK3, AK4, AK5, AK6, AK12, Anker, ohne JS).
-Aufruf: PY313 tools/checks/check_site.py [--out DIR] [--pages /,/kontakt/]"""
+Aufruf: PY313 tools/checks/check_site.py [--out DIR] [--pages /,/kontakt/]
+Laengenbudgets (AK5) ab 95 % als WARNUNG, darueber als FEHLER; Exit 1 nur bei Fehlern."""
 import json, sys
 from pathlib import Path
 from playwright.sync_api import sync_playwright
@@ -8,6 +9,8 @@ import serve
 from check_static import pages, kuemmerer_pages, legal_pages, rel, ROOT
 
 LIMIT_HOME, LIMIT_SUB = 12000, 8000
+LIMIT_SCHNELLCHECK, LIMIT_PREISE = 4000, 5000   # Anker der Startseite bei 390 px (AK5)
+WARN_SHARE = 0.95   # ab 95 % eines Budgets eine WARNUNG (kein Fehler), damit ein Satz mehr nicht ueberrascht (M9)
 WIDTHS = [320, 390, 768, 1024, 1440]
 HOME_ANCHORS = ["referenzen", "it-betreuung", "schnellcheck", "ablauf", "ki", "websites", "leistungen", "praxis",
                 "schulung", "preise", "faq", "einsatzgebiet", "kontakt", "bewertungen-herkunft"]
@@ -44,9 +47,17 @@ MEASURE = """() => {
 }"""
 
 
+def budget(fails, warns, what, value, limit, ak="AK5"):
+    """Ueber dem Budget: Fehler. Ab WARN_SHARE des Budgets: Warnung mit Restabstand."""
+    if value is None or value > limit:
+        fails.append(f"{what} {value} > {limit} ({ak})")
+    elif value >= WARN_SHARE * limit:
+        warns.append(f"{what} {value} von {limit} ({value / limit:.1%}, noch {limit - value} px, {ak})")
+
+
 def run(out_dir, only=None):
     srv, base = serve.start()
-    res, fails = {}, []
+    res, fails, warns = {}, [], []
     kp = {url_of(p) for p in kuemmerer_pages()}
     lp = {url_of(p) for p in legal_pages()}
     with sync_playwright() as pw:
@@ -82,12 +93,12 @@ def run(out_dir, only=None):
             m390, m1440 = r[390], r[1440]
             if u not in lp:
                 lim = LIMIT_HOME if u == "/" else LIMIT_SUB
-                if m390["height"] > lim: fails.append(f"{u}: Laenge {m390['height']} > {lim} (AK5)")
+                budget(fails, warns, f"{u}: Laenge bei 390 px", m390["height"], lim)
                 if m390["p_median"] < 16: fails.append(f"{u}: Fliesstext-Median {m390['p_median']} px (AK4)")
                 if m1440["stitle"] and m1440["stitle"] < 28: fails.append(f"{u}: s-title {m1440['stitle']} px (AK4)")
             if u == "/":
-                if (m390["schnellcheck_top"] or 99999) > 4000: fails.append(f"/: #schnellcheck bei {m390['schnellcheck_top']} (AK5)")
-                if (m390["preise_top"] or 99999) > 5000: fails.append(f"/: #preise bei {m390['preise_top']} (AK5)")
+                budget(fails, warns, "/: #schnellcheck bei 390 px", m390["schnellcheck_top"], LIMIT_SCHNELLCHECK)
+                budget(fails, warns, "/: #preise bei 390 px", m390["preise_top"], LIMIT_PREISE)
                 bad = {k: v for k, v in r["anchors"].items() if v != "ok"}
                 if bad: fails.append(f"/: Anker {bad} (AK14)")
             if any(r[w]["overflow"] for w in WIDTHS): fails.append(f"{u}: horizontaler Ueberlauf (AK12)")
@@ -103,7 +114,9 @@ def run(out_dir, only=None):
         (Path(out_dir) / "messung.json").write_text(json.dumps(res, indent=1), encoding="utf-8")
     for f in fails:
         print("FEHLER", f)
-    print(f"{len(res)} Seiten, {len(fails)} Fehler")
+    for w in warns:
+        print("WARNUNG", w)
+    print(f"{len(res)} Seiten, {len(fails)} Fehler, {len(warns)} Warnungen")
     return 1 if fails else 0
 
 
