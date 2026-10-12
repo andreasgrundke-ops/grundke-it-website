@@ -547,6 +547,11 @@ def legal_text(page_html):
 # Vorher-Messung (Commit 865b00a, dessen legal_text() genau diese Hashes ergibt) mit dem Text jetzt, beide nach
 # legal_norm(). Die Hashes bleiben die Pruefung, dass die Basis die gemessene ist; keine neue Baseline.
 LEGAL_BASE_COMMIT = "865b00a"
+# Basis je Seite. Ausnahme: Die Barrierefreiheitserklaerung wurde am 12.10.2026 von Andreas freigegeben inhaltlich
+# geaendert (Bild-Slider -> Beispiel-Chat, Wischleiste, Fuss, Stand-Datum); ihre Basis ist der Commit mit dem
+# freigegebenen Text, legal_hash.json traegt fuer sie den rohen Hash dieses Stands (Sicherung der alten Datei:
+# ../_intern/messungen/vorher/legal_hash_vor_2026-10-12.json). Alle anderen Rechtstexte bleiben bei 865b00a.
+LEGAL_BASE_COMMITS = {"barrierefreiheit/index.html": "6ed3a5b"}
 # Nur diese Zeichen zaehlen nicht zum Rechtstext: weiches Trennzeichen (U+00AD, H1 der Huelle), Emoji-Variantenwahl
 # (U+FE0F) und Bildzeichen U+1F300-U+1FAFF (AGB-Symbol, jetzt SVG). ©, ®, ™, Pfeile, § und Striche bleiben Text.
 LEGAL_DROP_RE = re.compile("[\u00ad\ufe0f\U0001F300-\U0001FAFF]")
@@ -567,9 +572,14 @@ def legal_diff(before, now):
     return f"erste Abweichung bei Zeichen {i}: vorher {a[max(0, i - 30):i + 30]!r} jetzt {b[max(0, i - 30):i + 30]!r}"
 
 
+def legal_base(rel_path):
+    """Basis-Commit der Rechtsseite (LEGAL_BASE_COMMITS, sonst LEGAL_BASE_COMMIT)."""
+    return LEGAL_BASE_COMMITS.get(rel_path, LEGAL_BASE_COMMIT)
+
+
 def legal_base_html(rel_path):
-    """Seite im Stand LEGAL_BASE_COMMIT (git show)."""
-    out = subprocess.run(["git", "-C", str(ROOT), "show", LEGAL_BASE_COMMIT + ":" + rel_path], capture_output=True)
+    """Seite im Stand ihres Basis-Commits (git show)."""
+    out = subprocess.run(["git", "-C", str(ROOT), "show", legal_base(rel_path) + ":" + rel_path], capture_output=True)
     if out.returncode:
         raise RuntimeError(out.stderr.decode("utf-8", "replace").strip())
     return out.stdout.decode("utf-8")
@@ -632,11 +642,11 @@ def ak14r():
             try:
                 before = legal_text(legal_base_html(rel(p)))
             except RuntimeError as e:
-                errs.append(f"{rel(p)}: Basis {LEGAL_BASE_COMMIT} nicht lesbar ({e})")
+                errs.append(f"{rel(p)}: Basis {legal_base(rel(p))} nicht lesbar ({e})")
                 continue
             # (a) Konsistenz: die Basis ist der gemessene Stand (roher Hash wie in legal_hash.json)
             if old.get(rel(p)) != hashlib.sha256(before.encode()).hexdigest():
-                errs.append(f"{rel(p)}: Basis {LEGAL_BASE_COMMIT} passt nicht zu legal_hash.json")
+                errs.append(f"{rel(p)}: Basis {legal_base(rel(p))} passt nicht zu legal_hash.json")
             # (b) Gleichheit: Rechtstext jetzt = Basis, nach legal_norm()
             diff = legal_diff(before, legal_text(read(p)))
             if diff:
