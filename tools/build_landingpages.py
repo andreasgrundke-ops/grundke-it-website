@@ -98,6 +98,7 @@ PHONE = "+491782584438"
 PHONE_DISP = "0178 258 44 38"
 TODAY = "2026-10-07"          # dateModified (Stand der letzten Aktualisierung)
 TODAY_DISP = "7. Oktober 2026"  # sichtbares Datum fuer Leser (E-E-A-T-Freshness-Signal)
+BARRIEREFREI_DATE = "2026-10-12"  # Barrierefreiheitserklaerung zuletzt inhaltlich geaendert (Andreas 12.10.2026)
 PUB_DATE = "2026-06-15"       # datePublished (Ersterstellung der Landingpages)
 PERSON_ID = DOMAIN + "/#andreas"          # @id der Person Andreas Grundke (Startseite)
 BUSINESS_ID = DOMAIN + "/#localbusiness"  # @id des Unternehmens (Startseite)
@@ -117,7 +118,7 @@ NEW_DATE_DISP = "7. Oktober 2026"
 # AK13v prueft das gegen origin/main), zusammen mit CACHE_NAME/RUNTIME_CACHE in sw.js. Neue URLs
 # laufen am alten Cache des Service Workers vorbei, ein wiederkehrender Besucher bekommt nie neues
 # HTML mit altem CSS.
-ASSET_VER = "2026.10.e"
+ASSET_VER = "2026.10.f"
 # Bewertungen im Google-Unternehmensprofil (Stand 10.10.2026). Eine weitere Stimme kam
 # direkt und zaehlt hier nicht mit. Einzige Quelle fuer die Zahl auf allen Seiten (llms.txt
 # schreibt der Generator nicht; check_static AK9b vergleicht die Zahl dort).
@@ -3688,7 +3689,7 @@ def write_sitemap(places, services):
     urls = []
     for loc, prio, mod in STATIC_URLS:
         urls.append((loc, mod, prio))
-    urls.append(("/barrierefreiheit/", TODAY, "0.3"))
+    urls.append(("/barrierefreiheit/", BARRIEREFREI_DATE, "0.3"))
     for s in services:
         urls.append(("/" + s["slug"] + "/", s.get("modified", TODAY), "0.8"))
     for p in places:

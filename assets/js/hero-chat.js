@@ -1,9 +1,9 @@
 /**
  * ═══════════════════════════════════════════════════════════
  * Grundke IT-Service · hero-chat.js
- * Version: 1.4.1
+ * Version: 1.5.0
  * Autor: Andreas Grundke / Grundke IT-Service
- * Datum: 2026-10-07
+ * Datum: 2026-10-12
  * Beschreibung: Hero „Der Chat" auf der Startseite. Im gezeichneten Handy
  *   laeuft ein Beispiel-Einsatz als Chat ab: Kundennachricht, Andreas tippt,
  *   Fernwartung, Ergebnis, Dank. Statusleiste und Zeitstempel tragen die echte
@@ -43,6 +43,7 @@
  *                      am Handy, Energiesparen) nicht mehr mehrere Schritte auf einmal nach.
  *   1.4.1 (2026-10-07) Fall Netzwerkspeicher ohne Zeitzusage („noch heute") -
  *                      die Website verspricht keine Reaktions- oder Loesungszeiten.
+ *   1.5.0 (2026-10-12) Abends und am Wochenende 20–40 Minuten bis zur Antwort (Andreas 12.10.2026).
  * ═══════════════════════════════════════════════════════════
  */
 (function () {
@@ -112,7 +113,9 @@
       return { me: now, ag: m, fix: plus(m, c.loesung), thanks: plus(m, c.loesung + 1), night: true };
     }
     var fix = plus(now, -1), ag = plus(fix, -c.loesung);
-    return { me: plus(ag, -c.antwort), ag: ag, fix: fix, thanks: now, night: false };
+    // Abends und am Wochenende liegt die Antwort laenger zurueck: 2→20, 3→30, 4→40 Minuten
+    var gap = dayMode(now) === 'evening' ? Math.min(40, Math.max(20, 20 + (c.antwort - 2) * 10)) : c.antwort;
+    return { me: plus(ag, -gap), ag: ag, fix: fix, thanks: now, night: false };
   }
 
   function updateClock() {

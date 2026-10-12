@@ -110,11 +110,14 @@
  *                        statt 404.html. style.css ohne tote Klassen, fernwartung.js mit Rueckfall,
  *                        Asset-Version 2026.10.e.
  *   1.27.0 (2026-10-11) Offline: Umleitung auf die Startseite statt fremder URL.
+ *   1.28.0 / 2026-10-12 — Hero-Chat: abends und am Wochenende 20–40 Minuten bis zur
+                        Antwort (hero-chat.js 1.5.0), Barrierefreiheitserklaerung aktualisiert,
+                        Asset-Version 2026.10.f.
  */
 
-const CACHE_NAME    = 'grundke-it-v1.27.0';
-const RUNTIME_CACHE = 'grundke-it-runtime-v35';
-const ASSET_VER     = '2026.10.e';   // muss ASSET_VER im Generator entsprechen
+const CACHE_NAME    = 'grundke-it-v1.28.0';
+const RUNTIME_CACHE = 'grundke-it-runtime-v36';
+const ASSET_VER     = '2026.10.f';   // muss ASSET_VER im Generator entsprechen
 
 /* Pre-Cache: minimaler Kern fuer Offline-First-Boot */
 const PRECACHE_URLS = [
