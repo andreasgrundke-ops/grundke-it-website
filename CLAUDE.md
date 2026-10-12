@@ -55,13 +55,15 @@ geaendert hat, nicht wegen eines neuen Footer-Links.
   am Handy rund 10.300 px. B: alle Generator-Seiten in der Huelle `render_shell` (Kopf, Abschnitte im
   Wechsel, Abschluss `closing()`), alter Seitenweg entfernt, Font-Preload. C1: Schulung im Generator,
   Kontakt, Fernwartung, Rechtsseiten (nur Huelle), 404; `sync_shared()` schreibt auch Abschluss und
-  Font-Preload in die Handseiten. Live `sw.js` 1.26.1 / runtime v34, `ASSET_VER` 2026.10.d;
-  Kandidat C2 (Empfehlungen + Fix-Runden) 1.27.0 / v35 / 2026.10.e. `check_static.py --ci` laeuft im Deploy.
+  Font-Preload in die Handseiten. C2/C3 (12.10.): Empfehlungen mit Einrichtungs-Pauschalen, Fix-Runden
+  aus dem Gesamt-Review, Hero-Chat abends 20-40 Min., Barrierefreiheitserklaerung neu. `sw.js` 1.28.0 /
+  runtime v36, `ASSET_VER` 2026.10.f. `check_static.py --ci` laeuft im Deploy und stoppt ihn bei Fehlern.
 - **Pruefen vor jedem Release:** `tools/checks/` (check_static, check_site, check_seo mit
   `--allow ../_intern/messungen/seo-ausnahmen.json`, check_visual), Python 3.13 mit Playwright.
-  AK14 vergleicht die Rechtstexte mit Commit 865b00a; Rechtstext nie aendern ohne neue Baseline.
-- **Offen:** Release C2 (`/empfehlungen/` mit Einrichtungs-Pauschalen) wartet auf Andreas' Vorschau-Abnahme.
-  Linux-Fernwartung auf echtem Mint testen. Danach Gesamtabnahme und Search Console nach 2/4 Wochen.
+  AK14r vergleicht die Rechtstexte je Seite mit ihrem Basis-Commit (`LEGAL_BASE_COMMITS`);
+  Rechtstext nur mit Andreas' OK aendern und dann Basis-Commit und `legal_hash.json` nachziehen.
+- **Offen:** Ortsseiten-Fakten (Entwurf in `../_intern/o5-ortsfakten.md`), Linux-Fernwartung auf echtem
+  Mint testen, Search Console um den 24.10. und 07.11.2026, Laengenbudgets fast voll (siehe STATUS).
 - Details in `STATUS.md`; Spec, Plan, Textblatt, Messungen und Fachwissen ausserhalb des Repos in
   `../_intern/` (Repo ist oeffentlich).
 

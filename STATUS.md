@@ -1,13 +1,14 @@
 # STATUS – grundke-it.de Website
 <!-- CI 2026.01 · Grundke IT-Service · Standard-Statusdatei, wird von Mensch+KI gepflegt -->
 
-**Stand:** 2026-10-10 · **Status:** Live
+**Stand:** 2026-10-12 · **Status:** Live
 
 ## Was ist das
 grundke-it.de Website – siehe README/CLAUDE.md im Projekt.
 
 ## Aktueller Stand
-Umbau „Ein Stil, der Kümmerer, Handy zuerst“ (10.10.2026) ist bis auf `/empfehlungen/` live.
+Umbau „Ein Stil, der Kümmerer, Handy zuerst“ (10.–12.10.2026) ist vollständig live, Gesamtabnahme
+mit Auflagen bestanden, Auflagen erledigt.
 
 - **Release A – Startseite:** am Handy 10.316 px statt rund 20.000, Lighthouse 100/100/100/100
   (vorher 96/100/100/67). Interne Dateien (`tools/`, `*.md`,
@@ -22,13 +23,16 @@ Umbau „Ein Stil, der Kümmerer, Handy zuerst“ (10.10.2026) ist bis auf `/emp
   `sync_shared()` schreibt Abschluss und Font-Preload auch in die Handseiten. Fernwartung: Knöpfe
   `.btn-p/.btn-g`, Seitenspalte ab 1100 px, Platz des Umschalters vor dem Skript reserviert
   (CLS 0,103 → 0). Rechtsseiten nur neue Hülle, Text per AK14 gegen Commit 865b00a geprüft.
-- **Release C2 (Kandidat, Branch `umbau/c2-empfehlungen`):** `/empfehlungen/` mit Einrichtungs-Pauschalen
+- **Release C2 (live 12.10.):** `/empfehlungen/` mit Einrichtungs-Pauschalen
   (Richtwerte „ca.“, Beispiele und Erfahrungswerte), Zubehör für den Arbeitsplatz, private Produkte entfallen.
   Dazu Fix-Runden aus dem Gesamt-Review: schärfere Prüfungen (Zusagewörter, Schlüssel der Seitendaten,
   H2-Ausnahmen je Seite, Pre-Cache-Dateien), ein Unternehmensknoten im Schema, Service Worker cached nur
   erfolgreiche Antworten und leitet offline auf die Startseite, `check_static.py --ci` läuft im Deploy.
-- **Versionen:** live `sw.js` 1.26.1 / runtime v34, `ASSET_VER` 2026.10.d; Kandidat C2 1.27.0 / v35 / 2026.10.e.
-- **Prüfwerkzeuge** in `tools/checks/` (nicht im Deploy): `check_static.py` (AK1–AK14),
+- **Release C3 (live 12.10.):** Hero-Chat zeigt abends und am Wochenende 20–40 Minuten bis zur Antwort;
+  Barrierefreiheitserklärung beschreibt Chat, Pause-Knopf und Wischleiste statt des alten Sliders.
+- **Versionen:** `sw.js` 1.28.0 / runtime v36, `ASSET_VER` 2026.10.f. Messung live: Startseite LCP 828 ms,
+  CLS 0,01 (vor dem Umbau 1.329 ms); Lighthouse-Stichproben 100/100/100/100.
+- **Prüfwerkzeuge** in `tools/checks/` (Verzeichnis nicht im Deploy, `check_static.py --ci` läuft vor dem Upload): `check_static.py` (AK1–AK14),
   `check_site.py` (Länge ≤ 8.000 px bei 390, erster Bildschirm, Überlauf), `check_seo.py`
   (Parität zu `../_intern/messungen/vorher`, Ausnahmen in `../_intern/messungen/seo-ausnahmen.json`),
   `check_visual.py` (Startseite pixelgleich). Python 3.13 mit Playwright.
@@ -46,13 +50,15 @@ Umbau „Ein Stil, der Kümmerer, Handy zuerst“ (10.10.2026) ist bis auf `/emp
 - 27.07.2026: kanonische Domain non-www.
 
 ## Nächster Schritt
-- Release C2 nach Vorschau-Abnahme mergen und live prüfen; danach Lighthouse und LCP/CLS live auf den
-  Stichproben. Gesamtabnahme liegt vor (abgenommen mit Auflagen, erledigt bis auf Andreas' Freigaben).
-- Search Console nach zwei und vier Wochen prüfen.
+- Search Console prüfen: um den 24.10. und den 07.11.2026 (zwei und vier Wochen nach Release B).
+- Ortsseiten: eigene Fakten und FAQ, sobald die Angaben vorliegen (Entwurf intern).
+- Längenbudgets sind fast voll (Startseite `#schnellcheck`, `#preise`, software-nach-mass, ki-dsgvo,
+  empfehlungen > 96 %): neue Texte dort nur mit Kürzung an anderer Stelle.
+- GitHub Actions auf Versionen ohne Node-20-Warnung heben.
 - Offen: Linux-Fernwartung auf echtem Mint testen; AGB-PDF von 2024 aktualisieren.
 
 ## Blocker
-- Release C2 wartet auf die Vorschau-Abnahme durch Andreas.
+(keine)
 
 ---
 *Regel: Diese Datei bei jedem Arbeitsblock aktualisieren – sie füttert Mission Control und Jarvis.*
