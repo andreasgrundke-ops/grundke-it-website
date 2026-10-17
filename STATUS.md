@@ -51,6 +51,8 @@ mit Auflagen bestanden, Auflagen erledigt.
 - 27.07.2026: kanonische Domain non-www.
 
 ## Nächster Schritt
+- KI-Sichtbarkeit (Recherche 17.10.2026, `../_intern/reports/Gelbe Seiten KI Check Vergleich.md`): Lücken liegen off-site. 1) Google-Unternehmensprofil vervollständigen, 2) mehr Bewertungen mit Text, 3) Bing Places + einheitliche NAP in Gelbe Seiten, Das Örtliche, 11880, Apple Business Connect, LinkedIn, IHK, 4) Erwähnungen auf Drittseiten (Partner, Referenzen, lokale Presse), 5) eigene Messung: festes Fragenset, mehrere Läufe je KI (ChatGPT, Google AI, Gemini, Copilot, Perplexity), Nennungsanteil vierteljährlich. Prüfmodul dafür im MSP Manager geplant.
+- Medien: Motion Graphics und Erklärvideo über `motion-video`/Higgsfield möglich, Credits vorher freigeben lassen (Gehirn-Regel medien-motion-higgsfield-elevenlabs).
 - Bing Webmaster Tools (Andreas, im Browser): Seite verifiziert? Sitemap `https://grundke-it.de/sitemap.xml` eingereicht? Startseite per URL-Prüfung testen. Stand im Repo nicht sichtbar.
 - Search Console prüfen: um den 24.10. und den 07.11.2026 (zwei und vier Wochen nach Release B).
 - Ortsseiten: eigene Fakten und FAQ, sobald die Angaben vorliegen (Entwurf intern).
