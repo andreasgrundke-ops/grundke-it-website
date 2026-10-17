@@ -879,7 +879,8 @@ main .sec--light .hc-wa:hover { background: rgba(21,128,61,.08); }
     line-height: 1.4;
     color: var(--text2);
   }
-  .hc-direkt > .inner, .hc-direkt > p { display: flex; flex-wrap: wrap; align-items: baseline; gap: .35rem 1.1rem; margin: 0; }
+  .hc-direkt > .inner, .hc-direkt > p { display: flex; flex-wrap: wrap; align-items: baseline; gap: .35rem 1.1rem; }
+  .hc-direkt > p { margin: 0; }   /* .inner behaelt margin:0 auto (Flucht der Abschnitte) */
   .hc-direkt a { background: none; border: 0; padding: 0; color: var(--text); text-underline-offset: .22em; text-decoration-thickness: 1px; }
   .hc-direkt a[href^="tel:"] { font-family: var(--fh); font-size: 24px; font-weight: 700; letter-spacing: -.01em; font-variant-numeric: tabular-nums; text-decoration: none; }
   .hc-direkt a[href^="tel:"]:hover { text-decoration: underline; }
