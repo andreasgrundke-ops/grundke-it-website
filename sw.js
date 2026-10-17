@@ -178,6 +178,15 @@ self.addEventListener('fetch', event => {
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
 
+  /* Range-Anfragen und Medien (Video, Audio, Untertitel): durchreichen, nicht cachen.
+     Der Browser holt Filme in Teilstuecken (Range); eine 206-Teilantwort darf nicht in den
+     Cache, und eine Cache-First-Antwort ohne Range-Unterstuetzung bricht das Spulen. Die
+     Endungsliste faengt zusaetzlich direkte Links auf .mp4/.webm/.m4v/.vtt OHNE Range ab:
+     die kaemen sonst mit Status 200 in den Runtime-Cache und laegen dort als ganze Datei. */
+  if (req.headers.has('range') ||
+      ['video', 'audio', 'track'].includes(req.destination) ||
+      /\.(mp4|webm|m4v|vtt)$/i.test(url.pathname)) return;
+
   /* Navigation (HTML-Seiten) -> Network-First */
   if (req.mode === 'navigate' || (req.headers.get('accept') || '').includes('text/html')) {
     event.respondWith(
