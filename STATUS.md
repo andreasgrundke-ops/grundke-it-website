@@ -38,6 +38,7 @@ mit Auflagen bestanden, Auflagen erledigt.
   `check_visual.py` (Startseite pixelgleich). Python 3.13 mit Playwright.
 
 ## Verlauf (kurz)
+- 17.10.2026: Bing/IndexNow: `BingSiteAuth.xml` und IndexNow-Schlüsseldatei liegen live; `tools/indexnow.py` meldet die Sitemap-URLs (31) an IndexNow, erster Ping HTTP 200. Nach jedem Deploy mit neuen oder geänderten Seiten erneut laufen lassen (`python tools/indexnow.py`, nicht Teil des Builds).
 - 09.10.2026: Hero nur noch Chat, Fernwartung mit Umschalter Windows/Linux/macOS, TeamViewer raus,
   Website-Preise neu (ca. 800 / 1.300 / 2.000 €, Betrieb optional 40 €/Monat).
 - 07.10.2026: Konzept „Sichtbarkeit und Wachstum“: Software, Websites, IT-Betreuer wechseln,
@@ -50,6 +51,7 @@ mit Auflagen bestanden, Auflagen erledigt.
 - 27.07.2026: kanonische Domain non-www.
 
 ## Nächster Schritt
+- Bing Webmaster Tools (Andreas, im Browser): Seite verifiziert? Sitemap `https://grundke-it.de/sitemap.xml` eingereicht? Startseite per URL-Prüfung testen. Stand im Repo nicht sichtbar.
 - Search Console prüfen: um den 24.10. und den 07.11.2026 (zwei und vier Wochen nach Release B).
 - Ortsseiten: eigene Fakten und FAQ, sobald die Angaben vorliegen (Entwurf intern).
 - Längenbudgets sind fast voll (Startseite `#schnellcheck`, `#preise`, software-nach-mass, ki-dsgvo,
