@@ -755,6 +755,35 @@ def ak13v():
     return errs
 
 
+def ak13s():
+    """Seit 17.10.2026 (Relaunch R1, Spec D15/G6): Die sichtbare Website-Version haengt am Cache. SITE_VERSION (Generator)
+    muss dem Suffix von CACHE_NAME in sw.js gleichen ('grundke-it-v2.0.0' -> '2.0.0'); SITE_DATE_DISP hat die Form
+    TT.MM.JJJJ; jede Seite traegt im <footer> 'Version {SITE_VERSION} · Stand {SITE_DATE_DISP}'."""
+    g, errs = gen(), []
+    ver, disp = getattr(g, "SITE_VERSION", None), getattr(g, "SITE_DATE_DISP", None)
+    if not ver:
+        errs.append("Generator: SITE_VERSION fehlt")
+    if not disp:
+        errs.append("Generator: SITE_DATE_DISP fehlt")
+    elif not re.fullmatch(r"\d{2}\.\d{2}\.\d{4}", disp):
+        errs.append(f"Generator: SITE_DATE_DISP '{disp}' nicht in der Form TT.MM.JJJJ")
+    cache = _const(r"const CACHE_NAME\s*=\s*'grundke-it-v([^']+)'", read(ROOT / "sw.js"))
+    if cache is None:
+        errs.append("sw.js: CACHE_NAME nicht im Format 'grundke-it-v<Version>'")
+    elif ver and cache != ver:
+        errs.append(f"SITE_VERSION {ver} weicht vom Suffix von CACHE_NAME ({cache}) ab")
+    if not ver or not disp:
+        return errs
+    want = f"Version {ver} · Stand {disp}"
+    for p in pages():
+        m = re.search(r"<footer[^>]*>.*?</footer>", read(p), re.S)
+        if not m:
+            errs.append(f"{rel(p)}: kein <footer>")
+        elif want not in html.unescape(re.sub(r"<[^>]+>", "", m.group(0))).replace(" ", " "):
+            errs.append(f"{rel(p)}: Fuss ohne '{want}'")
+    return errs
+
+
 def write_legal_baseline():
     out = {}
     for p in legal_pages():
@@ -768,7 +797,7 @@ def write_legal_baseline():
 CHECKS = {
     "AK1": (ak1, ()), "AK2": (ak2, ()), "AK2b": (ak2b, ()), "AK7": (ak7, ()), "AK8": (ak8, ()), "AK9": (ak9, ()),
     "AK9b": (ak9b, ()), "AK11a": (ak11a, ()), "AK13": (ak13, ()), "AK13v": (ak13v, ("git",)), "AK14": (ak14, ()),
-    "AK14r": (ak14r, ("intern", "git")),
+    "AK14r": (ak14r, ("intern", "git")), "AK13s": (ak13s, ()),
 }
 
 if __name__ == "__main__":
