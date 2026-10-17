@@ -41,7 +41,7 @@ Automatisierung aus einer Hand. Vor Ort im Münchner Osten (Radius 25 km), remot
 
 ## Capabilities and Constraints
 
-- Ohne Vertrag 110 € netto pro Stunde im 15-Minuten-Takt. Betreuungspakete ab 149 € netto im Monat
+- Ohne Vertrag 110 € netto zzgl. MwSt. pro Stunde im 15-Minuten-Takt. Betreuungspakete ab 149 € netto im Monat
   („planbare Monatspauschale", nicht „Festpreis"). Anfahrt bis 5 km inklusive. IT-Assessment in
   jedem Paket, Monatsreport nur im Premium-Paket.
 - **Keine garantierten Reaktionszeiten oder Erreichbarkeiten.** Vertragskunden werden bevorzugt

@@ -1211,7 +1211,7 @@ PLACES = [
               "der IT-Betreuer aus der Nachbarschaft."),
         "answer": ("Als Grundke IT-Service betreue ich in Grasbrunn, Neukeferloh und Harthausen Büros, Werkstätten und "
                    "Praxen mit 5 bis 50 Arbeitsplätzen: Rechner, Server, Microsoft 365 und Datensicherung, ad hoc für "
-                   "110 € netto je Stunde oder ab 149 € netto im Monat."),
+                   "110 € netto zzgl. MwSt. je Stunde oder ab 149 € netto im Monat."),
         "rows_order": ("IT-Betreuung & Wartung", "Microsoft 365 & E-Mail", "Backup & IT-Sicherheit"),
         "voice": "dietz",
         "intro": ("Ich arbeite von Neukeferloh aus, also direkt in der "
@@ -1250,7 +1250,7 @@ PLACES = [
         "k": ("Für kleine Büros, Freiberufler und Selbstständige im Home-Office in Baldham rechne ich ohne "
               "Mindestbetrag im 15-Minuten-Takt ab, per Fernwartung oder nach Absprache vor Ort."),
         "answer": ("Ja. Als Grundke IT-Service aus Grasbrunn betreue ich auch kleine Betriebe in Baldham und "
-                   "Vaterstetten, vom Freiberufler bis zum Büro mit 50 Arbeitsplätzen, ad hoc für 110 € netto je "
+                   "Vaterstetten, vom Freiberufler bis zum Büro mit 50 Arbeitsplätzen, ad hoc für 110 € netto zzgl. MwSt. je "
                    "Stunde oder mit Monatspauschale ab 149 € netto."),
         "voice": "fleischmann",
         "intro": ("Baldham gehört zu Vaterstetten und ist über die S-Bahn bestens angebunden – ein "
@@ -1268,7 +1268,7 @@ PLACES = [
         "k": ("Für Handwerksbetriebe und kleine Firmen in Zorneding und Pöring ohne eigene IT-Abteilung bin ich die "
               "IT-Abteilung von außen."),
         "answer": ("Betriebe in Zorneding, Pöring und Wolfesing betreue ich als Grundke IT-Service aus Grasbrunn: "
-                   "laufend mit Monatspauschale ab 149 € netto oder einmalig für 110 € netto je Stunde, per "
+                   "laufend mit Monatspauschale ab 149 € netto oder einmalig für 110 € netto zzgl. MwSt. je Stunde, per "
                    "Fernwartung oder vor Ort."),
         "voice": "dietz",
         "intro": ("Zorneding mit Pöring und Wolfesing liegt an der S-Bahn-Linie S4 im grünen Osten "
@@ -1305,7 +1305,7 @@ PLACES = [
               "selbst macht, statt Tickets zu verteilen."),
         "answer": ("Betriebe in Putzbrunn und Solalinden betreue ich als Grundke IT-Service aus Grasbrunn: "
                    "IT-Betreuung, Microsoft 365, Netzwerk, Datensicherung und IT-Sicherheit zum einheitlichen "
-                   "Stundensatz von 110 € netto im 15-Minuten-Takt oder als Monatspauschale ab 149 € netto."),
+                   "Stundensatz von 110 € netto zzgl. MwSt. im 15-Minuten-Takt oder als Monatspauschale ab 149 € netto."),
         "rows_order": ("IT-Betreuung & Wartung", "Microsoft 365 & E-Mail", "Netzwerk & WLAN", "Backup & IT-Sicherheit"),
         "voice": "verena-k",
         "intro": ("Putzbrunn mit Solalinden hat ein lebhaftes Gewerbegebiet mit vielen KMU und "
@@ -1329,7 +1329,7 @@ PLACE_CARDS = [
 # Beleg im Kopf mit dem Stundensatz, gleicher Wortlaut ueberall: als proof2 auf Ortsseiten, it-notdienst und
 # Netzwerk, als proof3 hinter dem eigenen Beleg auf Microsoft 365, IT-Sicherheit und Lizenzen (Task 6,
 # Fix-Runden 1/2). Der fruehere Vertrauenskasten der Ortsseiten entfaellt (Fakten in Beleg und Abschluss).
-PROOF_ADHOC = ("ico-clock", "Ad hoc 110 € netto/Std. im 15-Minuten-Takt")
+PROOF_ADHOC = ("ico-clock", "Ad hoc 110 € netto zzgl. MwSt./Std. im 15-Minuten-Takt")
 PLACE_NEAR_H2 = "Auch in deiner Nähe im Einsatz"
 
 
@@ -1477,7 +1477,7 @@ def offer_from(name, min_price, desc, monthly=False, approx=False):
 
 EINMALIG = "einmalig, zzgl. MwSt."
 
-TRUST_DEFAULT = ("<strong>Einheitlicher Stundensatz von 110 € netto, Abrechnung im 15-Minuten-Takt, keine "
+TRUST_DEFAULT = ("<strong>Einheitlicher Stundensatz von 110 € netto zzgl. MwSt., Abrechnung im 15-Minuten-Takt, keine "
                  "versteckten Kosten.</strong> Kein klassischer Kundendienst, sondern ein fester persönlicher "
                  "Ansprechpartner mit über 20 Jahren IT-Erfahrung – im Raum München Ost, datenschutzgerecht und auf "
                  "Wunsch self-hosted.")
@@ -1487,9 +1487,9 @@ TRUST_DEFAULT = ("<strong>Einheitlicher Stundensatz von 110 € netto, Abrechnun
 TRUST_WEBSITE = ("<strong>Preis nach Aufwand, verbindlich im Angebot.</strong> Was eure Website kostet, klären "
                  "wir in einem unverbindlichen Telefonat, danach bekommst du ein schriftliches Angebot. Hosting und "
                  "Pflege übernehme ich auf Wunsch, sonst ziehe ich die fertige Seite zu einem Hoster eurer Wahl um. "
-                 "Was außerhalb des Angebots anfällt, kostet 110 € netto je Stunde im 15-Minuten-Takt.")
+                 "Was außerhalb des Angebots anfällt, kostet 110 € netto zzgl. MwSt. je Stunde im 15-Minuten-Takt.")
 TRUST_FESTPREIS = ("<strong>Festpreis für das Projekt, fester Monatsbetrag für Betrieb und Pflege.</strong> "
-                   "Was außerhalb davon anfällt, kostet 110 € netto je Stunde im 15-Minuten-Takt. Du sprichst "
+                   "Was außerhalb davon anfällt, kostet 110 € netto zzgl. MwSt. je Stunde im 15-Minuten-Takt. Du sprichst "
                    "von der ersten Frage bis zum laufenden Betrieb mit mir, Andreas Grundke.")
 
 # Schulung (Task 8, bis 10.10.2026 Handseite): Course-Knoten aus dem JSON-LD der Handseite, inklusive availability
@@ -1565,7 +1565,7 @@ SERVICES = [
         # Darstellung in der Huelle (Fix-Runde 1, 10.10.2026)
         "h1_nowrap": "Managed IT-Service",
         "proof2": ("ico-check", "Monatspauschale ab 149 € netto"),
-        "price_line": ("Ad hoc", "110 € netto je Stunde im 15-Minuten-Takt, zzgl. MwSt."),
+        "price_line": ("Ad hoc", "110 € netto zzgl. MwSt. je Stunde im 15-Minuten-Takt"),
         "intro": ("Die meisten kleinen Unternehmen rufen erst an, wenn die IT schon steht – und dann "
                   "wird es teuer. <strong>Managed IT-Service dreht das um:</strong> Ich kümmere mich "
                   "laufend um eure Rechner, Server, E-Mails und Sicherheit, bevor etwas ausfällt. "
@@ -1769,7 +1769,7 @@ SERVICES = [
         "k": ("Dein ITler geht nicht ran? Ich schon. Betreue ich euch bereits, kenne ich eure Systeme und schaue "
               "per Fernwartung nach, ohne lange Erklärungen."),
         "answer": ("Im IT-Notdienst helfe ich als Grundke IT-Service aus Grasbrunn Betrieben im Münchner Osten bei "
-                   "Störungen per Fernwartung oder vor Ort, ad hoc für 110 € netto je Stunde im 15-Minuten-Takt und "
+                   "Störungen per Fernwartung oder vor Ort, ad hoc für 110 € netto zzgl. MwSt. je Stunde im 15-Minuten-Takt und "
                    "ohne Zuschlag am Abend oder Wochenende. Eine feste Reaktionszeit sage ich nicht zu."),
         "chat": [
             ("kunde", "Im Büro kommt keiner mehr an die Dateien, der Server reagiert nicht."),
@@ -1799,7 +1799,7 @@ SERVICES = [
              "Vertragskunden werden bevorzugt behandelt, Premium-Kunden zuerst. Viele Störungen lassen sich "
              "per Fernwartung lösen, ohne dass jemand anfahren muss."),
             ("Was kostet der IT-Notdienst?",
-             "Ad hoc 110 Euro netto je Stunde im 15-Minuten-Takt, ohne Zuschlag für Abend oder Wochenende. "
+             "Ad hoc 110 € netto zzgl. MwSt. je Stunde im 15-Minuten-Takt, ohne Zuschlag für Abend oder Wochenende. "
              "Du zahlst nur die tatsächlich benötigte Zeit."),
             ("Wie funktioniert die Fernwartung?",
              "Auf der Seite „Fernwartung starten“ lädst du ein kleines Programm für Windows oder Linux "
@@ -2026,7 +2026,7 @@ SERVICES = [
             ("Was kostet eine Automatisierung?",
              "Nach dem ersten Blick auf den Ablauf bekommst du einen Festpreis, bevor irgendetwas gebaut "
              "wird. Kleinere Strecken sind oft an einem Tag fertig, größere brauchen mehrere. Was später "
-             "außerhalb des Auftrags anfällt, kostet 110 Euro netto je Stunde im 15-Minuten-Takt."),
+             "außerhalb des Auftrags anfällt, kostet 110 € netto zzgl. MwSt. je Stunde im 15-Minuten-Takt."),
             ("Was passiert, wenn sich unser Vorsystem ändert?",
              "Dann muss die Anwendung angepasst werden, das gehört dazu. Deshalb baue ich die "
              "Schnittstelle so, dass die Stelle, an der die Daten hereinkommen, sauber getrennt vom "
@@ -2132,8 +2132,8 @@ SERVICES = [
             ("Was kostet eine solche Auswertung?",
              "Das hängt daran, wie viele Kameras beteiligt sind, wie klar die Fragestellung ist und ob "
              "passende Hardware für die Erkennung schon vorhanden ist. Nach dem Blick auf die Anlage "
-             "bekommst du einen Festpreis. Was später außerhalb des Auftrags anfällt, kostet 110 Euro "
-             "netto je Stunde im 15-Minuten-Takt."),
+             "bekommst du einen Festpreis. Was später außerhalb des Auftrags anfällt, kostet 110 € "
+             "netto zzgl. MwSt. je Stunde im 15-Minuten-Takt."),
         ],
     },
     {
@@ -2263,7 +2263,7 @@ SERVICES = [
               "wir im kostenlosen Erstgespräch.")
              if SHOW_FROM_PRICES else
              ("Bestandsaufnahme und eine brauchbare Nutzungsrichtlinie sind für einen kleinen Betrieb meist an "
-              "einem Tag zu schaffen, abgerechnet zu 110 Euro netto je Stunde im 15-Minuten-Takt. Ein lokales "
+              "einem Tag zu schaffen, abgerechnet zu 110 € netto zzgl. MwSt. je Stunde im 15-Minuten-Takt. Ein lokales "
               "Modell einzurichten dauert länger und hängt an der Hardware. Was in deinem Fall nötig ist, klären "
               "wir im kostenlosen Erstgespräch.")),
             ("Reicht ChatGPT Business für den Datenschutz?",
@@ -2361,8 +2361,8 @@ SERVICES = [
              "Anwalt, ich kümmere mich um die Technik."),
             ("Was kostet die Übernahme?",
              "Der IT-Schnellcheck zum Kennenlernen ist kostenlos. Wer danach eine Monatspauschale abschließt, "
-             "bekommt das ausführliche IT-Assessment im Paket. Ohne Vertrag rechne ich nach Aufwand ab, 110 Euro "
-             "netto je Stunde im 15-Minuten-Takt. Die Pakete beginnen bei 149 Euro netto im Monat."),
+             "bekommt das ausführliche IT-Assessment im Paket. Ohne Vertrag rechne ich nach Aufwand ab, 110 € "
+             "netto zzgl. MwSt. je Stunde im 15-Minuten-Takt. Die Pakete beginnen bei 149 Euro netto im Monat."),
             ("Versprichst du feste Reaktionszeiten?",
              "Nein. Ich bin Einzelunternehmer mit abgestimmter Vertretung und verspreche nur, was ich jedes Mal "
              "halten kann. Vertragskunden werden bevorzugt "
@@ -2515,7 +2515,7 @@ SERVICES = [
         "prices": [
             ("Live-Schulung", "135 €",
              "Interaktive Schulung mit Präsentation, echten Beispielen und Raum für Fragen. Direkt auf dein Unternehmen "
-             "zugeschnitten – für Teams jeder Größe.", True, "pauschal (1,5h) · danach 110 €/h, zzgl. MwSt.",
+             "zugeschnitten – für Teams jeder Größe.", True, "pauschal (1,5h) · danach 110 € netto zzgl. MwSt. je Stunde",
              {"badge": None,
               "feats": ["1:1 oder Gruppenformat per Microsoft Teams", "Phishing, Passwörter, Social Engineering, DSGVO",
                         "Empfohlene Dauer: 1,5 Stunden", "Unterlagen als PDF zum Nachschlagen"],
@@ -2549,7 +2549,7 @@ SERVICES = [
         "faqs": [
             ("Was kostet eine IT-Sicherheitsschulung?",
              "Die Live-Schulung per Microsoft Teams kostet 135 € pauschal für rund 1,5 Stunden (jede weitere Stunde "
-             "110 €). Für das Online-Portal, das gerade entsteht, sind 49 € Grundpauschale pro Halbjahr plus 5 € je Mitarbeiter und Halbjahr geplant. "
+             "110 € netto zzgl. MwSt.). Für das Online-Portal, das gerade entsteht, sind 49 € Grundpauschale pro Halbjahr plus 5 € je Mitarbeiter und Halbjahr geplant. "
              "Das Kombi-Paket aus Live-Schulung und Portal ist ab 165 € pro Halbjahr geplant. Alle Preise verstehen sich "
              "zzgl. MwSt."),
             ("Wie läuft die Live-Schulung ab?",
@@ -3088,7 +3088,7 @@ SERVICES = [
         "raw_intro": True,
         "extra": """
       <div class="ki-note">
-        <p><strong>Steht bei euch gerade alles still?</strong> Dann lies nicht weiter, sondern ruf an: <a href="tel:+491782584438">0178 258 44 38</a>. Ich arbeite nur für Unternehmen, Vertragskunden werden bevorzugt behandelt. Ad hoc kostet ein Einsatz 110 € netto je Stunde im 15-Minuten-Takt. Wie das abläuft, steht auf der Seite <a href="/it-notdienst/">IT-Notdienst</a>.</p>
+        <p><strong>Steht bei euch gerade alles still?</strong> Dann lies nicht weiter, sondern ruf an: <a href="tel:+491782584438">0178 258 44 38</a>. Ich arbeite nur für Unternehmen, Vertragskunden werden bevorzugt behandelt. Ad hoc kostet ein Einsatz 110 € netto zzgl. MwSt. je Stunde im 15-Minuten-Takt. Wie das abläuft, steht auf der Seite <a href="/it-notdienst/">IT-Notdienst</a>.</p>
       </div>
 """,
         "faqs": [
@@ -3097,7 +3097,7 @@ SERVICES = [
              "Freigabe per Fernwartung und du siehst alles mit. Ist ein Server oder das Netzwerk ganz weg, braucht "
              "es meist einen Termin vor Ort."),
             ("Hilfst du auch, wenn ich kein Vertragskunde bin?",
-             "Ja, für Unternehmen. Ad hoc rechne ich 110 Euro netto je Stunde im 15-Minuten-Takt ab. "
+             "Ja, für Unternehmen. Ad hoc rechne ich 110 € netto zzgl. MwSt. je Stunde im 15-Minuten-Takt ab. "
              "Vertragskunden werden bevorzugt behandelt, deshalb kann es bei Neukunden etwas dauern."),
         ],
     },
@@ -3152,7 +3152,7 @@ SERVICES = [
              "Wenn der Server läuft und im Netzwerk erreichbar ist, oft ja. Ist er ganz aus oder hängt er beim "
              "Starten, muss jemand vor Ort hinsehen."),
             ("Was kostet ein Einsatz bei einem Serverausfall?",
-             "Ad hoc 110 Euro netto je Stunde im 15-Minuten-Takt, ohne Zuschlag für Abend oder Wochenende. "
+             "Ad hoc 110 € netto zzgl. MwSt. je Stunde im 15-Minuten-Takt, ohne Zuschlag für Abend oder Wochenende. "
              "Vor Ort ist die Anfahrt bis 5 km inklusive, darüber gilt eine vereinbarte Pauschale. Vertragskunden "
              "werden bevorzugt behandelt."),
         ],
@@ -3514,7 +3514,7 @@ REVIEWS = [
 
 HOME_FAQS = [
     ('Was kostet eine IT-Betreuung für meinen Betrieb?',
-     'Ohne Vertrag 110 € netto je Stunde im 15-Minuten-Takt, ohne Wochenendzuschlag. Vor Ort ist die Anfahrt bis 5 km inklusive, darüber gilt eine vereinbarte Pauschale. Mit Betreuungsvertrag ab 149 € netto im Monat, inklusive IT-Assessment, Fernwartung und bevorzugtem Support.'),
+     'Ohne Vertrag 110 € netto zzgl. MwSt. je Stunde im 15-Minuten-Takt, ohne Wochenendzuschlag. Vor Ort ist die Anfahrt bis 5 km inklusive, darüber gilt eine vereinbarte Pauschale. Mit Betreuungsvertrag ab 149 € netto im Monat, inklusive IT-Assessment, Fernwartung und bevorzugtem Support.'),
     ('Wie schnell bist du bei einem IT-Notfall erreichbar?',
      'Feste Reaktionszeiten sage ich nicht zu. Vertragskunden werden bevorzugt behandelt, Premium-Kunden zuerst. Ohne Vertrag melde ich mich, sobald ich kann, und viele Störungen lassen sich dann per Fernwartung lösen.'),
     ('Was unterscheidet dich von einem großen IT-Systemhaus?',
@@ -3538,7 +3538,7 @@ HOME_FAQS = [
     ('Kann ich IT-Support auch remote bekommen ohne dass jemand vorbeikommt?',
      'Ja, das ist mein Alltag. Per Fernwartung greife ich auf deinen Rechner, dein Netzwerk oder deine Server zu und löse das Problem live, du siehst dabei zu oder arbeitest weiter. Remote helfe ich deutschlandweit.'),
     ('Was kostet ein einmaliger IT-Notfall-Einsatz?',
-     '110 € netto je Stunde, abgerechnet im 15-Minuten-Takt. Kein Mindestbetrag, kein Wochenendzuschlag, keine versteckten Kosten. Vor Ort ist die Anfahrt bis 5 km inklusive. Du bekommst nach dem Einsatz eine transparente Rechnung mit genauen Zeiten.'),
+     '110 € netto zzgl. MwSt. je Stunde, abgerechnet im 15-Minuten-Takt. Kein Mindestbetrag, kein Wochenendzuschlag, keine versteckten Kosten. Vor Ort ist die Anfahrt bis 5 km inklusive. Du bekommst nach dem Einsatz eine transparente Rechnung mit genauen Zeiten.'),
 ]
 
 HOME_FAQ_SHOWN = 6

@@ -116,7 +116,7 @@ HERKUNFT = ("Woher die Stimmen kommen: {n} aus meinem Google-Unternehmensprofil,
             "geschickt. Ich gebe sie wörtlich und ungekürzt wieder. Hier stehen nur Stimmen von Betrieben und Menschen, "
             "für die ich gearbeitet habe. Die Bewertungen bei Google prüft Google nach eigenen Regeln; ändern oder löschen "
             "kann ich sie dort nicht. Alle Google-Bewertungen stehen im Google-Profil.")
-HOME_PRICE_LINES = ["110 € /Stunde zzgl. MwSt.", "149 € /Monat zzgl. MwSt.", "249 € /Monat zzgl. MwSt.",
+HOME_PRICE_LINES = ["110 € netto/Stunde zzgl. MwSt.", "149 € /Monat zzgl. MwSt.", "249 € /Monat zzgl. MwSt.",
                     "449 € /Monat zzgl. MwSt."]
 HOME_PRICE_SENTENCES = [("Website-Betrieb {} netto im Monat", "website_betrieb"),
                         ("Betrieb einer eigenen Anwendung ab {} netto im Monat", "software_betrieb"),
