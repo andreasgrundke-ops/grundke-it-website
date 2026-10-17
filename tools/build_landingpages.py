@@ -44,6 +44,9 @@ Aenderungen:
   2026-10-10  Release A Startseite: REVIEWS und HOME_FAQS als einzige Quelle, sync_home(),
               WhatsApp mit vorbefuelltem Satz je Einstieg (WA, WA_TEXT; auch Kontaktleiste
               und Fuss), Software-Betrieb ab 80 € (vorher 79 €), HOME_DATE fuer die Startseite.
+  2026-10-17  Relaunch R1, Task 4: SITE_VERSION/SITE_DATE_DISP im Fuss, Kontaktleiste (STICKY) zwischen Marken
+              und per sync_shared auf allen Seiten mit Leiste aus einer Quelle, grosses Google-Zitat
+              (HOME_VOICE_FEATURED statt HOME_VOICES_SHOWN), Abzeichen „Meine Empfehlung“, ohne Standort-Pille im Kopf.
   2026-10-10  Release B, Task 5: Generator-Huelle render_shell (section, page_head, mini_chat,
               voices_html, prices_html, closing) fuer managed-it-service, it-betreuer-wechseln und
               it-notdienst (Schalter SHELL_SLUGS), K4/Antwortsatz/Chat/Stimmen aus dem Textblatt,
@@ -119,6 +122,11 @@ NEW_DATE_DISP = "7. Oktober 2026"
 # laufen am alten Cache des Service Workers vorbei, ein wiederkehrender Besucher bekommt nie neues
 # HTML mit altem CSS.
 ASSET_VER = "2026.10.f"
+# Sichtbare Website-Version im Fuss (Relaunch R1, 17.10.2026): gleicht dem Suffix von CACHE_NAME in sw.js
+# (check_static AK13s). SITE_DATE_DISP = Stand dieser Version im Fuss, Form TT.MM.JJJJ.
+SITE_VERSION = "2.0.0"
+SITE_DATE = "2026-10-17"
+SITE_DATE_DISP = "17.10.2026"
 # Bewertungen im Google-Unternehmensprofil (Stand 10.10.2026). Eine weitere Stimme kam
 # direkt und zaehlt hier nicht mit. Einzige Quelle fuer die Zahl auf allen Seiten (llms.txt
 # schreibt der Generator nicht; check_static AK9b vergleicht die Zahl dort).
@@ -159,6 +167,7 @@ WA_TEXT = {
     "preise-business": "Hallo Andreas, ich komme über deine Preise und interessiere mich für das Paket Business.",
     "preise-premium": "Hallo Andreas, ich komme über deine Preise und interessiere mich für das Paket Premium.",
     "preise-adhoc": "Hallo Andreas, ich komme über deine Preise und brauche Hilfe ohne Vertrag.",
+    "direkt": "Hallo Andreas, ich komme über deine Startseite.",
     "kontaktleiste": "Hallo Andreas, ich habe deine Nummer von deiner Website.",
     "faq": "Hallo Andreas, meine Frage war in deinen FAQ nicht dabei:",
     "abschluss": "Hallo Andreas, ich habe ein IT-Problem und komme über deine Website.",
@@ -245,7 +254,6 @@ NAV_KONTAKT = ("Kontakt", "/kontakt/", "kontakt")
 # CID-Link statt Orts-URL: Die alte Adresse trug den frueheren Profilnamen
 # „IT-Service - Andreas Grundke" im Pfad. Der CID-Link bleibt bei Namensaenderungen gueltig
 # und ist derselbe wie hasMap/sameAs im Schema der Startseite.
-MAPS_URL = "https://maps.google.com/?cid=1934827868521304193"
 PHONE_SVG = ('<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" '
              'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 '
              '19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 '
@@ -301,7 +309,6 @@ def nav_html(current=None, home=False):
 <nav aria-label="Hauptnavigation">
   <div class="nav-inner inner">
     <a href="/" class="logo" title="Grundke IT-Service – München Ost"><picture><source srcset="/assets/img/logo-grundke-it-white-480.webp" type="image/webp"><img class="logo-img" src="/assets/img/logo-grundke-it-white-480.png" alt="Grundke IT-Service" width="180" height="60" /></picture></a>
-    <a class="nav-loc" href="{maps}" target="_blank" rel="noopener" aria-label="Standort auf Google Maps anzeigen"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>München Ost</a>
     <ul class="nav-links">{desk}
       <li><a href="/fernwartung/"{fw_cur}>Fernwartung starten</a></li>
       <li><a href="{k_href}"{k_cur}>{k_lbl}</a></li>
@@ -315,7 +322,7 @@ def nav_html(current=None, home=False):
   <a href="/fernwartung/"{fw_cur} class="m-fw"><svg width="18" height="18" aria-hidden="true"><use href="#ico-monitor"/></svg>Fernwartung starten</a>
   <a href="tel:+491782584438" class="m-cta">Jetzt anrufen · 0178 258 44 38</a>
 </div>
-</header>""".format(maps=MAPS_URL, desk=desk, mob=mob, phone=PHONE_SVG, fw_cur=fw_cur,
+</header>""".format(desk=desk, mob=mob, phone=PHONE_SVG, fw_cur=fw_cur,
                      k_href=k_href, k_lbl=k_lbl, k_cur=cur(k_key))
 
 
@@ -440,6 +447,13 @@ def sync_shared(places, services):
                 html_new = html_new.replace('<header class="site-header">',
                                             sprite + nl + '<header class="site-header">', 1)
             html_new = preload_fonts(html_new, nl)
+        if 'class="sticky-contact"' in html_new:
+            if STICKY_MARKED_RE.search(html_new):
+                html_new = STICKY_MARKED_RE.sub(lambda _m: STICKY.replace("\n", nl), html_new, count=1)
+            else:
+                if len(STICKY_RE.findall(html_new)) != 1:
+                    raise SystemExit("Kontaktleiste: nicht genau 1 Treffer in " + rel)
+                html_new = STICKY_RE.sub(lambda _m: STICKY.replace("\n", nl), html_new, count=1)
         if rel in HAND_CLOSING:
             name, mod = HAND_CLOSING[rel]
             wa = WA(WA_SEITE.format(nav=name)) if name else None
@@ -457,7 +471,14 @@ def sync_shared(places, services):
                 f.write(html_new)
             print("  Header/Footer aktualisiert: " + rel)
 
-STICKY = """<div class="sticky-contact" id="stickyContact" role="navigation" aria-label="Kontakt-Optionen">
+# Kontaktleiste (Dock) fuer alle Seiten: eine Quelle. Generator-Seiten haengen STICKY an, sync_shared ersetzt sie in den
+# Handseiten (beim ersten Lauf die alte Leiste per STICKY_RE, danach nur noch zwischen den Marken).
+STICKY_START = "<!-- STICKY:START -->"
+STICKY_END = "<!-- STICKY:END -->"
+STICKY_RE = re.compile(r'<div class="sticky-contact"[^>]*>.*?</div>', re.S)
+STICKY_MARKED_RE = re.compile(re.escape(STICKY_START) + r".*?" + re.escape(STICKY_END), re.S)
+MAILTO_PREFILLED = "mailto:info@grundke-it.de?subject=Anfrage%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0AMein%20Anliegen%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F)."
+_STICKY_BODY = """<div class="sticky-contact" id="stickyContact" role="navigation" aria-label="Kontakt-Optionen">
   <a href="tel:+491782584438" class="sc-btn sc-phone" aria-label="Anrufen">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
     <span>Anrufen</span>
@@ -466,11 +487,12 @@ STICKY = """<div class="sticky-contact" id="stickyContact" role="navigation" ari
     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 0 0 .611.611l4.458-1.495A11.96 11.96 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75c-2.278 0-4.381-.733-6.093-1.975l-.426-.307-2.645.887.887-2.645-.307-.426A9.72 9.72 0 0 1 2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75z"/></svg>
     <span>WhatsApp</span>
   </a>
-  <a href="mailto:info@grundke-it.de" class="sc-btn sc-mail" aria-label="E-Mail">
+  <a href="__MAILTO__" class="sc-btn sc-mail" aria-label="E-Mail">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
     <span>E-Mail</span>
   </a>
-</div>""".replace("__WA_KONTAKTLEISTE__", WA(WA_TEXT["kontaktleiste"]))
+</div>""".replace("__WA_KONTAKTLEISTE__", WA(WA_TEXT["kontaktleiste"])).replace("__MAILTO__", MAILTO_PREFILLED)
+STICKY = STICKY_START + "\n" + _STICKY_BODY + "\n" + STICKY_END
 
 
 def esc(t):
@@ -543,7 +565,6 @@ def head(title, desc, slug, og_title, og_desc, og_alt, tw_desc=None, tw_alt=None
            domain=DOMAIN, up=up(slug), css=asset("css/style.css"), ver=ASSET_VER)
 
 
-MAILTO_PREFILLED = "mailto:info@grundke-it.de?subject=Anfrage%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0AMein%20Anliegen%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F)."
 LEGAL_LINKS = [("Impressum", "/impressum/"), ("Datenschutz", "/datenschutz/"),
                ("AGB", "/agb/"), ("Barrierefreiheit", "/barrierefreiheit/")]
 
@@ -602,7 +623,7 @@ def footer_html(places, services, current_path="", updated=None, home=False):
       <nav class="foot-legal" aria-label="Rechtliches">{legal}
       </nav>
       <span>© 2026 Grundke IT-Service · Andreas Grundke · Beethovenring 16 · 85630 Grasbrunn</span>{updated}
-      <span class="foot-ci">CI 2026.01 · grundke-it.de</span>
+      <span class="foot-ci">CI 2026.01 · grundke-it.de · Version {version} · Stand {sitedate}</span>
     </div>
   </div>
 </footer>""".format(mailto=MAILTO_PREFILLED, wa=WA(WA_TEXT["fuss"]),
@@ -611,7 +632,7 @@ def footer_html(places, services, current_path="", updated=None, home=False):
                      col_places=col("Standorte", place_links, "        "),
                      col_ratgeber=col("Ratgeber", ratgeber_links, "        "),
                      col_contact=col("Kontakt", contact_links),
-                     legal=legal_html, updated=updated_html)
+                     legal=legal_html, updated=updated_html, version=SITE_VERSION, sitedate=SITE_DATE_DISP)
 
 
 KI_HUB = ("KI im Betrieb", "ki-fuer-kmu")
@@ -904,7 +925,7 @@ def price_card(pr, slug):
     Beschreibung, hervorgehoben[, Einheit[, Zusatz]]); ohne Einheit gilt der Monatspreis der Betreuungspakete.
     Jede Einheit muss „zzgl. MwSt.“ nennen.
     Zusatz (dict, seit Task 8, Schulung): "add" zweite Preiszeile unter der Einheit (z. B. Preis je Mitarbeiter,
-    ebenfalls mit „zzgl. MwSt.“), "feats" Leistungen als .price-feats, "badge" Text des Abzeichens statt „Empfohlen“
+    ebenfalls mit „zzgl. MwSt.“), "feats" Leistungen als .price-feats, "badge" Text des Abzeichens statt „Meine Empfehlung“
     (None: hervorgehobene Karte ohne Abzeichen), "btn" (Text, href wie im HTML, also mit &amp;) Knopf .price-btn,
     solid bei hervorgehobener Karte, sonst out.
     Leistungen und Knopf stehen unter der Beschreibung, abgesetzt durch .price-div. Andere Felder: Abbruch."""
@@ -935,7 +956,7 @@ def price_card(pr, slug):
             h=opt["btn"][1], k="solid" if feat else "out", t=esc(opt["btn"][0]))
     if more:
         more = '\n        <hr class="price-div">' + more
-    badge = opt.get("badge", "Empfohlen")
+    badge = opt.get("badge", "Meine Empfehlung")
     return ('\n      <div class="price-card{f}">{b}\n        <h3 class="price-name">{t}</h3>'
             '\n        <div class="price-val">{v}</div>\n        <div class="price-per">{u}</div>{a}'
             '\n        <p class="price-desc">{d}</p>{m}\n      </div>').format(
@@ -3479,9 +3500,9 @@ REVIEWS = [
         ],
     },
     {
-        'id': 'blumenschein',
-        'name': 'Janine Blumenschein',
-        'who': 'Janine Blumenschein',
+        'id': 'jb-steuerberatung',
+        'name': 'J. B.',    # G7/AK-R1-22: keine Einwilligung zur Namensnennung, nur Initialen
+        'who': 'J. B.',
         'role': 'Steuerberatung',
         'source': 'direkt',
         'author_type': 'Person',
@@ -3521,7 +3542,7 @@ HOME_FAQS = [
 ]
 
 HOME_FAQ_SHOWN = 6
-HOME_VOICES_SHOWN = ("blumenschein", "polednik")   # sichtbar; der Rest steht in der Wischleiste
+HOME_VOICE_FEATURED = "polednik"   # G4: grosses Zitat der Startseite (Google-Bewertung); alle uebrigen in der Wischleiste
 
 HOME_REVIEWS_RE = re.compile(r"(<!-- HOME_REVIEWS:START[^>]*-->\n).*?([ \t]*<!-- HOME_REVIEWS:END -->)", re.S)
 HOME_FAQ_RE = re.compile(r"(<!-- HOME_FAQ:START[^>]*-->\n).*?([ \t]*<!-- HOME_FAQ:END -->)", re.S)
@@ -3547,7 +3568,7 @@ def review_label(r):
     return (r["role"] + " · " if r["role"] else "") + "direkt übermittelt"
 
 
-def voice_card(r, ind="      "):
+def voice_card(r, ind="      ", featured=False):
     """Eine Stimme als <figure class="testi-card">, Text woertlich mit „…“ um das ganze Zitat.
     Sterne nur bei Google-Bewertungen (eine direkt uebermittelte Stimme hat keine Sternebewertung)."""
     ps = r["paragraphs"]
@@ -3556,22 +3577,27 @@ def voice_card(r, ind="      "):
                    for k, t in enumerate(ps))
     ctx = '\n{i}    <div class="testi-ctx">{c}</div>'.format(i=ind, c=esc(r["ctx"])) if r.get("ctx") else ""
     cls = "testi-card testi-card--long" if len(ps) > 2 else "testi-card"
+    if featured:
+        cls = "testi-card testi-card--featured"
     stars = "\n{i}  {s}".format(i=ind, s=STARS) if r["source"] == "Google-Bewertung" else ""
-    return ('{i}<figure class="{cls}">{stars}\n{i}  <blockquote class="testi-txt">{body}\n{i}  </blockquote>\n'
+    return ('{i}<figure class="{cls}"{dom}>{stars}\n{i}  <blockquote class="testi-txt">{body}\n{i}  </blockquote>\n'
             '{i}  <figcaption>\n{i}    <div class="testi-who">{who}</div>\n{i}    <div class="testi-role">{lbl}</div>{ctx}\n'
             '{i}  </figcaption>\n{i}</figure>').format(i=ind, cls=cls, stars=stars, body=body, who=esc(r["who"]),
-                                                     lbl=esc(review_label(r)), ctx=ctx)
+                                                     lbl=esc(review_label(r)), ctx=ctx, dom=" data-dominant" if featured else "")
 
 
 def home_reviews_html():
-    """Startseite: zwei Stimmen sichtbar (HOME_VOICES_SHOWN), der Rest vollstaendig in der Wischleiste."""
+    """Startseite: ein grosses Google-Zitat (HOME_VOICE_FEATURED), alle uebrigen Stimmen vollstaendig in der Wischleiste."""
     by_id = {r["id"]: r for r in REVIEWS}
-    shown = [by_id[i] for i in HOME_VOICES_SHOWN]
-    rest = [r for r in REVIEWS if r["id"] not in HOME_VOICES_SHOWN]
-    return ('    <div class="testi-top">\n{top}\n    </div>\n'
+    feat = by_id[HOME_VOICE_FEATURED]
+    if feat["source"] != "Google-Bewertung":
+        raise SystemExit("HOME_VOICE_FEATURED muss eine Google-Bewertung sein, ist: " + feat["source"])
+    rest = [r for r in REVIEWS if r["id"] != HOME_VOICE_FEATURED]
+    return ('{top}\n'
             '    <p class="testi-row-h">{n} weitere Stimmen<span class="testi-pos" data-testi-pos aria-hidden="true"></span></p>\n'
             '    <div class="testi-row" tabindex="0" role="region" aria-label="Weitere Kundenstimmen">\n{row}\n    </div>').format(
-                top="\n".join(voice_card(r) for r in shown), n=len(rest), row="\n".join(voice_card(r) for r in rest))
+                top=voice_card(feat, "    ", featured=True), n=len(rest),
+                row="\n".join(voice_card(r) for r in rest))
 
 
 def faq_item(q, a, ind):
