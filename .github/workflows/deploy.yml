@@ -38,12 +38,12 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      # Nicht ausliefern: Generator und Pruefskripte, Arbeitsdaten, Markdown im Wurzelordner und
+      # Nicht ausliefern: Generator und Pruefskripte, Arbeitsdaten, docs/ (PUNKTE.md war live), Markdown im Wurzelordner und
       # Dotfiles (.gitignore nannte interne Dateinamen und war live abrufbar; .github schliesst
       # upload-pages-artifact zwar selbst aus, hier trotzdem ausdruecklich).
       - name: Interne Dateien aus dem Artefakt entfernen
         run: |
-          rm -rf tools .impeccable "Audit 2026-04" .github
+          rm -rf tools docs .impeccable "Audit 2026-04" .github
           rm -f .gitignore
           find . -maxdepth 1 -name "*.md" -delete
 
