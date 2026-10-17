@@ -122,12 +122,13 @@ def heights(dir_):
 # ----------------------------------------------------------------------------------------------------------------------
 from check_static import ROOT, read, gen, deployable
 
-CYAN_ALLOW = ["h1 em", ".cta-h em", ".is-ag", ".zw-lane--rechts", "main p a", "main li a", ".faq-a a",
+CYAN_ALLOW = ["h1 em", ".cta-h em", ".is-ag", ".hc-sys", ".hc-bar", ".zw-lane--rechts", "main p a", "main li a", ".faq-a a",
               "[aria-current]", ":focus-visible"]
 # Spec §5.6: Abschnitt -> (Selektor des Abschnitts). R1 prueft bei .hero und #it-betreuung nur die Anzahl.
 DOMINANT_SECTIONS = [".hero", "#it-betreuung", "#referenzen", "#praxis", "#schnellcheck", "#preise", "#ki",
                      "#einsatzgebiet"]
 DOMINANT_COUNT_ONLY_R1 = [".hero", "#it-betreuung"]
+NAMEN_OHNE_EINWILLIGUNG = ROOT.parent / "_intern" / "pruefdaten" / "namen-ohne-einwilligung.txt"
 DOCK_H, DOCK_GAP = 52, 12
 SAFE = "env(safe-area-inset-bottom)"
 CHAT_EXCLUDE = ".hc-stage, [data-hero-chat] .hc-device"      # Chat-Handy: von 62ch- und Schriftgroessen-Pruefung ausgenommen
@@ -487,8 +488,10 @@ def ak_r1_06_typo():
 
 
 def ak_r1_07_measure_62ch():
-    """AK-R1-07: kein p/li in <main> der Startseite (ohne Tabellen, Chat, Karten-Raster) breiter als 62ch bei 1440."""
-    js = """(excl) => { const bad = [], skip = excl + ', table, figure.testi-card, .testi-card, .price-card, .k3-card, .pkg-grid, .faq-a, details, .chips, .foot-grid';
+    """AK-R1-07: kein p/li in <main> der Startseite (ausgenommen nur Tabellen, Chat, Karten-Raster) breiter als 62ch bei 1440;
+    FAQ-Antworten und Zitattexte werden gemessen."""
+    js = """(excl) => { const bad = [], skip = excl + ', table, .pkg-grid, .price-card, .k3-card, .testi-card .testi-who, .testi-card .testi-role';
+      document.querySelectorAll('details').forEach(d => { d.open = true; });
       let n = 0;
       for (const e of document.querySelectorAll('main p, main li')) {
         if (e.closest(skip)) continue;
@@ -513,7 +516,7 @@ CYAN_JS = """(allow) => { const RX = /38,\\s*189,\\s*239/, found = {};
     if (c.length) s += '.' + c.join('.'); const p = e.parentElement; if (p) { s = (p.tagName.toLowerCase() + (typeof p.className === 'string' && p.className.trim() ? '.' + p.className.trim().split(/\\s+/)[0] : '')) + ' > ' + s; }
     return s + (ps || ''); };
   const allowed = e => allow.some(a => { try { return e.closest(a) !== null; } catch (x) { return false; } });
-  const roots = [...document.querySelectorAll('main, footer.site-footer')];
+  const roots = [...document.querySelectorAll('main, footer.site-footer, header.site-header')];
   const hit = (e, ps, prop, val) => { if (!val || !RX.test(val)) return; if (allowed(e)) return;
     const k = sig(e, ps) + ' ' + prop; found[k] = (found[k] || 0) + 1; };
   for (const root of roots) for (const e of [root, ...root.querySelectorAll('*')]) {
@@ -534,7 +537,7 @@ CYAN_JS = """(allow) => { const RX = /38,\\s*189,\\s*239/, found = {};
 
 def ak_r1_08_cyan():
     """AK-R1-08: Cyan (38, 189, 239 als Schrift-, Flaechen-, Rand-, Schatten-, Verlaufs-, SVG-Farbe, auch mit Alpha und
-    an ::before/::after) in <main> und footer.site-footer nur an CYAN_ALLOW; alle Seiten, 390 und 1440."""
+    an ::before/::after) in <main>, footer.site-footer und header.site-header nur an CYAN_ALLOW; alle Seiten, 390 und 1440."""
     per = {}
     for vw, vh in ((390, 844), (1440, 900)):
         for u, found in scan(vw, vh, CYAN_JS, None, CYAN_ALLOW).items():
@@ -656,13 +659,17 @@ def ak_r1_12_featured_quote():
     js = """() => { const f = [...document.querySelectorAll('.testi-card--featured')], h = document.getElementById('bewertungen-herkunft');
       const res = { count: f.length, herkunft: h ? { indetails: !!h.closest('details') } : null };
       if (f.length !== 1) return res;
-      const c = f[0], r = c.getBoundingClientRect(), cs = getComputedStyle(c), q = getComputedStyle(c, '::before');
-      res.who = (c.querySelector('.testi-who') || {}).textContent; res.role = (c.querySelector('.testi-role') || {}).textContent;
-      res.text = (c.querySelector('blockquote') || {}).textContent;
-      if (q.content !== 'none' && q.content !== 'normal' && q.position === 'absolute') {
+      const c = f[0], r = c.getBoundingClientRect(), cs = getComputedStyle(c);
+      res.pseudo = [];
+      for (const ps of ['::before', '::after']) { const q = getComputedStyle(c, ps);
+        if (q.content === 'none' || q.content === 'normal') continue;
+        if (q.position !== 'absolute') { res.pseudo.push(ps + ' hat Inhalt, ist aber position:' + q.position + ' (soll absolute)'); continue; }
         const w = parseFloat(q.width) || parseFloat(q.fontSize) * 0.6, hh = parseFloat(q.height) || parseFloat(q.lineHeight) || parseFloat(q.fontSize);
         const left = q.left !== 'auto' ? r.left + parseFloat(q.left) : r.right - parseFloat(q.right) - w, top = q.top !== 'auto' ? r.top + parseFloat(q.top) : r.bottom - parseFloat(q.bottom) - hh;
-        res.icon = { l: left, t: top, r: left + w, b: top + hh };
+        (res.icons = res.icons || []).push({ ps, l: left, t: top, r: left + w, b: top + hh }); }
+      res.who = (c.querySelector('.testi-who') || {}).textContent; res.role = (c.querySelector('.testi-role') || {}).textContent;
+      res.text = (c.querySelector('blockquote') || {}).textContent;
+      {
         res.lines = [];
         for (const t of c.querySelectorAll('blockquote, .testi-who, .testi-role, .stars')) { const rg = document.createRange(); rg.selectNodeContents(t);
           for (const k of rg.getClientRects()) res.lines.push({ l: k.left, t: k.top, r: k.right, b: k.bottom }); } }
@@ -683,11 +690,11 @@ def ak_r1_12_featured_quote():
                 errs.append(f"/: Text der grossen Karte weicht von REVIEWS ab ('{_norm_quote(r.get('text') or '')[:40]}')")
             if rv[0]["source"] != "Google-Bewertung":
                 errs.append(f"REVIEWS-Quelle der grossen Karte '{rv[0]['source']}' statt 'Google-Bewertung'")
-        ic = r.get("icon")
-        if ic:
+        errs.extend(f"/: grosse Karte {m}" for m in r.get("pseudo", []))
+        for ic in r.get("icons", []):
             for ln in r["lines"]:
                 if ic["l"] < ln["r"] and ic["r"] > ln["l"] and ic["t"] < ln["b"] and ic["b"] > ln["t"]:
-                    errs.append("/: Zitat-Icon (::before) schneidet ein Textrechteck der grossen Karte"); break
+                    errs.append(f"/: Zitat-Icon ({ic['ps']}) schneidet ein Textrechteck der grossen Karte"); break
     if r["herkunft"] is None:
         errs.append("/: #bewertungen-herkunft fehlt")
     elif r["herkunft"]["indetails"]:
@@ -753,15 +760,17 @@ def ak_r1_14_geo_chips():
 
 
 def ak_r1_22_voice_consent():
-    """AK-R1-22 (G7): Einwilligung 'blumenschein' datiert in ../_intern/einwilligungen/ oder Name auf keiner Seite
-    sichtbar/im Schema (nur 'J. B.') oder Stimme fehlt ganz."""
-    d = ROOT.parent / "_intern" / "einwilligungen"
-    if d.is_dir() and any("blumenschein" in f.name.lower() for f in d.iterdir()):
-        return []
-    hits = [url_of(p) for p in pages() if "blumenschein" in read(p).lower()]
+    """AK-R1-22: Namen ohne Einwilligung duerfen auf keiner Seite (sichtbar oder im Schema) stehen. Die Namensliste liegt
+    ausserhalb des Repos (NAMEN_OHNE_EINWILLIGUNG, eine Zeile je Name, Kleinschreibung egal)."""
+    if not NAMEN_OHNE_EINWILLIGUNG.is_file():
+        return ["Namensliste ausserhalb des Repos fehlt, Pruefung nicht moeglich"]
+    names = [x.strip().lower() for x in NAMEN_OHNE_EINWILLIGUNG.read_text(encoding="utf-8").splitlines() if x.strip()]
+    if not names:
+        return ["Namensliste ausserhalb des Repos ist leer, Pruefung nicht moeglich"]
+    hits = [url_of(p) for p in pages() if any(n in read(p).lower() for n in names)]
     if hits:
-        return [f"Name 'Blumenschein' sichtbar oder im Schema ({len(hits)} Seite(n): {', '.join(hits[:4])}), "
-                f"keine Einwilligung in ../_intern/einwilligungen/ (soll 'J. B.' zeigen oder entfallen)"]
+        return [f"Name ohne Einwilligung sichtbar oder im Schema ({len(hits)} Seite(n): {', '.join(hits[:4])}); "
+                f"soll abgekuerzt (Initialen) oder entfernt sein"]
     return []
 
 

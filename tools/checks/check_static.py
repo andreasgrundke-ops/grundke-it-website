@@ -776,7 +776,7 @@ def ak13s():
         return errs
     want = f"Version {ver} · Stand {disp}"
     for p in pages():
-        m = re.search(r"<footer[^>]*>.*?</footer>", read(p), re.S)
+        m = re.search(r"<footer\b[^>]*>.*?</footer>", read(p), re.S)
         if not m:
             errs.append(f"{rel(p)}: kein <footer>")
         elif want not in html.unescape(re.sub(r"<[^>]+>", "", m.group(0))).replace(" ", " "):
