@@ -528,6 +528,10 @@ CYAN_JS = """(allow) => { const RX = /38,\\s*189,\\s*239/, found = {};
     hit(e, '', 'box-shadow', c.boxShadow);
     for (const s of ['Top', 'Right', 'Bottom', 'Left']) if (parseFloat(c['border' + s + 'Width']) > 0 && c['border' + s + 'Style'] !== 'none') hit(e, '', 'border-color', c['border' + s + 'Color']);
     if (e instanceof SVGElement) { hit(e, '', 'fill', c.fill); hit(e, '', 'stroke', c.stroke); }
+    // Sprite-Icons (<use>) und Pfade mit currentColor malen in der Schriftfarbe des <svg>; fill/stroke am <svg> selbst
+    // zeigen das nicht, deshalb hier die Farbe werten, die das Icon tatsaechlich traegt (nur sichtbare Icons, wie beim Text)
+    if (e.tagName.toLowerCase() === 'svg' && e.getClientRects().length && (e.querySelector('use, [fill="currentColor" i], [stroke="currentColor" i]') ||
+        /currentcolor/i.test((e.getAttribute('fill') || '') + (e.getAttribute('stroke') || '')))) hit(e, '', 'color (currentColor)', c.color);
     for (const ps of ['::before', '::after']) { const pc = getComputedStyle(e, ps); if (pc.content === 'none' || pc.content === 'normal') continue;
       hit(e, ps, 'color', pc.color); hit(e, ps, 'background-color', pc.backgroundColor); hit(e, ps, 'background-image', pc.backgroundImage);
       hit(e, ps, 'box-shadow', pc.boxShadow);

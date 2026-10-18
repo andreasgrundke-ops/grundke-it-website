@@ -257,7 +257,7 @@
   .itb-list > div { padding-top:1.1rem; border-top:1px solid var(--border); }
   .itb-list dt { font-family:var(--fh); font-weight:700; font-size:1.06rem; color:var(--text); margin-bottom:.45rem; }
   .itb-list dd { margin:0; font-size:.92rem; color:var(--text2); line-height:1.7; max-width:62ch; }
-  /* Links in den Anrufen: Schriftfarbe mit Unterstrich (R1, Cyan nur nach Spec §5.3) */
+  /* Links in den Anrufen: Schriftfarbe mit Unterstrich (Cyan nur mit Bedeutung) */
   .itb-list dd a { color:var(--text); text-decoration:underline; text-underline-offset:.2em; }
 
   /* ── KI: Querverweise unter den drei Karten ── */
@@ -291,7 +291,7 @@
     position: relative;
     overflow: hidden;
     isolation: isolate;
-    background: var(--bg);   /* R1: ohne Verlauf und Leuchtleisten (Spec §5.3) */
+    background: var(--bg);   /* ohne Verlauf und Leuchtleisten */
   }
   .hc-inner {
     display: grid;
@@ -402,10 +402,11 @@
     .hc-thread { transition:none; }
   }
   /* Tablet: Handy schmaler, QR weg (Platz) */
-  /* Rechts sitzt ab 768 px die feste Kontaktleiste (ca. 84 px) – Abstand halten */
+  /* Ab 768 px dieselbe Breite und Polsterung wie .inner: Hero-Text, Kasten und Abschnitte stehen an einer Kante */
   @media (min-width:768px) {
-    .hc-inner { padding-right:max(clamp(1.2rem, 5vw, 5.5rem), 6.5rem); }
+    .hc-inner { max-width:var(--inner); padding-left:clamp(1rem,5vw,2.5rem); padding-right:clamp(1rem,5vw,2.5rem); }
   }
+  @media (min-width:1920px) { .hc-inner { max-width:1440px; } }
   @media (max-width:1024px) {
     .hc-inner { gap:2rem; }
     .hc-phone { width:clamp(250px, 30vw, 290px); }
@@ -459,7 +460,7 @@
   .c-bad { color:var(--text3); text-decoration:line-through; } .c-mid { color:var(--text3); text-align:center; font-size:.7rem; } .c-good { color:var(--text); font-weight:600; text-align:right; }
 
   /* ───────────────────────────────────────────
-     Schnellcheck (Lead-Magnet, Task 2 Release 1)
+     Schnellcheck (Lead-Magnet)
   ─────────────────────────────────────────── */
   .schnellcheck { background:var(--bg2); position:relative; overflow:hidden; }
   .sc-card {
@@ -742,7 +743,7 @@
 
   /* Bullet-Liste fuer Standard-Leistungs-Kacheln (Cyan-Punkte, dezent) */
 
-  /* "Aus der Praxis"-Story-Block (Task 5 Release 1) - eigene Section */
+  /* "Aus der Praxis"-Story-Block - eigene Section */
   .praxis { background:var(--bg2); position:relative; overflow:hidden; }
   .praxis-card {
     position:relative; background:var(--bg3); border:1px solid var(--border); border-radius:18px;
@@ -760,11 +761,10 @@
   .praxis-icon svg { width:36px; height:36px; }
   .praxis-body { min-width:0; }
   .praxis-tag {
-    font-family:var(--fm); font-size:.75rem; letter-spacing:.12em; text-transform:uppercase;
+    font-family:var(--fb); font-size:.93rem; letter-spacing:0; text-transform:none;
     color:var(--text3); margin-bottom:.5rem; font-weight:600;
     display:inline-flex; align-items:center; gap:.5rem;
   }
-  .praxis-tag::before { content:''; width:18px; height:1px; background:var(--border); }
   .praxis-card h3 {
     font-family:var(--fh); font-size:clamp(1.3rem,2.6vw,1.8rem); font-weight:800;
     color:var(--text); letter-spacing:-.02em; line-height:1.2; margin-bottom:1.1rem;
@@ -794,7 +794,7 @@
     .praxis-icon svg { width:28px; height:28px; }
   }
 
-  /* BSI-Info-Banner unter dem Leistungs-Grid (Task 4 Release 1) */
+  /* BSI-Info-Banner unter dem Leistungs-Grid */
 
   /* Leistungs-Detail-Blöcke (8 Themenbereiche, abgeleitet aus 496 realen Einsätzen) */
 
@@ -812,9 +812,9 @@
      Ohne das Deko-Anfuehrungszeichen — in der breiten Karte haengt es sonst
      losgeloest ueber der freien Flaeche rechts. */
   /* Mehrabsaetzige Stimme (blockquote mit <p>): Abstand nur zwischen den Absaetzen */
-  /* Herkunft der Bewertungen (§ 5b Abs. 3 UWG): sichtbar, aber unter den Karten zurueckgenommen */
+  /* Herkunft der Bewertungen: sichtbar, aber unter den Karten zurueckgenommen */
 
-  /* FAQ — Release-2 (Schritt 5): natives <details>/<summary>, kein JS noetig */
+  /* FAQ: natives <details>/<summary>, kein JS noetig */
   .faq { background:var(--bg2); }
 
   /* CTA Final */
@@ -865,10 +865,10 @@
     display:flex; align-items:center; justify-content:center;
     cursor:pointer; transition: background .3s, border-color .3s, color .3s, transform .3s, box-shadow .3s, opacity .3s;
     opacity:0; pointer-events:none; transform:translateY(12px);
-    box-shadow:0 4px 16px rgba(12,77,162,.3);
+    box-shadow:0 4px 16px rgba(0,0,0,.35);
   }
   .scroll-top.visible { opacity:1; pointer-events:auto; transform:translateY(0); }
-  .scroll-top:hover { background:var(--cyan); transform:translateY(-2px); box-shadow:0 8px 24px rgba(38,189,239,.35); }
+  .scroll-top:hover { border-color:rgba(255,255,255,.35); transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,.4); }
   @media (max-width:1279px) {
     .scroll-top { bottom:calc(80px + env(safe-area-inset-bottom)); right:1rem; }
   }
@@ -876,10 +876,10 @@
     /* ── KI im Betrieb (Sektion #ki) ─────────────────────────────────────── */
 
   /* ═══════════════════════════════════════════════
-     Startseite Release A (seit 10.10.2026): Kuemmerer-Botschaft, Handy zuerst.
-     Reihenfolge Spec §5. Flaechen wechseln bg / bg2 ab Abschnitt 2.
+     Startseite (seit 10.10.2026): Kuemmerer-Botschaft, Handy zuerst.
+     Flaechen wechseln bg / bg2 ab Abschnitt 2.
   ═══════════════════════════════════════════════ */
-  /* Handy: Abschnitte enger (Spec E5: Startseite bei 390 px hoechstens 12.000 px,
+  /* Handy: Abschnitte enger (Startseite bei 390 px hoechstens 12.000 px,
      #schnellcheck bis 4.000 px, #preise bis 5.000 px) */
   @media (max-width:767px) {
     main > .section-pad { padding:2rem 0; }
@@ -889,7 +889,7 @@
     .hc-proof { gap:.4rem 1.1rem; }
   }
 
-  /* Hero: K1 (.page-k) und Wer/Was/Wo statt der alten Unterzeile */
+  /* Hero: Kernsatz (.page-k) und Wer/Was/Wo statt der alten Unterzeile */
   .hc-k { max-width:34rem; margin:0 0 .55rem; }
   .hc-wer { font-size:.95rem; line-height:1.5; color:var(--text2); margin:0 0 1.4rem; }
   .hc-wer strong { color:var(--text); font-weight:600; }
@@ -899,7 +899,7 @@
     .hc-ctas > a { justify-content:center; }
   }
 
-  /* 2 Typische Anrufe: K2 + Andreas' Satz, Vergleich aufklappbar, Chips zu den IT-Leistungen */
+  /* 2 Typische Anrufe: Kernaussage + Andreas' Satz, Vergleich aufklappbar, Chips zu den IT-Leistungen */
   .itb-list { margin:1.8rem 0 2.2rem; }
   .itb-list dd { font-size:1.0667rem; }
   .itb-k { display:grid; grid-template-columns:minmax(0,1fr); gap:1rem 3.5rem; align-items:center; }
@@ -931,9 +931,10 @@
     .itb-leist .chips > a { padding:0 .6rem; line-height:1.3; }
   }
 
-  /* 3 Stimmen: eine gross, der Rest in der Wischleiste (seit R1 auf allen Breiten).
-     Die lange Stimme (testi-card--long) blaettert am Handy absatzweise: ein Absatz je Seite,
-     jede Seite ist ein Rastpunkt der Leiste. So bleibt sie vollstaendig, ohne die Leiste hoch zu machen. */
+  /* 3 Stimmen: eine gross, der Rest in der Wischleiste (auf allen Breiten).
+     Die lange Stimme (testi-card--long) blaettert unter 900 px absatzweise: ein Absatz je Seite,
+     jede Seite ist ein Rastpunkt der Leiste. So bleibt sie vollstaendig, ohne die Leiste hoch zu machen.
+     Ab 900 px steht sie als breite Karte mit Absaetzen untereinander; rechts ist ein Streifen der naechsten Karte zu sehen. */
   .testimonials .testi-txt { font-size:1.0667rem; line-height:1.55; margin-bottom:.8rem; }
   .testi-row .testi-txt { color:#cbd5e1; } /* 11:1 auf --bg2 (vorher --text2) */
   .testi-card--long .testi-txt { font-style:normal; }
@@ -950,11 +951,12 @@
     .testi-top .testi-txt { color:var(--text); }
   }
   .testi-row-h { margin:1rem 0 .4rem; font-size:.88rem; color:var(--text2); }
-  .testi-row { --card-w:min(80vw, 340px); --card-pad:1.1rem; display:flex; align-items:stretch; gap:1rem; overflow-x:auto; scroll-snap-type:x mandatory; overscroll-behavior-x:contain; padding:0 0 .3rem; }
+  .testi-row { --card-w:min(80vw, 340px); --card-pad:1.1rem; --row-gap:1rem; display:flex; align-items:stretch; gap:var(--row-gap); overflow-x:auto; scroll-snap-type:x mandatory; overscroll-behavior-x:contain; padding:0 0 .3rem; }
   .testi-row > .testi-card { flex:0 0 var(--card-w); scroll-snap-align:start; }
   .testi-row:focus-visible { outline:2px solid var(--cyan); outline-offset:4px; border-radius:10px; }
   .testi-row::-webkit-scrollbar { height:5px; }
   .testimonials .testi-source { margin-top:.8rem; font-size:1.0667rem; line-height:1.5; }
+  @media (max-width:899px) {
     /* Die lange Karte selbst ist kein Rastpunkt (breiter als die Leiste, der Browser liesse sonst
        freies Scrollen in ihr zu); rasten sollen ihre Absaetze */
     .testi-row > .testi-card--long { flex:0 0 auto; scroll-snap-align:none; }
@@ -966,10 +968,18 @@
     .testi-card--long > .stars { order:-2; }
     .testi-card--long > figcaption { order:-1; display:flex; flex-wrap:wrap; align-items:baseline; column-gap:.6rem; margin-bottom:.7rem; }
     .testi-card--long .testi-ctx { flex-basis:100%; margin-top:.1rem; }
+  }
+  /* Ab 900 px: lange Stimme als breite Karte, Absaetze untereinander, kein Absatz-Blaettern. Breite = Leiste minus
+     8rem: weniger Zeilen und eine flachere Leiste; rechts bleibt ein Streifen der naechsten Karte sichtbar (Hinweis
+     auf weitere Stimmen). Text in der langen Karte wird nie angeschnitten. */
+  @media (min-width:900px) {
+    .testi-row > .testi-card--long { flex:0 0 calc(100% - 8rem); }
+    .testi-card--long .testi-txt p + p { margin-top:.6rem; }
+  }
   /* Ab 1024 px: breitere Karten (weniger Zeilen, flachere Leiste) und mehr Luft um die grosse Stimme,
-     damit sie die groesste Flaeche im Abschnitt bleibt (Spec §5.6) */
+     damit sie die groesste Flaeche im Abschnitt bleibt */
   @media (min-width:1024px) {
-    .testi-row { --card-w:480px; --card-pad:1.4rem; gap:1.2rem; }
+    .testi-row { --card-w:480px; --card-pad:1.4rem; --row-gap:1.2rem; }
     .testimonials .testi-row > .testi-card { padding:var(--card-pad); }
     /* Mit der Maus bedienbar: naechste Karte angeschnitten (Leiste breiter als der Abschnitt), Rastpunkte,
        gut sichtbarer Bildlaufbalken in neutralem Grau (Daumen 6:1 auf --bg2). Das Mausrad bleibt senkrecht. */
@@ -998,7 +1008,7 @@
   .sc-more .sc-grid { margin:.4rem 0 .4rem; }
   .sc-promise { margin-bottom:1.6rem; }
   .sc-promise span { font-family:var(--fb); font-size:.86rem; }
-  /* Fliesstext im Aufklapper 16 px (AK4) */
+  /* Fliesstext im Aufklapper 16 px */
   .sc-checklist li, .sc-deliverable-list li { font-size:1.0667rem; }
   .sc-block-p { margin:0 0 1rem; font-size:1.0667rem; line-height:1.65; color:var(--text2); }
   @media (max-width:767px) {
@@ -1050,17 +1060,17 @@
   .pkg-monthly { margin:1.2rem 0 0; max-width:72ch; font-size:1.0667rem; line-height:1.7; color:var(--text2); }
   .pkg-monthly strong { color:var(--text); }
 
-  /* 7 K3 "Darum kümmere ich mich auch" */
+  /* 7 "Darum kümmere ich mich auch" */
   .k3-block { background:var(--bg2); }
   .k3-grid { margin-top:1.6rem; }
-  /* R1: KI-Karte ueber die volle Zeile, darunter Software und Websites je halb (keine leeren Spalten) */
+  /* KI-Karte ueber die volle Zeile, darunter Software und Websites je halb (keine leeren Spalten) */
   @media (min-width:768px) { .k3-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
   .k3-card h3 { font-size:1.2rem; }
   .k3-card h3 a { display:inline-flex; align-items:center; gap:.45rem; color:var(--text); text-decoration:none; }
   .k3-card .card-more a { white-space:nowrap; }
   .k3-card h3 a:hover { color:var(--cyan); }
   .k3-card h3 a:focus-visible { outline:2px solid var(--cyan); outline-offset:3px; border-radius:4px; }
-  .k3-arrow { width:16px; height:16px; color:var(--cyan); transition:transform .2s; }
+  .k3-arrow { width:16px; height:16px; color:currentColor; transition:transform .2s; }
   .k3-card h3 a:hover .k3-arrow { transform:translateX(3px); }
   .k3-card .card-more { margin-top:.8rem; font-size:1.0667rem; }
   .k3-school { margin:1.4rem 0 0; max-width:68ch; font-size:1.0667rem; line-height:1.7; color:var(--text2); }
@@ -1223,12 +1233,12 @@
     </div>
   </div>
 </section>
-<!-- Kasten nach dem Hero (R1, nur ab 1280 px sichtbar): Nummer und WhatsApp als schlanke Textzeile -->
+<!-- Kasten nach dem Hero (nur ab 1280 px sichtbar): Nummer und WhatsApp als schlanke Textzeile -->
 <div class="hc-direkt">
   <div class="inner"><span>Direkt erreichbar:</span> <a href="tel:+491782584438">0178 258 44 38</a> <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20komme%20%C3%BCber%20deine%20Startseite." target="_blank" rel="noopener" data-wa="direkt">WhatsApp</a></div>
 </div>
 
-<!-- IT-BETREUUNG: Typische Anrufe + K2 (seit 10.10.2026 statt der Haken-Liste), Vergleich aufklappbar,
+<!-- IT-BETREUUNG: Typische Anrufe + Kernaussage (seit 10.10.2026 statt der Haken-Liste), Vergleich aufklappbar,
      Chips zu den IT-Leistungsseiten (ersetzen den Abschnitt „Leistungen“, Anker #leistungen bleibt) -->
 <section class="itb section-pad" id="it-betreuung">
   <div class="inner">
@@ -1515,7 +1525,7 @@
   </div>
 </div>
 
-<!-- PREISE (seit 10.10.2026 kompakt, seit R1 Starter, Business, Premium; je Paket Preis und drei Unterschiede, alle Leistungen
+<!-- PREISE (kompakt: Starter, Business, Premium; je Paket Preis und drei Unterschiede, alle Leistungen
      aufklappbar, ohne Vertrag als Zeile, "Warum ein Paket?", "Monatlich dazu" mit Preisen aus PRICES) -->
 <section class="pricing section-pad" id="preise">
   <div class="inner">
@@ -1612,7 +1622,7 @@
   </div>
 </section>
 
-<!-- K3 "Darum kümmere ich mich auch" (seit 10.10.2026): KI, Software, Websites und Schulung in einem Block.
+<!-- "Darum kümmere ich mich auch" (seit 10.10.2026): KI, Software, Websites und Schulung in einem Block.
      Ersetzt die Abschnitte #ki, #websites, #schulung; die Anker bleiben (Section-ID und zwei <span>).
      Potenzialcheck und Website-Check stehen auf ihren Seiten (/ki-fuer-kmu/, /websites-fuer-betriebe/). -->
 <section class="section-pad k3-block" id="ki">
@@ -1682,7 +1692,7 @@
   <div class="inner">
     <h2 class="s-title">IT-Support vor Ort &amp; remote –<br>München Ost und darüber hinaus.</h2>
     <p class="s-sub">Kurze Wege im Münchner Osten. Remote bin ich deutschlandweit für dich da.</p>
-    <div class="geo-orte" data-dominant><!-- Orte-Chips: dominantes Element (Spec §5.6) -->
+    <div class="geo-orte" data-dominant><!-- Orte-Chips: dominantes Element des Abschnitts -->
       <div class="chips geo-chips">
         <a href="/it-service-grasbrunn/">Grasbrunn</a>
         <span>Ottobrunn</span>
@@ -1716,7 +1726,7 @@
   </div>
 </section>
 
-<!-- ABSCHLUSS K5 (seit 10.10.2026 ohne Zeitzusage, QR fuehrt zur Kontaktseite) -->
+<!-- ABSCHLUSS (seit 10.10.2026 ohne Zeitzusage, QR fuehrt zur Kontaktseite) -->
 <section class="cta-sec" id="kontakt">
   <div class="inner">
     <h2 class="cta-h">Problem? <em>Ich bin dran.</em></h2>

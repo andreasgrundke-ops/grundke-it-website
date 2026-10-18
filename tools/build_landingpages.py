@@ -37,52 +37,52 @@ Aenderungen:
               Bereichen, Preis-Schalter SHOW_FROM_PRICES/PRICES, Offer-Schema mit Mindestpreis,
               Service.provider als @id-Verweis, Tabellen am Handy gestapelt, Hero-H1 mit
               Leerzeichen vor der Akzentzeile, Zeitzusagen aus Orts- und Notdienstseiten entfernt.
-  2026-10-10  Website-Umbau Release A (Expand): ASSET_VER/asset() fuer style.css und main.js
+  2026-10-10  Website-Umbau: ASSET_VER/asset() fuer style.css und main.js
               aller Seiten (auch Startseite und Handseiten ueber sync_shared), ICON_SPRITE vor
               dem Kopf, REVIEW_COUNT_GOOGLE, Fuss mit aufklappbaren Spalten (<details>) und
               fester Rechtszeile, Fliesstext .lp-content p auf 16 px, Autor-Link unterstrichen.
-  2026-10-10  Release A Startseite: REVIEWS und HOME_FAQS als einzige Quelle, sync_home(),
+  2026-10-10  Startseite: REVIEWS und HOME_FAQS als einzige Quelle, sync_home(),
               WhatsApp mit vorbefuelltem Satz je Einstieg (WA, WA_TEXT; auch Kontaktleiste
               und Fuss), Software-Betrieb ab 80 € (vorher 79 €), HOME_DATE fuer die Startseite.
-  2026-10-17  Relaunch R1, Task 4: SITE_VERSION/SITE_DATE_DISP im Fuss, Kontaktleiste (STICKY) zwischen Marken
+  2026-10-17  SITE_VERSION/SITE_DATE_DISP im Fuss, Kontaktleiste (STICKY) zwischen Marken
               und per sync_shared auf allen Seiten mit Leiste aus einer Quelle, grosses Google-Zitat
               (HOME_VOICE_FEATURED statt HOME_VOICES_SHOWN), Abzeichen „Meine Empfehlung“, ohne Standort-Pille im Kopf.
-  2026-10-18  Release 2.0.0 (Relaunch R1): ASSET_VER 2026.10.g, SITE_DATE, Stand (dateModified) der Seiten mit geaendertem
-              sichtbarem Inhalt (Stundensatz-Wortlaut, Abzeichen, Zitat, Claim) auf R1_DATE.
-  2026-10-10  Release B, Task 5: Generator-Huelle render_shell (section, page_head, mini_chat,
+  2026-10-18  Version 2.0.0: ASSET_VER 2026.10.g, SITE_DATE, Stand (dateModified) der Seiten mit geaendertem
+              sichtbarem Inhalt (Stundensatz-Wortlaut, Abzeichen, Zitat, Claim) auf CONTENT_DATE.
+  2026-10-10  Generator-Huelle render_shell (section, page_head, mini_chat,
               voices_html, prices_html, closing) fuer managed-it-service, it-betreuer-wechseln und
-              it-notdienst (Schalter SHELL_SLUGS), K4/Antwortsatz/Chat/Stimmen aus dem Textblatt,
-              schlankes STYLE fuer diese Seiten, STYLE_LEGACY fuer die uebrigen bis Task 7.
-  2026-10-10  Release B, Task 6: Ortsseiten (render_place ueber render_shell, PLACE_DATE) und
+              it-notdienst (Schalter SHELL_SLUGS), Kernsatz/Antwortsatz/Chat/Stimmen aus den freigegebenen Texten,
+              schlankes STYLE fuer diese Seiten, STYLE_LEGACY fuer die uebrigen bis zu ihrer Umstellung.
+  2026-10-10  Ortsseiten (render_place ueber render_shell, PLACE_DATE) und
               Microsoft 365, IT-Sicherheit, Netzwerk (Stimme aus REVIEWS statt lp-voice/VOICE_STYLE),
-              Lizenzen, E-Rechnung, Digitalbonus in der Huelle; K4/Antwortsatz/Stimmen aus dem
-              Textblatt, freigegebene Ersatzsaetze (Frage 5). Huelle: Kopf ohne Chat zweispaltig,
+              Lizenzen, E-Rechnung, Digitalbonus in der Huelle; Kernsatz/Antwortsatz/Stimmen aus dem
+              freigegebene Ersatzsaetze. Huelle: Kopf ohne Chat zweispaltig,
               FAQ und einzelne Stimme mit seitlicher Ueberschrift, tail_blocks, voices_h2,
               <!--split--> in extra, Vertrauenstext neben dem Einstieg; ico-network, ico-wifi.
-  2026-10-10  Release B, Task 7: KI-Hub, KI-Seiten, Software, Websites und Ratgeber in der Huelle, damit alle
-              Generator-Seiten. K4/Antwortsatz aus dem Textblatt, Hubs mit Wegen (nav.lp-paths) rechts im Kopf,
-              Ratgeber ohne K4 und nur mit Anruf-Knopf, Ratgeber-Artikel in einer Lesespalte, <!--more--> fuer
+  2026-10-10  KI-Hub, KI-Seiten, Software, Websites und Ratgeber in der Huelle, damit alle
+              Generator-Seiten. Kernsatz/Antwortsatz aus den freigegebenen Texten, Hubs mit Wegen (nav.lp-paths) rechts im Kopf,
+              Ratgeber ohne Kernsatz und nur mit Anruf-Knopf, Ratgeber-Artikel in einer Lesespalte, <!--more--> fuer
               zugeklappte Teile (content_blocks, more_html). KI_STYLE/NEW_STYLE nach style.css; STYLE_LEGACY,
               SHELL_SLUGS, author_box, cards_html, die alte Huelle in render_service und RATGEBER_CTA entfernt.
               Asset-Version 2026.10.c.
-              Fix-Runde 1: Abbruch beim Bauen bei falschen Marken (check_markers, Reste nach dem Ersetzen) und
+              Nachbesserung: Abbruch beim Bauen bei falschen Marken (check_markers, Reste nach dem Ersetzen) und
               bei Feldern, die ein Ratgeber-Artikel nicht darstellen kann (check_ratgeber, RATGEBER_KEYS);
               <!--more:Beschriftung-->, intro_h2 fuer den Einstieg ohne Karten, kind "ratgeber-hub" statt "hub".
-  2026-10-10  Release C1, Task 8: /schulung/ aus dem Generator (SERVICES-Eintrag statt Handseite; HAND_PAGES und
+  2026-10-10  /schulung/ aus dem Generator (SERVICES-Eintrag statt Handseite; HAND_PAGES und
               STATIC_URLS ohne schulung, Fusslink ueber group_of). Neue Felder: h1_em (Wort der H1 als <em>), name
               (Name ohne Tags fuer Schema und og), meta_extra (eigene og/twitter-Werte, twitter:image:alt), intro
               optional; Preiskarte mit Zusatzfeld (zweite Preiszeile, Leistungen, Abzeichen, Knopf).
-  2026-10-10  Release C1, Task 9: sync_shared setzt den Abschluss K5 auch auf die Handseiten (HAND_CLOSING, CLOSING_RE:
+  2026-10-10  sync_shared setzt den Abschluss auch auf die Handseiten (HAND_CLOSING, CLOSING_RE:
               vorhandenen <section class="cta-sec"> ersetzen, sonst vor </main> einfuegen; Startseite und empfehlungen
               ausgenommen) und den Font-Preload aus head() in deren Kopf (preload_fonts, idempotent). closing() mit
               Autorzeile ohne Datum (mod_disp None) und Knoepfen auch am Handy, wenn die Seite keine Kontaktleiste hat.
-              Asset-Version 2026.10.d (Release C1).
-              Fix-Runde 1: KONTAKT_DATE/KONTAKT_DATE_DISP (Abschluss-Datum und Sitemap aus einer Quelle), Preload-Pruefung
+              Asset-Version 2026.10.d.
+              Nachbesserung: KONTAKT_DATE/KONTAKT_DATE_DISP (Abschluss-Datum und Sitemap aus einer Quelle), Preload-Pruefung
               je Schrift (nur fehlende einfuegen), Mobilmenue „Fernwartung starten“ mit Sprite-Symbol und Klasse .m-fw
               statt Blitz-Zeichen und Inline-Style.
-  2026-10-11  Release C2, Task 10: empfehlungen bekommt den Abschluss K5 (HAND_CLOSING) mit EMPF_DATE_DISP; EMPF_DATE
+  2026-10-11  empfehlungen bekommt den Abschluss (HAND_CLOSING) mit EMPF_DATE_DISP; EMPF_DATE
               als lastmod der Sitemap. Asset-Version bleibt 2026.10.d (style.css und JS unveraendert).
-  2026-10-11  Release C2, Task 11 (Fix-Runde B aus dem Gesamt-Review): Abbruch bei unbekannten Feldern in SERVICES und
+  2026-10-11  Nachbesserungen aus dem Gesamt-Review: Abbruch bei unbekannten Feldern in SERVICES und
               PLACES (SERVICE_KEYS, PLACE_KEYS, check_keys), bei HTML in intro ohne raw_intro und bei doppelter loc in
               der Sitemap; esc_attr fuer Attribute (Anfuehrungszeichen); Preiskarte prueft auch die Beschreibung auf
               €-Betraege ohne netto/zzgl. MwSt. (Software: „netto“ ergaenzt); Schema: Ortsseiten, Kontakt und
@@ -117,24 +117,24 @@ NEW_DATE = "2026-10-07"
 NEW_DATE_DISP = "7. Oktober 2026"
 
 # Asset-Version (seit 10.10.2026): haengt als ?v= an style.css und main.js ALLER Seiten
-# (generierte Seiten, Startseite und Handseiten ueber sync_shared, seit Fix-Runde B auch an
+# (generierte Seiten, Startseite und Handseiten ueber sync_shared, seit 11.10.2026 auch an
 # fernwartung.js) und steht gleichlautend als ASSET_VER im Pre-Cache von sw.js. Erhoehen, sobald
 # sich etwas unter assets/css/ oder assets/js/ gegenueber dem Live-Stand aendert (check_static
-# AK13v prueft das gegen origin/main), zusammen mit CACHE_NAME/RUNTIME_CACHE in sw.js. Neue URLs
+# prueft das gegen origin/main), zusammen mit CACHE_NAME/RUNTIME_CACHE in sw.js. Neue URLs
 # laufen am alten Cache des Service Workers vorbei, ein wiederkehrender Besucher bekommt nie neues
 # HTML mit altem CSS.
 ASSET_VER = "2026.10.g"
-# Sichtbare Website-Version im Fuss (Relaunch R1, 17.10.2026): gleicht dem Suffix von CACHE_NAME in sw.js
-# (check_static AK13s). SITE_DATE_DISP = Stand dieser Version im Fuss, Form TT.MM.JJJJ.
+# Sichtbare Website-Version im Fuss (seit 17.10.2026): gleicht dem Suffix von CACHE_NAME in sw.js
+# (check_static prueft das). SITE_DATE_DISP = Stand dieser Version im Fuss, Form TT.MM.JJJJ.
 SITE_VERSION = "2.0.0"
 SITE_DATE = "2026-10-18"
 SITE_DATE_DISP = "18.10.2026"
-# Stand der Seiten, deren sichtbarer Inhalt mit Release 2.0.0 geaendert wurde (dateModified, Sitemap, Abschluss).
-R1_DATE = "2026-10-18"
-R1_DATE_DISP = "18. Oktober 2026"
+# Stand der Seiten, deren sichtbarer Inhalt zuletzt geaendert wurde (dateModified, Sitemap, Abschluss).
+CONTENT_DATE = "2026-10-18"
+CONTENT_DATE_DISP = "18. Oktober 2026"
 # Bewertungen im Google-Unternehmensprofil (Stand 10.10.2026). Eine weitere Stimme kam
 # direkt und zaehlt hier nicht mit. Einzige Quelle fuer die Zahl auf allen Seiten (llms.txt
-# schreibt der Generator nicht; check_static AK9b vergleicht die Zahl dort).
+# schreibt der Generator nicht; check_static vergleicht die Zahl dort).
 REVIEW_COUNT_GOOGLE = 5
 COUNT_WORDS = ("", "Eine", "Zwei", "Drei", "Vier", "Fünf", "Sechs", "Sieben", "Acht", "Neun", "Zehn", "Elf", "Zwölf")
 
@@ -149,18 +149,18 @@ def review_count_phrase(n):
 
 # Startseite: Stand fuer WebPage.dateModified, Sitemap und 'Zuletzt aktualisiert' im Fuss
 # (sync_home). Nur hochsetzen, wenn sich der Inhalt der Startseite wirklich aendert.
-HOME_DATE = R1_DATE
+HOME_DATE = CONTENT_DATE
 HOME_DATE_DISP = "18.10.2026"
 # Kontaktseite (Handseite): Stand fuer „Zuletzt aktualisiert“ im Abschluss (HAND_CLOSING) und lastmod der Sitemap
 # (STATIC_URLS). Nur hochsetzen, wenn sich der Inhalt der Kontaktseite wirklich aendert.
-KONTAKT_DATE = R1_DATE
-KONTAKT_DATE_DISP = R1_DATE_DISP
-# Empfehlungen (Handseite, seit Task 10): Stand fuer „Zuletzt aktualisiert“ im Abschluss (HAND_CLOSING) und lastmod der
+KONTAKT_DATE = CONTENT_DATE
+KONTAKT_DATE_DISP = CONTENT_DATE_DISP
+# Empfehlungen (Handseite, seit 11.10.2026): Stand fuer „Zuletzt aktualisiert“ im Abschluss (HAND_CLOSING) und lastmod der
 # Sitemap (STATIC_URLS). Nur hochsetzen, wenn sich der Inhalt der Seite wirklich aendert.
-EMPF_DATE = R1_DATE
-EMPF_DATE_DISP = R1_DATE_DISP
+EMPF_DATE = CONTENT_DATE
+EMPF_DATE_DISP = CONTENT_DATE_DISP
 
-# WhatsApp mit vorbefuelltem Satz je Einstieg (Textblatt §4, seit 10.10.2026): Am Satz ist
+# WhatsApp mit vorbefuelltem Satz je Einstieg: Am Satz ist
 # erkennbar, ueber welchen Knopf eine Anfrage kam, ohne Tracking-Skript. Auf der Startseite
 # setzt sync_home() das href jedes <a data-wa="schluessel">; Kontaktleiste (STICKY) und Fuss
 # nutzen WA() direkt. Neue Einstiege nur hier eintragen.
@@ -182,7 +182,7 @@ WA_TEXT = {
 
 def WA(text):
     """'Hallo Andreas, …' -> 'https://wa.me/491782584438?text=Hallo%20Andreas%2C%20…' (UTF-8, alles ausser
-    Buchstaben, Ziffern und -._~ kodiert, wie die Tabelle im Textblatt)."""
+    Buchstaben, Ziffern und -._~ kodiert, wie die freigegebene Tabelle)."""
     return "https://wa.me/" + WA_NUMBER + "?text=" + urllib.parse.quote(text, safe="")
 
 
@@ -224,9 +224,9 @@ def eur(n):
 #  Gemeinsame Bausteine                                                        #
 # --------------------------------------------------------------------------- #
 
-# Alle Generator-Seiten (Huelle render_shell, seit Task 7 ohne Ausnahme) tragen im eigenen <style> nur
+# Alle Generator-Seiten (Huelle render_shell, seit 10.10.2026 ohne Ausnahme) tragen im eigenen <style> nur
 # noch die Prosa-Regeln fuer den Fliesstext aus "intro" und "extra"; alle Bausteine (Kopf, Karten, Preise,
-# Stimmen, FAQ, Abschluss, Kaesten aus dem KI-Bereich) kommen aus style.css (Spec AK1).
+# Stimmen, FAQ, Abschluss, Kaesten aus dem KI-Bereich) kommen aus style.css.
 STYLE = """  <style>
     .lp-content > p, .lp-content > div { max-width:68ch; }
     .lp-content p { font-size:1.0667rem; color:var(--text2); line-height:1.75; margin:0 0 1rem; }
@@ -267,7 +267,7 @@ PHONE_SVG = ('<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke
 
 # Icon-Sprite fuer alle Seiten (seit 10.10.2026): die Symbole, die die gemeinsamen Bausteine
 # brauchen (Belegzeile, Knoepfe, Sterne; ab ico-tools die Kacheln der Leistungszeilen in der
-# Generator-Huelle). Pfade 1:1 aus dem Sprite der Startseite; ico-wifi (Task 6) aus derselben
+# Generator-Huelle). Pfade 1:1 aus dem Sprite der Startseite; ico-wifi aus derselben
 # Lucide-Reihe wie ico-wifi-off der Startseite, die dort kein WLAN-Symbol ohne Strich hat.
 # page() und sync_shared() setzen es direkt vor den <header>. Die Startseite bekommt es nicht:
 # ihr eigenes Sprite enthaelt dieselben Symbole, ein zweites ergaebe doppelte IDs.
@@ -334,7 +334,7 @@ def nav_html(current=None, home=False):
 SECTION_PAGES = {"ki-fuer-kmu": "ki", "software-nach-mass": "software",
                  "websites-fuer-betriebe": "websites"}
 SECTION_CHILDREN = {"e-rechnung": "ki"}
-# schulung (seit Task 8 Generator-Seite) markiert wie zuvor als Handseite keinen Menuepunkt
+# schulung (seit 10.10.2026 Generator-Seite) markiert wie zuvor als Handseite keinen Menuepunkt
 SECTION_NONE = ("digitalbonus-bayern", "ratgeber", "schulung")
 
 
@@ -373,11 +373,11 @@ SPRITE_RE = re.compile(r'<svg[^>]*\bid="icon-sprite"[^>]*>.*?</svg>', re.S)
 STYLE_CSS_RE = re.compile(r'href="(?:\.\./)*/?assets/css/style\.css(?:\?v=[^"]*)?"')
 MAIN_JS_RE = re.compile(r'src="(?:\.\./)*/?assets/js/main\.js(?:\?v=[^"]*)?"')
 FW_JS_RE = re.compile(r'src="(?:\.\./)*/?assets/js/fernwartung\.js(?:\?v=[^"]*)?"')   # nur /fernwartung/
-# Abschluss K5 auf den Handseiten (seit Task 9, Release C1): sync_shared ersetzt einen vorhandenen Abschluss
-# (CLOSING_RE) oder setzt ihn vor </main>. Pfad -> (Seitenname fuer den WhatsApp-Satz nach Textblatt §4, None:
+# Abschluss auf den Handseiten: sync_shared ersetzt einen vorhandenen Abschluss
+# (CLOSING_RE) oder setzt ihn vor </main>. Pfad -> (Seitenname fuer den WhatsApp-Satz nach den freigegebenen Texten, None:
 # allgemeiner Abschluss-Satz; Datum der Autorzeile, None: ohne „Zuletzt aktualisiert“). Kontakt traegt das Datum
 # seiner Textaenderung, Fernwartung das der letzten Anleitung (09.10.2026); Rechtsseiten fuehren ihren Stand im
-# Text, die 404 hat keinen. Nicht hier: die Startseite (eigener Abschluss). Empfehlungen seit Task 10 (Release C2).
+# Text, die 404 hat keinen. Nicht hier: die Startseite (eigener Abschluss). Empfehlungen seit 11.10.2026.
 HAND_CLOSING = {
     "kontakt/index.html": ("Kontakt", KONTAKT_DATE_DISP),
     "empfehlungen/index.html": ("Empfehlungen", EMPF_DATE_DISP),
@@ -400,7 +400,7 @@ FONT_PRELOADS = ("Manrope-latin.woff2", "SpaceGrotesk-latin.woff2")
 
 
 def preload_fonts(html, nl):
-    """Setzt die Font-Preloads vor fonts.css (Layout-Sprung beim ersten Aufruf, Release B), je Schrift nur, wenn ihr
+    """Setzt die Font-Preloads vor fonts.css (Layout-Sprung beim ersten Aufruf), je Schrift nur, wenn ihr
     Preload noch fehlt (Startseite, zweiter Lauf: unveraendert)."""
     missing = [f for f in FONT_PRELOADS
                if not re.search(r'<link rel="preload" as="font"[^>]*' + re.escape(f), html)]
@@ -507,7 +507,7 @@ def esc(t):
 
 def esc_attr(t):
     """Escaping fuer Attributwerte in doppelten Anfuehrungszeichen (Meta-Tags): wie esc(), dazu " -> &quot;.
-    Ein " in description/og/twitter zerschnitt sonst das Tag (Fix-Runde B, M8)."""
+    Ein " in description/og/twitter zerschnitt sonst das Tag."""
     return esc(t).replace('"', "&quot;")
 
 
@@ -523,7 +523,7 @@ def up(slug):
 
 
 def head(title, desc, slug, og_title, og_desc, og_alt, tw_desc=None, tw_alt=None):
-    """<head> bis einschliesslich style.css. tw_desc/tw_alt (seit Task 8, aus meta_extra): eigene
+    """<head> bis einschliesslich style.css. tw_desc/tw_alt (seit 10.10.2026, aus meta_extra): eigene
     twitter:description und twitter:image:alt; ohne sie twitter:description = og_desc und kein Alt-Text."""
     canonical = DOMAIN + "/" + slug + "/"
     tw_alt_html = '\n  <meta name="twitter:image:alt" content="{}"/>'.format(esc_attr(tw_alt)) if tw_alt else ""
@@ -599,7 +599,7 @@ def footer_html(places, services, current_path="", updated=None, home=False):
                     i=indent, t=title, l=links.replace("\n", "\n" + indent[6:]))
     def group_links(group):
         return "".join(li(sv["nav"], "/" + sv["slug"] + "/") for sv in services if group_of(sv) == group)
-    # IT-Sicherheitsschulung kommt seit Task 8 als SERVICES-Eintrag (group "it", nach lizenzen) ueber group_links
+    # IT-Sicherheitsschulung kommt seit 10.10.2026 als SERVICES-Eintrag (group "it", nach lizenzen) ueber group_links
     it_links = group_links("it") + li("Produktempfehlungen", "/empfehlungen/")
     ki_links = group_links("ki")
     ratgeber_links = group_links("ratgeber")
@@ -719,7 +719,7 @@ def faq_html(faqs):
 
 def page(head_html, schema_blocks, main_html, places, services, slug=""):
     """Ganze Seite: <head> mit den gemeinsamen Prosa-Regeln (STYLE) und dem Schema, Icon-Sprite, Kopfzeile,
-    Inhalt, Fuss, Kontaktleiste. Seit Task 7 ohne seitenspezifischen <style> (KI_STYLE, NEW_STYLE und die
+    Inhalt, Fuss, Kontaktleiste. Seit 10.10.2026 ohne seitenspezifischen <style> (KI_STYLE, NEW_STYLE und die
     alte Huelle STYLE_LEGACY sind nach style.css gewandert bzw. entfallen)."""
     parts = [head_html, STYLE]
     for s in schema_blocks:
@@ -740,14 +740,14 @@ def page(head_html, schema_blocks, main_html, places, services, slug=""):
 
 
 # --------------------------------------------------------------------------- #
-#  Generator-Huelle (seit 10.10.2026, Website-Umbau Release B)                 #
+#  Generator-Huelle (seit 10.10.2026)                                         #
 # --------------------------------------------------------------------------- #
-# Ein Aufbau fuer alle Generator-Seiten (Spec §6): Kopf (Krumen, H1, K4, Antwortsatz, Knoepfe,
-# Belegzeile, Beispiel-Chat oder Wege) -> Abschnitte im Wechsel -> Stimmen -> Preise -> FAQ -> Abschluss K5
-# mit Autorzeile. Bausteine kommen nur aus style.css. Umgestellt Seite fuer Seite (Task 5: drei Kernseiten,
-# Task 6: Orte und IT-Seiten, Task 7: KI-Bereich, Software, Websites, Ratgeber); seither gibt es keine
+# Ein Aufbau fuer alle Generator-Seiten: Kopf (Krumen, H1, Kernsatz, Antwortsatz, Knoepfe,
+# Belegzeile, Beispiel-Chat oder Wege) -> Abschnitte im Wechsel -> Stimmen -> Preise -> FAQ -> Abschluss
+# mit Autorzeile. Bausteine kommen nur aus style.css. Umgestellt Seite fuer Seite (zuerst drei Kernseiten,
+# dann Orte und IT-Seiten, zuletzt KI-Bereich, Software, Websites, Ratgeber); seither gibt es keine
 # zweite Huelle mehr. Ratgeber-Artikel (kind "ratgeber") stehen nach dem Kopf in einer Lesespalte.
-# WhatsApp-Satz fuer Kopf und Abschluss einer Unterseite (Textblatt §4): die Seite ist das Merkmal
+# WhatsApp-Satz fuer Kopf und Abschluss einer Unterseite: die Seite ist das Merkmal
 WA_SEITE = "Hallo Andreas, ich komme über deine Seite „{nav}“."
 AUTHOR_ROLE = "Fachinformatiker für Systemintegration · über 20 Jahre IT"
 # Beispiel-Chat: Absender -> (Blasen-Klasse wie im Hero-Chat der Startseite, Name fuer Screenreader)
@@ -756,9 +756,9 @@ H2_SPLIT_RE = re.compile(r"\s*<h2>(.*?)</h2>\s*", re.S)
 # Marke in einem extra-Abschnitt: Text davor links, danach rechts (<!--split--> 1,3 : 1; <!--split-wide-->
 # 1 : 1,35 mit breiterer rechter Spalte, wenn rechts Hinweis und Kasten stehen)
 SPLIT_RE = re.compile(r"<!--split(-wide)?-->")
-# Marke in einem extra-Abschnitt (Task 7): Text zwischen <!--more--> und <!--/more--> steht im HTML, ist aber
+# Marke in einem extra-Abschnitt: Text zwischen <!--more--> und <!--/more--> steht im HTML, ist aber
 # zugeklappt (<details class="more">, Baustein der Startseite). Fuer lange Abschnitte, deren Anfang reicht: KI-Hub
-# (Vorgabe Release B) und KI sicher einsetzen (sonst am Handy ueber 8.000 px, AK5). Kaesten mit Handlung
+# (Vorgabe 10.10.2026) und KI sicher einsetzen (sonst am Handy ueber 8.000 px). Kaesten mit Handlung
 # (Potenzialcheck, Website-Check) bleiben ausserhalb. Beschriftung „Mehr dazu“, mit <!--more:Text--> eine eigene
 # (Bedienlabel nach dem Inhalt, z. B. wenn davor ein Doppelpunkt auf den zugeklappten Teil zeigt).
 # Regeln (check_markers, Abbruch beim Bauen): paarweise, nicht ueber eine <h2> hinweg, kein <!--split--> darin.
@@ -770,7 +770,7 @@ MARKER_RE = re.compile(r"<!--(/?)more(?::[^>]*?)?-->|<!--split[^>]*-->|<h2>")
 RATGEBER_KEYS = {"slug", "nav", "group", "kind", "title", "h1", "service_type", "published", "modified",
                  "modified_disp", "cta2_href", "cta2_text", "desc", "lead", "intro", "raw_intro", "extra", "faqs"}
 # Alle Felder, die render_service/render_shell fuer einen SERVICES-Eintrag kennen, und alle Felder eines PLACES-Eintrags
-# (render_place). Ein Tippfehler im Feldnamen ("voice" statt "voices") liess bis Fix-Runde B (I3) still einen Abschnitt
+# (render_place). Ein Tippfehler im Feldnamen ("voice" statt "voices") liess bis 11.10.2026 still einen Abschnitt
 # wegfallen; jetzt bricht check_keys den Bau mit Seite und Feld ab. Neues Feld: hier eintragen UND im Code auswerten.
 SERVICE_KEYS = {"slug", "nav", "group", "kind", "title", "name", "h1", "h1_em", "h1_nowrap", "hero", "service_type",
                 "published", "modified", "modified_disp", "desc", "meta_extra", "k", "answer", "lead", "chat", "proof2",
@@ -812,7 +812,7 @@ def section(content, alt=False, label="", title="", sid="", aside=False, title_c
 
 def mini_chat(lines):
     """Kurzer Beispielverlauf (nur it-notdienst, managed-it-service, it-betreuer-wechseln), Kopfzeile
-    „Beispiel aus dem Alltag“ wie im Hero-Chat der Startseite, ohne Uhrzeiten (Textblatt §2). Die
+    „Beispiel aus dem Alltag“ wie im Hero-Chat der Startseite, ohne Uhrzeiten. Die
     Kopfzeile ist die Bildunterschrift, die Liste enthaelt nur die Nachrichten (Screenreader zaehlen
     so nur diese). lines: (Absender, Text), Absender "kunde" (rechts) oder "andreas" (links)."""
     msgs = "".join('\n        <li class="hc-msg {c}"><span class="sr-only">{w}: </span>{t}</li>'.format(
@@ -829,17 +829,17 @@ def eur_nbsp(text):
 
 
 def page_head(s, crumbs):
-    """Seitenkopf in fester Reihenfolge (Textblatt §1): Krumen, H1 (Text wie bisher, bei Hubs die
-    Akzentzeile als <em>; h1_nowrap haelt einen Begriff in einer Zeile), K4 (.page-k), Antwortsatz
+    """Seitenkopf in fester Reihenfolge: Krumen, H1 (Text wie bisher, bei Hubs die
+    Akzentzeile als <em>; h1_nowrap haelt einen Begriff in einer Zeile), Kernsatz (.page-k), Antwortsatz
     (.s-sub), Knoepfe Anrufen + WhatsApp (am Handy uebernimmt die Kontaktleiste), Belegzeile: zuerst
     die Google-Bewertungen mit Link zur Herkunft, dann ein Beleg der Seite (proof2: Symbol, Text) und
     optional ein dritter (proof3, gleiches Format).
     Daneben optional der Beispiel-Chat oder bei Hubs die Wege zu den Unterseiten (nav.lp-paths), beides ab
     1024 px rechts, darunter unter dem Kopf. Ohne Chat und ohne Wege ab 1024 px ein Raster: H1 ueber beide
-    Spalten, darunter links K4, rechts Antwortsatz, Knoepfe und Belegzeile; die Reihenfolge im HTML bleibt
+    Spalten, darunter links Kernsatz, rechts Antwortsatz, Knoepfe und Belegzeile; die Reihenfolge im HTML bleibt
     dieselbe (erste 300 Zeichen, Screenreader).
-    Ratgeber (kind "ratgeber-hub" und "ratgeber", Task 7): kein K4, statt Antwortsatz der bisherige Vorspann ("lead"),
-    nur der Anruf-Knopf, keine Belegzeile; der Kopf bleibt einspaltig (ohne K4 gaebe es keine linke Spalte)."""
+    Ratgeber (kind "ratgeber-hub" und "ratgeber"): kein Kernsatz, statt Antwortsatz der bisherige Vorspann ("lead"),
+    nur der Anruf-Knopf, keine Belegzeile; der Kopf bleibt einspaltig (ohne Kernsatz gaebe es keine linke Spalte)."""
     hero = s.get("hero")
     ratgeber = s.get("kind") in ("ratgeber-hub", "ratgeber")
     h1 = s["h1"]
@@ -847,7 +847,7 @@ def page_head(s, crumbs):
         if s["h1_nowrap"] not in h1:
             raise SystemExit("page_head: h1_nowrap steht nicht in der H1 von " + s["slug"])
         h1 = h1.replace(s["h1_nowrap"], '<span class="nowrap">' + s["h1_nowrap"] + "</span>", 1)
-    # h1_em (Task 8, schulung): ein Wort der H1 als Akzent (<em>), Text der H1 bleibt gleich
+    # h1_em (schulung): ein Wort der H1 als Akzent (<em>), Text der H1 bleibt gleich
     if s.get("h1_em"):
         if s["h1_em"] not in h1:
             raise SystemExit("page_head: h1_em steht nicht in der H1 von " + s["slug"])
@@ -881,7 +881,7 @@ def page_head(s, crumbs):
       </div>{proofs}""".format(answer=esc(s["lead"] if ratgeber else s["answer"]), tel=PHONE, phone=PHONE_DISP,
                                wa_btn=wa_btn, proofs=proofs)
     if two:
-        # H1 und K4 bleiben direkte Kinder (Rasterflaechen h1/kum), der Rest steht in .page-head-b (antwort)
+        # H1 und Kernsatz bleiben direkte Kinder (Rasterflaechen h1/kum), der Rest steht in .page-head-b (antwort)
         head_b = '\n      <div class="page-head-b">' + head_b.replace("\n", "\n  ") + '\n      </div>'
     grid = " page-head-grid--chat" if s.get("chat") else (" page-head-grid--paths" if hero else "")
     return """<section class="sec sec--glow page-head">
@@ -918,7 +918,7 @@ def voices_html(ids):
             '\n    <p class="testi-source testi-source--link"><a href="/#bewertungen-herkunft">Woher die Stimmen kommen</a></p>')
 
 
-# Zusatzfeld einer Preiskarte (sechstes Element, dict, seit Task 8): siehe price_card
+# Zusatzfeld einer Preiskarte (sechstes Element, dict, seit 10.10.2026): siehe price_card
 PRICE_OPT_KEYS = {"add", "feats", "badge", "btn"}
 # Satzende = Punkt/!/? plus Leerraum plus Grossbuchstabe; „zzgl. MwSt.“ bricht keinen Satz ab
 SENTENCE_SPLIT_RE = re.compile(r"(?<!zzgl\.)(?<=[.!?])\s+(?=[A-ZÄÖÜ])")
@@ -929,7 +929,7 @@ def price_card(pr, slug):
     """Ein Preis als .price-card (Baustein der Startseite). Eintrag wie bisher: (Stufe, Betrag,
     Beschreibung, hervorgehoben[, Einheit[, Zusatz]]); ohne Einheit gilt der Monatspreis der Betreuungspakete.
     Jede Einheit muss „zzgl. MwSt.“ nennen.
-    Zusatz (dict, seit Task 8, Schulung): "add" zweite Preiszeile unter der Einheit (z. B. Preis je Mitarbeiter,
+    Zusatz (dict, seit 10.10.2026, Schulung): "add" zweite Preiszeile unter der Einheit (z. B. Preis je Mitarbeiter,
     ebenfalls mit „zzgl. MwSt.“), "feats" Leistungen als .price-feats, "badge" Text des Abzeichens statt „Meine Empfehlung“
     (None: hervorgehobene Karte ohne Abzeichen), "btn" (Text, href wie im HTML, also mit &amp;) Knopf .price-btn,
     solid bei hervorgehobener Karte, sonst out.
@@ -944,7 +944,7 @@ def price_card(pr, slug):
     if opt.get("add") and "zzgl. MwSt." not in opt["add"]:
         raise SystemExit("price_card: Zusatzpreis ohne 'zzgl. MwSt.' auf " + slug + ": " + opt["add"])
     # Betraege in der Beschreibung (z. B. Monatspreis fuer den Betrieb) brauchen im selben Satz „netto“ oder
-    # „zzgl. MwSt.“; die Einheit der Karte gilt nur fuer den Betrag oben (Fix-Runde B, M1)
+    # „zzgl. MwSt.“; die Einheit der Karte gilt nur fuer den Betrag oben
     for sentence in SENTENCE_SPLIT_RE.split(desc):
         if EUR_AMOUNT_RE.search(sentence) and "netto" not in sentence and "zzgl. MwSt." not in sentence:
             raise SystemExit("price_card: Betrag ohne 'netto'/'zzgl. MwSt.' in der Beschreibung auf " + slug + ": "
@@ -970,7 +970,7 @@ def price_card(pr, slug):
 
 
 def prices_html(s):
-    """Alle Preise einer Unterseite als Raster aus .price-card. prices_wide (Task 8 Fix-Runde 1, Karten mit
+    """Alle Preise einer Unterseite als Raster aus .price-card. prices_wide (Karten mit
     Leistungen und Knopf): price-grid--wide, bis 1023 px eine Spalte in Lesebreite, ab 1024 px drei, Knopf unten."""
     cards = [price_card(pr, s["slug"]) for pr in s["prices"]]
     if s.get("prices_wide"):
@@ -981,10 +981,10 @@ def prices_html(s):
 
 
 def closing(mod_disp, wa=None, next_link=None, sticky=True):
-    """Abschluss K5 wie auf der Startseite (Knoepfe ab 768 px, am Handy die Kontaktleiste; QR zur
+    """Abschluss wie auf der Startseite (Knoepfe ab 768 px, am Handy die Kontaktleiste; QR zur
     Kontaktseite ab 1025 px) mit kompakter Autorzeile und dem Datum der Seite. wa: WhatsApp-Link
     (Satz der Seite), next_link: (href, Text) als Weg zur passenden naechsten Seite.
-    Seit Task 9 (Handseiten): mod_disp None = Autorzeile ohne Datum; sticky=False fuer Seiten ohne Kontaktleiste,
+    Seit 10.10.2026 (Handseiten): mod_disp None = Autorzeile ohne Datum; sticky=False fuer Seiten ohne Kontaktleiste,
     dort bleiben die Knoepfe auch am Handy sichtbar."""
     nxt = ""
     if next_link:
@@ -1041,7 +1041,7 @@ def more_html(m):
 
 
 def check_markers(slug, extra):
-    """Marken in "extra" pruefen, bevor gebaut wird (Task 7 Fix-Runde 1): <!--more--> und <!--/more--> stehen
+    """Marken in "extra" pruefen, bevor gebaut wird: <!--more--> und <!--/more--> stehen
     paarweise, ein Paar reicht nicht ueber eine <h2> (dort wird in Abschnitte zerlegt) und enthaelt kein
     <!--split-->. Sonst Abbruch mit Seite und Grund."""
     inside = False
@@ -1084,7 +1084,7 @@ def content_blocks(s):
     Einstieg (intro, Karten), extra an seinen <h2>, Stimmen, tail_blocks, row, Preise; Darstellung siehe
     render_shell."""
     slug = s["slug"]
-    # intro ist seit Task 8 optional (schulung: der bisherige Vorspann ist im Kopf durch K4 und Antwortsatz ersetzt,
+    # intro ist seit 10.10.2026 optional (schulung: der bisherige Vorspann ist im Kopf durch Kernsatz und Antwortsatz ersetzt,
     # der Abschnitt beginnt direkt mit den Zeilen)
     intro = s.get("intro", "")
     if intro and not s.get("raw_intro"):
@@ -1137,13 +1137,13 @@ def content_blocks(s):
         if s.get("price_line"):
             line = '\n    <p class="price-line"><strong>{}</strong> {}</p>'.format(
                 esc(s["price_line"][0]), eur_nbsp(s["price_line"][1]))
-        # prices_after (Satz unter den Preisen, z. B. Foerderhinweis) im Fliesstext-Stil (Task 7)
+        # prices_after (Satz unter den Preisen, z. B. Foerderhinweis) im Fliesstext-Stil
         after = prose(s["prices_after"]) if s.get("prices_after") else ""
         price_block = (s.get("prices_h2", "Pakete &amp; Preise"),
                        '\n    <p class="s-sub measure">' + s.get("prices_intro", "Transparente Monatspauschalen – "
                        "welches Paket passt, klären wir im kostenlosen Erstgespräch:") + '</p>'
                        + prices_html(s) + line + after + trust_box)
-        # prices_before (Task 8 Fix-Runde 1, schulung): Preise vor dem Abschnitt mit diesem Titel statt am Ende,
+        # prices_before: Preise vor dem Abschnitt mit diesem Titel statt am Ende,
         # z. B. damit der Hinweis „in Vorbereitung“ bei den Preisen vor der Beschreibung des Portals steht
         if s.get("prices_before"):
             titles = [t for t, _c in blocks]
@@ -1158,14 +1158,14 @@ def content_blocks(s):
 def render_shell(s, places, services, head_schema=None):
     """Leistungs-, Orts-, KI- oder Ratgeberseite in der Huelle. Kopf (<head>) und Schema wie bisher
     (service_head_schema; Ortsseiten geben ihr eigenes Paar als head_schema mit), Inhalte aus denselben
-    Daten; neu sind k, answer, chat, voices (Textblatt) und die Darstellung: proof2 (zweiter Beleg im
+    Daten; neu sind k, answer, chat, voices und die Darstellung: proof2 (zweiter Beleg im
     Kopf), h1_nowrap, intro_price (Preis neben dem Einstieg), price_line (Zeile unter den Paketen),
     row (zwei Abschnitte nebeneinander, auch der Stimmen-Abschnitt und tail_blocks), voices_h2 (eigene
     Ueberschrift ueber den Stimmen), tail_blocks ((Titel, HTML) nach den Stimmen), "<!--split-->" bzw.
     "<!--split-wide-->" in einem extra-Abschnitt (Text links, Rest rechts), "<!--more-->…<!--/more-->"
-    (zugeklappter Teil, Task 7). Ein Vertrauenskasten erscheint nur mit eigenem "trust" (ohne Preise neben dem
+    (zugeklappter Teil). Ein Vertrauenskasten erscheint nur mit eigenem "trust" (ohne Preise neben dem
     Einstieg, mit Preisen unter ihnen); TRUST_DEFAULT nur, wo eine Seite ihn ausdruecklich fuehrt (KI-Seiten).
-    Ratgeber-Artikel (kind "ratgeber", Task 7): nach dem Kopf Kurzantwort und "extra" mit ihren H2 unveraendert
+    Ratgeber-Artikel (kind "ratgeber"): nach dem Kopf Kurzantwort und "extra" mit ihren H2 unveraendert
     in einer Lesespalte (article.measure), danach FAQ und Abschluss."""
     slug = s["slug"]
     h, schema = head_schema or service_head_schema(s)
@@ -1181,7 +1181,7 @@ def render_shell(s, places, services, head_schema=None):
     blocks.append((s.get("faq_h2", "Häufige Fragen"), faq_html(s["faqs"]) + (prose(related) if related else "")))
     # Flaechen im Wechsel, der erste Abschnitt nach dem Kopf auf der zweiten Flaeche
     secs = [page_head(s, crumbs_html(s["nav"], slug))]
-    # aside_long (Task 8 Fix-Runde 1): seitliche Ueberschriften mit einem langen Wort (schulung: FAQ-Titel mit
+    # aside_long: seitliche Ueberschriften mit einem langen Wort (schulung: FAQ-Titel mit
     # „IT-Sicherheitsschulung“ in .nowrap) ab 1024 px kleiner, damit sie in der linken Spalte bleiben
     long_cls = "s-title--long" if s.get("aside_long") else ""
     secs += [section(content, alt=k % 2 == 0, title=title, aside=bool(title) and title in aside,
@@ -1199,15 +1199,15 @@ def render_shell(s, places, services, head_schema=None):
 #  Daten: Orte                                                                 #
 # --------------------------------------------------------------------------- #
 
-# Ortsseiten in der Generator-Huelle (seit 10.10.2026, Task 6): k (K4) und answer (Antwortsatz) und
-# voice (eine Google-Stimme ohne Ortsbezug) aus dem Textblatt §1/§3; intro und near_a von Vaterstetten,
-# Haar und Baldham mit den freigegebenen Ersatzsaetzen (Textblatt, Frage 5) statt Minuten- und
-# Rueckruf-Zusagen. Fix-Runde 1: Haar ohne die unbelegte Aussage „einer der gewerbestärksten Orte“,
-# Grasbrunn-Einstieg beginnt nicht mehr wortgleich mit dem K4 („Mein Sitz ist im Beethovenring 16 …“).
-# rows_order (Fix-Runde 2): Leistungszeilen in der Reihenfolge, in der der Antwortsatz sie nennt (place_rows);
+# Ortsseiten in der Generator-Huelle (seit 10.10.2026): k (Kernsatz) und answer (Antwortsatz) und
+# voice (eine Google-Stimme ohne Ortsbezug) aus den freigegebenen Texten; intro und near_a von Vaterstetten,
+# Haar und Baldham mit den freigegebenen Ersatzsaetzen statt Minuten- und
+# Rueckruf-Zusagen. Haar ohne die unbelegte Aussage „einer der gewerbestärksten Orte“,
+# Grasbrunn-Einstieg beginnt nicht mehr wortgleich mit dem Kernsatz („Mein Sitz ist im Beethovenring 16 …“).
+# rows_order: Leistungszeilen in der Reihenfolge, in der der Antwortsatz sie nennt (place_rows);
 # Baldham und Zorneding nennen keine Leistung und behalten die Grundreihenfolge.
-PLACE_DATE = R1_DATE            # dateModified, Sitemap und „Zuletzt aktualisiert“ aller Ortsseiten
-PLACE_DATE_DISP = R1_DATE_DISP
+PLACE_DATE = CONTENT_DATE            # dateModified, Sitemap und „Zuletzt aktualisiert“ aller Ortsseiten
+PLACE_DATE_DISP = CONTENT_DATE_DISP
 PLACES = [
     {
         "slug": "grasbrunn", "name": "Grasbrunn", "title_name": "Grasbrunn & Neukeferloh",
@@ -1332,8 +1332,8 @@ PLACE_CARDS = [
     ("Backup & IT-Sicherheit", "Datensicherung nach 3-2-1-Strategie, Virenschutz und Schutz vor Ransomware.", "ico-shield"),
 ]
 # Beleg im Kopf mit dem Stundensatz, gleicher Wortlaut ueberall: als proof2 auf Ortsseiten, it-notdienst und
-# Netzwerk, als proof3 hinter dem eigenen Beleg auf Microsoft 365, IT-Sicherheit und Lizenzen (Task 6,
-# Fix-Runden 1/2). Der fruehere Vertrauenskasten der Ortsseiten entfaellt (Fakten in Beleg und Abschluss).
+# Netzwerk, als proof3 hinter dem eigenen Beleg auf Microsoft 365, IT-Sicherheit und Lizenzen.
+# Der fruehere Vertrauenskasten der Ortsseiten entfaellt (Fakten in Beleg und Abschluss).
 PROOF_ADHOC = ("ico-clock", "Ad hoc 110 € netto zzgl. MwSt./Std. im 15-Minuten-Takt")
 PLACE_NEAR_H2 = "Auch in deiner Nähe im Einsatz"
 
@@ -1374,7 +1374,7 @@ def render_place(p, places, services):
     check_keys("PLACES", p, PLACE_KEYS)
     slug = "it-service-" + p["slug"]
     title = "IT-Service {tn} | Andreas Grundke IT-Service".format(tn=p["title_name"])
-    # Description: „schnelle Hilfe“ durch den freigegebenen Ersatz (Textblatt, Frage 5; seo-ausnahmen.json)
+    # Description: „schnelle Hilfe“ durch den freigegebenen Ersatz
     desc = ("IT-Service für {tn}: persönlicher IT-Betreuer vor Ort für KMU, Handwerk & Büros. "
             "Microsoft 365, Netzwerk, Backup, IT-Sicherheit. Kurze Wege, ein fester Ansprechpartner.").format(tn=p["title_name"])
     og_title = "IT-Service {tn} – Andreas Grundke IT-Service".format(tn=p["title_name"])
@@ -1384,7 +1384,7 @@ def render_place(p, places, services):
     h = head(title, desc, slug, og_title, og_desc, "IT-Service {n} – Andreas Grundke IT-Service".format(n=p["name"]))
 
     # Dasselbe Unternehmen wie auf der Startseite (@id BUSINESS_ID, url der Startseite), mit dem Einsatzgebiet dieses
-    # Orts (areaServed). Bis Fix-Runde B (M3) ein eigener Knoten ohne @id mit der Ortsseite als url.
+    # Orts (areaServed). Bis 11.10.2026 ein eigener Knoten ohne @id mit der Ortsseite als url.
     lb = {
         "@context": "https://schema.org",
         "@type": ["LocalBusiness", "ProfessionalService"],
@@ -1455,9 +1455,9 @@ POTENZIALCHECK_SCHEMA = {
                                       "valueAddedTaxIncluded": False}},
 }
 
-# KI_STYLE und NEW_STYLE (bis Task 7 per "extra_style" im <style> der KI-, Software-, Websites- und
-# Ratgeberseiten) stehen seit Release B in assets/css/style.css: .ki-case, .ki-check, .ki-note, .ki-tbl,
-# .lp-steps, .lp-checklist, .lp-dont, .lp-answer, .lp-content > h3, .lp-paths (Spec AK1).
+# KI_STYLE und NEW_STYLE (bis 10.10.2026 per "extra_style" im <style> der KI-, Software-, Websites- und
+# Ratgeberseiten) stehen seit 10.10.2026 in assets/css/style.css: .ki-case, .ki-check, .ki-note, .ki-tbl,
+# .lp-steps, .lp-checklist, .lp-dont, .lp-answer, .lp-content > h3, .lp-paths.
 KI_START_TEXT = (
     '<p>Das Paket KI-Start kostet je nach Größe des Betriebs ab ' + eur(PRICES["ki_start"]) + ' netto. '
     'Microsoft 365 und Copilot bekommst du auf Wunsch über mich, ChatGPT- und Claude-Teamkonten schließt ihr '
@@ -1497,8 +1497,8 @@ TRUST_FESTPREIS = ("<strong>Festpreis für das Projekt, fester Monatsbetrag für
                    "Was außerhalb davon anfällt, kostet 110 € netto zzgl. MwSt. je Stunde im 15-Minuten-Takt. Du sprichst "
                    "von der ersten Frage bis zum laufenden Betrieb mit mir, Andreas Grundke.")
 
-# Schulung (Task 8, bis 10.10.2026 Handseite): Course-Knoten aus dem JSON-LD der Handseite, inklusive availability
-# PreOrder am Portal-Angebot; seit Fix-Runde B (M3) provider mit @id des Unternehmens und Offers als netto gekennzeichnet.
+# Schulung (bis 10.10.2026 Handseite): Course-Knoten aus dem JSON-LD der Handseite, inklusive availability
+# PreOrder am Portal-Angebot; seit 11.10.2026 provider mit @id des Unternehmens und Offers als netto gekennzeichnet.
 # Mail-Links der drei Preiskarten zeichengleich (Betreff und Text wie bisher).
 SCHULUNG_COURSE = {
     "@context": "https://schema.org",
@@ -1515,7 +1515,7 @@ SCHULUNG_COURSE = {
         "url": "https://grundke-it.de",
     },
     "inLanguage": "de-DE",
-    # Preise netto (Fix-Runde B, M3): priceSpecification mit valueAddedTaxIncluded false, price am Offer bleibt
+    # Preise netto: priceSpecification mit valueAddedTaxIncluded false, price am Offer bleibt
     "offers": [
         {"@type": "Offer", "name": "Live-Schulung per Microsoft Teams", "price": "135.00", "priceCurrency": "EUR",
          "category": "Pauschale",
@@ -1552,11 +1552,11 @@ SERVICES = [
         "title": "Managed IT-Service für KMU | München Ost – Andreas Grundke IT-Service",
         "h1": "Managed IT-Service für kleine &amp; mittlere Unternehmen",
         "service_type": "Managed IT-Service",
-        "modified": R1_DATE, "modified_disp": R1_DATE_DISP,
+        "modified": CONTENT_DATE, "modified_disp": CONTENT_DATE_DISP,
         "desc": ("Managed IT-Service für kleine & mittlere Unternehmen im Raum München Ost: laufende "
                  "IT-Betreuung, bevorzugter Support, ein persönlicher Ansprechpartner. Planbare "
                  "Monatspakete statt teurer Ausfälle."),
-        # Kopf der Huelle (Textblatt §1-3, freigegeben 10.10.2026): K4, Antwortsatz, Beispiel-Chat, Stimmen
+        # Kopf der Huelle: Kernsatz, Antwortsatz, Beispiel-Chat, Stimmen
         "k": "Ich behalte je nach Paket Updates, Datensicherung und Virenschutz im Blick, damit seltener etwas ausfällt.",
         "answer": ("Managed IT-Service bei Grundke IT-Service in Grasbrunn heißt: Ich betreue die IT eures Betriebs "
                    "im Münchner Osten laufend zu einer planbaren Monatspauschale ab 149 € netto, mit Wartung, "
@@ -1567,7 +1567,7 @@ SERVICES = [
             ("andreas", "Nein. Die Ersatzplatte ist bestellt, den Einbau stimme ich mit dir ab. Bis dahin läuft die Kopie außer Haus weiter."),
         ],
         "voices": ["polednik"],
-        # Darstellung in der Huelle (Fix-Runde 1, 10.10.2026)
+        # Darstellung in der Huelle
         "h1_nowrap": "Managed IT-Service",
         "proof2": ("ico-check", "Monatspauschale ab 149 € netto"),
         "price_line": ("Ad hoc", "110 € netto zzgl. MwSt. je Stunde im 15-Minuten-Takt"),
@@ -1586,7 +1586,7 @@ SERVICES = [
             ("IT-Sicherheit", "Virenschutz, Firewall, VPN und Schutz vor Ransomware & Phishing.", "ico-shield"),
             ("Bevorzugter Support", "Vertragskunden kommen vor Ad-hoc-Anfragen dran, Premium-Kunden zuerst.", "ico-user-check"),
             ("Beratung & Einkauf", "Hardware-Empfehlungen und Beschaffung ohne Aufschlag-Spielchen.", "ico-handshake"),
-            # Textblatt L9b: stand bis 10.10.2026 im Abschnitt "Leistungen" der Startseite
+            # stand bis 10.10.2026 im Abschnitt "Leistungen" der Startseite
             ("Umstieg und Erneuerung", "Umstieg auf Windows 11, Microsoft 365 oder neue Server, Ablösung veralteter Router und Firewalls und eine IT-Dokumentation für den Notfall.", "ico-monitor"),
         ],
         "prices": [
@@ -1623,11 +1623,11 @@ SERVICES = [
         "title": "Microsoft 365 Betreuung für KMU | München Ost – Andreas Grundke IT-Service",
         "h1": "Microsoft 365 Betreuung für Unternehmen",
         "service_type": "Microsoft 365 Betreuung",
-        "modified": R1_DATE, "modified_disp": R1_DATE_DISP,
+        "modified": CONTENT_DATE, "modified_disp": CONTENT_DATE_DISP,
         "desc": ("Microsoft 365 für KMU im Raum München Ost: Einrichtung, Migration und laufende "
                  "Betreuung von Exchange Online, Teams, SharePoint & OneDrive – inklusive Sicherheit "
                  "und DSGVO-konformer Datensicherung."),
-        # Kopf der Huelle (Textblatt §1/§3, Task 6): K4, Antwortsatz, Stimme; Darstellung: zweiter Beleg
+        # Kopf der Huelle: Kernsatz, Antwortsatz, Stimme; Darstellung: zweiter Beleg
         "k": ("Kommt jemand ins Team oder geht, lege ich Konto, Postfach und Rechte an oder räume sie wieder weg."),
         "answer": ("Microsoft 365 betreue ich als Grundke IT-Service aus Grasbrunn für Betriebe im Münchner Osten: "
                    "Einrichtung und Umzug alter Postfächer nach Aufwand, laufende Betreuung mit Zwei-Faktor-Anmeldung "
@@ -1672,10 +1672,10 @@ SERVICES = [
         "title": "IT-Sicherheit & Backup für KMU | München Ost – Andreas Grundke IT-Service",
         "h1": "IT-Sicherheit &amp; Backup für Unternehmen",
         "service_type": "IT-Sicherheit und Datensicherung",
-        "modified": R1_DATE, "modified_disp": R1_DATE_DISP,
+        "modified": CONTENT_DATE, "modified_disp": CONTENT_DATE_DISP,
         "desc": ("IT-Sicherheit & Backup für KMU im Raum München Ost: Schutz vor Ransomware und "
                  "Datenverlust mit 3-2-1-Backup, Virenschutz, Firewall und Mitarbeiter-Awareness."),
-        # Kopf der Huelle (Textblatt §1/§3, Task 6)
+        # Kopf der Huelle
         "k": ("Ich sichere eure Daten mit einer Kopie außer Haus und prüfe regelmäßig, ob sie sich zurückspielen "
               "lassen."),
         "answer": ("IT-Sicherheit heißt bei Grundke IT-Service in Grasbrunn für Betriebe im Münchner Osten: "
@@ -1723,7 +1723,7 @@ SERVICES = [
         "service_type": "Netzwerk, WLAN und Firewall",
         "desc": ("Netzwerk, WLAN & Firewall für KMU im Raum München Ost: stabiles WLAN, sichere "
                  "Netzwerke und VPN mit professioneller UniFi-Technik – geplant, eingerichtet und betreut."),
-        # Kopf der Huelle (Textblatt §1/§3, Task 6)
+        # Kopf der Huelle
         "k": "Ich plane das WLAN für euer Gebäude und trenne Gäste, Kasse und Betrieb in eigene Netze.",
         "answer": ("Als Grundke IT-Service aus Grasbrunn plane ich Netzwerk, WLAN und Firewall für Betriebe im "
                    "Münchner Osten, richte sie ein und betreue sie: UniFi-Technik, getrennte Netze für Gäste und "
@@ -1741,8 +1741,8 @@ SERVICES = [
             ("Firewall & VPN", "Abgesicherter Internetzugang und verschlüsselter Zugriff von unterwegs.", "ico-shield"),
             ("Monitoring", "Ich sehe Störungen oft, bevor du sie bemerkst – und reagiere proaktiv.", "ico-monitor"),
         ],
-        "modified": R1_DATE, "modified_disp": R1_DATE_DISP,
-        # Kundenstimme Apartments Bauer (Google, 26.09.2026) seit Task 6 aus REVIEWS ueber voices_html, wortgetreu
+        "modified": CONTENT_DATE, "modified_disp": CONTENT_DATE_DISP,
+        # Kundenstimme Apartments Bauer (Google, 26.09.2026) seit 10.10.2026 aus REVIEWS ueber voices_html, wortgetreu
         # wie auf der Startseite; Ueberschrift des bisherigen Abschnitts bleibt.
         "voices": ["bauer"],
         "voices_h2": "Aus der Praxis: WLAN in einem älteren Gebäude",
@@ -1765,7 +1765,7 @@ SERVICES = [
     },
     {
         "slug": "it-notdienst", "nav": "IT-Notdienst",
-        "modified": R1_DATE, "modified_disp": R1_DATE_DISP,
+        "modified": CONTENT_DATE, "modified_disp": CONTENT_DATE_DISP,
         "title": "IT-Notdienst für Firmen im Münchner Osten | Grundke IT",
         "h1": "IT-Notdienst für Unternehmen",
         "service_type": "IT-Notdienst",
@@ -1782,7 +1782,7 @@ SERVICES = [
             ("andreas", "Ein Dienst hing nach dem letzten Update. Neu gestartet, die Laufwerke sind wieder da."),
         ],
         "voices": ["polednik", "verena-k"],
-        # Darstellung in der Huelle (Fix-Runde 1, 10.10.2026): Preis neben dem Einstieg statt Vertrauenskasten
+        # Darstellung in der Huelle: Preis neben dem Einstieg statt Vertrauenskasten
         "proof2": PROOF_ADHOC,
         "intro_price": ("Ad hoc", "110 €", "Abrechnung im 15-Minuten-Takt.", False, "netto/Std. zzgl. MwSt."),
         "intro": ("Wenn die IT steht, zählt jede Minute. Viele Störungen löse ich per Fernwartung, sobald "
@@ -1835,13 +1835,13 @@ SERVICES = [
             ],
         },
         "service_type": "KI-Beratung und Anwendungsentwicklung für KMU",
-        # 10.10.2026 (Task 7): neuer Kopf mit K4 und Antwortsatz -> neues Datum
-        "published": KI_PUB_DATE, "modified": R1_DATE, "modified_disp": R1_DATE_DISP,
+        # 10.10.2026: neuer Kopf mit Kernsatz und Antwortsatz -> neues Datum
+        "published": KI_PUB_DATE, "modified": CONTENT_DATE, "modified_disp": CONTENT_DATE_DISP,
         "cta2_href": "/ki-automatisierung/", "cta2_text": "Abläufe automatisieren",
         "extra_schema": [POTENZIALCHECK_SCHEMA],
         "desc": ("KI im Betrieb: Abläufe automatisieren, Auswertungen aus vorhandenen Daten, "
                  "datenschutzgerecht umgesetzt. Kostenloser Potenzialcheck im Raum München Ost."),
-        # Kopf der Huelle (Textblatt §1, freigegeben 10.10.2026; ohne Stimme, Andreas 10.10.2026): K4, Antwortsatz;
+        # Kopf der Huelle: Kernsatz, Antwortsatz;
         # Beleg aus dem Potenzialcheck-Kasten der Seite; Vertrauenstext wie bisher (TRUST_DEFAULT) neben dem Einstieg
         "k": ("Ich baue KI dort ein, wo bei euch jede Woche jemand Daten abtippt oder Aufnahmen durchklickt, und "
               "betreue es danach weiter."),
@@ -1971,11 +1971,11 @@ SERVICES = [
         "title": "KI-Automatisierung: Schnittstellen & Berichte | Grundke IT",
         "h1": "Abläufe automatisieren: Schnittstellen, Dokumente und Berichte",
         "service_type": "Prozessautomatisierung und Anwendungsentwicklung für KMU",
-        "published": KI_PUB_DATE, "modified": R1_DATE, "modified_disp": R1_DATE_DISP,
+        "published": KI_PUB_DATE, "modified": CONTENT_DATE, "modified_disp": CONTENT_DATE_DISP,
         "cta2_href": "/ki-fuer-kmu/", "cta2_text": "Überblick KI im Betrieb",
         "desc": ("Schnittstellen zwischen Programmen, Dokumente automatisch auslesen, Berichte ohne "
                  "Excel-Bastelei: Prozesse mit KI automatisieren für kleine Betriebe."),
-        # Kopf der Huelle (Textblatt §1, Task 7); Beleg aus der FAQ „Was kostet eine Automatisierung?“
+        # Kopf der Huelle; Beleg aus der FAQ „Was kostet eine Automatisierung?“
         "k": "Ich verbinde eure Programme, damit Daten nicht mehr von Hand von einem ins andere wandern.",
         "answer": ("Als Grundke IT-Service aus Grasbrunn automatisiere ich für Betriebe im Münchner Osten, was "
                    "regelmäßig gleich abläuft und an einer Datei hängt: Exporte, Listen, Rechnungen, Berichte. Zum "
@@ -2051,11 +2051,11 @@ SERVICES = [
         "title": "Videoüberwachung mit KI: Fahrzeuge & Kennzeichen | Grundke IT",
         "h1": "Videoanalyse und Auswertung – Kameradaten nutzbar machen",
         "service_type": "KI-gestützte Videoanalyse und Auswertung für Unternehmen",
-        "published": KI_PUB_DATE, "modified": R1_DATE, "modified_disp": R1_DATE_DISP,
+        "published": KI_PUB_DATE, "modified": CONTENT_DATE, "modified_disp": CONTENT_DATE_DISP,
         "cta2_href": "/netzwerk-wlan-firewall/", "cta2_text": "Netzwerk & Kameratechnik",
         "desc": ("Videoüberwachung mit KI: Fahrzeuge und Kennzeichen erkennen, Vorgänge zählen, Kennzahlen "
                  "darstellen. Auf vorhandenen UniFi-Anlagen, Verarbeitung im Haus."),
-        # Kopf der Huelle (Textblatt §1, Task 7); Beleg aus Hinweis und Karte der Seite (keine Gesichtserkennung,
+        # Kopf der Huelle; Beleg aus Hinweis und Karte der Seite (keine Gesichtserkennung,
         # Verarbeitung im Haus)
         "k": ("Ich setze auf eure vorhandene Kameraanlage eine Auswertung, die Fahrzeuge erkennt, Vorgänge zählt und "
               "Auffälligkeiten meldet."),
@@ -2146,14 +2146,14 @@ SERVICES = [
         "title": "KI sicher einsetzen: ChatGPT, Copilot & DSGVO | Grundke IT",
         "h1": "KI sicher einsetzen: Verträge, Regeln und Schulung für den Betrieb",
         "service_type": "Einführung von KI im Unternehmen, datenschutzgerecht umgesetzt",
-        "published": KI_PUB_DATE, "modified": R1_DATE, "modified_disp": R1_DATE_DISP,
+        "published": KI_PUB_DATE, "modified": CONTENT_DATE, "modified_disp": CONTENT_DATE_DISP,
         "cta2_href": "/schulung/", "cta2_text": "Schulung für dein Team",
         "offers": ([offer_from("KI-Start", PRICES["ki_start"],
                                "Bestandsaufnahme, Werkzeug mit Vertrag, Leitplanken, Nutzungsrichtlinie, Schulung "
                                "und erste Anwendung, einmalig netto.")] if SHOW_FROM_PRICES else []),
         "desc": ("ChatGPT, Copilot & Co. datenschutzgerecht im Betrieb: Verträge, Nutzungsrichtlinie und Schulung "
                  "als Maßnahme zur KI-Kompetenz (Art. 4 KI-VO). Paket KI-Start."),
-        # Kopf der Huelle (Textblatt §1, Task 7); Beleg = Preis des Pakets KI-Start (KI_START_TEXT, FAQ), ohne
+        # Kopf der Huelle; Beleg = Preis des Pakets KI-Start (KI_START_TEXT, FAQ), ohne
         # Projektpreise der Stundensatz wie in der FAQ „Was kostet die Einführung?“
         "k": ("Ich lege mit euch fest, welche KI-Werkzeuge erlaubt sind und welche Daten hineindürfen, in einer "
               "kurzen, verständlichen Richtlinie."),
@@ -2289,7 +2289,7 @@ SERVICES = [
         "title": "IT-Dienstleister wechseln: geordnete Übernahme | Grundke IT",
         "h1": "IT-Betreuer wechseln: so läuft eine geordnete Übernahme",
         "service_type": "Übernahme der IT-Betreuung von einem anderen Dienstleister",
-        "published": NEW_DATE, "modified": R1_DATE, "modified_disp": R1_DATE_DISP,
+        "published": NEW_DATE, "modified": CONTENT_DATE, "modified_disp": CONTENT_DATE_DISP,
         "cta2_href": "/managed-it-service/", "cta2_text": "Laufende IT-Betreuung",
         "desc": ("Dein IT-Dienstleister ist nicht erreichbar oder hört auf? Übernahme-Checkliste, was du "
                  "vom alten Betreuer brauchst und wie eine geordnete Übernahme läuft."),
@@ -2305,7 +2305,7 @@ SERVICES = [
                         "holen wir die Zugänge über die Hersteller zurück."),
         ],
         "voices": ["dietz"],
-        # Darstellung in der Huelle (Fix-Runde 1, 10.10.2026): Ablauf links, „Und wenn …“ rechts
+        # Darstellung in der Huelle: Ablauf links, „Und wenn …“ rechts
         "proof2": ("ico-user-check", "Über 20 Jahre IT-Erfahrung"),
         "row": ("So läuft der Wechsel", "Und wenn der alte Betreuer gar nicht mehr reagiert?"),
         "intro": ("Den IT-Dienstleister wechselt niemand aus Lust. Meistens hat sich etwas angesammelt: "
@@ -2385,11 +2385,11 @@ SERVICES = [
         "title": "Lizenzen für Firmen: Microsoft 365, Copilot, ChatGPT | Grundke IT",
         "h1": "Lizenzen für deinen Betrieb, eingerichtet und verwaltet",
         "service_type": "Lizenzvertrieb mit Einrichtung und Verwaltung für Unternehmen",
-        "published": NEW_DATE, "modified": R1_DATE, "modified_disp": R1_DATE_DISP,
+        "published": NEW_DATE, "modified": CONTENT_DATE, "modified_disp": CONTENT_DATE_DISP,
         "cta2_href": "/microsoft-365-betreuung/", "cta2_text": "Microsoft 365 Betreuung",
         "desc": ("Microsoft 365, Copilot, ESET-Virenschutz und Datensicherung für Unternehmen: Lizenz, "
                  "Einrichtung und Verwaltung aus einer Hand. Raum München Ost."),
-        # Kopf der Huelle (Textblatt §1/§3, Task 6); Darstellung: zwei Abschnitte aus "extra" als Zeile
+        # Kopf der Huelle; Darstellung: zwei Abschnitte aus "extra" als Zeile
         "k": ("Ich behalte Laufzeiten und Nutzer im Blick, damit ihr keine Lizenz bezahlt, die niemand mehr braucht."),
         "answer": ("Lizenzen für Microsoft 365, Copilot und ESET-Virenschutz bekommen Betriebe im Münchner Osten bei "
                    "Grundke IT-Service in Grasbrunn, mit Einrichtung, Verwaltung und Datensicherung auf einer Rechnung. "
@@ -2448,12 +2448,12 @@ SERVICES = [
         ],
     },
     {
-        # Task 8 (Release C1, 10.10.2026): bis dahin Handseite. Steht nach lizenzen, damit der Fusslink an derselben
-        # Stelle der Spalte IT-Betreuung bleibt (group_of). H1 mit Umbruch und <em> wie bisher (Textblatt §1, Hinweis),
+        # Seit 10.10.2026 Generator-Seite, bis dahin Handseite. Steht nach lizenzen, damit der Fusslink an derselben
+        # Stelle der Spalte IT-Betreuung bleibt (group_of). H1 mit Umbruch und <em> wie bisher,
         # name ohne Tags fuer Schema und og. og:title, og:image:alt, twitter:image:alt wie bisher (meta_extra);
         # description, og:description und twitter:description nennen das Portal „in Vorbereitung“, Preis „Ab 135 €“
-        # (Andreas 10.10.2026, seo-ausnahmen.json). K4 und Antwortsatz aus dem Textblatt (Zeile 22, Antwortsatz mit
-        # Teilnahmenachweis, Andreas 10.10.2026), keine Kundenstimme (Textblatt §3). Text, Preise, FAQ und Course-Knoten
+        # (Andreas 10.10.2026, seo-ausnahmen.json). Kernsatz und Antwortsatz aus den freigegebenen Texten (Zeile 22, Antwortsatz mit
+        # Teilnahmenachweis, Andreas 10.10.2026), keine Kundenstimme. Text, Preise, FAQ und Course-Knoten
         # wortgleich aus der Handseite; Zahlen im deutschen Format, jeder Preis mit „zzgl. MwSt.“.
         "slug": "schulung", "nav": "IT-Sicherheitsschulung", "group": "it",
         "title": "IT-Sicherheitsschulung & Datenschutz – Grundke IT-Service",
@@ -2461,7 +2461,7 @@ SERVICES = [
         "name": "IT-Sicherheitsschulung & Datenschutz",
         "service_type": "IT-Sicherheitsschulung für Mitarbeiter",
         # published: fruehester belegter Stand der Seite (erster Commit des Repos)
-        "published": "2026-04-10", "modified": R1_DATE, "modified_disp": R1_DATE_DISP,
+        "published": "2026-04-10", "modified": CONTENT_DATE, "modified_disp": CONTENT_DATE_DISP,
         "cta2_href": "/it-sicherheit-backup/", "cta2_text": "IT-Sicherheit & Backup",
         "desc": ("IT-Sicherheitsschulung für KMUs: Live per Teams, Online-Portal mit Quiz und Zertifikat in Vorbereitung. "
                  "Ab 135 € pauschal. Grundke IT-Service, München Ost."),
@@ -2478,7 +2478,7 @@ SERVICES = [
         "answer": ("Die IT-Sicherheitsschulung von Grundke IT-Service aus Grasbrunn läuft live per Microsoft Teams, dauert "
                    "rund 1,5 Stunden, kostet 135 € netto pauschal und jeder Teilnehmer bekommt einen Teilnahmenachweis als "
                    "PDF. Das Online-Portal ist in Vorbereitung und lässt sich vormerken."),
-        # Beleg der Seite aus der FAQ „Hilft die Schulung bei der DSGVO …?“ (Fix-Runde 1: „Organisatorische“ statt
+        # Beleg der Seite aus der FAQ „Hilft die Schulung bei der DSGVO …?“ („Organisatorische“ statt
         # „Anerkannte“, liest sich sonst wie eine Zertifizierung)
         "proof2": ("ico-shield", "Organisatorische Maßnahme nach Art. 32 DSGVO"),
         "cards_h2": "Was dein Team lernt",
@@ -2509,7 +2509,7 @@ SERVICES = [
         <li>PDF-Zertifikat als Teilnahmenachweis</li>
       </ul>
 """,
-        # Hinweis zum Portal direkt ueber den Preiskarten (wie bisher in der Naehe der Preise). Fix-Runde 1 (Design-Review):
+        # Hinweis zum Portal direkt ueber den Preiskarten (wie bisher in der Naehe der Preise). Nach dem Design-Review:
         # Preise vor „Das Online-Portal im Detail“, damit „in Vorbereitung“ vor der Beschreibung des Portals steht;
         # Karten bis 1023 px untereinander (prices_wide); hervorgehoben ist das buchbare Angebot (Live-Schulung) ohne
         # Abzeichen, Portal und Kombi ohne Hervorhebung und ohne Abzeichen („Beste Wahl“ entfaellt).
@@ -2590,9 +2590,9 @@ SERVICES = [
         "title": "Software entwickeln lassen für kleine Betriebe | Grundke IT",
         "h1": "Software nach Maß für kleine Betriebe",
         "service_type": "Individuelle Softwareentwicklung und Betrieb für kleine Unternehmen",
-        # 10.10.2026: Betrieb ab 80 € statt 79 € (Inhaltsaenderung -> neues Datum), Kopf mit K4 (Task 7)
-        "published": NEW_DATE, "modified": R1_DATE, "modified_disp": R1_DATE_DISP,
-        # Kopf der Huelle (Textblatt §1, Task 7); Beleg = Betriebspreis der kleinen Anwendung (Andreas 10.10.2026:
+        # 10.10.2026: Betrieb ab 80 € statt 79 € (Inhaltsaenderung -> neues Datum), Kopf mit Kernsatz
+        "published": NEW_DATE, "modified": CONTENT_DATE, "modified_disp": CONTENT_DATE_DISP,
+        # Kopf der Huelle; Beleg = Betriebspreis der kleinen Anwendung (Andreas 10.10.2026:
         # 80 € netto), ohne Projektpreise der Vertrauenssatz der Seite
         "k": ("Aus der Excel-Liste, die drei Leute pflegen, baue ich eine kleine Anwendung, in der alle denselben "
               "Stand sehen."),
@@ -2722,10 +2722,10 @@ SERVICES = [
         "title": "Website erstellen lassen oder modernisieren | Grundke IT",
         "h1": "Websites für Betriebe, die gefunden werden",
         "service_type": "Technische Umsetzung von Websites für kleine Unternehmen",
-        # 10.10.2026 (Task 7): neuer Kopf mit K4 und Antwortsatz -> neues Datum
-        "published": NEW_DATE, "modified": R1_DATE, "modified_disp": R1_DATE_DISP,
-        # Kopf der Huelle (Textblatt §1, Task 7); Beleg = Richtwert des One-Pagers aus den Preiskarten, ohne
-        # Projektpreise der Vertrauenssatz der Seite. Der Website-Check-Kasten bleibt sichtbar (Spec §5).
+        # 10.10.2026: neuer Kopf mit Kernsatz und Antwortsatz -> neues Datum
+        "published": NEW_DATE, "modified": CONTENT_DATE, "modified_disp": CONTENT_DATE_DISP,
+        # Kopf der Huelle; Beleg = Richtwert des One-Pagers aus den Preiskarten, ohne
+        # Projektpreise der Vertrauenssatz der Seite. Der Website-Check-Kasten bleibt sichtbar.
         "k": ("Ich baue eure Website technisch so auf, dass sie am Handy gut funktioniert und für Google und "
               "KI-Assistenten lesbar ist."),
         "answer": ("Als Grundke IT-Service aus Grasbrunn baue ich Websites für Betriebe im Münchner Osten technisch "
@@ -2845,9 +2845,9 @@ SERVICES = [
         "title": "E-Rechnung Pflicht 2027/2028: Fristen & Umstellung | Grundke IT",
         "h1": "E-Rechnung: was dein Betrieb bis 2027 und 2028 tun muss",
         "service_type": "Umstellung auf die E-Rechnung für kleine Unternehmen",
-        "published": NEW_DATE, "modified": R1_DATE, "modified_disp": R1_DATE_DISP,
+        "published": NEW_DATE, "modified": CONTENT_DATE, "modified_disp": CONTENT_DATE_DISP,
         "trust": TRUST_FESTPREIS,
-        # Kopf der Huelle (Textblatt §1, Task 6); Vertrauenstext steht neben dem Einstieg
+        # Kopf der Huelle; Vertrauenstext steht neben dem Einstieg
         "k": ("Ich prüfe, ob euer Rechnungsprogramm E-Rechnungen kann, suche sonst mit euch ein passendes aus oder "
               "baue den fehlenden Export."),
         "answer": ("Als Grundke IT-Service aus Grasbrunn stelle ich Betriebe im Münchner Osten auf die E-Rechnung um. "
@@ -2967,7 +2967,7 @@ SERVICES = [
         "cta2_href": "/software-nach-mass/", "cta2_text": "Software nach Maß",
         "desc": ("Digitalbonus Bayern bis Ende 2027: bis zu 50 % Zuschuss ab 4.000 € für Software, KI und "
                  "IT-Sicherheit. Voraussetzungen, Antrag über ELSTER, die Haken."),
-        # Kopf der Huelle (Textblatt §1, Task 6); Darstellung: Ablauf und passende Projekte als Zeile
+        # Kopf der Huelle; Darstellung: Ablauf und passende Projekte als Zeile
         "k": ("Ich liefere Projektbeschreibung und Kostenaufstellung für euren Antrag, den ihr selbst über ELSTER "
               "stellt."),
         "answer": ("Als Grundke IT-Service aus Grasbrunn setze ich für Betriebe im Münchner Osten Projekte um, die der "
@@ -3079,12 +3079,12 @@ SERVICES = [
             ],
         },
         "service_type": "Ratgeber",
-        "published": NEW_DATE, "modified": R1_DATE, "modified_disp": R1_DATE_DISP,
+        "published": NEW_DATE, "modified": CONTENT_DATE, "modified_disp": CONTENT_DATE_DISP,
         "cta2_href": "/fernwartung/", "cta2_text": "Fernwartung starten",
         "desc": ("Server ausgefallen, Phishing-Mail geklickt, E-Mails kommen nicht an, NAS defekt: was du in den "
                  "ersten 15 Minuten selbst tun kannst und wann du anrufst."),
         "lead": "Was du in den ersten Minuten selbst tun kannst, was du besser lässt, und ab wann ein Anruf schneller ist.",
-        # H2 des Einstiegs (Design-Review Task 7, Fix-Runde 1): einziger Abschnitt ohne Ueberschrift
+        # H2 des Einstiegs: einziger Abschnitt ohne Ueberschrift
         "intro_h2": "So sind die Ratgeber aufgebaut",
         "intro": ("Die meisten Störungen beginnen mit einer Suche nach „… was tun“. Wer in dem Moment das "
                   "Richtige macht, spart oft Stunden, und wer das Falsche macht, verliert manchmal Daten. Jeder "
@@ -3111,7 +3111,7 @@ SERVICES = [
         "title": "Server ausgefallen – was tun? Die ersten 15 Minuten | Grundke IT",
         "h1": "Server ausgefallen: was tun in den ersten 15 Minuten?",
         "service_type": "Ratgeber",
-        "published": NEW_DATE, "modified": R1_DATE, "modified_disp": R1_DATE_DISP,
+        "published": NEW_DATE, "modified": CONTENT_DATE, "modified_disp": CONTENT_DATE_DISP,
         "cta2_href": "/fernwartung/", "cta2_text": "Fernwartung starten",
         "desc": ("Server ausgefallen, keiner kommt an die Daten? Was du in den ersten 15 Minuten prüfen kannst, "
                  "was du auf keinen Fall tun solltest und wann du anrufen solltest."),
@@ -3357,7 +3357,7 @@ def related_html(slug, services):
     return ""
 
 
-# meta_extra eines SERVICES-Eintrags (Task 8): og:title, og:description, og:image:alt, twitter:description,
+# meta_extra eines SERVICES-Eintrags: og:title, og:description, og:image:alt, twitter:description,
 # twitter:image:alt (head: og_title/og_desc/og_alt/tw_desc/tw_alt)
 META_EXTRA_KEYS = {"og_title", "og_desc", "og_alt", "tw_desc", "tw_alt"}
 
@@ -3366,11 +3366,11 @@ def service_head_schema(s):
     """<head> und JSON-LD einer Leistungsseite (gemeinsam fuer bisherige Huelle und render_shell)."""
     slug = s["slug"]
     # Voller Titel fuer OG und Schema: beim Hub steht der zweite Teil als Akzentzeile
-    # im Einstieg, inhaltlich bleibt die Ueberschrift dieselbe wie vorher. "name" (Task 8): eigener Name ohne
+    # im Einstieg, inhaltlich bleibt die Ueberschrift dieselbe wie vorher. "name": eigener Name ohne
     # Tags, wenn die H1 Markup traegt (schulung: <br>).
     h1_full = s["name"] if s.get("name") else (
         s["h1"] + " – " + s["hero"]["accent"] if s.get("hero") else s["h1"]).replace("&amp;", "&")
-    # meta_extra (Task 8): og/twitter-Werte, die von der Regel abweichen (schulung: Werte der frueheren Handseite)
+    # meta_extra: og/twitter-Werte, die von der Regel abweichen (schulung: Werte der frueheren Handseite)
     mx = s.get("meta_extra", {})
     if set(mx) - META_EXTRA_KEYS:
         raise SystemExit("service_head_schema: unbekannte meta_extra-Felder "
@@ -3390,7 +3390,7 @@ def service_head_schema(s):
                        ["Grasbrunn", "Vaterstetten", "Haar", "Ottobrunn", "München"]],
     }
     if s.get("offers"):
-        # Tupel (Name, Preis, Text) = Monatspaket (managed-it-service): seit Fix-Runde B (M3) mit Einheit Monat und
+        # Tupel (Name, Preis, Text) = Monatspaket (managed-it-service): seit 11.10.2026 mit Einheit Monat und
         # valueAddedTaxIncluded false wie die Offers aus offer_from(); price am Offer bleibt
         service_schema["offers"] = [
             o if isinstance(o, dict) else
@@ -3427,7 +3427,7 @@ def service_head_schema(s):
 
 
 def render_service(s, places, services):
-    """Leistungs-, KI- und Ratgeberseite: seit Task 7 alle in der Huelle (render_shell)."""
+    """Leistungs-, KI- und Ratgeberseite: seit 10.10.2026 alle in der Huelle (render_shell)."""
     check_keys("SERVICES", s, SERVICE_KEYS)
     return s["slug"], render_shell(s, places, services)
 
@@ -3437,10 +3437,10 @@ def render_service(s, places, services):
 # --------------------------------------------------------------------------- #
 # REVIEWS: Kundenstimmen woertlich und ungekuerzt (Regel kundenstimmen-quellen), einzige Quelle
 # fuer die Karten der Startseite und fuer review[]/reviewBody/reviewCount im Schema; Unterseiten
-# holen ihre Stimmen ab Release B ebenfalls hier. source: "Google-Bewertung" oder "direkt" (die
+# holen ihre Stimmen seit 10.10.2026 ebenfalls hier. source: "Google-Bewertung" oder "direkt" (die
 # Karte zeigt dann Rolle + "direkt übermittelt", nie "Google"). Per Skript aus index.html
 # (Stand 83f8e74) uebernommen, nicht abgetippt.
-# HOME_FAQS: (Frage, Antwort-HTML) der Startseite, Reihenfolge laut Textblatt. Sichtbares
+# HOME_FAQS: (Frage, Antwort-HTML) der Startseite, freigegebene Reihenfolge. Sichtbares
 # Akkordeon und FAQPage-Schema (Antwort ohne Tags) kommen aus dieser Liste; die ersten
 # HOME_FAQ_SHOWN stehen in der Liste, der Rest unter "Weitere Fragen" (im HTML, ohne JS lesbar).
 REVIEWS = [
@@ -3506,7 +3506,7 @@ REVIEWS = [
     },
     {
         'id': 'jb-steuerberatung',
-        'name': 'J. B.',    # G7/AK-R1-22: keine Einwilligung zur Namensnennung, nur Initialen
+        'name': 'J. B.',    # keine Einwilligung zur Namensnennung, nur Initialen
         'who': 'J. B.',
         'role': 'Steuerberatung',
         'source': 'direkt',
@@ -3547,7 +3547,7 @@ HOME_FAQS = [
 ]
 
 HOME_FAQ_SHOWN = 6
-HOME_VOICE_FEATURED = "polednik"   # G4: grosses Zitat der Startseite (Google-Bewertung); alle uebrigen in der Wischleiste
+HOME_VOICE_FEATURED = "polednik"   # grosses Zitat der Startseite (Google-Bewertung); alle uebrigen in der Wischleiste
 
 HOME_REVIEWS_RE = re.compile(r"(<!-- HOME_REVIEWS:START[^>]*-->\n).*?([ \t]*<!-- HOME_REVIEWS:END -->)", re.S)
 HOME_FAQ_RE = re.compile(r"(<!-- HOME_FAQ:START[^>]*-->\n).*?([ \t]*<!-- HOME_FAQ:END -->)", re.S)
@@ -3711,9 +3711,9 @@ def sync_home():
 
 STATIC_URLS = [   # (Pfad, Prioritaet, lastmod) -- lastmod der Startseite = ihr dateModified
     ("/", "1.0", HOME_DATE),
-    ("/kontakt/", "0.7", KONTAKT_DATE),   # Task 9: Erreichbarkeit, Untertitel und FAQ nach Textblatt-Anhang
-    ("/empfehlungen/", "0.7", EMPF_DATE),   # Task 10: Einrichtungs-Pauschalen, Gruppen neu
-]   # /schulung/ steht seit Task 8 ueber SERVICES in der Sitemap
+    ("/kontakt/", "0.7", KONTAKT_DATE),   # Erreichbarkeit, Untertitel und FAQ nach den freigegebenen Texten
+    ("/empfehlungen/", "0.7", EMPF_DATE),   # Einrichtungs-Pauschalen, Gruppen neu
+]   # /schulung/ steht seit 10.10.2026 ueber SERVICES in der Sitemap
 
 
 def write_sitemap(places, services):

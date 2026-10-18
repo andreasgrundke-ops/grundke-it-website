@@ -36,14 +36,14 @@
   --nav-h:     58px;
   --inner:     1280px;
 
-  /* Radius (Relaunch R1): vier Stufen statt freier Werte. 50 % nur fuer Avatar, Punkte, runde Pause-Knoepfe */
+  /* Radius: vier Stufen statt freier Werte. 50 % nur fuer Avatar, Punkte, runde Pause-Knoepfe */
   --r-s:       6px;    /* Chips, Tags, kleine Hinweise */
   --r-m:       10px;   /* Knoepfe, Dock-Segmente */
   --r-l:       16px;   /* Karten, Kasten, Dock */
   --r-xl:      28px;   /* Handy-Rahmen */
   --r:         var(--r-l);   /* alter Name, von Bestandsregeln weiter genutzt */
 
-  /* ── Release-2: Spacing-Scale (Mobile-First, fluide via clamp) ── */
+  /* ── Spacing-Scale (Mobile-First, fluide via clamp) ── */
   --space-3xs: 0.25rem;
   --space-2xs: 0.5rem;
   --space-xs:  0.75rem;
@@ -71,7 +71,7 @@
   --lh-snug:   1.35;
   --lh-body:   1.6;
 
-  /* Container-Maximum (Release-2 Variante, --inner bleibt fuer Bestand) */
+  /* Container-Maximum (--inner bleibt fuer Bestand) */
   --container-max: 1200px;
 }
 
@@ -148,7 +148,7 @@ button { font-family: var(--fb); cursor: pointer; }
 }
 
 /* ── Typography Utilities ── */
-/* Kicker ruhig (R1): grau, normale Schreibung, ohne Strich; Farbe gehoert der Handlung, nicht der Ueberschrift */
+/* Kicker ruhig: grau, normale Schreibung, ohne Strich; Farbe gehoert der Handlung, nicht der Ueberschrift */
 .s-label {
   font-family: var(--fb);
   font-size: 0.9rem; font-weight: 600;
@@ -180,7 +180,7 @@ button { font-family: var(--fb); cursor: pointer; }
   border-bottom: 1px solid var(--border);
 }
 .nav-inner { height:100%; display:flex; align-items:center; justify-content:space-between; }
-/* Header-Logo: weisser Schriftzug, seit R1 ohne Schein (Spec 5.3: keine Verlaeufe als Schmuck). */
+/* Header-Logo: weisser Schriftzug ohne Schein (keine Verlaeufe als Schmuck). */
 .logo {
   display: flex;
   align-items: center;
@@ -197,7 +197,7 @@ button { font-family: var(--fb); cursor: pointer; }
   /* Desktop: ~42–50 px. */
   .logo-img { height: clamp(2.6rem, 3vw, 3.1rem); }
 }
-/* margin-left haelt den ersten Menuepunkt vom Logo fern, wenn es eng wird (die Ortspille ist seit R1 entfallen). */
+/* margin-left haelt den ersten Menuepunkt vom Logo fern, wenn es eng wird (die Ortspille ist entfallen). */
 .nav-links { display:none; align-items:center; gap:clamp(1rem,2vw,2rem); list-style:none; margin-left:1.5rem; }
 .nav-links a { font-size:.875rem; font-weight:500; color:var(--text2); transition:color .2s; white-space:nowrap; }
 .nav-links a:hover { color:var(--cyan); }
@@ -230,7 +230,7 @@ button { font-family: var(--fb); cursor: pointer; }
 .mobile-menu a:hover { background:var(--bg3); color:var(--cyan); }
 .mobile-menu .m-cta { background:var(--blue-vi); color:#fff !important; text-align:center; margin-top:.5rem; font-weight:700 !important; }
 .mobile-menu .m-cta:hover, .mobile-menu .m-cta:focus-visible { background:#2222ff; color:#fff !important; }
-/* Fernwartung im Mobilmenue hervorgehoben (seit Task 9: Symbol aus dem Sprite statt Blitz-Zeichen, Klasse statt Inline-Style) */
+/* Fernwartung im Mobilmenue hervorgehoben (Symbol aus dem Sprite statt Blitz-Zeichen, Klasse statt Inline-Style) */
 .mobile-menu .m-fw { display:flex; align-items:center; gap:.55rem; color:var(--text); font-weight:700; }
 .mobile-menu .m-fw svg { flex-shrink:0; }
 
@@ -253,7 +253,7 @@ button { font-family: var(--fb); cursor: pointer; }
   border:1px solid var(--border); cursor:pointer;
   transition:border-color .2s,color .2s,background .2s; white-space:nowrap;
 }
-.btn-g:hover { border-color:var(--text2); background:rgba(255,255,255,.04); }   /* R1: neutraler Hover statt Cyan-Flaeche */
+.btn-g:hover { border-color:var(--text2); background:rgba(255,255,255,.04); }   /* neutraler Hover statt Cyan-Flaeche */
 
 /* ── FAQ-Akkordeon (gemeinsam fuer Startseite und Generator-Seiten, seit 2026-09-23) ──
    Natives <details>/<summary>, kein JS noetig. */
@@ -282,7 +282,7 @@ button { font-family: var(--fb); cursor: pointer; }
 .foot-contact a { font-size:.82rem; color:var(--text2); display:block; margin-bottom:.3rem; transition:color .2s; }
 .foot-contact a:hover { color:var(--cyan); }
 .foot-contact .foot-ico { display:inline-block; width:14px; height:14px; margin-right:.4rem; vertical-align:-2px; }
-.foot-h { font-family:var(--fm); font-size:.8rem; letter-spacing:.08em; text-transform:uppercase; color:var(--text3); margin-bottom:.9rem; } /* 12 px (seit 10.10.2026, vorher .67rem) */
+.foot-h { font-family:var(--fb); font-size:.93rem; font-weight:600; letter-spacing:0; text-transform:none; color:var(--text2); margin-bottom:.9rem; } /* Spaltenkopf in normaler Schreibung, kein Versal-Etikett */
 .foot-links { list-style:none; display:flex; flex-direction:column; gap:.45rem; }
 .foot-links a { font-size:.84rem; color:var(--text2); transition:color .2s; }
 .foot-links a:hover { color:var(--cyan); }
@@ -316,7 +316,7 @@ button { font-family: var(--fb); cursor: pointer; }
   .foot-col > .foot-h { font-family:var(--fb); font-size:1rem; font-weight:600; letter-spacing:0; text-transform:none; color:var(--text2); }
 }
 
-/* ── Responsive (Release-2 Schritt 7: Mobile-First, min-width-Skalierung) ──
+/* ── Responsive (Mobile-First, min-width-Skalierung) ──
    Default ist Mobile, alle Aenderungen nach oben skaliert.
    1:1-Aequivalent zur alten max-width-Logik:
      0-480     -> 58px nav-h, 1-spaltig footer, hamburger
@@ -406,7 +406,7 @@ button { font-family: var(--fb); cursor: pointer; }
    (Visitenkarten-Blau fuer .solid). Die Kopie in index.html raeumt der Umbau auf. */
 .btn-wa { display:inline-flex; align-items:center; gap:.55rem; padding:1rem 2rem; border-radius:var(--r-m); background:#15803d; color:#fff; font-family:var(--fb); font-weight:700; font-size:.95rem; border:none; cursor:pointer; text-decoration:none; transition:background .2s, transform .15s; }
 .btn-wa:hover { background:#166534; transform:translateY(-2px); }
-/* E-Mail neutral (R1): kein Orange, Rand und Schrift wie ein Zweitknopf */
+/* E-Mail neutral: kein Orange, Rand und Schrift wie ein Zweitknopf */
 .btn-email { display:inline-flex; align-items:center; gap:.45rem; padding:clamp(.7rem,.9rem,1rem) clamp(1.2rem,1.8rem,2rem); border-radius:var(--r-m); border:1px solid var(--border); background:transparent; color:var(--text); font-family:var(--fb); font-weight:700; font-size:clamp(.82rem,.9rem,1rem); cursor:pointer; text-decoration:none; transition:background .2s, transform .15s, box-shadow .2s; white-space:nowrap; }
 .btn-email:hover { border-color:var(--text2); background:rgba(255,255,255,.04); transform:translateY(-2px); }
 .price-feats { list-style:none; display:flex; flex-direction:column; gap:.65rem; margin:0 0 1.8rem; padding:0; }
@@ -443,7 +443,7 @@ button { font-family: var(--fb); cursor: pointer; }
 .sec { position:relative; padding:clamp(3.5rem,8vw,6.5rem) 0; background-color:var(--bg); }
 main > .sec:first-child { margin-top:var(--nav-h); } /* erster Abschnitt unter der festen Kopfzeile */
 .sec--alt { background-color:var(--bg2); }
-.sec--glow { background-image:none; }  /* R1: kein Schein mehr (Spec 5.3, keine Verlaeufe als Schmuck); Klasse bleibt, der Generator setzt sie */
+.sec--glow { background-image:none; }  /* kein Schein mehr (keine Verlaeufe als Schmuck); Klasse bleibt, der Generator setzt sie */
 .measure { max-width:68ch; }
 
 /* Belegzeile (Sterne, Erfahrung, Preise) */
@@ -508,10 +508,10 @@ main > .sec:first-child { margin-top:var(--nav-h); } /* erster Abschnitt unter d
 @media (min-width:1101px) { .price-grid { grid-template-columns:repeat(4,1fr); } }
 .price-card { background:var(--bg3); border:1px solid var(--border); border-radius:var(--r-l); padding:clamp(1.25rem,3.5vw,2rem); position:relative; transition:border-color .2s, transform .2s; }
 .price-card:hover { transform:translateY(-4px); }
-.price-card.feat { border-color:var(--blue-vi); box-shadow:0 0 0 1px var(--blue-vi), 0 8px 24px rgba(0,0,0,.35); }   /* R1: ruhiger Schatten statt blauem Schein */
-/* Abzeichen in normaler Schreibung (R1), kein Versal-Etikett */
+.price-card.feat { border-color:var(--blue-vi); box-shadow:0 0 0 1px var(--blue-vi), 0 8px 24px rgba(0,0,0,.35); }   /* ruhiger Schatten statt blauem Schein */
+/* Abzeichen in normaler Schreibung, kein Versal-Etikett */
 .price-badge { position:absolute; top:-12px; left:50%; transform:translateX(-50%); background:var(--blue-vi); color:#fff; font-family:var(--fb); font-size:14px; font-weight:600; letter-spacing:0; text-transform:none; line-height:1.4; padding:.15rem .8rem; border-radius:var(--r-s); white-space:nowrap; }
-.price-tier { font-family:var(--fm); font-size:.75rem; letter-spacing:.1em; text-transform:uppercase; color:var(--text3); margin-bottom:.4rem; }
+.price-tier { font-family:var(--fb); font-size:.93rem; font-weight:600; letter-spacing:0; text-transform:none; color:var(--text3); margin-bottom:.4rem; }
 .price-name { font-family:var(--fh); font-size:1.3rem; font-weight:800; color:var(--text); margin-bottom:1.2rem; }
 .price-val { font-family:var(--fm); font-size:2.4rem; font-weight:600; color:var(--text); letter-spacing:-.04em; line-height:1; }
 .price-val sup { font-size:1rem; vertical-align:super; }
@@ -529,7 +529,7 @@ main > .sec:first-child { margin-top:var(--nav-h); } /* erster Abschnitt unter d
 .stars svg { width:14px; height:14px; }
 .testi-txt { font-size:1.0667rem; color:var(--text2); line-height:1.7; font-style:italic; margin-bottom:1.3rem; flex:1 1 auto; }
 .testi-who { font-weight:700; font-size:.86rem; color:var(--text); }
-.testi-role { font-size:.75rem; color:var(--text2); font-family:var(--fm); }
+.testi-role { font-size:.75rem; color:var(--text2); font-family:var(--fb); }
 figure.testi-card { margin:0; }
 blockquote.testi-txt { margin-top:0; margin-left:0; margin-right:0; }
 .testi-txt p { margin:0; }
@@ -539,7 +539,7 @@ blockquote.testi-txt { margin-top:0; margin-left:0; margin-right:0; }
 .testi-source strong { color:var(--text); font-weight:600; }
 .testi-source a { color:var(--cyan); text-underline-offset:.2em; }
 
-/* Abschluss (K5) mit Knoepfen */
+/* Abschluss mit Knoepfen */
 .cta-sec { background:var(--bg); padding:clamp(4rem,10vw,8rem) 0; text-align:center; position:relative; overflow:hidden; }
 .cta-h { font-family:var(--fh); font-size:clamp(1.6rem,4vw,2.6rem); font-weight:800; color:var(--text); letter-spacing:-.04em; margin-bottom:.8rem; position:relative; }
 .cta-h em { font-style:normal; color:var(--cyan); }
@@ -561,7 +561,7 @@ blockquote.testi-txt { margin-top:0; margin-left:0; margin-right:0; }
 
 /* Chips (Orte, Leistungen): Pillen in einer Zeile, umbrechend */
 .chips { display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0; padding:0; list-style:none; }
-.chips > * { font-family:var(--fm); font-size:.78rem; background:var(--bg2); border:1px solid var(--border); border-radius:var(--r-s); padding:.35rem .9rem; color:var(--text2); text-decoration:none; }
+.chips > * { font-family:var(--fb); font-weight:600; font-size:.93rem; background:var(--bg2); border:1px solid var(--border); border-radius:var(--r-s); padding:.35rem .9rem; color:var(--text2); text-decoration:none; }
 .chips > a:hover { border-color:var(--text2); color:var(--text); }
 .chips > .here { border-color:var(--text2); color:var(--text); }
 .chips > [aria-current] { border-color:var(--cyan); color:var(--cyan); }
@@ -583,8 +583,8 @@ blockquote.testi-txt { margin-top:0; margin-left:0; margin-right:0; }
 /* Nur fuer Screenreader (z. B. "enthalten" in Tabellen mit Haken) */
 .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
 
-/* ── Generator-Huelle der Unterseiten (seit 10.10.2026, Release B) ──
-   Kopf .page-head (Krumen, H1, K4, Antwortsatz, Knoepfe, Belegzeile, Beispiel-Chat), Abschnitte .sec
+/* ── Generator-Huelle der Unterseiten (seit 10.10.2026) ──
+   Kopf .page-head (Krumen, H1, Kernsatz, Antwortsatz, Knoepfe, Belegzeile, Beispiel-Chat), Abschnitte .sec
    im Wechsel, Stimmen, Preise, Abschluss .cta-sec mit Autorzeile. */
 @media (max-width:767px) { .sec { padding:2.4rem 0; } }
 /* Zwei gleiche Flaechen hintereinander: Haarlinie als Trenner */
@@ -596,17 +596,17 @@ blockquote.testi-txt { margin-top:0; margin-left:0; margin-right:0; }
 .page-head .lp-crumbs a, .page-head .lp-crumbs [aria-current] { display:inline-block; line-height:2.2rem; }
 /* Unter 480 px ohne das letzte Glied (die Seite selbst, ihr Name steht gleich darunter als H1): fuer Screenreader
    bleibt es lesbar (sr-only-Muster), das Trennzeichen davor faellt mit weg. Lange Seitennamen brachen sonst in eine
-   zweite Zeile und schoben die Belegzeile unter die Kontaktleiste (AK6, Task 7 Fix-Runde 1). Nur ab drei Ebenen:
-   bei zwei Ebenen bliebe sonst „Startseite“ allein stehen (Fix-Runde 2). */
+   zweite Zeile und schoben die Belegzeile unter die Kontaktleiste. Nur ab drei Ebenen:
+   bei zwei Ebenen bliebe sonst „Startseite“ allein stehen. */
 @media (max-width:479px) { .lp-crumbs li[aria-current]:nth-child(n+3) { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; } }
 .page-head .s-sub { margin:0 0 1.4rem; }
 .page-head .hc-ctas { margin:0 0 1.3rem; }
 .page-head .hc-proof { margin:0; }
 .page-head .mini-chat-box { margin:0; width:100%; justify-self:center; }
 @media (min-width:1024px) { .page-head-grid--chat .mini-chat-box { margin-top:3.1rem; } }
-/* Handy: Kopf so eng wie der Hero der Startseite, damit Belegzeile ueber der Kontaktleiste steht (AK6, 390x700) */
-@media (max-width:767px) { .page-head { padding-top:1.05rem; } .page-head .lp-crumbs ol { margin-bottom:.7rem; } .page-head .s-sub { line-height:1.6; } }  /* R1: 18 px enger, das schwebende Dock steht 18 px hoeher */
-/* Dokumentseiten (Rechtsseiten, seit Task 9): Kopf nur mit Krumen und H1, der Text folgt ohne doppelten Abschnittsabstand */
+/* Handy: Kopf so eng wie der Hero der Startseite, damit Belegzeile ueber der Kontaktleiste steht (390x700) */
+@media (max-width:767px) { .page-head { padding-top:1.05rem; } .page-head .lp-crumbs ol { margin-bottom:.7rem; } .page-head .s-sub { line-height:1.6; } }  /* 18 px enger, das schwebende Dock steht 18 px hoeher */
+/* Dokumentseiten (Rechtsseiten): Kopf nur mit Krumen und H1, der Text folgt ohne doppelten Abschnittsabstand */
 .page-head--doc { padding-bottom:clamp(1.6rem,3vw,2.6rem); }
 .page-head--doc .page-h1 { margin-bottom:0; }
 .page-head--doc + .sec { padding-top:clamp(2rem,4vw,3rem); }
@@ -685,7 +685,7 @@ blockquote.testi-txt { margin-top:0; margin-left:0; margin-right:0; }
 .ki-note strong { color:var(--text); }
 .ki-note p { font-size:1.0667rem; color:var(--text2); line-height:1.75; margin:0 0 .7rem; }
 .ki-note p:last-child { margin-bottom:0; }
-/* Seit Task 6 (Orte, IT-Seiten, E-Rechnung, Digitalbonus): Liste mit Kreuzen und Tabelle, Werte aus
+/* Orte, IT-Seiten, E-Rechnung, Digitalbonus: Liste mit Kreuzen und Tabelle, Werte aus
    NEW_STYLE/KI_STYLE, Text 16 px. */
 .lp-dont { list-style:none; margin:1rem 0 1.4rem; padding:0; }
 .lp-dont li { position:relative; padding:.35rem 0 .35rem 1.9rem; font-size:1.0667rem; color:var(--text2); line-height:1.65; }
@@ -721,7 +721,7 @@ blockquote.testi-txt { margin-top:0; margin-left:0; margin-right:0; }
   .sec-split--wide { grid-template-columns:minmax(0,1fr) minmax(0,1.35fr); }
   .sec-split--wide .lp-content > div, .sec-split--wide .card-box p { max-width:none; }
 }
-/* Kopf ohne Chat ab 1024 px: H1 ueber beide Spalten, darunter links der weisse K4, rechts Antwortsatz,
+/* Kopf ohne Chat ab 1024 px: H1 ueber beide Spalten, darunter links der weisse Kernsatz, rechts Antwortsatz,
    Knoepfe und Belegzeile (Lesefolge H1 → weiss → grau). Nur Rasterflaechen, HTML-Reihenfolge bleibt. */
 @media (min-width:1024px) {
   .page-head-copy--two { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); grid-template-areas:"crumbs crumbs" "h1 h1" "kum antwort"; column-gap:clamp(3rem,6vw,6rem); }
@@ -743,7 +743,7 @@ blockquote.testi-txt { margin-top:0; margin-left:0; margin-right:0; }
   .sec--aside .faq-wrap { max-width:none; margin-top:0; }
   .sec--aside .testi-grid--few { margin-top:0; }
 }
-/* Seit Task 7 (KI-Bereich, Software, Websites, Ratgeber): Bausteine aus KI_STYLE/NEW_STYLE des Generators, die
+/* KI-Bereich, Software, Websites, Ratgeber: Bausteine aus KI_STYLE/NEW_STYLE des Generators, die
    bis dahin im <style> dieser Seiten standen, Text 16 px. Absaetze in .lp-content bekommen Groesse, Farbe und
    Abstand aus dem gemeinsamen <style> der Generator-Seiten (gleiche Spezifitaet, steht spaeter und gewinnt);
    wo ein Kasten davon abweicht (Kurzantwort), traegt die Regel .lp-content mit. */
@@ -836,7 +836,7 @@ html { scroll-padding-top: calc(var(--nav-h) + 12px); }
 /* Sprungziele (Abschnitte mit tabindex=-1) bekommen Fokus nur fuer die Tab-Reihenfolge, keinen Rahmen */
 section[tabindex="-1"]:focus, main[tabindex="-1"]:focus { outline: none; }
 
-/* ══ Relaunch R1 „Ruhe“ (seit 17.10.2026) ═══════════════════════════════════════════
+/* ══ Ruhige Startseite (seit 17.10.2026) ═══════════════════════════════════════════
    Heller Abschnitt, Kasten nach dem Hero, grosses Zitat, breite KI-Karte und die Typo-Skala
    der Startseite. Die Startseite traegt body.is-home; ihre Regeln stehen im eigenen <style>
    mit einer Klasse, daher hier mit body.is-home davor (hoehere Spezifitaet, gleiche Werte fuer alle). */
@@ -917,7 +917,7 @@ figure.testi-card--featured .testi-txt {
   font-style: normal;
   font-weight: 600;
   font-size: clamp(24px, 19.54px + 1.143vw, 36px);
-  line-height: 1.25;
+  line-height: 1.3;
   letter-spacing: -.02em;
   color: var(--text);
 }
@@ -934,9 +934,9 @@ figure.testi-card--featured .testi-role { font-size: 14px; }
 .card-grid > .k3-card--wide { grid-column: 1 / -1; }
 @media (min-width: 768px) { .card-grid > .k3-card--wide { padding: 2rem 2.2rem; } }
 
-/* ── Typo-Skala der Startseite (Spec §5.2) ──
+/* ── Typo-Skala der Startseite ──
    Werte 390 → 1440 linear: H2 30 → 48, Anzeige 24 → 36, H3 20 → 24, Einleitung 18 → 20, Fliesstext 16 → 17,
-   Bedienelemente 16 (Handy 14), Klein 14 (Handy teils 12,9). Hero-H1 bleibt in R1 unveraendert (R2). Text hoechstens 62ch. */
+   Bedienelemente 16 (Handy 14), Klein 14 (Handy teils 12,9). Hero-H1 bleibt vorerst unveraendert. Text hoechstens 62ch. */
 body.is-home {
   --fs-h2-home: clamp(30px, 23.31px + 1.714vw, 48px);
   --fs-show-home: clamp(24px, 19.54px + 1.143vw, 36px);
@@ -960,9 +960,9 @@ body.is-home main :is(.s-label, .hc-wer, .hc-proof, .hc-proof li, .chips > *, .i
   .price-tier, .price-badge, .testi-role, .testi-ctx, .testi-row-h, .praxis-tag, .sc-hint, .sc-promise span, .compare-hd, .c-mid,
   .hc-qr p, .pkg-table thead th):where(:not(.hc-stage *, .mini-chat-box *)) { font-size: var(--fs-small-home); }
 body.is-home main :is(.s-label, .hc-proof, .hc-proof li, .itb-leist .chips > a, .itb-leist-h, .sc-hint, .sc-promise span) { font-size: var(--fs-small-tight); }
-body.is-home main :is(h3, .itb-claim, .price-name, .k3-card h3) { font-size: var(--fs-h3-home); line-height: 1.25; }
+body.is-home main :is(h3, .itb-claim, .price-name, .k3-card h3) { font-size: var(--fs-h3-home); line-height: 1.3; }
 body.is-home main :is(.sc-title, .price-val, .praxis-card h3, .testi-card--featured .testi-txt, .testi-card--featured .testi-txt p) {
-  font-size: var(--fs-show-home); line-height: 1.2;
+  font-size: var(--fs-show-home); line-height: 1.3;
 }
 body.is-home main .price-val { line-height: 1; }
 body.is-home main :is(.praxis-card h3, .testi-card--featured .testi-txt, .testi-card--featured .testi-txt p) { font-size: var(--fs-show-tight); }

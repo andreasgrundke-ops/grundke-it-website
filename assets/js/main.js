@@ -335,27 +335,34 @@ function initFooter() {
 
 /* ── Startseite: Wischleiste der Kundenstimmen (seit 2026-10-10)
    Ohne JS steht nur "4 weitere Stimmen" da. Mit JS kommt die Position dazu,
-   solange die Leiste wirklich seitlich scrollt (am Handy). Gezaehlt werden die
-   Rastpunkte: Eine lange Stimme blaettert absatzweise ("· Apartments Bauer ·
-   Absatz 2 von 4"), danach zaehlen die Karten ("· 2 von 4"). */
+   solange die Leiste wirklich seitlich scrollt. Gezaehlt werden die Rastpunkte:
+   Unter 900 px blaettert eine lange Stimme absatzweise ("· Apartments Bauer ·
+   Absatz 2 von 4"), danach zaehlen die Karten ("· 2 von 4"). Ab 900 px ist die
+   lange Stimme eine breite Karte mit einem Rastpunkt (Stil im <style> der Startseite). */
 function initTestiRow() {
   document.querySelectorAll('.testi-row').forEach(row => {
     const pos = row.parentElement.querySelector('[data-testi-pos]');
     const cards = Array.from(row.querySelectorAll('.testi-card'));
     if (!pos || cards.length < 2) return;
 
-    // Rastpunkte: je Karte einer, bei langen Stimmen je Absatz einer
-    const stops = [];
-    cards.forEach((card, k) => {
-      const paras = card.classList.contains('testi-card--long')
-        ? Array.from(card.querySelectorAll('.testi-txt p')) : [];
-      const who = (card.querySelector('.testi-who') || {}).textContent || '';
-      if (paras.length > 1) {
-        paras.forEach((p, i) => stops.push({ el: p, label: who + ' · Absatz ' + (i + 1) + ' von ' + paras.length }));
-      } else {
-        stops.push({ el: card, label: (k + 1) + ' von ' + cards.length });
-      }
-    });
+    // Rastpunkte: je Karte einer, bei langen Stimmen unter 900 px je Absatz einer
+    // ohne matchMedia (sehr alte Browser) wie am Handy: absatzweise
+    const paged = window.matchMedia ? window.matchMedia('(max-width: 899px)') : { matches: true };
+    let stops = [];
+    function buildStops() {
+      stops = [];
+      cards.forEach((card, k) => {
+        const paras = paged.matches && card.classList.contains('testi-card--long')
+          ? Array.from(card.querySelectorAll('.testi-txt p')) : [];
+        const who = (card.querySelector('.testi-who') || {}).textContent || '';
+        if (paras.length > 1) {
+          paras.forEach((p, i) => stops.push({ el: p, label: who + ' · Absatz ' + (i + 1) + ' von ' + paras.length }));
+        } else {
+          stops.push({ el: card, label: (k + 1) + ' von ' + cards.length });
+        }
+      });
+    }
+    buildStops();
 
     function update() {
       if (row.scrollWidth <= row.clientWidth + 1) { pos.textContent = ''; return; }
@@ -372,6 +379,9 @@ function initTestiRow() {
 
     row.addEventListener('scroll', update, { passive: true });
     window.addEventListener('resize', update);
+    const rebuild = () => { buildStops(); update(); };
+    if (paged.addEventListener) paged.addEventListener('change', rebuild);
+    else if (paged.addListener) paged.addListener(rebuild); // Safari < 14
     update();
   });
 }
