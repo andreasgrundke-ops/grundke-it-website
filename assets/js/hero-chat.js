@@ -46,7 +46,7 @@
  *                      am Handy, Energiesparen) nicht mehr mehrere Schritte auf einmal nach.
  *   1.4.1 (2026-10-07) Fall Netzwerkspeicher ohne Zeitzusage („noch heute") -
  *                      die Website verspricht keine Reaktions- oder Loesungszeiten.
- *   1.5.0 (2026-10-12) Abends und am Wochenende 20–40 Minuten bis zur Antwort (Andreas 12.10.2026).
+ *   1.5.0 (2026-10-12) Abends und am Wochenende 20–40 Minuten bis zur Antwort.
  *   1.6.0 (2026-10-18) Chat steht nicht mehr im Hero, sondern im Abschnitt IT-Betreuung:
  *                      Start erst bei Sichtbarkeit (IntersectionObserver, ab 40 %),
  *                      bis dahin wartet die erste Kundennachricht; Pause-Zustand

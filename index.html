@@ -282,7 +282,7 @@
      Der Chat traegt die echte Uhrzeit des Besuchers; ohne JS oder bei reduzierter Bewegung steht ein fertiger Chat da. */
   .hc-stage { display:flex; flex-direction:column; align-items:center; gap:1rem; }
   /* Abends/nachts ein Satz ueber dem Handy; die Uhrzeit selbst steht in der Statusleiste (keine Doppelung) */
-  .hc-clock { margin:0; max-width:330px; font-size:.92rem; line-height:1.45; color:var(--text2); text-align:center; text-wrap:balance; }
+  .hc-clock { margin:0; max-width:330px; font-size:14px; line-height:1.45; color:var(--text2); text-align:center; text-wrap:balance; }
   .hc-clock.is-empty { display:none; }
   .hc-device { position:relative; }
   .hc-phone {
@@ -389,7 +389,7 @@
      die Buttons uebernimmt die feste Kontaktleiste unten */
   @media (max-width:767px) {
     .hc-stage { align-items:stretch; gap:.6rem; }
-    .hc-clock { text-align:left; font-size:.86rem; }
+    .hc-clock { text-align:left; font-size:14px; }
       .hc-phone { width:auto; aspect-ratio:auto; height:400px; min-height:0; max-height:none; padding:0; border-radius:18px; background:none; box-shadow:none; }
     .hc-screen { border-radius:18px; border:1px solid var(--border); }
     .hc-screen::before, .hc-screen::after, .hc-phone::before, .hc-phone::after { display:none; }
@@ -445,7 +445,7 @@
   .zw-lane--links .zw-fig { color:var(--text2); }
   .zw-lane--rechts .zw-fig { color:var(--cyan); }
   .zw-txt > .zw-case { display:flex; flex-direction:column; gap:8px; min-width:0; }
-  .zw-t { margin:0; font-size:16px; line-height:1.4; font-weight:600; opacity:0; transform:translateY(6px); transition:opacity .3s cubic-bezier(.16,1,.3,1), transform .3s cubic-bezier(.16,1,.3,1); }
+  .zw-t { margin:0; font-size:16px; line-height:1.4; font-weight:600; text-wrap:balance; opacity:0; transform:translateY(6px); transition:opacity .3s cubic-bezier(.16,1,.3,1), transform .3s cubic-bezier(.16,1,.3,1); }
   .zw-t.is-on { opacity:1; transform:none; }
   .zw-lane--links .zw-t { color:var(--text2); }
   .zw-lane--rechts .zw-t { color:var(--text); }
@@ -453,7 +453,7 @@
   .zw-t--ansage { padding:6px 9px; border:1px dashed #475166; border-radius:var(--r-s); font-size:14px; font-weight:500; font-variant-numeric:tabular-nums; }
   .zw-t--ok { display:flex; align-items:flex-start; gap:6px; }
   .zw-ok { width:18px; height:18px; margin-top:2px; flex-shrink:0; fill:none; stroke:var(--cyan); stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
-  .zw-schluss { position:absolute; left:126px; right:0; bottom:0; margin:0; font-family:var(--fh); font-size:18px; font-weight:700; line-height:1.2; letter-spacing:-.01em; color:var(--cyan); opacity:0; transform:translateY(6px); transition:opacity .3s cubic-bezier(.16,1,.3,1), transform .3s cubic-bezier(.16,1,.3,1); }
+  .zw-schluss { position:absolute; left:126px; right:0; bottom:0; margin:0; font-family:var(--fh); font-size:18px; font-weight:700; line-height:1.2; text-wrap:balance; letter-spacing:-.01em; color:var(--cyan); opacity:0; transform:translateY(6px); transition:opacity .3s cubic-bezier(.16,1,.3,1), transform .3s cubic-bezier(.16,1,.3,1); }
   .zw-schluss.is-on { opacity:1; transform:none; }
   .zw-foot { display:flex; align-items:center; gap:12px; margin-top:10px; }
   .zw-fuss { flex:1; margin:0; font-size:14px; line-height:1.45; color:var(--text3); }
@@ -492,6 +492,9 @@
     .zw-t--ansage { font-size:14px; }
     .zw-schluss { left:22px; right:22px; bottom:20px; font-size:20px; }
     .zw-foot { margin-top:12px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .zw-fig { transition:none; }
   }
   /* Handy quer: kein Platz fuer die Buehne; Fusszeile und Textalternative bleiben */
   @media (max-height:500px) and (orientation:landscape) {
