@@ -51,13 +51,19 @@ und die Quelle unter der Karte muss stimmen (`Google-Bewertung` nur, wenn sie do
 geaendert hat, nicht wegen eines neuen Footer-Links.
 
 ## Stand / offen / naechster Schritt
-- **18.10.2026: Release 2.0.0 „Ruhe“** (ruhigere Optik, Dock neu, Version im Fuss, Stundensatz-Wortlaut).
-  Davor (10.-12.10.): Umbau „Ein Stil, der Kuemmerer, Handy zuerst“: Startseite am Handy rund 10.300 px,
-  alle Generator-Seiten in der Huelle `render_shell` (Kopf, Abschnitte im Wechsel, Abschluss `closing()`),
-  Schulung/Kontakt/Fernwartung/Rechtsseiten/404 in der neuen Huelle, Empfehlungen mit Einrichtungs-Pauschalen,
-  Hero-Chat abends 20-40 Min., Barrierefreiheitserklaerung neu.
-- **Versionen jetzt:** `sw.js` `CACHE_NAME` `grundke-it-v2.0.1`, `RUNTIME_CACHE` `runtime-v38`,
-  `ASSET_VER` 2026.10.h, `SITE_VERSION` 2.0.1 (Fuss „Version x.y.z · Stand TT.MM.JJJJ“ aus dem Generator).
+- **Release 2.0.0:** ruhigere Optik, Dock neu, Version im Fuss, Stundensatz-Wortlaut. Umbau "Ein Stil, der Kuemmerer, Handy zuerst":
+  Startseite am Handy rund 10.300 px, alle Generator-Seiten in der Huelle `render_shell` (Kopf, Abschnitte im Wechsel,
+  Abschluss `closing()`), Schulung/Kontakt/Fernwartung/Rechtsseiten/404 in der neuen Huelle, Empfehlungen mit
+  Einrichtungs-Pauschalen, Barrierefreiheitserklaerung neu.
+- **Release 2.0.1 (in 2.1.0 enthalten):** im Abschnitt IT-Betreuung „So arbeite ich“ (`ul.itb-how`, sechs Punkte)
+  statt Systemhaus-Vergleich, FAQ-Passungsfrage, KI-Kennzeichnung `p.cta-ki` im Abschluss (`closing()`, Startseite von Hand).
+- **Startseite Hero "Ein Weg"** (H1 „IT hängt? Ruf mich an.“): Bühne „So läuft das bei mir“, vier Fälle mit je drei
+  Bildern, sichtbare Kennzeichnung als nachgestellte Beispiele, darunter eine echte Google-Stimme; gesteuert von
+  `assets/js/hero-wege.js`. Kein Vergleich mit anderen Anbietern. Der Endstand ist der HTML-Grundzustand (ohne JS sichtbar),
+  Pause-Knopf, bei reduzierter Bewegung bleibt es beim Endstand. Direkt unter dem Hero der Link zu /it-betreuer-wechseln/. Das Chat-Handy steht im Abschnitt IT-Betreuung
+  (`[data-hero-chat]`, `assets/js/hero-chat.js`) und startet erst bei Sichtbarkeit; abends 20-40 Min. bis zur Antwort.
+- **Versionen jetzt:** `sw.js` `CACHE_NAME` `grundke-it-v2.1.0`, `RUNTIME_CACHE` `runtime-v39`,
+  `ASSET_VER` 2026.10.i, `SITE_VERSION` 2.1.0 (Fuss "Version x.y.z · Stand TT.MM.JJJJ" aus dem Generator).
   `SITE_VERSION` bei jedem Release mit dem `CACHE_NAME`-Suffix gleichziehen, `check_static.py` prueft das.
   `check_static.py --ci` laeuft im Deploy und stoppt ihn bei Fehlern.
 - **Kontaktleiste (Dock):** kommt aus einer Quelle im Generator (`STICKY`-Marken), nur bis 1279 px sichtbar,

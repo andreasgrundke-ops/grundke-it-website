@@ -54,7 +54,7 @@ Automatisierung aus einer Hand. Vor Ort im Münchner Osten (Radius 25 km), remot
 ## Brand Commitments
 
 - Name „Grundke IT-Service" (offiziell „Andreas Grundke IT-Service"). Du-Form, direkt,
-  umgangssprachlich, erste Person. Bestätigte Leitzeile: „Dein ITler geht nicht ran? Ich schon."
+  umgangssprachlich, erste Person. H1 der Startseite: „IT hängt? Ruf mich an.“ Der Hero zeigt einen Weg („So läuft das bei mir“: Problem, Andreas ist dran, gelöst), ohne Vergleich mit anderen Anbietern; das Chat-Handy steht im Abschnitt IT-Betreuung.
 - CI 2026.01: Blau `#0c4da2`, Cyan `#26bdef`; Visitenkarten-Blau `#0000FE` für Haupt-Buttons mit
   weißer Schrift; WhatsApp-Grün für WhatsApp. Dock (Kontaktleiste bis 1279 px): Anrufen in
   `#0000FE` mit weißer Schrift, WhatsApp getönt in Grün (`#15803d` bei 22 % auf `#141a26`), E-Mail neutral.

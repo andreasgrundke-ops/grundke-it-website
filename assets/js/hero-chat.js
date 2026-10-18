@@ -1,22 +1,25 @@
 /**
  * ═══════════════════════════════════════════════════════════
  * Grundke IT-Service · hero-chat.js
- * Version: 1.5.0
+ * Version: 1.6.0
  * Autor: Andreas Grundke / Grundke IT-Service
- * Datum: 2026-10-12
- * Beschreibung: Hero „Der Chat" auf der Startseite. Im gezeichneten Handy
+ * Datum: 2026-10-18
+ * Beschreibung: Beispiel-Chat im Abschnitt IT-Betreuung der Startseite. Im gezeichneten Handy
  *   laeuft ein Beispiel-Einsatz als Chat ab: Kundennachricht, Andreas tippt,
  *   Fernwartung, Ergebnis, Dank. Statusleiste und Zeitstempel tragen die echte
  *   Uhrzeit des Besuchers; abends, am Wochenende und nachts steht darueber die
  *   grosse Uhrzeit mit einem Satz.
  * Ablauf:
- *   1. Elemente suchen, ohne Hero sofort Abbruch.
+ *   1. Elemente suchen, ohne Chat-Container [data-hero-chat] sofort Abbruch.
  *   2. Tageszeit bestimmen (tag / abend / nacht), Statusleiste und Uhrzeit-Zeile
  *      setzen und jede halbe Minute nachziehen.
  *   3. Bei prefers-reduced-motion: ersten Fall fertig hinstellen, nichts bewegt sich.
- *   4. Sonst: jeden Fall EINMAL abspielen (Schrittliste mit Zeitpunkten in ms),
- *      nach dem letzten Fall stehen bleiben - der Knopf wird zu „Nochmal".
- *   5. Anhalten: per Knopf (WCAG 2.2.2) und automatisch, wenn der Hero aus dem
+ *   4. Sonst: im Thread steht nur die erste Kundennachricht und wartet. Erst wenn
+ *      mindestens 40 % des Chats im Bild sind, laeuft der erste Fall von dort
+ *      weiter (der Thread wird dafuer nicht geleert). Jeden Fall EINMAL abspielen
+ *      (Schrittliste mit Zeitpunkten in ms), nach dem letzten Fall stehen
+ *      bleiben - der Knopf wird zu „Nochmal".
+ *   5. Anhalten: per Knopf (WCAG 2.2.2) und automatisch, wenn der Chat aus dem
  *      Bild gescrollt oder der Tab im Hintergrund ist.
  * Aenderungshistorie:
  *   1.0.0 (2026-10-02) Erste Fassung, ersetzt den Foto-Slider aus main.js.
@@ -43,7 +46,11 @@
  *                      am Handy, Energiesparen) nicht mehr mehrere Schritte auf einmal nach.
  *   1.4.1 (2026-10-07) Fall Netzwerkspeicher ohne Zeitzusage („noch heute") -
  *                      die Website verspricht keine Reaktions- oder Loesungszeiten.
- *   1.5.0 (2026-10-12) Abends und am Wochenende 20–40 Minuten bis zur Antwort (Andreas 12.10.2026).
+ *   1.5.0 (2026-10-12) Abends und am Wochenende 20–40 Minuten bis zur Antwort.
+ *   1.6.0 (2026-10-18) Chat steht nicht mehr im Hero, sondern im Abschnitt IT-Betreuung:
+ *                      Start erst bei Sichtbarkeit (IntersectionObserver, ab 40 %),
+ *                      bis dahin wartet die erste Kundennachricht; Pause-Zustand
+ *                      am Chat-Container statt am Hero.
  * ═══════════════════════════════════════════════════════════
  */
 (function () {
@@ -254,6 +261,7 @@
   var caseIdx = 0, pool = [];
   var zustand = 'laeuft';   // laeuft | pause | fertig
   var offscreen = false;
+  var gestartet = false;    // erst ab 40 % Sichtbarkeit
 
   /* Tipptempo wie ein Mensch am Handy: ruhig genug zum Mitlesen, nach Wortende
      und Satzzeichen eine kleine Denkpause, dazu leichte Unregelmaessigkeit */
@@ -293,18 +301,26 @@
     return ende + 350;
   }
 
-  function stepsFor(c, now, letzter) {
-    var t = timesFor(c, now), typingNode, sysNode;
-    var s = [
-      { at: 0, run: function () {
+  function stepsFor(c, now, letzter, erster) {
+    var t = timesFor(c, now), typingNode, sysNode, a;
+    var s;
+    if (erster) {
+      // Die Kundennachricht wartet schon im Thread: nur ihre Uhrzeit nachziehen, dann antwortet Andreas
+      s = [{ at: 0, run: function () {
+        var zeit = thread.querySelector('.is-me time');
+        if (zeit) zeit.textContent = hhmm(t.me);
+      } }];
+      a = 700;
+    } else {
+      s = [{ at: 0, run: function () {
         thread.textContent = '';
         thread.classList.remove('is-out');
         setField('');
         schreibt(false);
         add(el('li', 'hc-day', 'Heute'));
-      } }
-    ];
-    var a = tippen(s, 300, c.me, t.me) + 700;
+      } }];
+      a = tippen(s, 300, c.me, t.me) + 700;
+    }
     s.push({ at: a, run: function () { typingNode = add(typing()); schreibt(true); } });
     s.push({ at: a + 1500, run: function () {
       weg(typingNode);
@@ -334,20 +350,44 @@
     return s;
   }
 
-  function nextCase() {
+  function nextCase(erster) {
     var c = pool[caseIdx];
     caseIdx++;
-    steps = stepsFor(c, new Date(), caseIdx >= pool.length);
+    steps = stepsFor(c, new Date(), caseIdx >= pool.length, erster === true);
     stepIdx = 0;
     elapsed = 0;
   }
 
-  function start() {
+  function waehlePool() {
     var night = dayMode(new Date()) === 'night';
     pool = CASES.filter(function (c) { return !night || c.nacht; });
     caseIdx = 0;
+  }
+
+  function start() {
+    waehlePool();
     zustand = 'laeuft';
     nextCase();
+    setKnopf();
+    setRunning();
+  }
+
+  /* Vor dem Start: nur die erste Kundennachricht des ersten Falls, mit echter Uhrzeit
+     (ohne Einblend-Animation; ohne JS steht im HTML ein fertiger Beispiel-Chat) */
+  function warten() {
+    waehlePool();
+    var c = pool[0];
+    thread.textContent = '';
+    thread.appendChild(el('li', 'hc-day', 'Heute'));
+    thread.appendChild(msg('me', c.me, timesFor(c, new Date()).me));
+  }
+
+  /* Erster Eintritt ins Bild: der erste Fall laeuft ab der wartenden Kundennachricht.
+     Hat jemand vorher schon auf Pause gedrueckt, bleibt es angehalten. */
+  function ersterStart() {
+    if (gestartet) return;
+    gestartet = true;
+    nextCase(true);
     setKnopf();
     setRunning();
   }
@@ -371,7 +411,7 @@
   }
 
   function setRunning() {
-    var run = zustand === 'laeuft' && !offscreen && !document.hidden;
+    var run = gestartet && zustand === 'laeuft' && !offscreen && !document.hidden;
     root.classList.toggle('is-paused', !run);
     if (run && !timer) {
       // War beim Anhalten die Ueberblendung schon dran, sie wieder ansetzen
@@ -402,13 +442,17 @@
       setRunning();
     });
   }
-  if ('IntersectionObserver' in window) {
-    new IntersectionObserver(function (entries) {
-      offscreen = !entries[entries.length - 1].isIntersecting;
-      setRunning();
-    }, { threshold: 0.15 }).observe(root);
-  }
   document.addEventListener('visibilitychange', setRunning);
 
-  start();
+  warten();
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries) {
+      var e = entries[entries.length - 1];
+      offscreen = !e.isIntersecting;
+      if (!gestartet && e.intersectionRatio >= 0.4) ersterStart();
+      else setRunning();
+    }, { threshold: [0, 0.4] }).observe(root);
+  } else {
+    ersterStart();
+  }
 })();
