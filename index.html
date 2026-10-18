@@ -453,7 +453,7 @@
 
   /* USP */
   .compare-box { background:var(--bg3); border:1px solid var(--border); border-radius:16px; overflow:hidden; }
-  .compare-hd { display:grid; grid-template-columns:1fr 24px 1fr; padding:.9rem 1.4rem .7rem; border-bottom:1px solid var(--border); font-family:var(--fm); font-size:.75rem; letter-spacing:.08em; text-transform:uppercase; }
+  .compare-hd { display:grid; grid-template-columns:1fr 24px 1fr; padding:.9rem 1.4rem .7rem; border-bottom:1px solid var(--border); font-family:var(--fb); font-size:.75rem; letter-spacing:0; text-transform:none; }
   .compare-hd .bh { color:#f87171; } .compare-hd .mh { color:var(--text3); text-align:center; } .compare-hd .gh { color:var(--success); text-align:right; }
   .c-row { display:grid; grid-template-columns:1fr 24px 1fr; align-items:center; gap:.4rem; padding:.7rem 1.4rem; border-bottom:1px solid rgba(45,55,72,.4); font-size:.84rem; }
   .c-row:last-child { border-bottom:none; }
@@ -997,7 +997,17 @@
     .testi-row::-webkit-scrollbar { height:12px; }
     .testi-row::-webkit-scrollbar-track { background:rgba(255,255,255,.08); border-radius:var(--r-s); }
     .testi-row::-webkit-scrollbar-thumb { background:var(--text2); border-radius:var(--r-s); }
-    .testimonials figure.testi-card--featured.testi-card { --q-pad:4.75rem; }   /* Reserve fuer sichtbare Bildlaufbalken (~15 px) */
+    .testimonials figure.testi-card--featured.testi-card { --q-pad:4.75rem; }
+    /* Ausblend-Kante rechts: die angeschnittene naechste Karte laeuft aus statt hart abzuschneiden. Nur der Kartenbereich
+       wird maskiert, ein unterer Streifen (Bildlaufbalken) bleibt voll sichtbar. Am Ende der Leiste (.is-end, main.js) und
+       bei Tastaturfokus (Fokusring liegt ausserhalb der Box) entfaellt sie. */
+    .testi-row:not(.is-end):not(:focus-visible) {
+      -webkit-mask-image:linear-gradient(to right, #000 calc(100% - 80px), transparent), linear-gradient(#000, #000);
+      mask-image:linear-gradient(to right, #000 calc(100% - 80px), transparent), linear-gradient(#000, #000);
+      -webkit-mask-size:100% calc(100% - 22px), 100% 22px; mask-size:100% calc(100% - 22px), 100% 22px;
+      -webkit-mask-position:0 0, 0 100%; mask-position:0 0, 0 100%;
+      -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
+    }   /* Reserve fuer sichtbare Bildlaufbalken (~15 px) */
   }
 
   /* 4 Praxis: am Handy ohne grosses Symbol */

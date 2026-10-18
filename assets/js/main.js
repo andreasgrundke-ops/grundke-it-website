@@ -365,6 +365,7 @@ function initTestiRow() {
     buildStops();
 
     function update() {
+      row.classList.toggle('is-end', row.scrollLeft + row.clientWidth >= row.scrollWidth - 2); // Ausblend-Kante nur solange es weitergeht
       if (row.scrollWidth <= row.clientWidth + 1) { pos.textContent = ''; return; }
       const start = row.getBoundingClientRect().left;
       let idx = 0;

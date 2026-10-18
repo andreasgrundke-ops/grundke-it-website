@@ -150,7 +150,7 @@ def review_count_phrase(n):
 # Startseite: Stand fuer WebPage.dateModified, Sitemap und 'Zuletzt aktualisiert' im Fuss
 # (sync_home). Nur hochsetzen, wenn sich der Inhalt der Startseite wirklich aendert.
 HOME_DATE = CONTENT_DATE
-HOME_DATE_DISP = "18.10.2026"
+HOME_DATE_DISP = ".".join(reversed(CONTENT_DATE.split("-")))  # TT.MM.JJJJ
 # Kontaktseite (Handseite): Stand fuer „Zuletzt aktualisiert“ im Abschluss (HAND_CLOSING) und lastmod der Sitemap
 # (STATIC_URLS). Nur hochsetzen, wenn sich der Inhalt der Kontaktseite wirklich aendert.
 KONTAKT_DATE = CONTENT_DATE
@@ -454,6 +454,8 @@ def sync_shared(places, services):
             html_new = preload_fonts(html_new, nl)
         if 'class="sticky-contact"' in html_new:
             if STICKY_MARKED_RE.search(html_new):
+                if len(STICKY_MARKED_RE.findall(html_new)) != 1:
+                    raise SystemExit("Kontaktleiste: nicht genau 1 Markenpfad-Treffer in " + rel)
                 html_new = STICKY_MARKED_RE.sub(lambda _m: STICKY.replace("\n", nl), html_new, count=1)
             else:
                 if len(STICKY_RE.findall(html_new)) != 1:

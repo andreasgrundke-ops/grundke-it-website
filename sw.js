@@ -90,11 +90,11 @@
  *                        404 mit Schriften, Kartenabstand, Fernwartung als Menuepunkt
  *                        (main.js 1.4.0), Bilder fuer die E-Mail-Signatur.
  *   1.23.1 / 2026-10-10 — Fakten: 5 Google-Bewertungen, Schulungsportal in Vorbereitung.
- *   1.24.0 / 2026-10-10 — Release A Website-Umbau: Startseite neu (Kuemmerer, Handy zuerst,
+ *   1.24.0 / 2026-10-10 — Startseite neu (Kuemmerer, Handy zuerst,
  *                        Stimmen/FAQ aus dem Generator, aufklappbare Details), Bausteine in
  *                        style.css, main.js 1.6.0, Fuss aufklappbar, WhatsApp mit Einstiegssatz,
  *                        Asset-Version 2026.10.b.
- *   1.25.0 / 2026-10-10 — Release B Website-Umbau: alle Unterseiten in der Generator-Huelle
+ *   1.25.0 / 2026-10-10 — alle Unterseiten in der Generator-Huelle
  *                        (IT-, Orts-, KI-, Software-, Websites- und Ratgeberseiten), Bausteine des
  *                        KI-Bereichs in style.css, Asset-Version 2026.10.c.
  *   1.26.0 / 2026-10-10 — Release C1 Website-Umbau: Schulung im Generator, Kontakt, Fernwartung,
