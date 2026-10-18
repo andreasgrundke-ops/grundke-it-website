@@ -1,7 +1,7 @@
 /**
  * ═══════════════════════════════════════════════════════════
  * Grundke IT-Service · hero-wege.js
- * Version: 1.0.0
+ * Version: 1.0.1
  * Autor: Andreas Grundke / Grundke IT-Service
  * Datum: 2026-10-18
  * Beschreibung: Hero „Zwei Wege" auf der Startseite. Die Buehne zeigt vier
@@ -18,8 +18,12 @@
  *      Schluss und Endstand (data-zustand="ende"), Knopf „Nochmal abspielen".
  *   5. Anhalten per Knopf (WCAG 2.2.2) und automatisch, solange weniger als
  *      20 % der Buehne sichtbar sind oder der Tab im Hintergrund liegt.
+ *   6. Wird reduzierte Bewegung erst waehrend des Besuchs eingeschaltet:
+ *      sofort zurueck in den Endstand aus dem HTML, Knopf ausblenden.
  * Aenderungshistorie:
  *   1.0.0 (2026-10-18) Erste Fassung.
+ *   1.0.1 (2026-10-18) Umschalten auf reduzierte Bewegung waehrend des Besuchs
+ *                      fuehrt sofort in den Endstand.
  * ═══════════════════════════════════════════════════════════
  */
 (function () {
@@ -27,7 +31,8 @@
 
   var stage = document.querySelector('[data-zw]');
   if (!stage) return;
-  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var ruhig = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
+  if (ruhig && ruhig.matches) return;
 
   var knopf = stage.parentNode.querySelector('[data-zw-pause]');
   var links = stage.querySelector('.zw-lane--links');
@@ -37,6 +42,12 @@
   if (!links || !rechts) return;
 
   var FAELLE = 4, FALL_MS = 7000, AUS_MS = 250;
+
+  /* Endstand = HTML-Grundzustand: Klassen und Attribute vor der ersten Aenderung merken */
+  var grund = Array.prototype.map.call(stage.querySelectorAll('[class]'), function (e) {
+    return [e, e.getAttribute('class')];
+  });
+  var grundFall = stage.getAttribute('data-fall');
 
   function an(el, ja) { if (el) el.classList.toggle('is-on', ja); }
   function alle(list, ja) { for (var i = 0; i < list.length; i++) an(list[i], ja); }
@@ -127,8 +138,18 @@
     weiter();
   }
 
+  function endstand() {
+    anhalten();
+    idx = schritte.length; rest = 0;
+    grund.forEach(function (g) { g[0].setAttribute('class', g[1]); });
+    if (grundFall !== null) stage.setAttribute('data-fall', grundFall);
+    setzeZustand('ende');
+    if (knopf) knopf.hidden = true;
+  }
+
   if (knopf) {
     knopf.addEventListener('click', function () {
+      if (ruhig && ruhig.matches) return;
       if (zustand === 'laeuft') { anhalten(); setzeZustand('pause'); }
       else if (zustand === 'pause') { setzeZustand('laeuft'); weiter(); }
       else starten();
@@ -147,9 +168,16 @@
     abgleichen();
   });
 
+  if (ruhig) {
+    var umschalten = function () { if (ruhig.matches) endstand(); };
+    if (ruhig.addEventListener) ruhig.addEventListener('change', umschalten);
+    else if (ruhig.addListener) ruhig.addListener(umschalten);
+  }
+
   function los() {
     requestAnimationFrame(function () {
       requestAnimationFrame(function () {
+        if (ruhig && ruhig.matches) { endstand(); return; }
         if (knopf) knopf.hidden = false;
         starten();
       });
