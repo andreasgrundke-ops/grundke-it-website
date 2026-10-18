@@ -50,6 +50,8 @@ AK8_ALLOW = [
     ("index.html", "wer hilft mir kurzfristig?",
      "FAQ-Frage in Worten des Besuchers; die Antwort nennt keine Zeit (Controller 11.10.2026, Hinweis an Andreas)"),
     ("index.html", "ohne garantierte Reaktionszeit", "verneint eine Reaktionszeit (geschuetzter Satz, Spec §5)"),
+    ("index.html", "einen 24/7-Vertrag mit festen Reaktionszeiten braucht",
+     "FAQ Passungsfrage: nennt, wann ein Systemhaus passt (freigegeben Andreas 18.10.2026), keine eigene Zusage"),
     ("digitalbonus-bayern/index.html", "Umsetzung innerhalb von 18 Monaten nach der Bewilligung",
      "Frist des Foerderprogramms"),
     ("fernwartung/index.html", "beendest du die Sitzung jederzeit selbst", "der Kunde beendet die Sitzung selbst"),

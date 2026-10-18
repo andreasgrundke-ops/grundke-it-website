@@ -53,10 +53,10 @@
   <meta property="og:image:height" content="630"/>
 
   <!-- Google Fonts (lokal gehostet, DSGVO-konform) -->
-  <link rel="stylesheet" href="assets/css/fonts.css?v=2026.10.h"/>
+  <link rel="stylesheet" href="assets/css/fonts.css?v=2026.10.i"/>
 
   <!-- Shared CSS -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=2026.10.h"/>
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026.10.i"/>
 
   <script type="application/ld+json">
   {
@@ -504,12 +504,9 @@
   }
 
   /* USP */
-  .compare-box { background:var(--bg3); border:1px solid var(--border); border-radius:16px; overflow:hidden; }
-  .compare-hd { display:grid; grid-template-columns:1fr 24px 1fr; padding:.9rem 1.4rem .7rem; border-bottom:1px solid var(--border); font-family:var(--fb); font-size:.75rem; letter-spacing:0; text-transform:none; }
-  .compare-hd .bh { color:#f87171; } .compare-hd .mh { color:var(--text3); text-align:center; } .compare-hd .gh { color:var(--success); text-align:right; }
-  .c-row { display:grid; grid-template-columns:1fr 24px 1fr; align-items:center; gap:.4rem; padding:.7rem 1.4rem; border-bottom:1px solid rgba(45,55,72,.4); font-size:.84rem; }
-  .c-row:last-child { border-bottom:none; }
-  .c-bad { color:var(--text3); text-decoration:line-through; } .c-mid { color:var(--text3); text-align:center; font-size:.7rem; } .c-good { color:var(--text); font-weight:600; text-align:right; }
+  .itb-how { list-style:none; margin:.9rem 0 0; padding:0; display:flex; flex-direction:column; gap:.55rem; }
+  .itb-how li { display:flex; align-items:flex-start; gap:.65rem; font-size:.92rem; line-height:1.55; color:var(--text2); }
+  .itb-how li > svg { width:16px; height:16px; margin-top:.28rem; color:var(--success); flex-shrink:0; }
 
   /* ───────────────────────────────────────────
      Schnellcheck (Lead-Magnet)
@@ -899,7 +896,7 @@
     .hc-ctas > a { justify-content:center; }
   }
 
-  /* 2 Ein Einsatz: Beispiel-Chat, Ratgeber-Zeile, Kernaussage + Andreas' Satz, Vergleich aufklappbar, Chips.
+  /* 2 Ein Einsatz: Beispiel-Chat, Ratgeber-Zeile, Kernaussage + Andreas' Satz, „So arbeite ich“ aufklappbar, Chips.
      Ab 1024 px steht das Handy rechts neben Ueberschrift, Einleitung und Kernaussage. */
   .itb-chat { margin:1.8rem 0 2.2rem; }
   .itb-chat .hc-stage { gap:.8rem; }
@@ -1279,7 +1276,7 @@
   <div class="inner"><span>Direkt erreichbar:</span> <a href="tel:+491782584438">0178 258 44 38</a> <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20komme%20%C3%BCber%20deine%20Startseite." target="_blank" rel="noopener" data-wa="direkt">WhatsApp</a></div>
 </div>
 
-<!-- IT-BETREUUNG: ein Einsatz als Beispiel-Chat (laeuft erst, wenn er im Bild ist), Kernaussage, Vergleich aufklappbar,
+<!-- IT-BETREUUNG: ein Einsatz als Beispiel-Chat (laeuft erst, wenn er im Bild ist), Kernaussage, „So arbeite ich“ aufklappbar,
      Chips zu den IT-Leistungsseiten (ersetzen den Abschnitt „Leistungen“, Anker #leistungen bleibt) -->
 <section class="itb section-pad" id="it-betreuung">
   <div class="inner">
@@ -1325,16 +1322,15 @@
         <p class="itb-claim">Kein Gehalt. Kein Obstkorb. Kein Arbeitsplatz.<br><em>Dafür einer, der dein System kennt.</em></p>
       </div>
       <details class="more itb-vgl">
-        <summary>Großes Systemhaus oder Grundke IT: der Vergleich</summary>
-          <div class="compare-box">
-            <div class="compare-hd"><span class="bh">Großes Systemhaus</span><span class="mh">vs</span><span class="gh">Du mit Grundke IT</span></div>
-            <div class="c-row"><span class="c-bad">Ticketsystem</span><span class="c-mid" aria-hidden="true">→</span><span class="c-good">Direkter Kontakt</span></div>
-            <div class="c-row"><span class="c-bad">Wechselnde Techniker</span><span class="c-mid" aria-hidden="true">→</span><span class="c-good">Antwort von mir selbst</span></div>
-            <div class="c-row"><span class="c-bad">Anonymes Team</span><span class="c-mid" aria-hidden="true">→</span><span class="c-good">Ein Ansprechpartner</span></div>
-            <div class="c-row"><span class="c-bad">Stundensatz unklar</span><span class="c-mid" aria-hidden="true">→</span><span class="c-good">110 € netto zzgl. MwSt. je Stunde</span></div>
-            <div class="c-row"><span class="c-bad">Wochenendzuschlag</span><span class="c-mid" aria-hidden="true">→</span><span class="c-good">Kein Aufschlag</span></div>
-            <div class="c-row"><span class="c-bad">Neue Person jedes Mal</span><span class="c-mid" aria-hidden="true">→</span><span class="c-good">Kennt deine Anlage</span></div>
-          </div>
+        <summary>So arbeite ich</summary>
+          <ul class="itb-how">
+            <li><svg aria-hidden="true"><use href="#ico-check"/></svg><span>Ein Ansprechpartner: ich. Für Urlaub gibt es eine abgestimmte Vertretung.</span></li>
+            <li><svg aria-hidden="true"><use href="#ico-check"/></svg><span>Direkter Kontakt per Telefon oder WhatsApp, kein Ticketsystem.</span></li>
+            <li><svg aria-hidden="true"><use href="#ico-check"/></svg><span>110&nbsp;€ netto zzgl. MwSt. je Stunde, 15-Minuten-Takt.</span></li>
+            <li><svg aria-hidden="true"><use href="#ico-check"/></svg><span>Kein Wochenendaufschlag.</span></li>
+            <li><svg aria-hidden="true"><use href="#ico-check"/></svg><span>Nach dem Start kenne ich deine Anlage.</span></li>
+            <li><svg aria-hidden="true"><use href="#ico-check"/></svg><span>Vieles löse ich per Fernwartung.</span></li>
+          </ul>
       </details>
       <div class="itb-leist">
         <span id="leistungen" class="anchor"></span>
@@ -1729,9 +1725,9 @@
     <div class="faq-wrap">
       <details class="faq-item"><summary>Was kostet eine IT-Betreuung für meinen Betrieb? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Ohne Vertrag 110 € netto zzgl. MwSt. je Stunde im 15-Minuten-Takt, ohne Wochenendzuschlag. Vor Ort ist die Anfahrt bis 5 km inklusive, darüber gilt eine vereinbarte Pauschale. Mit Betreuungsvertrag ab 149 € netto im Monat, inklusive IT-Assessment, Fernwartung und bevorzugtem Support.</div></details>
       <details class="faq-item"><summary>Wie schnell bist du bei einem IT-Notfall erreichbar? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Feste Reaktionszeiten sage ich nicht zu. Vertragskunden werden bevorzugt behandelt, Premium-Kunden zuerst. Ohne Vertrag melde ich mich, sobald ich kann, und viele Störungen lassen sich dann per Fernwartung lösen.</div></details>
-      <details class="faq-item"><summary>Was unterscheidet dich von einem großen IT-Systemhaus? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Kein Ticketsystem und kein wechselndes Team. Du hast einen festen Ansprechpartner, mich. Ich kenne deine Umgebung und sage dir, was demnächst ansteht, bevor es zum Problem wird.</div></details>
+      <details class="faq-item"><summary>Passt du zu meinem Betrieb oder eher ein Systemhaus? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Das hängt von der Größe ab. Wer viele Standorte hat, eine eigene IT-Abteilung entlasten will oder einen 24/7-Vertrag mit festen Reaktionszeiten braucht, ist bei einem Systemhaus richtig. Kleine Betriebe, die einen festen Ansprechpartner wollen, der ihre Anlage kennt und direkt erreichbar ist, sind bei mir richtig.</div></details>
       <details class="faq-item"><summary>Was passiert, wenn du im Urlaub oder krank bist? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Für Urlaub und Krankheit gibt es eine abgestimmte Vertretung: einen selbstständigen IT-Kollegen, der im Notfall einspringt.</div></details>
-      <details class="faq-item"><summary>Mein IT-Betreuer ist nicht mehr erreichbar – wer hilft mir kurzfristig? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Das ist einer der häufigsten Gründe, warum Betriebe bei mir anrufen. Zuerst kümmere ich mich um das, was gerade nicht läuft, danach kommt die geordnete Übernahme: Zugänge, Datensicherung, Dokumentation. Wie das abläuft, steht unter <a href="/it-betreuer-wechseln/">IT-Betreuer wechseln</a>. Ruf an: 0178 258 44 38.</div></details>
+      <details class="faq-item"><summary>Mein IT-Betreuer ist nicht mehr erreichbar – wer hilft mir kurzfristig? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Das kommt bei kleinen Betrieben öfter vor. Zuerst kümmere ich mich um das, was gerade nicht läuft, danach kommt die geordnete Übernahme: Zugänge, Datensicherung, Dokumentation. Wie das abläuft, steht unter <a href="/it-betreuer-wechseln/">IT-Betreuer wechseln</a>. Ruf an: 0178 258 44 38.</div></details>
       <details class="faq-item"><summary>Welche Region betreust du? <span class="faq-ico" aria-hidden="true">+</span></summary><div class="faq-a">Vor Ort bin ich in Grasbrunn, Ottobrunn, Vaterstetten, Haar, Neubiberg, Putzbrunn und Hohenbrunn, etwa 25 km im Umkreis. Remote helfe ich deutschlandweit. Für Einsätze vor Ort bleibe ich bewusst im Münchner Osten: Auf der anderen Seite Münchens stehe ich im Stau, und das hilft dir nicht.</div></details>
     </div>
     <details class="more faq-rest">
@@ -1811,6 +1807,7 @@
       <a href="/kontakt/" title="Alle Kontaktwege"><img src="/assets/img/qr-tree.png" alt="QR-Code: Kontaktseite aufs Handy holen" width="88" height="88"/></a>
       <p><strong>Scan mich. Dann reden wir.</strong>Alle Kontaktwege direkt aufs Handy.</p>
     </div>
+    <p class="cta-ki">Texte mit Hilfe von KI entworfen, von Andreas Grundke geprüft und verantwortet.</p>
   </div>
 </section>
 </main>
@@ -1931,10 +1928,10 @@
     },
     {
       "@type": "Question",
-      "name": "Was unterscheidet dich von einem großen IT-Systemhaus?",
+      "name": "Passt du zu meinem Betrieb oder eher ein Systemhaus?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Kein Ticketsystem und kein wechselndes Team. Du hast einen festen Ansprechpartner, mich. Ich kenne deine Umgebung und sage dir, was demnächst ansteht, bevor es zum Problem wird."
+        "text": "Das hängt von der Größe ab. Wer viele Standorte hat, eine eigene IT-Abteilung entlasten will oder einen 24/7-Vertrag mit festen Reaktionszeiten braucht, ist bei einem Systemhaus richtig. Kleine Betriebe, die einen festen Ansprechpartner wollen, der ihre Anlage kennt und direkt erreichbar ist, sind bei mir richtig."
       }
     },
     {
@@ -1950,7 +1947,7 @@
       "name": "Mein IT-Betreuer ist nicht mehr erreichbar – wer hilft mir kurzfristig?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Das ist einer der häufigsten Gründe, warum Betriebe bei mir anrufen. Zuerst kümmere ich mich um das, was gerade nicht läuft, danach kommt die geordnete Übernahme: Zugänge, Datensicherung, Dokumentation. Wie das abläuft, steht unter IT-Betreuer wechseln. Ruf an: 0178 258 44 38."
+        "text": "Das kommt bei kleinen Betrieben öfter vor. Zuerst kümmere ich mich um das, was gerade nicht läuft, danach kommt die geordnete Übernahme: Zugänge, Datensicherung, Dokumentation. Wie das abläuft, steht unter IT-Betreuer wechseln. Ruf an: 0178 258 44 38."
       }
     },
     {
@@ -2066,10 +2063,10 @@
     }
   }
   </script>
-<script src="/assets/js/lenis.min.js?v=2026.10.h" defer></script>
-<script src="/assets/js/main.js?v=2026.10.h" defer></script>
-<script src="/assets/js/hero-chat.js?v=2026.10.h" defer></script>
-<script src="/assets/js/hero-wege.js?v=2026.10.h" defer></script>
+<script src="/assets/js/lenis.min.js?v=2026.10.i" defer></script>
+<script src="/assets/js/main.js?v=2026.10.i" defer></script>
+<script src="/assets/js/hero-chat.js?v=2026.10.i" defer></script>
+<script src="/assets/js/hero-wege.js?v=2026.10.i" defer></script>
 
 <!-- Sticky Contact Bar — Mobile: Bottom-Leiste · Desktop: Sidebar rechts -->
 <!-- STICKY:START -->

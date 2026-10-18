@@ -670,6 +670,7 @@ blockquote.testi-txt { margin-top:0; margin-left:0; margin-right:0; }
 .cta-next svg { flex-shrink:0; }
 .cta-author { display:flex; align-items:center; justify-content:center; gap:.8rem; max-width:36rem; margin:2.4rem auto 0; padding-top:1.6rem; border-top:1px solid var(--border); position:relative; text-align:left; }
 .cta-author p { margin:0; font-size:.93rem; line-height:1.55; color:var(--text2); }
+.cta-ki { max-width:36rem; margin:.9rem auto 0; font-size:1.0667rem; line-height:1.5; color:var(--text2); text-align:center; }
 .cta-author strong { color:var(--text); font-weight:700; }
 .cta-date { font-size:.87rem; color:var(--text3); }
 /* Fliesstext-Bausteine aus "extra" (Ablauf, Checkliste, Hinweis), Werte aus NEW_STYLE/KI_STYLE des
@@ -956,9 +957,9 @@ body.is-home main :is(p, li, dd, dt, .faq-a, .testi-txt, .praxis-text, .sc-check
   font-size: var(--fs-text-home);
 }
 body.is-home main :is(.btn-p, .btn-g, .btn-wa, .btn-tel, .btn-email, .hc-wa, .price-btn, .sc-cta, .sc-preview-btn, .praxis-cta,
-  summary, .testi-who, .c-row, .faq-more strong, .hc-num):where(:not(.hc-stage *, .mini-chat-box *)) { font-size: var(--fs-ui-home); }
+  summary, .testi-who, .itb-how li, .faq-more strong, .hc-num):where(:not(.hc-stage *, .mini-chat-box *)) { font-size: var(--fs-ui-home); }
 body.is-home main :is(.s-label, .hc-wer, .hc-proof, .hc-proof li, .chips > *, .itb-leist .chips > a, .itb-leist-h, .price-note, .price-per,
-  .price-tier, .price-badge, .testi-role, .testi-ctx, .testi-row-h, .praxis-tag, .sc-hint, .sc-promise span, .compare-hd, .c-mid,
+  .price-tier, .price-badge, .testi-role, .testi-ctx, .testi-row-h, .praxis-tag, .sc-hint, .sc-promise span,
   .hc-qr p, .pkg-table thead th):where(:not(.hc-stage *, .mini-chat-box *, .zw-stage *, .zw-foot *)) { font-size: var(--fs-small-home); }
 body.is-home main :is(.s-label, .itb-leist .chips > a, .itb-leist-h, .sc-hint, .sc-promise span) { font-size: var(--fs-small-tight); }
 body.is-home main :is(h3, .itb-claim, .price-name, .k3-card h3) { font-size: var(--fs-h3-home); line-height: 1.3; }
