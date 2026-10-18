@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 build_landingpages.py
-Version : 2.9
+Version : 2.10
 Autor   : Andreas Grundke IT-Service (Grundke IT-Service)
 Datum   : 2026-10-18
 Zweck   : Generiert aus einem gemeinsamen Template + Datenlisten die Orts- und
@@ -55,6 +55,9 @@ Aenderungen:
               Merge Release 2.0.1 (So arbeite ich, FAQ Passungsfrage, KI-Kennzeichnung); ASSET_VER 2026.10.i.
   2026-10-18  Version 2.0.1: ASSET_VER 2026.10.h, Abschnitt „So arbeite ich“ statt Vergleich, FAQ Passungsfrage.
   2026-10-18  Abschluss closing(): KI-Kennzeichnung (p.cta-ki) auf jeder Seite mit Abschluss.
+  2026-10-18  Version 2.1.1: ASSET_VER 2026.10.j. Abschluss closing() mit Zeile fuer wen (p.cta-fuer),
+              FAQ „Für wen arbeitest du?“ auf der Notdienstseite, audience (BusinessAudience) im Unternehmensknoten
+              der Ortsseiten, neue Kopfzeile auf Notdienst- und Wechselseite, Kontaktleiste mit WhatsApp zuerst.
   2026-10-10  Generator-Huelle render_shell (section, page_head, mini_chat,
               voices_html, prices_html, closing) fuer managed-it-service, it-betreuer-wechseln und
               it-notdienst (Schalter SHELL_SLUGS), Kernsatz/Antwortsatz/Chat/Stimmen aus den freigegebenen Texten,
@@ -113,6 +116,9 @@ BARRIEREFREI_DATE = "2026-10-18"  # Barrierefreiheitserklaerung zuletzt inhaltli
 PUB_DATE = "2026-06-15"       # datePublished (Ersterstellung der Landingpages)
 PERSON_ID = DOMAIN + "/#andreas"          # @id der Person Andreas Grundke (Startseite)
 BUSINESS_ID = DOMAIN + "/#localbusiness"  # @id des Unternehmens (Startseite)
+# Zielgruppe im Unternehmensknoten (seit 18.10.2026, wortgleich im Schema der Startseite)
+AUDIENCE = {"@type": "BusinessAudience",
+            "audienceType": "Kleine und mittlere Unternehmen, Selbstständige, Freiberufler"}
 WEBSITE_ID = DOMAIN + "/#website"         # @id der Website (Startseite)
 # Der KI-Bereich ist juenger als die uebrigen Landingpages: eigenes datePublished. dateModified steht je Seite
 # in SERVICES ("modified"), nur hochsetzen, wenn sich der Inhalt der Seite wirklich aendert.
@@ -129,10 +135,10 @@ NEW_DATE_DISP = "7. Oktober 2026"
 # prueft das gegen origin/main), zusammen mit CACHE_NAME/RUNTIME_CACHE in sw.js. Neue URLs
 # laufen am alten Cache des Service Workers vorbei, ein wiederkehrender Besucher bekommt nie neues
 # HTML mit altem CSS.
-ASSET_VER = "2026.10.i"
+ASSET_VER = "2026.10.j"
 # Sichtbare Website-Version im Fuss (seit 17.10.2026): gleicht dem Suffix von CACHE_NAME in sw.js
 # (check_static prueft das). SITE_DATE_DISP = Stand dieser Version im Fuss, Form TT.MM.JJJJ.
-SITE_VERSION = "2.1.0"
+SITE_VERSION = "2.1.1"
 SITE_DATE = "2026-10-18"
 SITE_DATE_DISP = "18.10.2026"
 # Stand der Seiten, deren sichtbarer Inhalt zuletzt geaendert wurde (dateModified, Sitemap, Abschluss).
@@ -484,7 +490,7 @@ def sync_shared(places, services):
                 f.write(html_new)
             print("  Header/Footer aktualisiert: " + rel)
 
-# Kontaktleiste (Dock) fuer alle Seiten: eine Quelle. Generator-Seiten haengen STICKY an, sync_shared ersetzt sie in den
+# Kontaktleiste (Dock) fuer alle Seiten: eine Quelle. Reihenfolge WhatsApp, Anrufen, E-Mail (Stand 18.10.2026). Generator-Seiten haengen STICKY an, sync_shared ersetzt sie in den
 # Handseiten (beim ersten Lauf die alte Leiste per STICKY_RE, danach nur noch zwischen den Marken).
 STICKY_START = "<!-- STICKY:START -->"
 STICKY_END = "<!-- STICKY:END -->"
@@ -492,13 +498,13 @@ STICKY_RE = re.compile(r'<div class="sticky-contact"[^>]*>.*?</div>', re.S)
 STICKY_MARKED_RE = re.compile(re.escape(STICKY_START) + r".*?" + re.escape(STICKY_END), re.S)
 MAILTO_PREFILLED = "mailto:info@grundke-it.de?subject=Anfrage%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0AMein%20Anliegen%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F)."
 _STICKY_BODY = """<div class="sticky-contact" id="stickyContact" role="navigation" aria-label="Kontakt-Optionen">
-  <a href="tel:+491782584438" class="sc-btn sc-phone" aria-label="Anrufen">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-    <span>Anrufen</span>
-  </a>
   <a href="__WA_KONTAKTLEISTE__" target="_blank" rel="noopener" class="sc-btn sc-wa" aria-label="WhatsApp">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 0 0 .611.611l4.458-1.495A11.96 11.96 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75c-2.278 0-4.381-.733-6.093-1.975l-.426-.307-2.645.887.887-2.645-.307-.426A9.72 9.72 0 0 1 2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75z"/></svg>
     <span>WhatsApp</span>
+  </a>
+  <a href="tel:+491782584438" class="sc-btn sc-phone" aria-label="Anrufen">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+    <span>Anrufen</span>
   </a>
   <a href="__MAILTO__" class="sc-btn sc-mail" aria-label="E-Mail">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
@@ -1003,6 +1009,7 @@ def closing(mod_disp, wa=None, next_link=None, sticky=True):
   <div class="inner">
     <h2 class="cta-h">Problem? <em>Ich bin dran.</em></h2>
     <p class="cta-sub">Ruf an, schreib auf WhatsApp oder per Mail. Am anderen Ende bin ich, Andreas Grundke. Gerne per Du.</p>
+    <p class="cta-fuer">Für Betriebe im Münchner Osten: vom Ein-Personen-Gewerbe bis zur Firma mit rund 50 Mitarbeitern.</p>
     <div class="cta-btns{mob}">
       <a href="tel:{tel}" class="btn-tel"><svg width="20" height="20" aria-hidden="true"><use href="#ico-phone"/></svg> {phone}</a>
       <a href="{wa}" target="_blank" rel="noopener" class="btn-wa"><svg width="20" height="20" aria-hidden="true"><use href="#ico-wa"/></svg> WhatsApp</a>
@@ -1411,6 +1418,7 @@ def render_place(p, places, services):
         "areaServed": [{"@type": "City", "name": a} for a in p["area"]],
         "geo": {"@type": "GeoCoordinates", "latitude": 48.0944, "longitude": 11.7657},
         "priceRange": "€€",
+        "audience": AUDIENCE,
         "founder": {"@id": PERSON_ID},
     }
     schema = [breadcrumb("IT-Service " + p["name"], slug), lb, faq_schema(faqs),
@@ -1779,8 +1787,8 @@ SERVICES = [
         "h1": "IT-Notdienst für Unternehmen",
         "service_type": "IT-Notdienst",
         "desc": ("IT-Notdienst für Unternehmen im Münchner Osten: Hilfe bei Störungen, Viren und Datenverlust "
-                 "per Fernwartung oder vor Ort. Dein ITler geht nicht ran? Ich schon."),
-        "k": ("Dein ITler geht nicht ran? Ich schon. Betreue ich euch bereits, kenne ich eure Systeme und schaue "
+                 "per Fernwartung oder vor Ort. IT hängt? Ruf mich an."),
+        "k": ("IT hängt? Ruf mich an. Betreue ich euch bereits, kenne ich eure Systeme und schaue "
               "per Fernwartung nach, ohne lange Erklärungen."),
         "answer": ("Im IT-Notdienst helfe ich als Grundke IT-Service aus Grasbrunn Betrieben im Münchner Osten bei "
                    "Störungen per Fernwartung oder vor Ort, ad hoc für 110 € netto zzgl. MwSt. je Stunde im 15-Minuten-Takt und "
@@ -1820,9 +1828,10 @@ SERVICES = [
              "herunter, die Anleitung führt dich Schritt für Schritt. Am Mac richten wir es beim ersten Mal "
              "zusammen am Telefon ein. Du siehst alles mit, und auf Zuruf entferne ich den Zugang wieder. Die "
              "Verbindung läuft verschlüsselt über meinen eigenen Server in Deutschland."),
-            ("Hilfst du auch Privatkunden?",
-             "Nein. Mein Angebot richtet sich an Unternehmen, Selbstständige und Freiberufler. "
-             "Alle Preise verstehen sich zuzüglich Mehrwertsteuer."),
+            ("Für wen arbeitest du?",
+             "Für Betriebe: vom Ein-Personen-Gewerbe über Praxen, Kanzleien, Handwerk und Büros bis zur Firma "
+             "mit rund 50 Mitarbeitern. Alle Preise verstehen sich netto zzgl. MwSt. Für private Rechner und "
+             "Heimnetze bin ich nicht der richtige Ansprechpartner; dafür gibt es gute Anbieter vor Ort."),
         ],
     },
     # ----------------------------------------------------------------------- #
@@ -2302,7 +2311,7 @@ SERVICES = [
         "cta2_href": "/managed-it-service/", "cta2_text": "Laufende IT-Betreuung",
         "desc": ("Dein IT-Dienstleister ist nicht erreichbar oder hört auf? Übernahme-Checkliste, was du "
                  "vom alten Betreuer brauchst und wie eine geordnete Übernahme läuft."),
-        "k": ("Dein ITler geht nicht ran? Ich schon. Beim Wechsel sorge ich dafür, dass Kennwörter, Lizenzen und "
+        "k": ("IT-Betreuer nicht mehr da? So übernehme ich. Beim Wechsel sorge ich dafür, dass Kennwörter, Lizenzen und "
               "Netzwerkplan danach bei euch liegen."),
         "answer": ("Bei Grundke IT-Service in Grasbrunn läuft der Wechsel für Betriebe im Münchner Osten in vier "
                    "Schritten: kostenloser IT-Schnellcheck, Übergabe der Zugänge mit Checkliste, Datensicherung "

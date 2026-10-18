@@ -1,10 +1,12 @@
 """Design-Pruefungen fuer den Relaunch (Spec §5, §7, §11).
 Titel:        check_design.py
-Version:      0.4.0 (Task 1: AK-R1-Pruefungen, --release r1; Task 11: AK-R2-Pruefungen, --release r2;
+Version:      0.5.0 (Task 1: AK-R1-Pruefungen, --release r1; Task 11: AK-R2-Pruefungen, --release r2;
               0.3.1: R2-DOM, #it-betreuung in R2 nach Flaeche;
               0.4.0: R2 auf den Hero mit Chat-Handy umgestellt: R2-06/-07/-10/-16/-TAB pruefen den Chat,
               R2-KENNZ (Kennzeichnung) statt R2-08, R2-ERSTBILD (H1 als LCP, erstes Bild, Firmenkunden-Zeile)
-              statt R2-BILDER, R2-CHAT (ein Chat im Hero, Typische Anrufe) statt R2-11, R2-DOM auf dl.itb-list)
+              statt R2-BILDER, R2-CHAT (ein Chat im Hero, Typische Anrufe) statt R2-11, R2-DOM auf dl.itb-list;
+              0.5.0: AK-R1-02 Dock Stand 18.10.2026: Reihenfolge WhatsApp, Anrufen, E-Mail; WhatsApp ist die
+              Hauptaktion (volle Flaeche #1a7a5e, weisse Schrift), Anrufen getoent mit Kontur statt #0000FE)
 Datum:        18.10.2026
 Beschreibung: Misst Hoehen bei 390x844 (reduzierte Bewegung, Service Worker blockiert) und vergleicht sie
               mit einer gespeicherten Baseline. Dazu die Abnahmekriterien AK-R1-01a ... AK-R1-23 des Relaunchs R1
@@ -322,8 +324,10 @@ def ak_r1_01c_safe_area():
 
 
 def ak_r1_02_dock_colors():
-    """AK-R1-02: Anrufen #0000FE/weiss, WhatsApp-Alpha <= 0,3, E-Mail transparent, kein background-image,
-    ::before/::after ohne Inhalt, kein #b45309/#92400e/shimmer in style.css; Flaeche #141a26, Radius 16 px."""
+    """AK-R1-02 (Stand 18.10.2026): Reihenfolge WhatsApp, Anrufen, E-Mail. WhatsApp ist die Hauptaktion: deckend
+    #1a7a5e mit weisser Schrift. Anrufen getoent (Alpha > 0 und <= 0,4, nicht deckend #0000FE) mit Kontur >= 1 px und
+    weisser Schrift. E-Mail transparent. Kein background-image, ::before/::after ohne Inhalt, kein
+    #b45309/#92400e/shimmer in style.css; Flaeche #141a26, Radius 16 px."""
     errs = []
     css = style_css()
     for pat in ("#b45309", "#92400e", "shimmer"):
@@ -333,9 +337,11 @@ def ak_r1_02_dock_colors():
     js = """() => { const d = document.querySelector('.sticky-contact'); if (!d) return null;
       const pe = (e, p) => { const c = getComputedStyle(e, p); return { content: c.content, img: c.backgroundImage }; };
       const pick = sel => { const e = d.querySelector(sel); if (!e) return null; const c = getComputedStyle(e);
-        return { bg: c.backgroundColor, color: c.color, img: c.backgroundImage, b: pe(e, '::before'), a: pe(e, '::after') }; };
+        return { bg: c.backgroundColor, color: c.color, img: c.backgroundImage, bw: parseFloat(c.borderTopWidth), b: pe(e, '::before'), a: pe(e, '::after') }; };
       const dc = getComputedStyle(d);
-      return { call: pick('a[href^="tel:"]'), wa: pick('a[href*="wa.me"]'), mail: pick('a[href^="mailto:"]'),
+      const kind = a => a.matches('[href*="wa.me"]') ? 'wa' : a.matches('[href^="tel:"]') ? 'call' : a.matches('[href^="mailto:"]') ? 'mail' : '?';
+      return { order: [...d.querySelectorAll('.sc-btn')].map(kind),
+        call: pick('a[href^="tel:"]'), wa: pick('a[href*="wa.me"]'), mail: pick('a[href^="mailto:"]'),
         dock: { bg: dc.backgroundColor, img: dc.backgroundImage, radius: dc.borderTopLeftRadius, b: pe(d, '::before'), a: pe(d, '::after') } }; }"""
     per = {}
     nocontent = ("none", "normal")
@@ -347,15 +353,21 @@ def ak_r1_02_dock_colors():
             if r[name] is None:
                 m.append(f"Dock-Knopf '{name}' fehlt")
         c, w, ma, dk = r["call"], r["wa"], r["mail"], r["dock"]
+        if r["order"] != ["wa", "call", "mail"]:
+            m.append(f"Reihenfolge {r['order']} statt ['wa', 'call', 'mail']")
+        if w:
+            if rgba(w["bg"]) != (26, 122, 94, 1.0):
+                m.append(f"WhatsApp Hintergrund {w['bg']} statt rgb(26, 122, 94) deckend")
+            if w["color"] != "rgb(255, 255, 255)":
+                m.append(f"WhatsApp Schrift {w['color']} statt weiss")
         if c:
-            if rgba(c["bg"])[:3] != (0, 0, 254) or rgba(c["bg"])[3] != 1:
-                m.append(f"Anrufen Hintergrund {c['bg']} statt rgb(0, 0, 254)")
+            a = rgba(c["bg"])
+            if not a or a[3] == 0 or a[3] > 0.4:
+                m.append(f"Anrufen Hintergrund {c['bg']} (getoent: Alpha soll >0 und <= 0,4 sein)")
+            if c["bw"] < 1:
+                m.append(f"Anrufen ohne Kontur (Randbreite {c['bw']} px)")
             if c["color"] != "rgb(255, 255, 255)":
                 m.append(f"Anrufen Schrift {c['color']} statt weiss")
-        if w:
-            a = rgba(w["bg"])
-            if not a or a[3] > 0.3 or a[3] == 0:
-                m.append(f"WhatsApp Hintergrund {w['bg']} (Alpha soll >0 und <= 0,3 sein)")
         if ma and (rgba(ma["bg"]) or (0, 0, 0, 1))[3] != 0:
             m.append(f"E-Mail Hintergrund {ma['bg']} statt transparent")
         for name, e in (("Anrufen", c), ("WhatsApp", w), ("E-Mail", ma)):

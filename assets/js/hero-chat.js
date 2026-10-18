@@ -1,7 +1,7 @@
 /**
  * ═══════════════════════════════════════════════════════════
  * Grundke IT-Service · hero-chat.js
- * Version: 1.6.0
+ * Version: 1.7.0
  * Autor: Andreas Grundke / Grundke IT-Service
  * Datum: 2026-10-18
  * Beschreibung: Beispiel-Chat im Hero der Startseite (seit Release 2.1.1 wieder dort). Im gezeichneten Handy
@@ -51,6 +51,9 @@
  *                      Start erst bei Sichtbarkeit (IntersectionObserver, ab 40 %),
  *                      bis dahin wartet die erste Kundennachricht; Pause-Zustand
  *                      am Chat-Container statt am Hero.
+ *   1.7.0 (2026-10-18) Chat wieder im Hero. Der erste Fall steht schon im HTML und
+ *                      laeuft immer zuerst, auch nachts; der Nachtfilter gilt fuer die
+ *                      folgenden Faelle. So wechselt beim Start kein Text.
  * ═══════════════════════════════════════════════════════════
  */
 (function () {
@@ -97,6 +100,13 @@
       thanks: 'Super, danke dir!', antwort: 3, loesung: 7, nacht: true }
   ];
   var NIGHT_REPLY = 'Guten Morgen, hab\'s gesehen. Ich kümmere mich.';
+
+  /* Faelle fuer jetzt: der erste (CASES[0]) steht als erste Kundennachricht im HTML und laeuft deshalb immer
+     zuerst, auch nachts. Sonst wuerde das Skript beim Start den Text der wartenden Nachricht austauschen. */
+  function poolFor(d) {
+    var nachts = dayMode(d) === 'night';
+    return CASES.filter(function (c, i) { return i === 0 || !nachts || c.nacht; });
+  }
 
   /* ── Zeit ── */
   function pad(n) { return (n < 10 ? '0' : '') + n; }
@@ -237,8 +247,8 @@
 
   /* ── Statisch (reduced-motion): erster Fall, fertig ── */
   function renderStatic() {
-    var jetzt = new Date(), nachts = dayMode(jetzt) === 'night';
-    var c = CASES.filter(function (k) { return !nachts || k.nacht; })[0], t = timesFor(c, jetzt);
+    var jetzt = new Date();
+    var c = poolFor(jetzt)[0], t = timesFor(c, jetzt);
     thread.textContent = '';
     thread.appendChild(el('li', 'hc-day', 'Heute'));
     thread.appendChild(msg('me', c.me, t.me));
@@ -359,8 +369,7 @@
   }
 
   function waehlePool() {
-    var night = dayMode(new Date()) === 'night';
-    pool = CASES.filter(function (c) { return !night || c.nacht; });
+    pool = poolFor(new Date());
     caseIdx = 0;
   }
 

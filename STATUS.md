@@ -7,13 +7,16 @@
 grundke-it.de Website – siehe README/CLAUDE.md im Projekt.
 
 ## Aktueller Stand
-18.10.2026: Release 2.1.0 „Hero“ (Hero „Ein Weg“: vier Beispiele, echte Stimme, Link Betreuerwechsel; Chat-Handy im Abschnitt IT-Betreuung), enthält 2.0.1 (Abschnitt „So arbeite ich“ statt Systemhaus-Vergleich, FAQ-Passungsfrage, KI-Kennzeichnung im Abschluss); davor 2.0.0 (ruhigere Optik, Dock neu, Version im Fuß, Stundensatz-Wortlaut).
+18.10.2026: Release 2.1.1 (Hero wieder mit Beispiel-Chat, Ausrichtung auf Betriebe in Abschluss, Preisen, FAQ und Schema, Kontaktleiste mit WhatsApp zuerst, Kopfzeile „IT hängt? Ruf mich an.“ statt des alten Vergleichs, auch im Vorschaubild); davor 2.1.0 (Hero „Ein Weg“), enthält 2.0.1 (Abschnitt „So arbeite ich“ statt Systemhaus-Vergleich, FAQ-Passungsfrage, KI-Kennzeichnung im Abschluss); davor 2.0.0 (ruhigere Optik, Dock neu, Version im Fuß, Stundensatz-Wortlaut).
 
-- **Versionen:** `sw.js` `CACHE_NAME` `grundke-it-v2.1.0`, `RUNTIME_CACHE` `runtime-v39`, `ASSET_VER` 2026.10.i,
-  `SITE_VERSION` 2.1.0 (Fuß „Version x.y.z · Stand TT.MM.JJJJ“ aus dem Generator). `SITE_VERSION` bei jedem
+- **Versionen:** `sw.js` `CACHE_NAME` `grundke-it-v2.1.1`, `RUNTIME_CACHE` `runtime-v40`, `ASSET_VER` 2026.10.j,
+  `SITE_VERSION` 2.1.1 (Fuß „Version x.y.z · Stand TT.MM.JJJJ“ aus dem Generator). `SITE_VERSION` bei jedem
   Release mit dem `CACHE_NAME`-Suffix gleichziehen; `check_static.py` prüft das.
 - **Kontaktleiste (Dock):** eine Quelle im Generator (`STICKY`-Marken), nur bis 1279 px sichtbar, ab 1280 px
-  ausgeblendet; nie in einzelnen Dateien ändern.
+  ausgeblendet; nie in einzelnen Dateien ändern. Seit 2.1.1 Reihenfolge WhatsApp (Hauptaktion, grüne Fläche),
+  Anrufen (getönt mit Kontur), E-Mail.
+- **Zielgruppe:** nur Betriebe (Ein-Personen-Gewerbe bis rund 50 Mitarbeiter). Sichtbar im Abschluss jeder Seite
+  (`p.cta-fuer`), an den Preisen der Startseite, in der FAQ „Für wen arbeitest du?“ und als `audience` im Schema.
 - **Typo:** `body.is-home` trägt die größere Schriftskala der Startseite; Unterseiten bewusst ohne.
 - **Stundensatz:** Wortlaut einheitlich „110 € netto zzgl. MwSt.“ (`HOME_PRICE_LINES` in `check_static.py`).
 - **Struktur seit 10.–12.10.2026:** Startseite am Handy rund 10.300 px (Lighthouse 100/100/100/100, LCP 828 ms,
@@ -34,6 +37,7 @@ grundke-it.de Website – siehe README/CLAUDE.md im Projekt.
   Python 3.13 mit Playwright.
 
 ## Verlauf (kurz)
+- 18.10.2026: Release 2.1.1: Hero wieder mit Beispiel-Chat, Ausrichtung auf Betriebe, Dock mit WhatsApp zuerst, neue Kopfzeile auf Notdienst- und Wechselseite, Vorschaubild neu.
 - 17.10.2026: Bing/IndexNow: `BingSiteAuth.xml` und IndexNow-Schlüsseldatei liegen live; `tools/indexnow.py` meldet die Sitemap-URLs (31) an IndexNow, erster Ping HTTP 200. Nach jedem Deploy mit neuen oder geänderten Seiten erneut laufen lassen (`python tools/indexnow.py`, nicht Teil des Builds).
 - 09.10.2026: Hero nur noch Chat, Fernwartung mit Umschalter Windows/Linux/macOS, TeamViewer raus,
   Website-Preise neu (ca. 800 / 1.300 / 2.000 €, Betrieb optional 40 €/Monat).
@@ -52,8 +56,8 @@ grundke-it.de Website – siehe README/CLAUDE.md im Projekt.
 - Bing Webmaster Tools (Andreas, im Browser): Seite verifiziert? Sitemap `https://grundke-it.de/sitemap.xml` eingereicht? Startseite per URL-Prüfung testen. Stand im Repo nicht sichtbar.
 - Search Console prüfen: um den 24.10. und den 07.11.2026 (zwei und vier Wochen nach dem Umbau).
 - Ortsseiten: eigene Fakten und FAQ, sobald die Angaben vorliegen (Entwurf intern).
-- Längenbudgets sind fast voll (`#preise` bei 390 px: 4.983 von 5.000; Startseite `#schnellcheck`,
-  software-nach-mass, ki-dsgvo, empfehlungen > 96 %): neue Texte dort nur mit Kürzung an anderer Stelle.
+- Längenbudgets sind fast voll (`#preise` bei 390 px: 4.947 von 5.000; Startseite `#schnellcheck`,
+  software-nach-mass 7.986 von 8.000, ki-dsgvo, empfehlungen > 96 %): neue Texte dort nur mit Kürzung an anderer Stelle.
 - GitHub Actions auf Versionen ohne Node-20-Warnung heben.
 - Offen: Linux-Fernwartung auf echtem Mint testen; AGB-PDF von 2024 aktualisieren.
 

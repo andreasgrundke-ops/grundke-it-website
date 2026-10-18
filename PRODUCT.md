@@ -56,8 +56,8 @@ Automatisierung aus einer Hand. Vor Ort im Münchner Osten (Radius 25 km), remot
 - Name „Grundke IT-Service" (offiziell „Andreas Grundke IT-Service"). Du-Form, direkt,
   umgangssprachlich, erste Person. H1 der Startseite: „IT hängt? Ruf mich an.“ Der Hero zeigt einen Einsatz als Beispiel-Chat (gekennzeichnet), ohne Vergleich mit anderen Anbietern; darunter im Abschnitt IT-Betreuung die typischen Anrufe.
 - CI 2026.01: Blau `#0c4da2`, Cyan `#26bdef`; Visitenkarten-Blau `#0000FE` für Haupt-Buttons mit
-  weißer Schrift; WhatsApp-Grün für WhatsApp. Dock (Kontaktleiste bis 1279 px): Anrufen in
-  `#0000FE` mit weißer Schrift, WhatsApp getönt in Grün (`#15803d` bei 22 % auf `#141a26`), E-Mail neutral.
+  weißer Schrift; WhatsApp-Grün für WhatsApp. Dock (Kontaktleiste bis 1279 px, Stand 18.10.2026):
+  WhatsApp links als Hauptaktion (`#1a7a5e` mit weißer Schrift), Anrufen getönt mit blauer Kontur, E-Mail neutral.
   Cyan nur mit Bedeutung (Links, Fokus), nicht als Dekor. Logo unter `assets/img/logo-grundke-it*`.
   Fußzeile „CI 2026.01 · Grundke IT-Service · www.grundke-it.de".
 - Keine Stockfotos von Menschen, die man für Andreas halten könnte. Figuren und Illustrationen

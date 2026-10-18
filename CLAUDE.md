@@ -63,12 +63,14 @@ geaendert hat, nicht wegen eines neuen Footer-Links.
   sichtbare Kennzeichnung „Beispiel-Chat, …“ und Pause-Knopf am Chat, bei reduzierter Bewegung ein fertiger Chat, abends
   20-40 Min. bis zur Antwort. Direkt unter dem Hero der Link zu /it-betreuer-wechseln/. Abschnitt IT-Betreuung wieder
   „Typische Anrufe“ (`dl.itb-list`).
-- **Versionen jetzt:** `sw.js` `CACHE_NAME` `grundke-it-v2.1.0`, `RUNTIME_CACHE` `runtime-v39`,
-  `ASSET_VER` 2026.10.i, `SITE_VERSION` 2.1.0 (Fuss "Version x.y.z · Stand TT.MM.JJJJ" aus dem Generator).
+- **Versionen jetzt (Release 2.1.1):** `sw.js` `CACHE_NAME` `grundke-it-v2.1.1`, `RUNTIME_CACHE` `runtime-v40`,
+  `ASSET_VER` 2026.10.j, `SITE_VERSION` 2.1.1 (Fuss "Version x.y.z · Stand TT.MM.JJJJ" aus dem Generator).
   `SITE_VERSION` bei jedem Release mit dem `CACHE_NAME`-Suffix gleichziehen, `check_static.py` prueft das.
   `check_static.py --ci` laeuft im Deploy und stoppt ihn bei Fehlern.
 - **Kontaktleiste (Dock):** kommt aus einer Quelle im Generator (`STICKY`-Marken), nur bis 1279 px sichtbar,
-  ab 1280 px ausgeblendet; nie in einzelnen Dateien aendern.
+  ab 1280 px ausgeblendet; nie in einzelnen Dateien aendern. Reihenfolge WhatsApp (Hauptaktion), Anrufen, E-Mail.
+- **Zielgruppe nur Betriebe:** Zeile `p.cta-fuer` in `closing()`, Hinweis an den Preisen der Startseite, FAQ
+  „Für wen arbeitest du?“ (Notdienst), `audience` (BusinessAudience) im Unternehmensknoten. Positiv formulieren.
 - **Typo:** `body.is-home` traegt die groessere Schriftskala der Startseite; Unterseiten bewusst ohne.
 - **Stundensatz:** Wortlaut einheitlich „110 € netto zzgl. MwSt.“ (`HOME_PRICE_LINES` in `check_static.py`).
 - **Pruefen vor jedem Release:** `tools/checks/` (check_static, check_site, check_seo mit

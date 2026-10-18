@@ -91,7 +91,8 @@ button { font-family: var(--fb); cursor: pointer; }
 .section-pad { padding: clamp(3.5rem,8vw,6.5rem) 0; }
 
 /* ── Dock (Kontaktleiste) ──
-   Bis 1279 px eine schwebende Leiste unten: Anrufen (Hauptaktion, breiter), WhatsApp (getoent), E-Mail (neutral).
+   Bis 1279 px eine schwebende Leiste unten (Stand 18.10.2026): WhatsApp links als Hauptaktion (breiter, volle gruene
+   Flaeche #1a7a5e, weisse Schrift 5,3:1), Anrufen in der Mitte getoent mit blauer Kontur, E-Mail neutral.
    Ab 1280 px gibt es kein Dock; dort tragen die Knoepfe im Seitenkopf und der Kasten nach dem Hero. */
 .sticky-contact { display: none; }
 @media (max-width: 1279px) {
@@ -128,11 +129,10 @@ button { font-family: var(--fb); cursor: pointer; }
   }
   .sc-btn svg { flex-shrink: 0; width: 18px; height: 18px; }
   .sc-btn:active { transform: scale(.97); }
-  .sc-phone { background: #0000FE; color: #fff; }
-  .sc-phone:hover { background: #2222ff; }
-  .sc-wa { background: rgba(21,128,61,.22); color: #e8f5ec; }
-  .sc-wa svg { color: #25d366; }
-  .sc-wa:hover { background: rgba(21,128,61,.3); }
+  .sc-wa { background: #1a7a5e; color: #fff; }
+  .sc-wa:hover { background: #166a52; }
+  .sc-phone { background: rgba(0,0,254,.22); border: 1px solid #5566ff; color: #fff; }   /* Kontur 3,9:1 zur Leiste */
+  .sc-phone:hover { background: rgba(0,0,254,.34); }
   .sc-mail { background: transparent; color: var(--text2); }
   .sc-mail:hover { color: var(--text); }
   /* Platz unten: Dock (52 + 2 x 4 Innenabstand + 2 x 1 Rand) plus 12 Abstand, gerundet */
@@ -545,6 +545,9 @@ blockquote.testi-txt { margin-top:0; margin-left:0; margin-right:0; }
 .cta-h { font-family:var(--fh); font-size:clamp(1.6rem,4vw,2.6rem); font-weight:800; color:var(--text); letter-spacing:-.04em; margin-bottom:.8rem; position:relative; }
 .cta-h em { font-style:normal; color:var(--cyan); }
 .cta-sub { font-size:1.0667rem; color:var(--text2); max-width:440px; margin:0 auto 2.5rem; line-height:1.7; position:relative; }
+/* Fuer wen (seit 18.10.2026): ruhige Zeile direkt unter cta-sub, Klein-Stufe; der Abstand nach unten bleibt der von cta-sub */
+.cta-sub:has(+ .cta-fuer) { margin-bottom:.6rem; }
+.cta-fuer { font-size:.9333rem; color:var(--text2); max-width:440px; margin:0 auto 2.5rem; line-height:1.5; position:relative; text-wrap:balance; }
 .cta-btns { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; position:relative; }
 .btn-tel { display:inline-flex; align-items:center; gap:.55rem; padding:1rem 2rem; border-radius:var(--r-m); background:var(--blue-vi); color:#fff; font-family:var(--fb); font-weight:700; font-size:.95rem; border:none; cursor:pointer; transition:background .2s, border-color .2s, color .2s, transform .2s, box-shadow .2s, opacity .2s; }
 .btn-tel:hover { background:#2222ff; transform:translateY(-2px); box-shadow:0 8px 28px var(--blue-vi-glow); }
