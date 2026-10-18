@@ -443,6 +443,7 @@ CONTACT_JS = """() => {
            k: kw ? { wa: st(kw), tel: kt ? st(kt) : null } : null };
 }"""
 GREEN = (26, 122, 94, 1.0)
+WA_TEXT = (38, 177, 136, 1.0)
 VI_BLUE = (0, 0, 254, 1.0)
 
 
@@ -497,6 +498,10 @@ def ak_r1_03_desktop_box():
                     if vw >= 1280 and t["w"] <= 50:
                         m.append(f"Kopfzeile Telefon ohne sichtbares „Anrufen“ (Breite {t['w']:.0f})")
             if vw == 1440:
+                # Stand 18.10.2026, Release 2.1.2 (Fix-Runde): Kontur- und Vollknopf der Preiskarten gleich hoch
+                ph = [g["wa"]["h"] for g in r["groups"] if u == "/" and g["preis"] and g["wa"] and g["wa"]["vis"]]
+                if ph and max(ph) - min(ph) > 0.5:
+                    m.append("#preise: Paketknoepfe verschieden hoch " + ", ".join(f"{x:.1f}" for x in ph))
                 for g in r["groups"]:
                     if g["order"] != sorted(g["order"], key={"wa": 0, "tel": 1, "mail": 2}.get):
                         m.append(f"{g['sel']}: Reihenfolge {g['order']}")
@@ -508,8 +513,12 @@ def ak_r1_03_desktop_box():
                         w, bg = g["wa"], rgba(g["cardBg"] or "") or (30, 37, 56, 1.0)
                         if (rgba(w["bg"]) or (0, 0, 0, 1))[3] != 0:
                             m.append(f"{g['sel']}: Kontur-Knopf WhatsApp mit Flaeche {w['bg']} (soll transparent sein)")
-                        if w["bw"] < 1 or rgba(w["bc"]) != GREEN:
-                            m.append(f"{g['sel']}: Kontur-Knopf Rand {w['bw']} px {w['bc']} statt 1 px #1a7a5e")
+                        # Stand 18.10.2026, Release 2.1.2 (Fix-Runde): Rand in --wa-text, Kontrast >= 3:1 (WCAG 1.4.11)
+                        if w["bw"] < 1 or rgba(w["bc"]) != WA_TEXT:
+                            m.append(f"{g['sel']}: Kontur-Knopf Rand {w['bw']} px {w['bc']} statt 1 px #26b188")
+                        elif contrast(rgba(w["bc"]), bg) < 3:
+                            m.append(f"{g['sel']}: Kontur-Knopf Rand {w['bc']} auf {g['cardBg']} "
+                                     f"{contrast(rgba(w['bc']), bg):.2f}:1 < 3")
                         if contrast(rgba(w["color"]), bg) < 4.5:
                             m.append(f"{g['sel']}: Kontur-Knopf Schrift {w['color']} auf {g['cardBg']} "
                                      f"{contrast(rgba(w['color']), bg):.2f}:1 < 4,5")

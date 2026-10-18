@@ -1139,10 +1139,10 @@ FILM_META = "1:31 · mit Untertiteln"
 FILM_KI = "Sprecherstimme und Illustrationen mit KI erstellt. Inhalte von Andreas Grundke geprüft."
 FILM_LABEL = "Film abspielen 1:31"   # Stand 18.10.2026, Release 2.1.2: sichtbarer Text = Name, kein aria-label
 FILM_LINK = ("#film", "Film ansehen (1:31)")
-FILM_FILES = {"film-sd": "/assets/video/werbefilm_v2.1_2026-10-18_720p.mp4",
-              "film-hd": "/assets/video/werbefilm_v2.1_2026-10-18_1080p.mp4",
-              "film-vtt": "/assets/video/werbefilm_v2.1.de.vtt"}
-FILM_POSTER = "/assets/video/werbefilm_v2.1_vorschau.webp"
+FILM_FILES = {"film-sd": "/assets/video/werbefilm_v2.2_2026-10-18_720p.mp4",
+              "film-hd": "/assets/video/werbefilm_v2.2_2026-10-18_1080p.mp4",
+              "film-vtt": "/assets/video/werbefilm_v2.2.de.vtt"}
+FILM_POSTER = "/assets/video/werbefilm_v2.2_vorschau.webp"
 FILM_VIDEO_LD = {"name": str, "description": str, "thumbnailUrl": FILM_POSTER, "uploadDate": "2026-10-18",
                  "duration": "PT1M31S", "contentUrl": FILM_FILES["film-hd"], "inLanguage": "de"}
 

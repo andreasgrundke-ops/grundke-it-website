@@ -139,6 +139,8 @@
                         Ueberzeilen, Link zum Betreuerwechsel im Hero, Name des Film-Knopfs
                         gleich dem sichtbaren Text, Beispiel-Chat nachts mit passendem Fall
                         zuerst, eigener WhatsApp-Satz fuer das Menue, Asset-Version 2026.10.k.
+                        Film v2.2 (Preis netto, KI-Hinweis wie am Player); Video bleibt
+                        ausserhalb des Pre-Cache.
  */
 
 const CACHE_NAME    = 'grundke-it-v2.1.2';

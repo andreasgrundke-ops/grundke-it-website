@@ -440,12 +440,12 @@ button { font-family: var(--fb); cursor: pointer; }
 .price-btn.out { background:transparent; color:var(--text); border:1px solid var(--border); }
 .price-btn.out:hover { border-color:var(--blue-vi); color:#fff; background:var(--blue-vi-dim); }
 /* Kontaktknoepfe an Preisen (Stand 18.10.2026): WhatsApp gruen als Hauptaktion, Telefon getoent mit Kontur */
-.price-btn.wa { background:var(--wa); color:#fff; border:none; }
-.price-btn.wa:hover { background:var(--wa-hover); }
-/* Kontur-Knopf WhatsApp (Stand 18.10.2026, Release 2.1.2): Preiskarten ohne Empfehlung. Rand #1a7a5e, Schrift
-   --wa-text (5,6:1 auf der Karte); Hover fuellt gruen wie der Vollknopf (weiss 5,3:1), Fokus mit Cyan-Ring wie alle
+.price-btn.wa { background:var(--wa); color:#fff; border:1px solid var(--wa); }
+.price-btn.wa:hover { background:var(--wa-hover); border-color:var(--wa-hover); }
+/* Kontur-Knopf WhatsApp (Stand 18.10.2026, Release 2.1.2): Preiskarten ohne Empfehlung. Rand und Schrift
+   --wa-text (5,6:1 auf der Karte, Rand damit >= 3:1; der Vollknopf traegt 1 px Rand in eigener Farbe, beide gleich hoch); Hover fuellt gruen wie der Vollknopf (weiss 5,3:1), Fokus mit Cyan-Ring wie alle
    Knoepfe, Druck gibt leicht nach. Der grosse Vollknopf bleibt der Empfehlung (Business). */
-.price-btn.wa-out { background:transparent; color:var(--wa-text); border:1px solid var(--wa); }
+.price-btn.wa-out { background:transparent; color:var(--wa-text); border:1px solid var(--wa-text); }
 .price-btn.wa-out:hover { background:var(--wa); color:#fff; border-color:var(--wa); }
 .price-btn.wa-out:active { transform:translateY(1px); }
 .price-btn.tel { background:var(--tel-bg); color:var(--tel-text); border:1px solid var(--tel-line); }

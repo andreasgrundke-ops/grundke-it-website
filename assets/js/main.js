@@ -3,7 +3,7 @@
  * Grundke IT-Service · main.js
  * Version: 1.7.1
  * Autor: Andreas Grundke / Grundke IT-Service
- * Datum: 2026-10-10
+ * Datum: 2026-10-18
  * Beschreibung: Shared JS – Nav, FAQ, Scroll
  * Änderung 2026-06-07: A11y – Hamburger aria-expanded/-label-Sync,
  *                       Hero-Dots aria-selected im Slider-Wechsel.

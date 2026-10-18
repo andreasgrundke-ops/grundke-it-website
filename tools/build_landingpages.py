@@ -488,6 +488,7 @@ def sync_shared(places, services):
         if rel in NO_DOCK:
             # Stand 18.10.2026, Release 2.1.2: hier keine Kontaktleiste (Leiste samt Marken und Platzhalter unten weg)
             html_new = NO_DOCK_RE.sub("", html_new)
+            html_new = NO_DOCK_COMMENT_RE.sub("", html_new)
             html_new = re.sub(r'<body class="has-sticky-call">', "<body>", html_new)
             html_new = re.sub(r'(<body class="[^"]*?)\s*\bhas-sticky-call\b', r"\1", html_new)
             if 'class="sticky-contact"' in html_new:
@@ -529,6 +530,8 @@ STICKY_MARKED_RE = re.compile(re.escape(STICKY_START) + r".*?" + re.escape(STICK
 # selbst als Karten; die Leiste doppelte sie am Handy. sync_shared nimmt dort die Leiste samt Marken heraus.
 NO_DOCK = ("kontakt/index.html",)
 NO_DOCK_RE = re.compile(r"\r?\n?" + re.escape(STICKY_START) + r".*?" + re.escape(STICKY_END), re.S)
+# verwaister Kommentar der alten Leiste (ohne Leiste sinnlos), Stand 18.10.2026, Release 2.1.2
+NO_DOCK_COMMENT_RE = re.compile(r"\r?\n?<!-- Sticky Contact Bar[^>]*?-->")
 MAILTO_PREFILLED = "mailto:info@grundke-it.de?subject=Anfrage%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0AMein%20Anliegen%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F)."
 _STICKY_BODY = """<div class="sticky-contact" id="stickyContact" role="navigation" aria-label="Kontakt-Optionen">
   <a href="__WA_KONTAKTLEISTE__" target="_blank" rel="noopener" class="sc-btn sc-wa" aria-label="WhatsApp">
