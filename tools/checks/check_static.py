@@ -580,7 +580,8 @@ LEGAL_BASE_COMMIT = "865b00a"
 # Basis je Seite. Ausnahme: Die Barrierefreiheitserklaerung wurde von Andreas freigegeben inhaltlich geaendert,
 # zuerst am 12.10.2026 (Bild-Slider -> Beispiel-Chat, Wischleiste, Fuss, Stand-Datum; Sicherung
 # ../_intern/messungen/vorher/legal_hash_vor_2026-10-12.json), dann am 18.10.2026 (Hero-Buehne, Chat-Abschnitt,
-# Kontraste, Kontaktleiste, Stand-Datum; Sicherung ../_intern/messungen/vorher/legal_hash_vor_2026-10-18.json).
+# Kontraste, Kontaktleiste, Stand-Datum; Sicherung ../_intern/messungen/vorher/legal_hash_vor_2026-10-18.json),
+# danach am 18.10.2026 der Film-Absatz (Sicherung legal_hash_vor_2026-10-18-film.json).
 # Ihre Basis ist der Commit mit dem freigegebenen Text, legal_hash.json traegt fuer sie den rohen Hash dieses Stands.
 # Alle anderen Rechtstexte bleiben bei 865b00a.
 LEGAL_BASE_COMMITS = {"barrierefreiheit/index.html": "b17bcde"}
