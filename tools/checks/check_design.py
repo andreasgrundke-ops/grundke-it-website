@@ -1,7 +1,8 @@
 """Design-Pruefungen fuer den Relaunch (Spec §5, §7, §11).
 Titel:        check_design.py
-Version:      0.3.0 (Task 1: AK-R1-Pruefungen, --release r1; Task 11: AK-R2-Pruefungen, --release r2)
-Datum:        17.10.2026
+Version:      0.3.1 (Task 1: AK-R1-Pruefungen, --release r1; Task 11: AK-R2-Pruefungen, --release r2;
+              0.3.1: R2-DOM, #it-betreuung in R2 nach Flaeche)
+Datum:        18.10.2026
 Beschreibung: Misst Hoehen bei 390x844 (reduzierte Bewegung, Service Worker blockiert) und vergleicht sie
               mit einer gespeicherten Baseline. Dazu die Abnahmekriterien AK-R1-01a ... AK-R1-23 des Relaunchs R1
               (Spec §5, §11) als Funktionen ak_r1_*(), je Rueckgabe list[str] (leer = erfuellt).
@@ -129,6 +130,7 @@ CYAN_ALLOW = ["h1 em", ".cta-h em", ".is-ag", ".hc-sys", ".hc-bar", ".zw-lane--r
 DOMINANT_SECTIONS = [".hero", "#it-betreuung", "#referenzen", "#praxis", "#schnellcheck", "#preise", "#ki",
                      "#einsatzgebiet"]
 DOMINANT_COUNT_ONLY_R1 = [".hero", "#it-betreuung"]
+DOMINANT_COUNT_ONLY_R2 = [".hero"]      # R2: #it-betreuung nach Flaeche (Chat-Handy), .hero weiter nur Anzahl
 NAMEN_OHNE_EINWILLIGUNG = ROOT.parent / "_intern" / "pruefdaten" / "namen-ohne-einwilligung.txt"
 DOCK_H, DOCK_GAP = 52, 12
 SAFE = "env(safe-area-inset-bottom)"
@@ -629,6 +631,19 @@ def ak_r1_10_light_section():
 def ak_r1_11_dominant():
     """AK-R1-11: je Abschnitt aus §5.6 genau ein [data-dominant]; ausser .hero/#it-betreuung (R1: nur Anzahl) hat es bei
     1440 die groesste Flaeche unter den sichtbaren Geschwistern (ohne Ueberschriften-Wrapper)."""
+    return _dominant(DOMINANT_COUNT_ONLY_R1)
+
+
+def ak_r2_dominant():
+    """Spec §5.6 fuer R2: wie AK-R1-11, aber #it-betreuung nach Flaeche (dominant = Chat-Handy .itb-chat)."""
+    errs = _dominant(DOMINANT_COUNT_ONLY_R2)
+    js = "() => { const d = document.querySelectorAll('#it-betreuung [data-dominant]'); return d.length === 1 && d[0].matches('.itb-chat'); }"
+    if not scan(1440, 900, js, ["/"])["/"]:
+        errs.append("#it-betreuung: [data-dominant] sitzt nicht auf dem Chat-Handy (.itb-chat)")
+    return errs
+
+
+def _dominant(count_only):
     js = """(secs) => secs.map(sel => { const s = document.querySelector(sel); if (!s) return { sel, missing: true };
       const d = [...s.querySelectorAll('[data-dominant]')], res = { sel, count: d.length };
       if (d.length !== 1) return res;
@@ -644,7 +659,7 @@ def ak_r1_11_dominant():
             errs.append(f"{r['sel']}: Abschnitt fehlt"); continue
         if r["count"] != 1:
             errs.append(f"{r['sel']}: {r['count']} Elemente mit [data-dominant] (soll genau 1)"); continue
-        if r["sel"] in DOMINANT_COUNT_ONLY_R1:
+        if r["sel"] in count_only:
             continue
         if not r["sib"]:
             errs.append(f"{r['sel']}: [data-dominant] hat keine sichtbaren Geschwister zum Vergleich"); continue
@@ -1376,6 +1391,7 @@ AK_R2 = {
     "R2-06": ak_r2_06_pause, "R2-07": ak_r2_07_reduced_motion, "R2-08": ak_r2_08_text_alternative,
     "R2-09": ak_r2_09_lanes, "R2-10": ak_r2_10_hero_height, "R2-11": ak_r2_11_chat_below,
     "R2-16": ak_r2_16_contrast, "R2-FOKUS": test_no_focusable_in_aria_hidden, "R2-TAB": test_hidden_tab_pauses,
+    "R2-DOM": ak_r2_dominant,
 }
 RELEASES = {"r1": AK_R1, "r2": AK_R2}
 # Nicht hier: AK-R2-01..05, 18, 21 (check_static AKH, AK8, AK13), AK-R2-12 (check_site), AK-R2-13 (check_seo),

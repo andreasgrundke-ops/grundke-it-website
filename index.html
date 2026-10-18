@@ -253,10 +253,6 @@
   /* ── IT-Betreuung (Probleme + USP zusammengefasst) ── */
   .itb { background:var(--bg); }
 
-  /* ── KI: Querverweise unter den drei Karten ── */
-
-  /* ── Websites und Schulung als schmale Zeile: Text links, Handlung rechts ── */
-
   /* ── Schnellcheck: Ablauf in drei Schritten ── */
   .sc-steps { margin-top:2.2rem; }
   .sc-steps-h { font-family:var(--fh); font-size:1.1rem; font-weight:700; color:var(--text); margin:0 0 1rem; }
@@ -272,13 +268,7 @@
   .faq-more p { font-size:.86rem; color:var(--text2); margin:.2rem 0 0; }
   .faq-more .btn-wa { padding:.7rem 1.4rem; font-size:.88rem; }
 
-  /* ── Abschluss: QR nur am Desktop ── */
-
-  /* ── Hero „Der Chat" (seit 02.10.2026, ersetzt den Foto-Slider) ──
-     Links Botschaft, Belege und zwei Kontaktwege. Rechts ein in CSS gezeichnetes
-     Handy, in dem ein Beispiel-Einsatz als Chat ablaeuft (assets/js/hero-chat.js).
-     Der Chat traegt die echte Uhrzeit des Besuchers. Ohne JS oder bei
-     reduced-motion steht ein fertiger Beispiel-Chat da. */
+  /* ── Hero: Grundflaeche ── */
   .hero {
     margin-top: var(--nav-h);
     position: relative;
@@ -286,10 +276,10 @@
     isolation: isolate;
     background: var(--bg);   /* ohne Verlauf und Leuchtleisten */
   }
-  /* QR ruhig: kein dritter blauer Block neben „Anrufen" – das Bild (weiss auf Blau) wird
-     per Graustufe zu weiss auf Fast-Schwarz, der Rahmen nimmt denselben Ton auf */
 
-  /* Buehne rechts: Uhrzeit-Zeile, Handy, Pause-Knopf */
+  /* ── Beispiel-Chat im Abschnitt IT-Betreuung (assets/js/hero-chat.js) ──
+     In CSS gezeichnetes Handy mit einem Einsatz als Chat: Uhrzeit-Zeile, Handy, Pause-Knopf.
+     Der Chat traegt die echte Uhrzeit des Besuchers; ohne JS oder bei reduzierter Bewegung steht ein fertiger Chat da. */
   .hc-stage { display:flex; flex-direction:column; align-items:center; gap:1rem; }
   /* Abends/nachts ein Satz ueber dem Handy; die Uhrzeit selbst steht in der Statusleiste (keine Doppelung) */
   .hc-clock { margin:0; max-width:330px; font-size:.92rem; line-height:1.45; color:var(--text2); text-align:center; text-wrap:balance; }
@@ -382,21 +372,17 @@
     .hc-in, .hc-typing i, .hc-sys.is-run .hc-bar i, .hc-field::after { animation:none !important; }
     .hc-thread { transition:none; }
   }
-  /* Tablet: Handy schmaler, QR weg (Platz) */
-  /* Ab 768 px dieselbe Breite und Polsterung wie .inner: Hero-Text, Kasten und Abschnitte stehen an einer Kante */
-  @media (min-width:768px) {
-    .hc-inner { max-width:var(--inner); padding-left:clamp(1rem,5vw,2.5rem); padding-right:clamp(1rem,5vw,2.5rem); }
-  }
-  @media (min-width:1920px) { .hc-inner { max-width:1440px; } }
   @media (max-width:1024px) {
     .hc-phone { width:clamp(250px, 30vw, 290px); }
   }
-  /* Schmales Tablet: neben dem Handy ist kein Platz, rechts liegt die feste Kontaktleiste -
-     Pause-Knopf mittig unter das Handy; das Handy darf hier hoeher werden, damit die
-     Kundennachricht im Endzustand ganz zu sehen ist */
-  @media (min-width:768px) and (max-width:900px) {
+  /* Ab 768 px Pause-Knopf mittig unter dem Handy: rechts davon liegen die feste Kontaktleiste
+     bzw. der Nach-oben-Knopf, zwei runde Knoepfe nebeneinander waeren zu verwechseln */
+  @media (min-width:768px) {
     .hc-device { padding-bottom:52px; }
     .hc-pause { right:auto; left:50%; bottom:0; margin-left:-20px; }
+  }
+  /* Schmales Tablet: das Handy darf hier hoeher werden, damit die Kundennachricht im Endzustand ganz zu sehen ist */
+  @media (min-width:768px) and (max-width:900px) {
     .hc-phone { width:clamp(280px, 36vw, 310px); }
   }
   /* Handy: eine Spalte, Chat ohne Geraeterahmen als kompakter Streifen,
@@ -419,9 +405,7 @@
     .hc-sys { padding:7px 10px 8px; }
     .hc-pause { right:10px; top:36px; bottom:auto; }
   }
-  /* Handy quer: kein Platz fuer die Buehne */
-
-  /* ── Hero „Zwei Wege" (Relaunch R2) ──
+  /* ── Hero „Zwei Wege" ──
      Kopf links: H1 in drei Zeilen („Ich schon." immer eigene Zeile), Unterzeile, Schutzsatz, Wer, zwei Belege.
      Buehne rechts bzw. darunter: feste Hoehe je Breite (keine Layout-Verschiebung), Bewegung nur opacity/transform.
      Unter 1024 px liegen beide Spuren in derselben Flaeche, sichtbar ist die mit .is-on; ab 1024 nebeneinander. */
@@ -430,8 +414,9 @@
   .hc-h1 em { display:block; font-style:normal; color:var(--cyan); }
   .hero .hc-k { font-size:18px; line-height:1.4; max-width:34rem; margin:0 0 .35rem; }
   .hc-schutz { font-size:16px; line-height:1.5; color:var(--text2); max-width:34rem; margin:0 0 .9rem; }
-  .hc-wer { font-size:14px; line-height:1.5; color:var(--text2); margin:0 0 .7rem; }
+  .hc-wer { font-size:14px; line-height:1.5; color:var(--text2); margin:0 0 1.4rem; }
   .hc-wer strong { color:var(--text); font-weight:600; }
+  @media (max-width:767px) { .hc-wer { margin-bottom:1.1rem; } }
   .hero .hc-proof { margin:0; gap:.4rem 1.1rem; font-size:14px; }
   .hero .hc-ctas { margin-top:1.6rem; }
 
@@ -479,12 +464,14 @@
   .zw-pause svg { display:none; width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
   .zw-pause[data-zustand="laeuft"] .i-pause, .zw-pause[data-zustand="pause"] .i-play, .zw-pause[data-zustand="ende"] .i-replay { display:block; }
   @media (prefers-reduced-motion: reduce) {
-    .zw-case, .zw-lane, .zw-t, .zw-schluss { transition:none; }
+    .zw-case, .zw-lane, .zw-t, .zw-schluss, .zw-fig { transition:none; }
   }
+  /* Ab 768 px dieselbe Breite und Polsterung wie .inner: Hero-Text, Kasten und Abschnitte stehen an einer Kante */
   @media (min-width:768px) {
-    .hc-inner { padding:2.5rem clamp(1rem, 5vw, 2.5rem); }
+    .hc-inner { max-width:var(--inner); padding:2.5rem clamp(1rem, 5vw, 2.5rem); }
     .hc-h1 { font-size:clamp(44px, 5vw, 64px); }
   }
+  @media (min-width:1920px) { .hc-inner { max-width:1440px; } }
   /* ab 1024: Text links, Buehne rechts, beide Spuren nebeneinander mit gleicher Oberkante */
   @media (min-width:1024px) {
     .hc-inner { grid-template-columns:minmax(0,1fr) minmax(0,1fr); align-items:center; gap:clamp(2.5rem, 4.5vw, 4.5rem); min-height:clamp(560px, calc(100svh - var(--nav-h)), 842px); padding-block:3rem; }
@@ -498,7 +485,9 @@
     .zw-lane, .zw-lane.is-on { opacity:1; }
     .zw-lane { grid-area:auto; grid-row:2; grid-template-columns:minmax(0,1fr); grid-template-rows:auto auto minmax(0,1fr); row-gap:12px; padding:18px 22px 64px; border-top:1px solid var(--border); }
     .zw-lane--rechts { background:var(--bg3); border-left:1px solid var(--border); }
-    .zw-fig { width:144px; height:144px; }
+    .zw-fig { width:144px; height:144px; transition:opacity .3s ease-out; }
+    /* Beide Spuren stehen nebeneinander: die rechte Figur bleibt gedimmt, bis rechts der erste Satz kommt */
+    .zw-stage:not([data-zustand="ende"]) .zw-lane--rechts:not(.is-on) .zw-fig { opacity:.35; }
     .zw-t { font-size:17px; }
     .zw-t--ansage { font-size:14px; }
     .zw-schluss { left:22px; right:22px; bottom:20px; font-size:20px; }
@@ -510,8 +499,6 @@
     .zw-stage, .zw-pause { display:none; }
     .hc-h1 { font-size:clamp(1.5rem, 5vh, 2.1rem); }
   }
-
-  /* ── Hero-spezifische Button-Klassen ── */
 
   /* USP */
   .compare-box { background:var(--bg3); border:1px solid var(--border); border-radius:16px; overflow:hidden; }
@@ -796,15 +783,6 @@
     .rp-foot { padding:.6rem 1.2rem; }
   }
 
-  /* Services */
-  /* Kachel als Link (KI & Automatisierung): Grid-Verhalten erhalten, Klickbarkeit zeigen */
-
-  /* Variante B: Warning-Akzent-Card fuer "Sicherheits-Updates & Handlungsbedarf"
-     Bewusster Bruch mit dem Primary-Blau, gelb statt rot - beruhigend, nicht alarmierend.
-     Border + Icon-Bg in Warning #cc8800, Card-Look sonst identisch zum Standard. */
-
-  /* Bullet-Liste fuer Standard-Leistungs-Kacheln (Cyan-Punkte, dezent) */
-
   /* "Aus der Praxis"-Story-Block - eigene Section */
   .praxis { background:var(--bg2); position:relative; overflow:hidden; }
   .praxis-card {
@@ -856,10 +834,6 @@
     .praxis-icon svg { width:28px; height:28px; }
   }
 
-  /* BSI-Info-Banner unter dem Leistungs-Grid */
-
-  /* Leistungs-Detail-Blöcke (8 Themenbereiche, abgeleitet aus 496 realen Einsätzen) */
-
   /* Preise */
   .pricing { background:var(--bg2); }
 
@@ -870,16 +844,9 @@
      leer. 2 oder 4 Spalten gehen bei vier Karten immer auf. */
   /* Flex-Spalte, damit Name und Rolle in allen Karten einer Reihe auf gleicher
      Hoehe stehen, auch wenn die Zitate unterschiedlich lang sind. */
-  /* Ausfuehrliche Stimme: volle Grid-Breite, Zitat bleibt auf Lesemass begrenzt.
-     Ohne das Deko-Anfuehrungszeichen — in der breiten Karte haengt es sonst
-     losgeloest ueber der freien Flaeche rechts. */
-  /* Mehrabsaetzige Stimme (blockquote mit <p>): Abstand nur zwischen den Absaetzen */
-  /* Herkunft der Bewertungen: sichtbar, aber unter den Karten zurueckgenommen */
 
   /* FAQ: natives <details>/<summary>, kein JS noetig */
   .faq { background:var(--bg2); }
-
-  /* CTA Final */
 
   /* Responsive */
   @media (max-width:767px) {
@@ -893,30 +860,6 @@
      VERGLEICH: #0000FE als zweite Akzentfarbe
      "Visitenkarten-Blau" – CI-Erweiterung
   ═══════════════════════════════════════════════ */
-
-  /* ── Ticker: Visitenkarten-Blau Dots + Akzent ── */
-
-  /* ── Kontakt-Bar: Blau-Gradient mit Visitenkarten-Blau ── */
-
-  /* ── Buttons .btn-p: Visitenkarten-Blau mit weißer Schrift ── */
-
-  /* ── Preis-Highlight-Card: Visitenkarten-Blau Rand ── */
-
-
-  /* ── Nav CTA Button ── */
-
-  /* ── Flip-Card Farben ── */
-
-  /* ── Service-Cards Hover ── */
-
-  /* btn-p (Visitenkarten-Blau, weiße Schrift) steht seit 07.10.2026 zentral in style.css */
-
-  /* ── Kontakt-Bar Telefon-Button ── */
-
-  /* ── btn-tel (CTA-Sektion) ── */
-
-
-  /* ── Step-Nummern Hover ── */
 
   /* ── Scroll-to-Top Button ── */
   .scroll-top {
@@ -935,8 +878,6 @@
     .scroll-top { bottom:calc(80px + env(safe-area-inset-bottom)); right:1rem; }
   }
 
-    /* ── KI im Betrieb (Sektion #ki) ─────────────────────────────────────── */
-
   /* ═══════════════════════════════════════════════
      Startseite (seit 10.10.2026): Kuemmerer-Botschaft, Handy zuerst.
      Flaechen wechseln bg / bg2 ab Abschnitt 2.
@@ -948,14 +889,8 @@
     main .s-label { margin-bottom:.6rem; }
     main .s-title { margin-bottom:.7rem; }
     main .s-sub { line-height:1.6; }
-    .hc-proof { gap:.4rem 1.1rem; }
   }
 
-  /* Hero: Kernsatz (.page-k) und Wer/Was/Wo statt der alten Unterzeile */
-  .hc-k { max-width:34rem; margin:0 0 .55rem; }
-  .hc-wer { font-size:.95rem; line-height:1.5; color:var(--text2); margin:0 0 1.4rem; }
-  .hc-wer strong { color:var(--text); font-weight:600; }
-  @media (max-width:767px) { .hc-inner { padding-top:1.6rem; padding-bottom:1.6rem; } .hc-wer { margin-bottom:1.1rem; } }
   @media (min-width:768px) and (max-width:1023px) {
     .hc-ctas { display:grid; grid-template-columns:minmax(0,1fr); max-width:20rem; }
     .hc-ctas > a { justify-content:center; }
@@ -969,17 +904,19 @@
   /* Link wie im Fliesstext: Schriftfarbe mit Unterstrich (Cyan nur mit Bedeutung) */
   .itb-rat a { color:var(--text); text-decoration:underline; text-underline-offset:.2em; }
   @media (min-width:1024px) {
-    .itb-main { display:grid; grid-template-columns:minmax(0,1fr) auto; grid-template-rows:1fr auto auto auto 1fr; column-gap:clamp(3rem, 6vw, 6rem); }
-    /* Text links senkrecht mittig neben dem Handy */
+    .itb-main { display:grid; grid-template-columns:minmax(0,1fr) auto; grid-template-rows:1fr repeat(5, auto) 1fr; column-gap:clamp(3rem, 6vw, 6rem); }
+    /* Text, Vergleich und Chips links senkrecht mittig neben dem Handy (kein Leerraum unter der Kernaussage) */
     .itb-main > .s-title { grid-column:1; grid-row:2; }
     .itb-main > .s-sub { grid-column:1; grid-row:3; }
     .itb-main > .itb-k { grid-column:1; grid-row:4; grid-template-columns:minmax(0,1fr); margin-top:1.6rem; gap:1.6rem; }
+    .itb-main > .itb-vgl { grid-column:1; grid-row:5; }
+    .itb-main > .itb-leist { grid-column:1; grid-row:6; }
     .itb-chat { grid-column:2; grid-row:1 / -1; margin:0; }
   }
   .itb-k { display:grid; grid-template-columns:minmax(0,1fr); gap:1rem 3.5rem; align-items:center; }
   @media (min-width:1024px) { .itb-k { grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr); } }
   /* Andreas' eigener Satz, kein Anruferzitat: ohne Anfuehrungszeichen, Schrift der Ueberschriften, Pointe hell */
-  .itb-claim { margin:0; font-family:var(--fh); font-weight:700; font-size:clamp(1.2rem,2.2vw,1.55rem); line-height:1.3; letter-spacing:-.02em; color:var(--text2); }
+  .itb-claim { margin:0; font-family:var(--fh); font-weight:700; font-size:clamp(1.2rem,2.2vw,1.55rem); line-height:1.3; letter-spacing:-.02em; color:var(--text2); text-wrap:balance; }
   .itb-claim em { font-style:normal; color:var(--text); }
   .itb-k2 { margin:0; max-width:62ch; font-size:1.0667rem; line-height:1.7; color:var(--text); }
   .itb-vgl { max-width:640px; }
@@ -1271,7 +1208,7 @@
 
 <main id="main">
 
-<!-- HERO „Zwei Wege" (Relaunch R2): links der Kopf mit H1, Unterzeile, Schutzsatz, Belegen und Kontaktwegen;
+<!-- HERO „Zwei Wege": links der Kopf mit H1, Unterzeile, Schutzsatz, Belegen und Kontaktwegen;
      rechts die Buehne mit vier Beispielen in zwei Spuren, gesteuert von assets/js/hero-wege.js.
      Das HTML liefert den Endstand (Fall 4 + Schluss): so steht die Buehne ohne JS und bei reduzierter Bewegung.
      Die Buehne ist aria-hidden; Screenreader lesen die Liste .zw-alt. Pause-Knopf ausserhalb der Buehne. -->
@@ -1312,7 +1249,7 @@
         </div>
         <div class="zw-lane zw-lane--rechts is-on">
             <p class="zw-lane-t">Mit Grundke-Betreuung</p>
-            <div class="zw-fig"><svg viewBox="0 0 96 96" width="144" height="144"><path d="M10 86h76"/><circle cx="44" cy="34" r="12"/><path d="M39 39.5c2.8 2.6 7.2 2.6 10 0"/><path d="M24 86c0-16 9-26 20-26s20 10 20 26"/><path d="M30 66l-8-20 12-10"/><path d="M58 66l8-20-12-10"/><path d="M72 86v-10h10v10M82 78.5h2.5a2.5 2.5 0 0 1 0 5H82"/><path d="M73 20l4 4 8-8"/><g class="zw-auge"><circle cx="39.5" cy="33" r="1.4"/><circle cx="48.5" cy="33" r="1.4"/></g></svg></div>
+            <div class="zw-fig"><svg viewBox="0 0 96 96" width="144" height="144"><path d="M10 86h76"/><circle cx="44" cy="34" r="12"/><path d="M39 39.5c2.8 2.6 7.2 2.6 10 0"/><path d="M24 86c0-16 9-26 20-26s20 10 20 26"/><path d="M31 64L16 28L35 25"/><path d="M57 64L72 28L53 25"/><path d="M72 86v-10h10v10M82 78.5h2.5a2.5 2.5 0 0 1 0 5H82"/><path d="M73 20l4 4 8-8"/><g class="zw-auge"><circle cx="39.5" cy="33" r="1.4"/><circle cx="48.5" cy="33" r="1.4"/></g></svg></div>
             <div class="zw-txt">
               <div class="zw-case" data-fall="1"><p class="zw-t">Andreas ruft zurück.</p><p class="zw-t zw-t--ok"><svg class="zw-ok" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Kassenserver neu gestartet. Läuft.</span></p></div>
               <div class="zw-case" data-fall="2"><p class="zw-t">Er kennt die Seite schon.</p><p class="zw-t zw-t--ok"><svg class="zw-ok" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Buchungen gehen wieder.</span></p></div>
@@ -1346,7 +1283,7 @@
     <div class="itb-main">
       <h2 class="s-title">So sieht ein Einsatz aus.</h2>
       <p class="s-sub">Ich kümmere mich um eure IT, damit ihr in Ruhe arbeitet. Und wenn es brennt, kenne ich eure Systeme schon.</p>
-      <div class="itb-chat">
+      <div class="itb-chat" data-dominant>
         <div class="hc-stage" data-hero-chat>
           <p class="hc-clock is-empty" data-hc-clock aria-hidden="true"></p>
           <div class="hc-device">
@@ -1382,32 +1319,32 @@
       </div>
       <div class="itb-k">
         <p class="itb-k2">Ich habe eure Zugänge, kenne eure Geräte und weiß, wie bei euch gearbeitet wird. Wenn abends der Server steht oder am Samstag die Kasse, muss niemand erst herausfinden, wer zuständig ist. Und vorher kümmere ich mich je nach Paket um Updates, Datensicherung und Virenschutz, damit es seltener brennt.</p>
-        <p class="itb-claim" data-dominant>Kein Gehalt. Kein Obstkorb. Kein Arbeitsplatz.<br><em>Dafür einer, der dein System kennt.</em></p>
+        <p class="itb-claim">Kein Gehalt. Kein Obstkorb. Kein Arbeitsplatz.<br><em>Dafür einer, der dein System kennt.</em></p>
       </div>
-    </div>
-    <details class="more itb-vgl">
-      <summary>Großes Systemhaus oder Grundke IT: der Vergleich</summary>
-        <div class="compare-box">
-          <div class="compare-hd"><span class="bh">Großes Systemhaus</span><span class="mh">vs</span><span class="gh">Du mit Grundke IT</span></div>
-          <div class="c-row"><span class="c-bad">Ticketsystem</span><span class="c-mid" aria-hidden="true">→</span><span class="c-good">Direkter Kontakt</span></div>
-          <div class="c-row"><span class="c-bad">Wechselnde Techniker</span><span class="c-mid" aria-hidden="true">→</span><span class="c-good">Antwort von mir selbst</span></div>
-          <div class="c-row"><span class="c-bad">Anonymes Team</span><span class="c-mid" aria-hidden="true">→</span><span class="c-good">Ein Ansprechpartner</span></div>
-          <div class="c-row"><span class="c-bad">Stundensatz unklar</span><span class="c-mid" aria-hidden="true">→</span><span class="c-good">110 € netto zzgl. MwSt. je Stunde</span></div>
-          <div class="c-row"><span class="c-bad">Wochenendzuschlag</span><span class="c-mid" aria-hidden="true">→</span><span class="c-good">Kein Aufschlag</span></div>
-          <div class="c-row"><span class="c-bad">Neue Person jedes Mal</span><span class="c-mid" aria-hidden="true">→</span><span class="c-good">Kennt deine Anlage</span></div>
+      <details class="more itb-vgl">
+        <summary>Großes Systemhaus oder Grundke IT: der Vergleich</summary>
+          <div class="compare-box">
+            <div class="compare-hd"><span class="bh">Großes Systemhaus</span><span class="mh">vs</span><span class="gh">Du mit Grundke IT</span></div>
+            <div class="c-row"><span class="c-bad">Ticketsystem</span><span class="c-mid" aria-hidden="true">→</span><span class="c-good">Direkter Kontakt</span></div>
+            <div class="c-row"><span class="c-bad">Wechselnde Techniker</span><span class="c-mid" aria-hidden="true">→</span><span class="c-good">Antwort von mir selbst</span></div>
+            <div class="c-row"><span class="c-bad">Anonymes Team</span><span class="c-mid" aria-hidden="true">→</span><span class="c-good">Ein Ansprechpartner</span></div>
+            <div class="c-row"><span class="c-bad">Stundensatz unklar</span><span class="c-mid" aria-hidden="true">→</span><span class="c-good">110 € netto zzgl. MwSt. je Stunde</span></div>
+            <div class="c-row"><span class="c-bad">Wochenendzuschlag</span><span class="c-mid" aria-hidden="true">→</span><span class="c-good">Kein Aufschlag</span></div>
+            <div class="c-row"><span class="c-bad">Neue Person jedes Mal</span><span class="c-mid" aria-hidden="true">→</span><span class="c-good">Kennt deine Anlage</span></div>
+          </div>
+      </details>
+      <div class="itb-leist">
+        <span id="leistungen" class="anchor"></span>
+        <p class="itb-leist-h">Abgeleitet aus 496 realen Einsätzen bei kleinen Betrieben, im Handwerk, in Gastronomie, Hotels und Praxen:</p>
+        <div class="chips">
+          <a href="/managed-it-service/">Managed IT-Service</a>
+          <a href="/netzwerk-wlan-firewall/">Netzwerk, WLAN &amp; Firewall</a>
+          <a href="/microsoft-365-betreuung/">Microsoft 365 Betreuung</a>
+          <a href="/it-sicherheit-backup/">IT-Sicherheit &amp; Backup</a>
+          <a href="/it-notdienst/">IT-Notdienst</a>
+          <a href="/it-betreuer-wechseln/">IT-Betreuer wechseln</a>
+          <a href="/lizenzen/">Lizenzen</a>
         </div>
-    </details>
-    <div class="itb-leist">
-      <span id="leistungen" class="anchor"></span>
-      <p class="itb-leist-h">Abgeleitet aus 496 realen Einsätzen bei kleinen Betrieben, im Handwerk, in Gastronomie, Hotels und Praxen:</p>
-      <div class="chips">
-        <a href="/managed-it-service/">Managed IT-Service</a>
-        <a href="/netzwerk-wlan-firewall/">Netzwerk, WLAN &amp; Firewall</a>
-        <a href="/microsoft-365-betreuung/">Microsoft 365 Betreuung</a>
-        <a href="/it-sicherheit-backup/">IT-Sicherheit &amp; Backup</a>
-        <a href="/it-notdienst/">IT-Notdienst</a>
-        <a href="/it-betreuer-wechseln/">IT-Betreuer wechseln</a>
-        <a href="/lizenzen/">Lizenzen</a>
       </div>
     </div>
   </div>
