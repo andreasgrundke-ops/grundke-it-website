@@ -599,10 +599,12 @@ def legal_text(page_html):
 # Vorher-Messung (Commit 865b00a, dessen legal_text() genau diese Hashes ergibt) mit dem Text jetzt, beide nach
 # legal_norm(). Die Hashes bleiben die Pruefung, dass die Basis die gemessene ist; keine neue Baseline.
 LEGAL_BASE_COMMIT = "865b00a"
-# Basis je Seite. Ausnahme: Die Barrierefreiheitserklaerung wurde am 12.10.2026 von Andreas freigegeben inhaltlich
-# geaendert (Bild-Slider -> Beispiel-Chat, Wischleiste, Fuss, Stand-Datum); ihre Basis ist der Commit mit dem
-# freigegebenen Text, legal_hash.json traegt fuer sie den rohen Hash dieses Stands (Sicherung der alten Datei:
-# ../_intern/messungen/vorher/legal_hash_vor_2026-10-12.json). Alle anderen Rechtstexte bleiben bei 865b00a.
+# Basis je Seite. Ausnahme: Die Barrierefreiheitserklaerung wurde von Andreas freigegeben inhaltlich geaendert,
+# zuerst am 12.10.2026 (Bild-Slider -> Beispiel-Chat, Wischleiste, Fuss, Stand-Datum; Sicherung
+# ../_intern/messungen/vorher/legal_hash_vor_2026-10-12.json), dann am 18.10.2026 (Hero-Buehne, Chat-Abschnitt,
+# Kontraste, Kontaktleiste, Stand-Datum; Sicherung ../_intern/messungen/vorher/legal_hash_vor_2026-10-18.json).
+# Ihre Basis ist der Commit mit dem freigegebenen Text, legal_hash.json traegt fuer sie den rohen Hash dieses Stands.
+# Alle anderen Rechtstexte bleiben bei 865b00a.
 LEGAL_BASE_COMMITS = {"barrierefreiheit/index.html": "6ed3a5b"}
 # Nur diese Zeichen zaehlen nicht zum Rechtstext: weiches Trennzeichen (U+00AD, H1 der Huelle), Emoji-Variantenwahl
 # (U+FE0F) und Bildzeichen U+1F300-U+1FAFF (AGB-Symbol, jetzt SVG). ©, ®, ™, Pfeile, § und Striche bleiben Text.

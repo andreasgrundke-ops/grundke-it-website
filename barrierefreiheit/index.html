@@ -55,7 +55,7 @@
     "inLanguage": "de-DE",
     "isPartOf": { "@id": "https://grundke-it.de/#website" },
     "datePublished": "2026-06-18",
-    "dateModified": "2026-10-12",
+    "dateModified": "2026-10-18",
     "author": { "@type": "Person", "@id": "https://grundke-it.de/#andreas", "name": "Andreas Grundke", "url": "https://grundke-it.de/" },
     "publisher": { "@type": "Organization", "@id": "https://grundke-it.de/#localbusiness", "name": "Andreas Grundke IT-Service" }
   }
@@ -143,17 +143,21 @@
         <li>Durchgängige Auszeichnung der Seitensprache (<code>lang="de"</code>) und semantisches HTML (<code>header</code>, <code>nav</code>, <code>main</code>, <code>article</code>, <code>footer</code>, klare Überschriften-Hierarchie).</li>
         <li>„Zum Inhalt springen"-Link (Skip-Link) auf jeder Seite für die Tastatur- und Screenreader-Bedienung.</li>
         <li>Sichtbarer Fokus-Rahmen für alle interaktiven Elemente (Tastaturbedienbarkeit).</li>
+        <li>Die Kontaktleiste am unteren Bildrand (bis 1279 Pixel Breite) verdeckt kein Element, das gerade mit der Tastatur angesteuert wird.</li>
         <li>Beschreibende Alternativtexte für inhaltstragende Bilder; rein dekorative Grafiken sind mit <code>aria-hidden</code> ausgezeichnet.</li>
-        <li>Auf Kontraste achtende Farbgebung (Blau #0c4da2 / Cyan #26bdef) für Text und Bedienelemente.</li>
+        <li>Auf Kontraste achtende Farbgebung: Text hat mindestens 4,5:1 Kontrast, Bedienelemente mindestens 3:1. Der Haupt-Knopf ist Blau (#0000FE) mit weißer Schrift. Cyan (#26bdef) dient nur noch als Signal für die aktuelle Seite, für Links im Fließtext und für den Fokusrahmen.</li>
         <li>Responsives Layout vom Smartphone bis zum Großbildschirm, ohne horizontales Scrollen.</li>
         <li>Aussagekräftige Linktexte statt „hier klicken".</li>
-        <li>Keine automatisch abgespielten Töne. Der Beispiel-Chat auf der Startseite lässt sich mit einem Pause-Knopf anhalten; ist im Betriebssystem „Bewegung reduzieren“ eingestellt, steht er still.</li>
+        <li>Keine automatisch abgespielten Töne.</li>
+        <li>Oben auf der Startseite zeigt die Bühne „So läuft das bei mir“ vier Beispiele aus dem Alltag, jeweils in drei Bildern nacheinander. Sie läuft einmal durch und bleibt dann im Endstand stehen. Ein Pause-Knopf hält sie an, setzt sie fort oder spielt sie von vorn ab; er lässt sich mit der Tastatur bedienen. Ist die Bühne kaum noch zu sehen oder der Browser-Tab im Hintergrund, hält sie von selbst an. Ist im Betriebssystem „Bewegung reduzieren“ eingestellt, startet sie nicht, sondern zeigt gleich den Endstand. Ohne JavaScript steht der Endstand ebenfalls sofort da.</li>
+        <li>Für Screenreader steht neben der Bühne eine Textfassung mit allen vier Beispielen. Die Bühne selbst ist für Hilfstechnik ausgeblendet, damit nichts doppelt vorgelesen wird. Dass es nachgestellte Beispiele sind, steht als Text sichtbar unter der Bühne.</li>
+        <li>Der Beispiel-Chat im Abschnitt „IT-Betreuung“ beginnt erst, wenn er beim Scrollen ins Bild kommt. Ein Pause-Knopf hält ihn an; ist „Bewegung reduzieren“ eingestellt, steht er still.</li>
         <li>Kundenstimmen stehen am Smartphone in einer Wischleiste, die sich auch mit der Tastatur bedienen lässt; der Fußbereich lässt sich am Smartphone auf- und zuklappen.</li>
       </ul>
 
       <h2>Bekannte Einschränkungen</h2>
       <ul>
-        <li>Der Beispiel-Chat auf der Startseite spielt automatisch ab; er lässt sich über den Pause-Knopf anhalten.</li>
+        <li>Die Bühne „So läuft das bei mir“ oben auf der Startseite und der Beispiel-Chat im Abschnitt „IT-Betreuung“ spielen von selbst ab. Beide lassen sich über einen Pause-Knopf anhalten. Die Bühne endet nach höchstens 40 Sekunden von allein.</li>
         <li>Die eingebundene Google-Maps-Verlinkung führt zu einem externen Dienst, dessen Barrierefreiheit ich nicht beeinflussen kann.</li>
         <li>Einige kleine Hilfstexte in Grau erreichen auf dunklem Hintergrund nicht überall das Kontrastverhältnis von 4,5:1. Ich passe sie nach und nach an.</li>
         <li>Vereinzelt verlinkte PDF-Dokumente sind möglicherweise nicht vollständig barrierefrei ausgezeichnet. Den Inhalt stelle ich auf Anfrage gerne in einer zugänglichen Form bereit.</li>
@@ -166,7 +170,7 @@
       <h2>Hinweis zur Rechtslage</h2>
       <p>Als Einzelunternehmen, das Dienstleistungen erbringt, bin ich als Kleinstunternehmen nach § 3 Abs. 3 BFSG von den Barrierefreiheitsanforderungen des Barrierefreiheitsstärkungsgesetzes (BFSG, gültig seit 28.06.2025) ausgenommen. Diese Erklärung gebe ich daher freiwillig ab, weil mir ein zugängliches Angebot wichtig ist. Sollte eine Anfrage nicht zufriedenstellend beantwortet werden, können Sie sich an die Marktüberwachungsstelle der Länder für die Barrierefreiheit von Produkten und Dienstleistungen wenden.</p>
 
-      <p style="margin-top:3rem;font-size:.75rem;color:var(--text3);">Zuletzt aktualisiert: 12. Oktober 2026 · Erstellt auf Basis einer Selbstbewertung.</p>
+      <p style="margin-top:3rem;font-size:.75rem;color:var(--text3);">Zuletzt aktualisiert: 18. Oktober 2026 · Erstellt auf Basis einer Selbstbewertung.</p>
     </article>
   </div>
 </section>
