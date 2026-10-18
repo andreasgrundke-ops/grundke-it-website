@@ -35,7 +35,7 @@ Unternehmen.
 - Einsatzgebiet vor Ort: ca. 25 km Radius München Ost (Grasbrunn, Ottobrunn,
   Vaterstetten, Haar, Neubiberg, Putzbrunn, Hohenbrunn)
 - Remote-Support: deutschlandweit
-- Stundensatz: 110 EUR netto, Abrechnung im 15-Minuten-Takt, kein Wochenendzuschlag
+- Stundensatz: 110 € netto zzgl. MwSt., Abrechnung im 15-Minuten-Takt, kein Wochenendzuschlag
 - Monatspakete (netto, monatlich kündbar): Starter 149 EUR, Business 249 EUR, Premium 449 EUR;
   jeweils inkl. IT-Assessment, Remote-Zugriff und bevorzugtem Support
 - Anfahrt vor Ort: bis 5 km inklusive, darüber nach vereinbarter Pauschale

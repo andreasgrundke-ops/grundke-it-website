@@ -1,41 +1,37 @@
 # STATUS – grundke-it.de Website
 <!-- CI 2026.01 · Grundke IT-Service · Standard-Statusdatei, wird von Mensch+KI gepflegt -->
 
-**Stand:** 2026-10-12 · **Status:** Live
+**Stand:** 2026-10-18 · **Status:** Live
 
 ## Was ist das
 grundke-it.de Website – siehe README/CLAUDE.md im Projekt.
 
 ## Aktueller Stand
-Umbau „Ein Stil, der Kümmerer, Handy zuerst“ (10.–12.10.2026) ist vollständig live, Gesamtabnahme
-mit Auflagen bestanden, Auflagen erledigt.
+18.10.2026: Release 2.0.0 „Ruhe“ (ruhigere Optik, Dock neu, Version im Fuß, Stundensatz-Wortlaut).
 
-- **Release A – Startseite:** am Handy 10.316 px statt rund 20.000, Lighthouse 100/100/100/100
-  (vorher 96/100/100/67). Interne Dateien (`tools/`, `*.md`,
-  `Audit 2026-04/`) gehen nicht mehr mit ins Pages-Artefakt (`deploy.yml`).
-- **Release B – 26 Generator-Seiten in einer Hülle** (`render_shell` in `tools/build_landingpages.py`):
-  Kopf in fester Reihenfolge (Krumen, H1, K4, Antwortsatz, Knöpfe, Belege), Abschnitte im Wechsel,
-  FAQ seitlich, Abschluss `closing()`. Alter Seitenweg (`SHELL_SLUGS`, `STYLE_LEGACY`, KI-/NEW-Styles,
-  `author_box`, `cards_html`) entfernt, Seitenstile in `style.css`. Font-Preload (Manrope, Space
-  Grotesk) gegen Layout-Shift beim ersten Aufruf.
-- **Release C1 – Schulung, Kontakt, Fernwartung, Rechtsseiten, 404:** Schulung kommt aus dem
-  Generator (Course-Schema unverändert, Portal „in Vorbereitung“, Sätze zum Portal als „geplant“).
-  `sync_shared()` schreibt Abschluss und Font-Preload auch in die Handseiten. Fernwartung: Knöpfe
-  `.btn-p/.btn-g`, Seitenspalte ab 1100 px, Platz des Umschalters vor dem Skript reserviert
-  (CLS 0,103 → 0). Rechtsseiten nur neue Hülle, Text per AK14 gegen Commit 865b00a geprüft.
-- **Release C2 (live 12.10.):** `/empfehlungen/` mit Einrichtungs-Pauschalen
-  (Richtwerte „ca.“, Beispiele und Erfahrungswerte), Zubehör für den Arbeitsplatz, private Produkte entfallen.
-  Dazu Fix-Runden aus dem Gesamt-Review: schärfere Prüfungen (Zusagewörter, Schlüssel der Seitendaten,
-  H2-Ausnahmen je Seite, Pre-Cache-Dateien), ein Unternehmensknoten im Schema, Service Worker cached nur
-  erfolgreiche Antworten und leitet offline auf die Startseite, `check_static.py --ci` läuft im Deploy.
-- **Release C3 (live 12.10.):** Hero-Chat zeigt abends und am Wochenende 20–40 Minuten bis zur Antwort;
-  Barrierefreiheitserklärung beschreibt Chat, Pause-Knopf und Wischleiste statt des alten Sliders.
-- **Versionen:** `sw.js` 1.28.0 / runtime v36, `ASSET_VER` 2026.10.f. Messung live: Startseite LCP 828 ms,
-  CLS 0,01 (vor dem Umbau 1.329 ms); Lighthouse-Stichproben 100/100/100/100.
-- **Prüfwerkzeuge** in `tools/checks/` (Verzeichnis nicht im Deploy, `check_static.py --ci` läuft vor dem Upload): `check_static.py` (AK1–AK14),
-  `check_site.py` (Länge ≤ 8.000 px bei 390, erster Bildschirm, Überlauf), `check_seo.py`
-  (Parität zu `../_intern/messungen/vorher`, Ausnahmen in `../_intern/messungen/seo-ausnahmen.json`),
-  `check_visual.py` (Startseite pixelgleich). Python 3.13 mit Playwright.
+- **Versionen:** `sw.js` `CACHE_NAME` `grundke-it-v2.0.0`, `RUNTIME_CACHE` `runtime-v37`, `ASSET_VER` 2026.10.g,
+  `SITE_VERSION` 2.0.0 (Fuß „Version x.y.z · Stand TT.MM.JJJJ“ aus dem Generator). `SITE_VERSION` bei jedem
+  Release mit dem `CACHE_NAME`-Suffix gleichziehen; `check_static.py` prüft das.
+- **Kontaktleiste (Dock):** eine Quelle im Generator (`STICKY`-Marken), nur bis 1279 px sichtbar, ab 1280 px
+  ausgeblendet; nie in einzelnen Dateien ändern.
+- **Typo:** `body.is-home` trägt die größere Schriftskala der Startseite; Unterseiten bewusst ohne.
+- **Stundensatz:** Wortlaut einheitlich „110 € netto zzgl. MwSt.“ (`HOME_PRICE_LINES` in `check_static.py`).
+- **Struktur seit 10.–12.10.2026:** Startseite am Handy rund 10.300 px (Lighthouse 100/100/100/100, LCP 828 ms,
+  CLS 0,01). Alle 26 Generator-Seiten in einer Hülle (`render_shell` in `tools/build_landingpages.py`: Kopf,
+  Abschnitte im Wechsel, FAQ seitlich, Abschluss `closing()`), Seitenstile in `style.css`, Font-Preload gegen
+  Layout-Shift. Schulung, Kontakt, Fernwartung, Rechtsseiten und 404 in der neuen Hülle; `sync_shared()`
+  schreibt Abschluss und Font-Preload auch in die Handseiten. Interne Dateien (`tools/`, `*.md`, `Audit 2026-04/`)
+  gehen nicht ins Pages-Artefakt (`deploy.yml`).
+- **Inhalte:** `/empfehlungen/` mit Einrichtungs-Pauschalen (Richtwerte „ca.“); Hero-Chat zeigt abends und am
+  Wochenende 20–40 Minuten bis zur Antwort; Barrierefreiheitserklärung beschreibt Chat, Pause-Knopf und
+  Wischleiste. Service Worker cached nur erfolgreiche Antworten und leitet offline auf die Startseite.
+- **Prüfwerkzeuge** in `tools/checks/` (Verzeichnis nicht im Deploy, `check_static.py --ci` läuft vor dem
+  Upload und stoppt den Deploy bei Fehlern): `check_static.py` (Zusagewörter, Seitendaten, Pre-Cache,
+  Rechtstexte gegen Basis-Commit, Versionen), `check_site.py` (Länge ≤ 8.000 px bei 390, erster Bildschirm,
+  Überlauf), `check_seo.py` (Parität zu `../_intern/messungen/vorher`, Ausnahmen in
+  `../_intern/messungen/seo-ausnahmen.json`), `check_visual.py` (Startseite pixelgleich), neu
+  `check_design.py` (`--release r1`, `--heights --baseline`) und `check_sw.py` (`--upgrade`).
+  Python 3.13 mit Playwright.
 
 ## Verlauf (kurz)
 - 17.10.2026: Bing/IndexNow: `BingSiteAuth.xml` und IndexNow-Schlüsseldatei liegen live; `tools/indexnow.py` meldet die Sitemap-URLs (31) an IndexNow, erster Ping HTTP 200. Nach jedem Deploy mit neuen oder geänderten Seiten erneut laufen lassen (`python tools/indexnow.py`, nicht Teil des Builds).
@@ -51,13 +47,13 @@ mit Auflagen bestanden, Auflagen erledigt.
 - 27.07.2026: kanonische Domain non-www.
 
 ## Nächster Schritt
-- KI-Sichtbarkeit (Recherche 17.10.2026, `../_intern/reports/Gelbe Seiten KI Check Vergleich.md`): Lücken liegen off-site. 1) Google-Unternehmensprofil vervollständigen, 2) mehr Bewertungen mit Text, 3) Bing Places + einheitliche NAP in Gelbe Seiten, Das Örtliche, 11880, Apple Business Connect, LinkedIn, IHK, 4) Erwähnungen auf Drittseiten (Partner, Referenzen, lokale Presse), 5) eigene Messung: festes Fragenset, mehrere Läufe je KI (ChatGPT, Google AI, Gemini, Copilot, Perplexity), Nennungsanteil vierteljährlich. Prüfmodul dafür im MSP Manager geplant.
+- KI-Sichtbarkeit (Recherche 17.10.2026, `../_intern/reports/Gelbe Seiten KI Check Vergleich.md`): Lücken liegen off-site. 1) Google-Unternehmensprofil vervollständigen, 2) mehr Bewertungen mit Text, 3) Bing Places + einheitliche NAP in Gelbe Seiten, Das Örtliche, 11880, Apple Business Connect, LinkedIn, 4) Erwähnungen auf Drittseiten (Partner, Referenzen, lokale Presse), 5) eigene Messung: festes Fragenset, mehrere Läufe je KI (ChatGPT, Google AI, Gemini, Copilot, Perplexity), Nennungsanteil vierteljährlich. Prüfmodul dafür im MSP Manager geplant.
 - Medien: Motion Graphics und Erklärvideo über `motion-video`/Higgsfield möglich, Credits vorher freigeben lassen (Gehirn-Regel medien-motion-higgsfield-elevenlabs).
 - Bing Webmaster Tools (Andreas, im Browser): Seite verifiziert? Sitemap `https://grundke-it.de/sitemap.xml` eingereicht? Startseite per URL-Prüfung testen. Stand im Repo nicht sichtbar.
-- Search Console prüfen: um den 24.10. und den 07.11.2026 (zwei und vier Wochen nach Release B).
+- Search Console prüfen: um den 24.10. und den 07.11.2026 (zwei und vier Wochen nach dem Umbau).
 - Ortsseiten: eigene Fakten und FAQ, sobald die Angaben vorliegen (Entwurf intern).
-- Längenbudgets sind fast voll (Startseite `#schnellcheck`, `#preise`, software-nach-mass, ki-dsgvo,
-  empfehlungen > 96 %): neue Texte dort nur mit Kürzung an anderer Stelle.
+- Längenbudgets sind fast voll (`#preise` bei 390 px: 4.983 von 5.000; Startseite `#schnellcheck`,
+  software-nach-mass, ki-dsgvo, empfehlungen > 96 %): neue Texte dort nur mit Kürzung an anderer Stelle.
 - GitHub Actions auf Versionen ohne Node-20-Warnung heben.
 - Offen: Linux-Fernwartung auf echtem Mint testen; AGB-PDF von 2024 aktualisieren.
 

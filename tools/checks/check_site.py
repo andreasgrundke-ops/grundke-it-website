@@ -31,10 +31,12 @@ MEASURE = """() => {
     return c.backgroundColor === 'rgb(38, 189, 239)' && r.height >= 40; }).length;
   const vis = sel => { const e = document.querySelector(sel); if (!e) return false;
     const r = e.getBoundingClientRect(); return r.height > 0 && r.top < innerHeight && r.bottom > 0; };
-  // Beleg (AK6): nur sichtbar, wenn er ganz ueber der Kontaktleiste endet, sofern die Leiste unten quer liegt
-  // (Handy/Tablet); am Desktop steht sie rechts am Rand und verdeckt den Kopf nicht.
+  // Beleg (AK6): nur sichtbar, wenn er ganz ueber der Kontaktleiste endet, sofern die Leiste unten liegt
+  // (Handy/Tablet); am Desktop ist sie ausgeblendet und verdeckt nichts.
+  // 17.10.2026 (Relaunch R1, Spec 5.1): Das Dock ist keine volle Breite mehr (schwebend, ab 600 px max. 480 px breit,
+  // 12 px Abstand). Die alte Bedingung br.width >= innerWidth - 1 haette es nie erkannt; jetzt zaehlt die Lage unten.
   const bar = document.querySelector('.sticky-contact'), br = bar ? bar.getBoundingClientRect() : null;
-  const barTop = br && br.height > 0 && br.width >= innerWidth - 1 && br.top < innerHeight ? br.top : innerHeight;
+  const barTop = br && br.height > 0 && br.top < innerHeight && br.bottom > innerHeight * 0.75 ? br.top : innerHeight;
   const visAbove = sel => { const e = document.querySelector(sel); if (!e) return false;
     const r = e.getBoundingClientRect(); return r.height > 0 && r.top >= 0 && r.bottom <= barTop; };
   const top = id => { const e = document.getElementById(id); return e ? Math.round(e.getBoundingClientRect().top + scrollY) : null; };

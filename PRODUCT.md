@@ -41,7 +41,7 @@ Automatisierung aus einer Hand. Vor Ort im Münchner Osten (Radius 25 km), remot
 
 ## Capabilities and Constraints
 
-- Ohne Vertrag 110 € netto pro Stunde im 15-Minuten-Takt. Betreuungspakete ab 149 € netto im Monat
+- Ohne Vertrag 110 € netto zzgl. MwSt. pro Stunde im 15-Minuten-Takt. Betreuungspakete ab 149 € netto im Monat
   („planbare Monatspauschale", nicht „Festpreis"). Anfahrt bis 5 km inklusive. IT-Assessment in
   jedem Paket, Monatsreport nur im Premium-Paket.
 - **Keine garantierten Reaktionszeiten oder Erreichbarkeiten.** Vertragskunden werden bevorzugt
@@ -56,7 +56,9 @@ Automatisierung aus einer Hand. Vor Ort im Münchner Osten (Radius 25 km), remot
 - Name „Grundke IT-Service" (offiziell „Andreas Grundke IT-Service"). Du-Form, direkt,
   umgangssprachlich, erste Person. Bestätigte Leitzeile: „Dein ITler geht nicht ran? Ich schon."
 - CI 2026.01: Blau `#0c4da2`, Cyan `#26bdef`; Visitenkarten-Blau `#0000FE` für Haupt-Buttons mit
-  weißer Schrift; WhatsApp-Grün für WhatsApp. Logo unter `assets/img/logo-grundke-it*`.
+  weißer Schrift; WhatsApp-Grün für WhatsApp. Dock (Kontaktleiste bis 1279 px): Anrufen in
+  `#0000FE` mit weißer Schrift, WhatsApp getönt in Grün (`#15803d` bei 22 % auf `#141a26`), E-Mail neutral.
+  Cyan nur mit Bedeutung (Links, Fokus), nicht als Dekor. Logo unter `assets/img/logo-grundke-it*`.
   Fußzeile „CI 2026.01 · Grundke IT-Service · www.grundke-it.de".
 - Keine Stockfotos von Menschen, die man für Andreas halten könnte. Figuren und Illustrationen
   werden selbst gezeichnet.
@@ -80,6 +82,5 @@ Automatisierung aus einer Hand. Vor Ort im Münchner Osten (Radius 25 km), remot
 ## Accessibility & Inclusion
 
 WCAG 2.1 AA als Ziel. Bewegung respektiert `prefers-reduced-motion`. Neue Bewegung, die länger als
-fünf Sekunden von selbst läuft, muss sich anhalten lassen (WCAG 2.2.2) – der Hero-Chat erfüllt das;
-das Laufband unter dem Hero noch nicht (offen). Bekannte Einschränkung laut
-Barrierefreiheitserklärung: Grau-Kontraste.
+fünf Sekunden von selbst läuft, muss sich anhalten lassen (WCAG 2.2.2) – der Hero-Chat erfüllt das.
+Bekannte Einschränkung laut Barrierefreiheitserklärung: Grau-Kontraste.

@@ -51,19 +51,26 @@ und die Quelle unter der Karte muss stimmen (`Google-Bewertung` nur, wenn sie do
 geaendert hat, nicht wegen eines neuen Footer-Links.
 
 ## Stand / offen / naechster Schritt
-- **10.10.2026 (live):** Umbau „Ein Stil, der Kuemmerer, Handy zuerst“ in drei Releases. A: Startseite
-  am Handy rund 10.300 px. B: alle Generator-Seiten in der Huelle `render_shell` (Kopf, Abschnitte im
-  Wechsel, Abschluss `closing()`), alter Seitenweg entfernt, Font-Preload. C1: Schulung im Generator,
-  Kontakt, Fernwartung, Rechtsseiten (nur Huelle), 404; `sync_shared()` schreibt auch Abschluss und
-  Font-Preload in die Handseiten. C2/C3 (12.10.): Empfehlungen mit Einrichtungs-Pauschalen, Fix-Runden
-  aus dem Gesamt-Review, Hero-Chat abends 20-40 Min., Barrierefreiheitserklaerung neu. `sw.js` 1.28.0 /
-  runtime v36, `ASSET_VER` 2026.10.f. `check_static.py --ci` laeuft im Deploy und stoppt ihn bei Fehlern.
+- **18.10.2026: Release 2.0.0 „Ruhe“** (ruhigere Optik, Dock neu, Version im Fuss, Stundensatz-Wortlaut).
+  Davor (10.-12.10.): Umbau „Ein Stil, der Kuemmerer, Handy zuerst“: Startseite am Handy rund 10.300 px,
+  alle Generator-Seiten in der Huelle `render_shell` (Kopf, Abschnitte im Wechsel, Abschluss `closing()`),
+  Schulung/Kontakt/Fernwartung/Rechtsseiten/404 in der neuen Huelle, Empfehlungen mit Einrichtungs-Pauschalen,
+  Hero-Chat abends 20-40 Min., Barrierefreiheitserklaerung neu.
+- **Versionen jetzt:** `sw.js` `CACHE_NAME` `grundke-it-v2.0.0`, `RUNTIME_CACHE` `runtime-v37`,
+  `ASSET_VER` 2026.10.g, `SITE_VERSION` 2.0.0 (Fuss „Version x.y.z · Stand TT.MM.JJJJ“ aus dem Generator).
+  `SITE_VERSION` bei jedem Release mit dem `CACHE_NAME`-Suffix gleichziehen, `check_static.py` prueft das.
+  `check_static.py --ci` laeuft im Deploy und stoppt ihn bei Fehlern.
+- **Kontaktleiste (Dock):** kommt aus einer Quelle im Generator (`STICKY`-Marken), nur bis 1279 px sichtbar,
+  ab 1280 px ausgeblendet; nie in einzelnen Dateien aendern.
+- **Typo:** `body.is-home` traegt die groessere Schriftskala der Startseite; Unterseiten bewusst ohne.
+- **Stundensatz:** Wortlaut einheitlich „110 € netto zzgl. MwSt.“ (`HOME_PRICE_LINES` in `check_static.py`).
 - **Pruefen vor jedem Release:** `tools/checks/` (check_static, check_site, check_seo mit
-  `--allow ../_intern/messungen/seo-ausnahmen.json`, check_visual), Python 3.13 mit Playwright.
-  AK14r vergleicht die Rechtstexte je Seite mit ihrem Basis-Commit (`LEGAL_BASE_COMMITS`);
+  `--allow ../_intern/messungen/seo-ausnahmen.json`, check_visual, `check_design.py` mit `--release r1`
+  und `--heights --baseline`, `check_sw.py` mit `--upgrade`), Python 3.13 mit Playwright.
+  check_static vergleicht die Rechtstexte je Seite mit ihrem Basis-Commit (`LEGAL_BASE_COMMITS`);
   Rechtstext nur mit Andreas' OK aendern und dann Basis-Commit und `legal_hash.json` nachziehen.
 - **Offen:** Ortsseiten-Fakten (Entwurf in `../_intern/o5-ortsfakten.md`), Linux-Fernwartung auf echtem
-  Mint testen, Search Console um den 24.10. und 07.11.2026, Laengenbudgets fast voll (siehe STATUS).
+  Mint testen, Search Console um den 24.10. und 07.11.2026, Laengenbudgets fast voll (`#preise` bei 390 px: 4.983 von 5.000, siehe STATUS).
 - Details in `STATUS.md`; Spec, Plan, Textblatt, Messungen und Fachwissen ausserhalb des Repos in
   `../_intern/` (Repo ist oeffentlich).
 

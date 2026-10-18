@@ -49,8 +49,8 @@
  *                        Cache-Versionen trotzdem erhoeht, weil robots.txt
  *                        mitgeaendert wurde.
  *   1.3.1 / 2026-09-11 — Kundenstimmen auf der Startseite ueberarbeitet: vierte
- *                        Google-Rezension ergaenzt, Direktstimme Blumenschein
- *                        dazu, zwei Zitate auf den Google-Wortlaut gezogen
+ *                        Google-Rezension ergaenzt, Direktstimme
+ *                        ergaenzt, zwei Zitate auf den Google-Wortlaut gezogen
  *                        (index.html). Die Seite selbst laeuft zwar
  *                        Network-First und kaeme auch so an, aber '/' und
  *                        '/index.html' liegen im Pre-Cache: ohne Erhoehung
@@ -90,11 +90,11 @@
  *                        404 mit Schriften, Kartenabstand, Fernwartung als Menuepunkt
  *                        (main.js 1.4.0), Bilder fuer die E-Mail-Signatur.
  *   1.23.1 / 2026-10-10 — Fakten: 5 Google-Bewertungen, Schulungsportal in Vorbereitung.
- *   1.24.0 / 2026-10-10 — Release A Website-Umbau: Startseite neu (Kuemmerer, Handy zuerst,
+ *   1.24.0 / 2026-10-10 — Startseite neu (Kuemmerer, Handy zuerst,
  *                        Stimmen/FAQ aus dem Generator, aufklappbare Details), Bausteine in
  *                        style.css, main.js 1.6.0, Fuss aufklappbar, WhatsApp mit Einstiegssatz,
  *                        Asset-Version 2026.10.b.
- *   1.25.0 / 2026-10-10 — Release B Website-Umbau: alle Unterseiten in der Generator-Huelle
+ *   1.25.0 / 2026-10-10 — alle Unterseiten in der Generator-Huelle
  *                        (IT-, Orts-, KI-, Software-, Websites- und Ratgeberseiten), Bausteine des
  *                        KI-Bereichs in style.css, Asset-Version 2026.10.c.
  *   1.26.0 / 2026-10-10 — Release C1 Website-Umbau: Schulung im Generator, Kontakt, Fernwartung,
@@ -103,7 +103,7 @@
  *   1.26.1 (2026-10-10) Schulung: Portal-Saetze als geplant, Datenschutz-Stand im Kopf.
  *   1.27.0 / 2026-10-11 — Release C2 Website-Umbau: Empfehlungen in der Huelle mit Einrichtungs-
  *                        Pauschalen je Geraetegruppe und Abschluss, private Produkte entfernt.
- *                        Fix-Runde B (noch vor dem Push, deshalb ohne neuen Cache-Namen): Install
+ *                        Nachbesserung (noch vor dem Push, deshalb ohne neuen Cache-Namen): Install
  *                        wirft bei fehlgeschlagenem Pre-Cache (der alte Service Worker bleibt
  *                        aktiv, statt ohne Offline-Kern alle Caches zu loeschen), nur Antworten
  *                        mit res.ok landen im Cache, offline zeigt eine Navigation die Startseite
@@ -113,11 +113,14 @@
  *   1.28.0 / 2026-10-12 — Hero-Chat: abends und am Wochenende 20–40 Minuten bis zur
                         Antwort (hero-chat.js 1.5.0), Barrierefreiheitserklaerung aktualisiert,
                         Asset-Version 2026.10.f.
+ *   2.0.0 / 2026-10-18 — ruhigere Optik (style.css), Kontaktleiste und Fuss aus einer
+                        Quelle, grosses Kundenzitat, einheitlicher Stundensatz mit „zzgl. MwSt.“,
+                        Asset-Version 2026.10.g.
  */
 
-const CACHE_NAME    = 'grundke-it-v1.28.0';
-const RUNTIME_CACHE = 'grundke-it-runtime-v36';
-const ASSET_VER     = '2026.10.f';   // muss ASSET_VER im Generator entsprechen
+const CACHE_NAME    = 'grundke-it-v2.0.0';
+const RUNTIME_CACHE = 'grundke-it-runtime-v37';
+const ASSET_VER     = '2026.10.g';   // muss ASSET_VER im Generator entsprechen
 
 /* Pre-Cache: minimaler Kern fuer Offline-First-Boot */
 const PRECACHE_URLS = [
@@ -177,6 +180,15 @@ self.addEventListener('fetch', event => {
   /* Cross-Origin: durchreichen, nicht cachen */
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
+
+  /* Range-Anfragen und Medien (Video, Audio, Untertitel): durchreichen, nicht cachen.
+     Der Browser holt Filme in Teilstuecken (Range); eine 206-Teilantwort darf nicht in den
+     Cache, und eine Cache-First-Antwort ohne Range-Unterstuetzung bricht das Spulen. Die
+     Endungsliste faengt zusaetzlich direkte Links auf .mp4/.webm/.m4v/.vtt OHNE Range ab:
+     die kaemen sonst mit Status 200 in den Runtime-Cache und laegen dort als ganze Datei. */
+  if (req.headers.has('range') ||
+      ['video', 'audio', 'track'].includes(req.destination) ||
+      /\.(mp4|webm|m4v|vtt)$/i.test(url.pathname)) return;
 
   /* Navigation (HTML-Seiten) -> Network-First */
   if (req.mode === 'navigate' || (req.headers.get('accept') || '').includes('text/html')) {
