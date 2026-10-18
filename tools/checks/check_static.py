@@ -1,9 +1,9 @@
-"""Statische Pruefungen (Spec §9: AK1, AK2, AK2b, AK7, AK8, AK9, AK9b, AK11a, AK13, AK13v, AK14, AK14r).
+"""Statische Pruefungen (Spec §9: AK1, AK2, AK2b, AK7, AK8, AK9, AK9b, AK11a, AK13, AK13v, AK14, AK14r; R2: AKH).
 Aufruf: python tools/checks/check_static.py [--only AK1,AK9] [--ci]   Exit 1 bei Fehler.
 --ci: nur Pruefungen, die weder ../_intern/ noch Git-Historie brauchen (Deploy-Workflow); AK13v (Versionen gegen
 origin/main) und AK14r (Rechtstexte gegen Basis-Commit und legal_hash.json) werden dann sichtbar uebersprungen.
 Browser-Messungen stehen in check_site.py, nicht hier."""
-import hashlib, html, json, re, subprocess, sys
+import gzip, hashlib, html, json, re, subprocess, sys
 from html.parser import HTMLParser
 from pathlib import Path
 
@@ -39,7 +39,6 @@ AK8_LEITZEILE = "Dein ITler geht nicht ran? Ich schon."
 # auf dieser Seite im geprueften Text steht und den Treffer enthaelt. Ein Eintrag ohne Treffer ist ein Fehler (Liste
 # bleibt genau). Seite = Pfad wie rel(), fuer den Hero-Chat AK8_HERO_JS.
 AK8_ALLOW = [
-    ("index.html", "„Es muss heute noch laufen.“", "typischer Anruf in Worten des Kunden (Typische Anrufe)"),
     ("index.html", "„Ich muss heute noch fertig werden!“", "Ueberschrift der Praxisgeschichte, zitiert den Kunden"),
     ("index.html", "Er muss heute noch ein wichtiges Projekt abgeben.", "Praxisgeschichte: Lage des Kunden"),
     ("index.html", "ohne Garantie, dass es klappt", "verneint eine Garantie"),
@@ -107,8 +106,45 @@ AK8_ALLOW = [
 # dieser Runde nicht geaendert). Sie halten AK8 nicht rot, werden aber bei jedem Lauf als WARNUNG gemeldet.
 # Gleiches Format wie AK8_ALLOW; nach Andreas' Entscheidung Text aendern und Eintrag loeschen (oder nach AK8_ALLOW).
 AK8_OPEN = []
+# Relaunch R2 (Spec §4.1, §4.2, §4.4; Gate G1/G2/G3). Texte zeichengleich; AKH prueft sie im HTML der Startseite.
+H1_TEXT = "Dein ITler geht nicht ran? Ich schon."
+H1_EM = "Ich schon."
+PAGE_K_HERO = "Deine IT-Abteilung. Nur extern."
+SCHUTZSATZ = "Keine Öffnungszeiten. Vertragskunden zuerst, ohne garantierte Reaktionszeit."
+HERO_WER = "Andreas Grundke · IT-Service für Betriebe im Münchner Osten"
+HERO_PROOF = ["5,0 bei {n} Google-Bewertungen", "Über 20 Jahre IT-Erfahrung"]   # A16: nur diese zwei Zeilen
+FUSSZEILE_HERO = "So kann es laufen. Vertragskunden zuerst, ohne garantierte Reaktionszeit."   # G1
+KI_HINWEIS = "Figuren mit KI erstellt."          # nur mit eingebundenem assets/img/hero/ki-*-Bild (AK-R2-21)
+SCHLUSS_HERO = "Kennt eure Anlage schon."
+ALT_UEBERSCHRIFT = "Vier Beispiele aus dem Alltag"
+G3_H2 = "So sieht ein Einsatz aus."              # G3: H2 des Chat-Abschnitts
+KUEMMERER_SATZ = "Ich kümmere mich um eure IT, damit ihr in Ruhe arbeitet. Und wenn es brennt, kenne ich eure Systeme schon."
+HERO_WEGE = {
+    "spuren": {"links": "Ohne feste Betreuung", "rechts": "Mit Grundke-Betreuung"},     # G2, W2
+    "faelle": [
+        {"zeit": "Sa 12:10 · Kasse",
+         "links": ("Samstag. Die Kasse steht.", "Ansage: Büro ab Montag besetzt."),
+         "rechts": ("Andreas ruft zurück.", "Kassenserver neu gestartet. Läuft.")},
+        {"zeit": "So 19:40 · Terminbuchung",
+         "links": ("Online-Buchung zeigt Fehler.", "Ticket #20871 angelegt. Bearbeitung folgt."),
+         "rechts": ("Er kennt die Seite schon.", "Buchungen gehen wieder.")},
+        {"zeit": "Fr 17:30 · E-Mail",
+         "links": ("Keine Mails seit Mittag.", "Mailbox. Bitte Ticket erstellen."),
+         "rechts": ("Rückruf am Abend.", "Postfach war voll. Mails kommen.")},
+        {"zeit": "Do 18:15 · PC/NAS",
+         "links": ("Alles hängt beim Öffnen.", "Nächster freier Termin: nächste Woche."),
+         "rechts": ("Fehler gefunden: Speicher defekt.", "Ersatz da, Daten zurückgespielt.")},
+    ],
+    "schluss": SCHLUSS_HERO,
+}
+HERO_VERBOTEN = ["Systemhaus", "Dienstleister", "Mitbewerber", "#4711"]       # AK-R2-04 (Ticketnummern: siehe akh)
+HERO_TICKET = "#20871"
+BILDTEXT_MAX_WOERTER = 6
+ZW_ZUSTAENDE = ("laeuft", "pause", "ende")
+HERO_WEGE_JS = "assets/js/hero-wege.js"
+HERO_WEGE_JS_MAX_GZIP = 6 * 1024                 # AK-R2-14
 PROTECTED = ["Angebot ausschließlich für Unternehmen", "ohne garantierte Reaktionszeit", "Warum ein Paket?",
-             "Alle Preise zzgl. MwSt."]
+             "Alle Preise zzgl. MwSt.", SCHUTZSATZ, FUSSZEILE_HERO, SCHLUSS_HERO]
 # AK14 seit Fix-Runde B (M10, Spec §5): Herkunftshinweis wortgleich ({n} = Zahlwort + Verb aus dem Generator,
 # review_count_phrase(REVIEW_COUNT_GOOGLE)), alle price-per-Zeilen der Startseite mit Betrag (Pakete und ad hoc stehen
 # nicht in PRICES, deshalb hier), die Preissaetze mit data-price aus PRICES abgeleitet, Orte (mit PLZ) des Einsatzgebiets.
@@ -654,7 +690,7 @@ def ak14r():
     return errs
 
 
-VERSIONED_ASSETS = r"(?:style\.css|main\.js|fernwartung\.js|fonts\.css|lenis\.min\.js|hero-chat\.js)"
+VERSIONED_ASSETS = r"(?:style\.css|main\.js|fernwartung\.js|fonts\.css|lenis\.min\.js|hero-chat\.js|hero-wege\.js)"
 
 
 def precache_urls():
@@ -784,6 +820,319 @@ def ak13s():
     return errs
 
 
+# ----------------------------------------------------------------------------------------------------------------------
+# AKH (Relaunch R2, AK-R2-01 ... 04, 08 (Markup-Teil), 14 (Skript), 18 (Skript), 21): Hero-Kopf, Buehne "Zwei Wege" und
+# Chat-Abschnitt der Startseite gegen den Markup-Vertrag. Eigener kleiner DOM-Baum, weil die Buehne verschachtelt ist
+# und die Spur (links/rechts) eines Textes aus dem Vorfahren folgt.
+# ----------------------------------------------------------------------------------------------------------------------
+_INLINE = {"a", "b", "strong", "em", "i", "span", "code", "small", "mark", "abbr", "time", "sub", "sup"}
+
+
+class _N:
+    __slots__ = ("tag", "attrs", "parent", "kids")
+
+    def __init__(self, tag, attrs, parent):
+        self.tag, self.attrs, self.parent, self.kids = tag, attrs, parent, []
+
+    def has(self, c):
+        return c in (self.attrs.get("class") or "").split()
+
+    def walk(self):
+        yield self
+        for k in self.kids:
+            if isinstance(k, _N):
+                yield from k.walk()
+
+    def up(self, pred):
+        """Naechster Vorfahre oder das Element selbst, auf das pred zutrifft."""
+        n = self
+        while n is not None:
+            if n.tag != "#root" and pred(n):
+                return n
+            n = n.parent
+        return None
+
+    def text(self):
+        parts = []
+
+        def rec(n):
+            for k in n.kids:
+                if isinstance(k, str):
+                    parts.append(k)
+                elif k.tag in ("script", "style", "svg"):
+                    continue
+                elif k.tag in _INLINE:
+                    rec(k)
+                else:
+                    parts.append(" ")
+                    rec(k)
+                    parts.append(" ")
+        rec(self)
+        return re.sub(r"\s+", " ", "".join(parts).replace(" ", " ")).strip()
+
+
+class _Dom(HTMLParser):
+    def __init__(self, src):
+        super().__init__(convert_charrefs=True)
+        self.root = self.cur = _N("#root", {}, None)
+        self.feed(src)
+        self.close()
+
+    def handle_starttag(self, tag, attrs):
+        n = _N(tag, {k: (v if v is not None else "") for k, v in attrs}, self.cur)
+        self.cur.kids.append(n)
+        if tag not in VOID_TAGS:
+            self.cur = n
+
+    def handle_endtag(self, tag):
+        n = self.cur
+        while n.parent is not None and n.tag != tag:
+            n = n.parent
+        if n.parent is not None:
+            self.cur = n.parent
+
+    def handle_data(self, d):
+        self.cur.kids.append(d)
+
+
+def _side(n):
+    lane = n.up(lambda x: x.has("zw-lane--links") or x.has("zw-lane--rechts"))
+    return None if lane is None else ("links" if lane.has("zw-lane--links") else "rechts")
+
+
+def _norm(t):
+    return re.sub(r"\s+", " ", t.replace(" ", " ")).strip()
+
+
+def hero_wege_texte():
+    """Alle 16 Bildtexte der Buehne plus Schluss (Spec §4.2)."""
+    return [t for f in HERO_WEGE["faelle"] for t in f["links"] + f["rechts"]] + [HERO_WEGE["schluss"]]
+
+
+def akh():
+    errs = []
+    raw = read(ROOT / "index.html")
+    dom = _Dom(raw).root
+    nodes = [n for n in dom.walk() if n.tag != "#root"]
+    pos = {id(n): i for i, n in enumerate(nodes)}
+
+    def q(pred, within=None):
+        return [n for n in (within or dom).walk() if n.tag != "#root" and pred(n)]
+
+    hero = next((n for n in nodes if n.tag == "section" and n.has("hero")), None)
+    if hero is None:
+        return ["index.html: kein <section class=\"hero\">"]
+    # AK-R2-01: genau eine H1, Text, <em>
+    h1s = q(lambda n: n.tag == "h1")
+    if len(h1s) != 1:
+        errs.append(f"index.html: {len(h1s)} <h1> statt genau 1")
+    h1 = h1s[0] if h1s else None
+    if h1 is not None:
+        if h1.attrs.get("id") != "hero-h1" or not h1.has("hc-h1"):
+            errs.append("index.html: H1 ohne id=\"hero-h1\" und class hc-h1")
+        if h1.up(lambda n: n is hero) is None:
+            errs.append("index.html: H1 steht nicht in .hero")
+        if h1.text() != H1_TEXT:
+            errs.append(f"index.html: H1 '{h1.text()}' statt '{H1_TEXT}'")
+        ems = [e.text() for e in q(lambda n: n.tag == "em", h1)]
+        if ems != [H1_EM]:
+            errs.append(f"index.html: <em> in der H1 {ems} statt ['{H1_EM}']")
+    # AK-R2-02: H1 -> .page-k -> .hc-schutz, direkt hintereinander
+    ks, sc = q(lambda n: n.has("page-k"), hero), q(lambda n: n.has("hc-schutz"), hero)
+    if len(ks) != 1 or ks[0].tag != "p" or not ks[0].has("hc-k"):
+        errs.append(f"index.html: p.page-k.hc-k in .hero {len(ks)}x statt genau 1")
+    elif ks[0].text() != PAGE_K_HERO:
+        errs.append(f"index.html: .page-k '{ks[0].text()}' statt '{PAGE_K_HERO}'")
+    if len(sc) != 1 or sc[0].tag != "p":
+        errs.append(f"index.html: p.hc-schutz in .hero {len(sc)}x statt genau 1")
+    elif sc[0].text() != SCHUTZSATZ:
+        errs.append(f"index.html: .hc-schutz '{sc[0].text()}' statt '{SCHUTZSATZ}'")
+    if h1 is not None and len(ks) == 1 and len(sc) == 1:
+        sib = [k for k in h1.parent.kids if isinstance(k, _N)]
+        i = next((k for k, x in enumerate(sib) if x is h1), -1)
+        if not (pos[id(h1)] < pos[id(ks[0])] < pos[id(sc[0])]) or sib[i + 1:i + 3] != [ks[0], sc[0]]:
+            errs.append("index.html: Reihenfolge H1 -> .page-k -> .hc-schutz (direkt hintereinander) verletzt")
+    wer = q(lambda n: n.has("hc-wer"), hero)
+    if len(wer) != 1 or wer[0].text() != HERO_WER:
+        errs.append(f"index.html: .hc-wer {[w.text() for w in wer]} statt ['{HERO_WER}']")
+    # A16: genau zwei Belegzeilen, keine Preise im Hero
+    proof_ul = q(lambda n: n.has("hc-proof"), hero)
+    proof = q(lambda n: n.tag == "li", proof_ul[0]) if proof_ul else []
+    want_proof = [HERO_PROOF[0].format(n=gen().REVIEW_COUNT_GOOGLE), HERO_PROOF[1]]
+    if [p.text() for p in proof] != want_proof:
+        errs.append(f"index.html: Belegzeilen im Hero {[p.text() for p in proof]} statt {want_proof}")
+    if not q(lambda n: n.tag == "a" and "data-proof" in n.attrs, hero):
+        errs.append("index.html: Beleg mit data-proof fehlt im Hero")
+    htext = hero.text()
+    if "€" in htext or re.search(r"Monatspauschale|Ad hoc", htext):
+        errs.append("index.html: Preiszeile im Hero (A16: Preise nur in #preise)")
+    if not q(lambda n: n.tag == "a" and n.attrs.get("href", "").startswith("tel:"), hero) or not q(lambda n: n.has("hc-wa"), hero):
+        errs.append("index.html: Anrufen-/WhatsApp-Knopf im Hero fehlt")
+
+    # Buehne (Markup-Vertrag)
+    stages = q(lambda n: n.tag == "div" and n.has("zw-stage"), hero)
+    st = None
+    if len(stages) != 1:
+        errs.append(f"index.html: div.zw-stage in .hero {len(stages)}x statt genau 1")
+    else:
+        st = stages[0]
+        if "data-zw" not in st.attrs:
+            errs.append("index.html: .zw-stage ohne data-zw")
+        if st.attrs.get("aria-hidden") != "true":
+            errs.append("index.html: .zw-stage ohne aria-hidden=\"true\"")
+        if st.attrs.get("data-zustand") not in ZW_ZUSTAENDE:
+            errs.append(f"index.html: .zw-stage data-zustand '{st.attrs.get('data-zustand')}' nicht in {ZW_ZUSTAENDE}")
+        if st.attrs.get("data-fall") not in ("1", "2", "3", "4"):
+            errs.append(f"index.html: .zw-stage data-fall '{st.attrs.get('data-fall')}' nicht in 1..4")
+        foc = q(lambda n: n.tag in ("a", "button", "input", "select", "textarea", "summary", "iframe") or "tabindex" in n.attrs, st)
+        if foc:
+            errs.append(f"index.html: {len(foc)} fokussierbare Elemente in der aria-hidden-Buehne (AK-R2-08)")
+        for s in ("links", "rechts"):
+            lanes = q(lambda n: n.has("zw-lane--" + s), st)
+            if len(lanes) != 1 or not lanes[0].has("zw-lane"):
+                errs.append(f"index.html: .zw-lane.zw-lane--{s} {len(lanes)}x statt genau 1")
+        # Texte (AK-R2-03): Spurtitel, je Fall zwei Texte je Spur, Zeitmarken, Schluss
+        titles = {"links": set(), "rechts": set()}
+        for t in q(lambda n: n.has("zw-lane-t"), st):
+            if _side(t):
+                titles[_side(t)].add(t.text())
+        for s, want in HERO_WEGE["spuren"].items():
+            if titles[s] != {want}:
+                errs.append(f"index.html: Spurtitel {s} {sorted(titles[s])} statt ['{want}']")
+        got, zeit = {}, {}
+        for t in q(lambda n: n.has("zw-t"), st):
+            case, side = t.up(lambda x: x.has("zw-case")), _side(t)
+            if case is None or side is None:
+                errs.append(f"index.html: .zw-t '{t.text()[:30]}' ohne .zw-case oder Spur")
+                continue
+            got.setdefault((case.attrs.get("data-fall"), side), []).append(t.text())
+        for z in q(lambda n: n.has("zw-zeit"), st):
+            case = z.up(lambda x: x.has("zw-case"))
+            if case is not None:
+                zeit.setdefault(case.attrs.get("data-fall"), set()).add(z.text())
+        for k, f in enumerate(HERO_WEGE["faelle"], 1):
+            for s in ("links", "rechts"):
+                if got.get((str(k), s)) != list(f[s]):
+                    errs.append(f"index.html: Fall {k} {s}: {got.get((str(k), s))} statt {list(f[s])}")
+            if zeit.get(str(k)) != {f["zeit"]}:
+                errs.append(f"index.html: Fall {k} Zeitmarke {sorted(zeit.get(str(k), []))} statt ['{f['zeit']}']")
+        for texts in got.values():
+            for t in texts:
+                if len(t.split()) > BILDTEXT_MAX_WOERTER:
+                    errs.append(f"index.html: Bildtext '{t}' hat mehr als {BILDTEXT_MAX_WOERTER} Woerter")
+        schl = [s.text() for s in q(lambda n: n.has("zw-schluss"), st)]
+        if not schl or set(schl) != {HERO_WEGE["schluss"]}:
+            errs.append(f"index.html: .zw-schluss {schl} statt ['{HERO_WEGE['schluss']}']")
+        # ohne JS steht der Endstand im HTML: Fall 4 sichtbar
+        c4 = q(lambda n: n.has("zw-case") and n.attrs.get("data-fall") == "4", st)
+        if not c4 or any(not c.has("is-on") for c in c4):
+            errs.append("index.html: Endstand im HTML fehlt (jede .zw-case[data-fall=\"4\"] braucht is-on)")
+        # Figur-Plaetze: feste Masse <= 160 (Spec §5.8), in beiden Spuren
+        figs = q(lambda n: n.has("zw-fig"), st)
+        if {_side(f) for f in figs} != {"links", "rechts"}:
+            errs.append("index.html: .zw-fig nicht in beiden Spuren")
+        for f in figs:
+            for el in q(lambda n: n.tag in ("img", "svg"), f):
+                w, h = el.attrs.get("width", ""), el.attrs.get("height", "")
+                if not (w.isdigit() and h.isdigit() and int(w) <= 160 and int(h) <= 160):
+                    errs.append(f"index.html: Figur <{el.tag}> ohne feste Masse width/height <= 160 ({w!r} x {h!r})")
+                if el.tag == "img" and not el.attrs.get("src", "").startswith("/assets/img/hero/"):
+                    errs.append(f"index.html: Figurbild {el.attrs.get('src')!r} liegt nicht unter /assets/img/hero/")
+
+    # Pause-Knopf und Fusszeile ausserhalb der Buehne
+    btns = q(lambda n: n.tag == "button" and n.has("zw-pause"), hero)
+    if len(btns) != 1 or "data-zw-pause" not in btns[0].attrs or btns[0].attrs.get("type") != "button":
+        errs.append(f"index.html: button.zw-pause[data-zw-pause][type=button] in .hero {len(btns)}x statt genau 1")
+    elif st is not None and btns[0].up(lambda n: n is st):
+        errs.append("index.html: Pause-Knopf steht in der aria-hidden-Buehne")
+    ki = sorted(set(re.findall(r"assets/img/hero/ki-[\w.-]+", raw)))
+    js_path = ROOT / HERO_WEGE_JS
+    if js_path.is_file():
+        ki += re.findall(r"assets/img/hero/ki-[\w.-]+", read(js_path))
+    fuss = q(lambda n: n.tag == "p" and n.has("zw-fuss"), hero)
+    if len(fuss) != 1:
+        errs.append(f"index.html: p.zw-fuss in .hero {len(fuss)}x statt genau 1")
+    else:
+        if st is not None and fuss[0].up(lambda n: n is st):
+            errs.append("index.html: p.zw-fuss steht in der Buehne (soll ausserhalb)")
+        ft = fuss[0].text()
+        base = _norm(ft.replace(KI_HINWEIS, ""))
+        if base != FUSSZEILE_HERO:
+            errs.append(f"index.html: Fusszeile '{base}' statt '{FUSSZEILE_HERO}'")
+        if ki and KI_HINWEIS not in ft:
+            errs.append(f"index.html: KI-Bild eingebunden ({ki[0]}), aber '{KI_HINWEIS}' fehlt an der Fusszeile (AK-R2-21)")
+    if not ki and KI_HINWEIS in text_of(raw):
+        errs.append(f"index.html: '{KI_HINWEIS}' ohne eingebundenes assets/img/hero/ki-*-Bild (AK-R2-21)")
+    # Textalternative: .zw-alt.sr-only mit Ueberschrift und ol > li je Fall, alle Bildtexte
+    alts = q(lambda n: n.tag == "div" and n.has("zw-alt"), hero)
+    if len(alts) != 1 or not alts[0].has("sr-only"):
+        errs.append(f"index.html: div.zw-alt.sr-only in .hero {len(alts)}x statt genau 1")
+    else:
+        alt = alts[0]
+        if st is not None and alt.up(lambda n: n is st):
+            errs.append("index.html: .zw-alt steht in der Buehne")
+        if ALT_UEBERSCHRIFT not in alt.text():
+            errs.append(f"index.html: .zw-alt ohne Ueberschrift '{ALT_UEBERSCHRIFT}'")
+        ols = q(lambda n: n.tag == "ol", alt)
+        lis = [li for li in ols[0].kids if isinstance(li, _N) and li.tag == "li"] if ols else []
+        if len(lis) != 4:
+            errs.append(f"index.html: .zw-alt ol > li {len(lis)}x statt 4")
+        for k, li in enumerate(lis, 1):
+            f = HERO_WEGE["faelle"][k - 1]
+            miss = [t for t in list(f["links"]) + list(f["rechts"]) if t not in li.text()]
+            if miss:
+                errs.append(f"index.html: .zw-alt Fall {k} ohne {miss}")
+    # AK-R2-04: Verbotsliste, Ticketnummer, Firmennamen, Logos
+    for w in HERO_VERBOTEN:
+        if w.lower() in htext.lower():
+            errs.append(f"index.html: '{w}' im Hero (AK-R2-04)")
+    tickets = sorted(set(re.findall(r"#\d+", htext)))
+    if [t for t in tickets if t != HERO_TICKET]:
+        errs.append(f"index.html: Ticketnummern im Hero {tickets}, erlaubt nur {HERO_TICKET}")
+    if re.search(r"\b(?:GmbH|mbH|OHG|GbR|e\.K\.)", htext):
+        errs.append("index.html: Firmenname mit Rechtsform im Hero")
+    for el in q(lambda n: n.tag in ("img", "svg", "use", "div", "span") and "logo" in " ".join(str(v) for v in n.attrs.values()).lower(), hero):
+        errs.append(f"index.html: Logo im Hero (<{el.tag}>), AK-R2-04")
+    for t in hero_wege_texte():
+        if len(t.split()) > BILDTEXT_MAX_WOERTER:
+            errs.append(f"HERO_WEGE: Text '{t}' laenger als {BILDTEXT_MAX_WOERTER} Woerter")
+
+    # Chat-Abschnitt (Spec §4.4)
+    itb = next((n for n in nodes if n.attrs.get("id") == "it-betreuung"), None)
+    if itb is None:
+        errs.append("index.html: #it-betreuung fehlt")
+    else:
+        chats = q(lambda n: "data-hero-chat" in n.attrs)
+        if len(chats) != 1 or chats[0].up(lambda n: n is itb) is None:
+            errs.append(f"index.html: [data-hero-chat] {len(chats)}x, soll genau 1 und in #it-betreuung stehen")
+        if q(lambda n: n.has("itb-list")):
+            errs.append("index.html: .itb-list (Typische Anrufe) steht noch auf der Seite")
+        h2s = q(lambda n: n.tag == "h2", itb)
+        if not h2s or h2s[0].text() != G3_H2:
+            errs.append(f"index.html: H2 von #it-betreuung '{h2s[0].text() if h2s else None}' statt '{G3_H2}'")
+        if KUEMMERER_SATZ not in itb.text():
+            errs.append("index.html: Kuemmerer-Satz fehlt als Einleitung in #it-betreuung")
+        if not q(lambda n: n.tag == "a" and n.attrs.get("href") == "/ratgeber/server-ausgefallen/", itb):
+            errs.append("index.html: Link /ratgeber/server-ausgefallen/ fehlt in #it-betreuung")
+    # Skript: defer, ?v= = ASSET_VER, Pre-Cache, Groesse (AK-R2-14, AK-R2-18)
+    tags = re.findall(r"<script\b[^>]*\bsrc=\"[^\"]*hero-wege\.js[^\"]*\"[^>]*>", raw)
+    if len(tags) != 1:
+        errs.append(f"index.html: <script src=…hero-wege.js> {len(tags)}x statt genau 1")
+    else:
+        if not re.search(r"\bdefer\b", tags[0]):
+            errs.append("index.html: hero-wege.js ohne defer")
+        ver = _const(r"const ASSET_VER\s*=\s*'([^']+)'", read(ROOT / "sw.js"))
+        if f"hero-wege.js?v={ver}" not in tags[0]:
+            errs.append(f"index.html: hero-wege.js ohne ?v={ver} (ASSET_VER aus sw.js)")
+    if not any("hero-wege.js" in u for u in (precache_urls() or [])):
+        errs.append("sw.js: hero-wege.js fehlt im Pre-Cache (PRECACHE_URLS)")
+    if not js_path.is_file():
+        errs.append(f"{HERO_WEGE_JS} fehlt")
+    elif len(gzip.compress(js_path.read_bytes(), 9)) > HERO_WEGE_JS_MAX_GZIP:
+        errs.append(f"{HERO_WEGE_JS} groesser als {HERO_WEGE_JS_MAX_GZIP // 1024} KB gzip")
+    return errs
+
+
 def write_legal_baseline():
     out = {}
     for p in legal_pages():
@@ -797,7 +1146,7 @@ def write_legal_baseline():
 CHECKS = {
     "AK1": (ak1, ()), "AK2": (ak2, ()), "AK2b": (ak2b, ()), "AK7": (ak7, ()), "AK8": (ak8, ()), "AK9": (ak9, ()),
     "AK9b": (ak9b, ()), "AK11a": (ak11a, ()), "AK13": (ak13, ()), "AK13v": (ak13v, ("git",)), "AK14": (ak14, ()),
-    "AK14r": (ak14r, ("intern", "git")), "AK13s": (ak13s, ()),
+    "AK14r": (ak14r, ("intern", "git")), "AK13s": (ak13s, ()), "AKH": (akh, ()),
 }
 
 if __name__ == "__main__":
