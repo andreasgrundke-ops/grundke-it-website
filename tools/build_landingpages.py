@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 """
 build_landingpages.py
-Version : 2.7
+Version : 2.8
 Autor   : Andreas Grundke IT-Service (Grundke IT-Service)
-Datum   : 2026-10-11
+Datum   : 2026-10-18
 Zweck   : Generiert aus einem gemeinsamen Template + Datenlisten die Orts- und
           Leistungs-Landingpages fuer grundke-it.de (statisches HTML, GitHub Pages)
           und aktualisiert die sitemap.xml.
@@ -47,6 +47,8 @@ Aenderungen:
   2026-10-17  Relaunch R1, Task 4: SITE_VERSION/SITE_DATE_DISP im Fuss, Kontaktleiste (STICKY) zwischen Marken
               und per sync_shared auf allen Seiten mit Leiste aus einer Quelle, grosses Google-Zitat
               (HOME_VOICE_FEATURED statt HOME_VOICES_SHOWN), Abzeichen „Meine Empfehlung“, ohne Standort-Pille im Kopf.
+  2026-10-18  Release 2.0.0 (Relaunch R1): ASSET_VER 2026.10.g, SITE_DATE, Stand (dateModified) der Seiten mit geaendertem
+              sichtbarem Inhalt (Stundensatz-Wortlaut, Abzeichen, Zitat, Claim) auf R1_DATE.
   2026-10-10  Release B, Task 5: Generator-Huelle render_shell (section, page_head, mini_chat,
               voices_html, prices_html, closing) fuer managed-it-service, it-betreuer-wechseln und
               it-notdienst (Schalter SHELL_SLUGS), K4/Antwortsatz/Chat/Stimmen aus dem Textblatt,
@@ -121,12 +123,15 @@ NEW_DATE_DISP = "7. Oktober 2026"
 # AK13v prueft das gegen origin/main), zusammen mit CACHE_NAME/RUNTIME_CACHE in sw.js. Neue URLs
 # laufen am alten Cache des Service Workers vorbei, ein wiederkehrender Besucher bekommt nie neues
 # HTML mit altem CSS.
-ASSET_VER = "2026.10.f"
+ASSET_VER = "2026.10.g"
 # Sichtbare Website-Version im Fuss (Relaunch R1, 17.10.2026): gleicht dem Suffix von CACHE_NAME in sw.js
 # (check_static AK13s). SITE_DATE_DISP = Stand dieser Version im Fuss, Form TT.MM.JJJJ.
 SITE_VERSION = "2.0.0"
-SITE_DATE = "2026-10-17"
-SITE_DATE_DISP = "17.10.2026"
+SITE_DATE = "2026-10-18"
+SITE_DATE_DISP = "18.10.2026"
+# Stand der Seiten, deren sichtbarer Inhalt mit Release 2.0.0 geaendert wurde (dateModified, Sitemap, Abschluss).
+R1_DATE = "2026-10-18"
+R1_DATE_DISP = "18. Oktober 2026"
 # Bewertungen im Google-Unternehmensprofil (Stand 10.10.2026). Eine weitere Stimme kam
 # direkt und zaehlt hier nicht mit. Einzige Quelle fuer die Zahl auf allen Seiten (llms.txt
 # schreibt der Generator nicht; check_static AK9b vergleicht die Zahl dort).
@@ -144,16 +149,16 @@ def review_count_phrase(n):
 
 # Startseite: Stand fuer WebPage.dateModified, Sitemap und 'Zuletzt aktualisiert' im Fuss
 # (sync_home). Nur hochsetzen, wenn sich der Inhalt der Startseite wirklich aendert.
-HOME_DATE = "2026-10-10"
-HOME_DATE_DISP = "10.10.2026"
+HOME_DATE = R1_DATE
+HOME_DATE_DISP = "18.10.2026"
 # Kontaktseite (Handseite): Stand fuer „Zuletzt aktualisiert“ im Abschluss (HAND_CLOSING) und lastmod der Sitemap
 # (STATIC_URLS). Nur hochsetzen, wenn sich der Inhalt der Kontaktseite wirklich aendert.
-KONTAKT_DATE = "2026-10-10"
-KONTAKT_DATE_DISP = "10. Oktober 2026"
+KONTAKT_DATE = R1_DATE
+KONTAKT_DATE_DISP = R1_DATE_DISP
 # Empfehlungen (Handseite, seit Task 10): Stand fuer „Zuletzt aktualisiert“ im Abschluss (HAND_CLOSING) und lastmod der
 # Sitemap (STATIC_URLS). Nur hochsetzen, wenn sich der Inhalt der Seite wirklich aendert.
-EMPF_DATE = "2026-10-11"
-EMPF_DATE_DISP = "11. Oktober 2026"
+EMPF_DATE = R1_DATE
+EMPF_DATE_DISP = R1_DATE_DISP
 
 # WhatsApp mit vorbefuelltem Satz je Einstieg (Textblatt §4, seit 10.10.2026): Am Satz ist
 # erkennbar, ueber welchen Knopf eine Anfrage kam, ohne Tracking-Skript. Auf der Startseite
@@ -1201,8 +1206,8 @@ def render_shell(s, places, services, head_schema=None):
 # Grasbrunn-Einstieg beginnt nicht mehr wortgleich mit dem K4 („Mein Sitz ist im Beethovenring 16 …“).
 # rows_order (Fix-Runde 2): Leistungszeilen in der Reihenfolge, in der der Antwortsatz sie nennt (place_rows);
 # Baldham und Zorneding nennen keine Leistung und behalten die Grundreihenfolge.
-PLACE_DATE = "2026-10-10"            # dateModified, Sitemap und „Zuletzt aktualisiert“ aller Ortsseiten
-PLACE_DATE_DISP = "10. Oktober 2026"
+PLACE_DATE = R1_DATE            # dateModified, Sitemap und „Zuletzt aktualisiert“ aller Ortsseiten
+PLACE_DATE_DISP = R1_DATE_DISP
 PLACES = [
     {
         "slug": "grasbrunn", "name": "Grasbrunn", "title_name": "Grasbrunn & Neukeferloh",
@@ -1547,7 +1552,7 @@ SERVICES = [
         "title": "Managed IT-Service für KMU | München Ost – Andreas Grundke IT-Service",
         "h1": "Managed IT-Service für kleine &amp; mittlere Unternehmen",
         "service_type": "Managed IT-Service",
-        "modified": "2026-10-10", "modified_disp": "10. Oktober 2026",
+        "modified": R1_DATE, "modified_disp": R1_DATE_DISP,
         "desc": ("Managed IT-Service für kleine & mittlere Unternehmen im Raum München Ost: laufende "
                  "IT-Betreuung, bevorzugter Support, ein persönlicher Ansprechpartner. Planbare "
                  "Monatspakete statt teurer Ausfälle."),
@@ -1618,7 +1623,7 @@ SERVICES = [
         "title": "Microsoft 365 Betreuung für KMU | München Ost – Andreas Grundke IT-Service",
         "h1": "Microsoft 365 Betreuung für Unternehmen",
         "service_type": "Microsoft 365 Betreuung",
-        "modified": "2026-10-10", "modified_disp": "10. Oktober 2026",
+        "modified": R1_DATE, "modified_disp": R1_DATE_DISP,
         "desc": ("Microsoft 365 für KMU im Raum München Ost: Einrichtung, Migration und laufende "
                  "Betreuung von Exchange Online, Teams, SharePoint & OneDrive – inklusive Sicherheit "
                  "und DSGVO-konformer Datensicherung."),
@@ -1667,7 +1672,7 @@ SERVICES = [
         "title": "IT-Sicherheit & Backup für KMU | München Ost – Andreas Grundke IT-Service",
         "h1": "IT-Sicherheit &amp; Backup für Unternehmen",
         "service_type": "IT-Sicherheit und Datensicherung",
-        "modified": "2026-10-10", "modified_disp": "10. Oktober 2026",
+        "modified": R1_DATE, "modified_disp": R1_DATE_DISP,
         "desc": ("IT-Sicherheit & Backup für KMU im Raum München Ost: Schutz vor Ransomware und "
                  "Datenverlust mit 3-2-1-Backup, Virenschutz, Firewall und Mitarbeiter-Awareness."),
         # Kopf der Huelle (Textblatt §1/§3, Task 6)
@@ -1736,7 +1741,7 @@ SERVICES = [
             ("Firewall & VPN", "Abgesicherter Internetzugang und verschlüsselter Zugriff von unterwegs.", "ico-shield"),
             ("Monitoring", "Ich sehe Störungen oft, bevor du sie bemerkst – und reagiere proaktiv.", "ico-monitor"),
         ],
-        "modified": "2026-10-10", "modified_disp": "10. Oktober 2026",
+        "modified": R1_DATE, "modified_disp": R1_DATE_DISP,
         # Kundenstimme Apartments Bauer (Google, 26.09.2026) seit Task 6 aus REVIEWS ueber voices_html, wortgetreu
         # wie auf der Startseite; Ueberschrift des bisherigen Abschnitts bleibt.
         "voices": ["bauer"],
@@ -1760,7 +1765,7 @@ SERVICES = [
     },
     {
         "slug": "it-notdienst", "nav": "IT-Notdienst",
-        "modified": "2026-10-10", "modified_disp": "10. Oktober 2026",
+        "modified": R1_DATE, "modified_disp": R1_DATE_DISP,
         "title": "IT-Notdienst für Firmen im Münchner Osten | Grundke IT",
         "h1": "IT-Notdienst für Unternehmen",
         "service_type": "IT-Notdienst",
@@ -1831,7 +1836,7 @@ SERVICES = [
         },
         "service_type": "KI-Beratung und Anwendungsentwicklung für KMU",
         # 10.10.2026 (Task 7): neuer Kopf mit K4 und Antwortsatz -> neues Datum
-        "published": KI_PUB_DATE, "modified": "2026-10-10", "modified_disp": "10. Oktober 2026",
+        "published": KI_PUB_DATE, "modified": R1_DATE, "modified_disp": R1_DATE_DISP,
         "cta2_href": "/ki-automatisierung/", "cta2_text": "Abläufe automatisieren",
         "extra_schema": [POTENZIALCHECK_SCHEMA],
         "desc": ("KI im Betrieb: Abläufe automatisieren, Auswertungen aus vorhandenen Daten, "
@@ -1966,7 +1971,7 @@ SERVICES = [
         "title": "KI-Automatisierung: Schnittstellen & Berichte | Grundke IT",
         "h1": "Abläufe automatisieren: Schnittstellen, Dokumente und Berichte",
         "service_type": "Prozessautomatisierung und Anwendungsentwicklung für KMU",
-        "published": KI_PUB_DATE, "modified": "2026-10-10", "modified_disp": "10. Oktober 2026",
+        "published": KI_PUB_DATE, "modified": R1_DATE, "modified_disp": R1_DATE_DISP,
         "cta2_href": "/ki-fuer-kmu/", "cta2_text": "Überblick KI im Betrieb",
         "desc": ("Schnittstellen zwischen Programmen, Dokumente automatisch auslesen, Berichte ohne "
                  "Excel-Bastelei: Prozesse mit KI automatisieren für kleine Betriebe."),
@@ -2046,7 +2051,7 @@ SERVICES = [
         "title": "Videoüberwachung mit KI: Fahrzeuge & Kennzeichen | Grundke IT",
         "h1": "Videoanalyse und Auswertung – Kameradaten nutzbar machen",
         "service_type": "KI-gestützte Videoanalyse und Auswertung für Unternehmen",
-        "published": KI_PUB_DATE, "modified": "2026-10-10", "modified_disp": "10. Oktober 2026",
+        "published": KI_PUB_DATE, "modified": R1_DATE, "modified_disp": R1_DATE_DISP,
         "cta2_href": "/netzwerk-wlan-firewall/", "cta2_text": "Netzwerk & Kameratechnik",
         "desc": ("Videoüberwachung mit KI: Fahrzeuge und Kennzeichen erkennen, Vorgänge zählen, Kennzahlen "
                  "darstellen. Auf vorhandenen UniFi-Anlagen, Verarbeitung im Haus."),
@@ -2141,7 +2146,7 @@ SERVICES = [
         "title": "KI sicher einsetzen: ChatGPT, Copilot & DSGVO | Grundke IT",
         "h1": "KI sicher einsetzen: Verträge, Regeln und Schulung für den Betrieb",
         "service_type": "Einführung von KI im Unternehmen, datenschutzgerecht umgesetzt",
-        "published": KI_PUB_DATE, "modified": "2026-10-10", "modified_disp": "10. Oktober 2026",
+        "published": KI_PUB_DATE, "modified": R1_DATE, "modified_disp": R1_DATE_DISP,
         "cta2_href": "/schulung/", "cta2_text": "Schulung für dein Team",
         "offers": ([offer_from("KI-Start", PRICES["ki_start"],
                                "Bestandsaufnahme, Werkzeug mit Vertrag, Leitplanken, Nutzungsrichtlinie, Schulung "
@@ -2284,7 +2289,7 @@ SERVICES = [
         "title": "IT-Dienstleister wechseln: geordnete Übernahme | Grundke IT",
         "h1": "IT-Betreuer wechseln: so läuft eine geordnete Übernahme",
         "service_type": "Übernahme der IT-Betreuung von einem anderen Dienstleister",
-        "published": NEW_DATE, "modified": "2026-10-10", "modified_disp": "10. Oktober 2026",
+        "published": NEW_DATE, "modified": R1_DATE, "modified_disp": R1_DATE_DISP,
         "cta2_href": "/managed-it-service/", "cta2_text": "Laufende IT-Betreuung",
         "desc": ("Dein IT-Dienstleister ist nicht erreichbar oder hört auf? Übernahme-Checkliste, was du "
                  "vom alten Betreuer brauchst und wie eine geordnete Übernahme läuft."),
@@ -2380,7 +2385,7 @@ SERVICES = [
         "title": "Lizenzen für Firmen: Microsoft 365, Copilot, ChatGPT | Grundke IT",
         "h1": "Lizenzen für deinen Betrieb, eingerichtet und verwaltet",
         "service_type": "Lizenzvertrieb mit Einrichtung und Verwaltung für Unternehmen",
-        "published": NEW_DATE, "modified": "2026-10-10", "modified_disp": "10. Oktober 2026",
+        "published": NEW_DATE, "modified": R1_DATE, "modified_disp": R1_DATE_DISP,
         "cta2_href": "/microsoft-365-betreuung/", "cta2_text": "Microsoft 365 Betreuung",
         "desc": ("Microsoft 365, Copilot, ESET-Virenschutz und Datensicherung für Unternehmen: Lizenz, "
                  "Einrichtung und Verwaltung aus einer Hand. Raum München Ost."),
@@ -2456,7 +2461,7 @@ SERVICES = [
         "name": "IT-Sicherheitsschulung & Datenschutz",
         "service_type": "IT-Sicherheitsschulung für Mitarbeiter",
         # published: fruehester belegter Stand der Seite (erster Commit des Repos)
-        "published": "2026-04-10", "modified": "2026-10-10", "modified_disp": "10. Oktober 2026",
+        "published": "2026-04-10", "modified": R1_DATE, "modified_disp": R1_DATE_DISP,
         "cta2_href": "/it-sicherheit-backup/", "cta2_text": "IT-Sicherheit & Backup",
         "desc": ("IT-Sicherheitsschulung für KMUs: Live per Teams, Online-Portal mit Quiz und Zertifikat in Vorbereitung. "
                  "Ab 135 € pauschal. Grundke IT-Service, München Ost."),
@@ -2586,7 +2591,7 @@ SERVICES = [
         "h1": "Software nach Maß für kleine Betriebe",
         "service_type": "Individuelle Softwareentwicklung und Betrieb für kleine Unternehmen",
         # 10.10.2026: Betrieb ab 80 € statt 79 € (Inhaltsaenderung -> neues Datum), Kopf mit K4 (Task 7)
-        "published": NEW_DATE, "modified": "2026-10-10", "modified_disp": "10. Oktober 2026",
+        "published": NEW_DATE, "modified": R1_DATE, "modified_disp": R1_DATE_DISP,
         # Kopf der Huelle (Textblatt §1, Task 7); Beleg = Betriebspreis der kleinen Anwendung (Andreas 10.10.2026:
         # 80 € netto), ohne Projektpreise der Vertrauenssatz der Seite
         "k": ("Aus der Excel-Liste, die drei Leute pflegen, baue ich eine kleine Anwendung, in der alle denselben "
@@ -2718,7 +2723,7 @@ SERVICES = [
         "h1": "Websites für Betriebe, die gefunden werden",
         "service_type": "Technische Umsetzung von Websites für kleine Unternehmen",
         # 10.10.2026 (Task 7): neuer Kopf mit K4 und Antwortsatz -> neues Datum
-        "published": NEW_DATE, "modified": "2026-10-10", "modified_disp": "10. Oktober 2026",
+        "published": NEW_DATE, "modified": R1_DATE, "modified_disp": R1_DATE_DISP,
         # Kopf der Huelle (Textblatt §1, Task 7); Beleg = Richtwert des One-Pagers aus den Preiskarten, ohne
         # Projektpreise der Vertrauenssatz der Seite. Der Website-Check-Kasten bleibt sichtbar (Spec §5).
         "k": ("Ich baue eure Website technisch so auf, dass sie am Handy gut funktioniert und für Google und "
@@ -2840,7 +2845,7 @@ SERVICES = [
         "title": "E-Rechnung Pflicht 2027/2028: Fristen & Umstellung | Grundke IT",
         "h1": "E-Rechnung: was dein Betrieb bis 2027 und 2028 tun muss",
         "service_type": "Umstellung auf die E-Rechnung für kleine Unternehmen",
-        "published": NEW_DATE, "modified": "2026-10-10", "modified_disp": "10. Oktober 2026",
+        "published": NEW_DATE, "modified": R1_DATE, "modified_disp": R1_DATE_DISP,
         "trust": TRUST_FESTPREIS,
         # Kopf der Huelle (Textblatt §1, Task 6); Vertrauenstext steht neben dem Einstieg
         "k": ("Ich prüfe, ob euer Rechnungsprogramm E-Rechnungen kann, suche sonst mit euch ein passendes aus oder "
@@ -3074,7 +3079,7 @@ SERVICES = [
             ],
         },
         "service_type": "Ratgeber",
-        "published": NEW_DATE, "modified": NEW_DATE, "modified_disp": NEW_DATE_DISP,
+        "published": NEW_DATE, "modified": R1_DATE, "modified_disp": R1_DATE_DISP,
         "cta2_href": "/fernwartung/", "cta2_text": "Fernwartung starten",
         "desc": ("Server ausgefallen, Phishing-Mail geklickt, E-Mails kommen nicht an, NAS defekt: was du in den "
                  "ersten 15 Minuten selbst tun kannst und wann du anrufst."),
@@ -3106,7 +3111,7 @@ SERVICES = [
         "title": "Server ausgefallen – was tun? Die ersten 15 Minuten | Grundke IT",
         "h1": "Server ausgefallen: was tun in den ersten 15 Minuten?",
         "service_type": "Ratgeber",
-        "published": NEW_DATE, "modified": NEW_DATE, "modified_disp": NEW_DATE_DISP,
+        "published": NEW_DATE, "modified": R1_DATE, "modified_disp": R1_DATE_DISP,
         "cta2_href": "/fernwartung/", "cta2_text": "Fernwartung starten",
         "desc": ("Server ausgefallen, keiner kommt an die Daten? Was du in den ersten 15 Minuten prüfen kannst, "
                  "was du auf keinen Fall tun solltest und wann du anrufen solltest."),

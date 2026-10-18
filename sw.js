@@ -49,8 +49,8 @@
  *                        Cache-Versionen trotzdem erhoeht, weil robots.txt
  *                        mitgeaendert wurde.
  *   1.3.1 / 2026-09-11 — Kundenstimmen auf der Startseite ueberarbeitet: vierte
- *                        Google-Rezension ergaenzt, Direktstimme Blumenschein
- *                        dazu, zwei Zitate auf den Google-Wortlaut gezogen
+ *                        Google-Rezension ergaenzt, Direktstimme
+ *                        ergaenzt, zwei Zitate auf den Google-Wortlaut gezogen
  *                        (index.html). Die Seite selbst laeuft zwar
  *                        Network-First und kaeme auch so an, aber '/' und
  *                        '/index.html' liegen im Pre-Cache: ohne Erhoehung
@@ -113,11 +113,14 @@
  *   1.28.0 / 2026-10-12 — Hero-Chat: abends und am Wochenende 20–40 Minuten bis zur
                         Antwort (hero-chat.js 1.5.0), Barrierefreiheitserklaerung aktualisiert,
                         Asset-Version 2026.10.f.
+ *   2.0.0 / 2026-10-18 — ruhigere Optik (style.css), Kontaktleiste und Fuss aus einer
+                        Quelle, grosses Kundenzitat, einheitlicher Stundensatz mit „zzgl. MwSt.“,
+                        Asset-Version 2026.10.g.
  */
 
-const CACHE_NAME    = 'grundke-it-v1.28.0';
-const RUNTIME_CACHE = 'grundke-it-runtime-v36';
-const ASSET_VER     = '2026.10.f';   // muss ASSET_VER im Generator entsprechen
+const CACHE_NAME    = 'grundke-it-v2.0.0';
+const RUNTIME_CACHE = 'grundke-it-runtime-v37';
+const ASSET_VER     = '2026.10.g';   // muss ASSET_VER im Generator entsprechen
 
 /* Pre-Cache: minimaler Kern fuer Offline-First-Boot */
 const PRECACHE_URLS = [
