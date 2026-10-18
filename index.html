@@ -976,6 +976,16 @@
     .testi-row > .testi-card--long { flex:0 0 calc(100% - 8rem); }
     .testi-card--long .testi-txt p + p { margin-top:.6rem; }
   }
+  /* Ab 1024 px: die lange Stimme steht innen zweispaltig (kein Absatz und kein Wort wird ueber Spalten getrennt),
+     Name und Quelle darunter ueber die volle Breite. Spaltenbreite bleibt unter 62ch. */
+  @media (min-width:1024px) {
+    .testi-card--long .testi-txt { column-count:2; column-gap:2rem; }
+    .testi-card--long > figcaption { display:flex; flex-wrap:wrap; align-items:baseline; column-gap:.9rem; }
+    .testi-card--long .testi-ctx { flex-basis:auto; }
+    .testi-card--long .testi-txt p { break-inside:avoid; max-width:62ch; }
+    .testimonials .testi-card--long .testi-txt { margin-bottom:.45rem; }
+    .testimonials .testi-card--long .stars { margin-bottom:.4rem; }
+  }
   /* Ab 1024 px: breitere Karten (weniger Zeilen, flachere Leiste) und mehr Luft um die grosse Stimme,
      damit sie die groesste Flaeche im Abschnitt bleibt */
   @media (min-width:1024px) {

@@ -103,7 +103,7 @@
  *   1.26.1 (2026-10-10) Schulung: Portal-Saetze als geplant, Datenschutz-Stand im Kopf.
  *   1.27.0 / 2026-10-11 — Release C2 Website-Umbau: Empfehlungen in der Huelle mit Einrichtungs-
  *                        Pauschalen je Geraetegruppe und Abschluss, private Produkte entfernt.
- *                        Fix-Runde B (noch vor dem Push, deshalb ohne neuen Cache-Namen): Install
+ *                        Nachbesserung (noch vor dem Push, deshalb ohne neuen Cache-Namen): Install
  *                        wirft bei fehlgeschlagenem Pre-Cache (der alte Service Worker bleibt
  *                        aktiv, statt ohne Offline-Kern alle Caches zu loeschen), nur Antworten
  *                        mit res.ok landen im Cache, offline zeigt eine Navigation die Startseite
