@@ -8,7 +8,9 @@ AKH (Stand 18.10.2026): Hero der Startseite mit dem Chat-Handy (H1, Firmenkunden
 statisch im HTML, Pause-Knopf, sichtbare Kennzeichnung, genau ein [data-hero-chat]) statt der frueheren Buehne;
 Abschnitt IT-Betreuung wieder mit den typischen Anrufen (dl.itb-list).
 AKK (Stand 18.10.2026): Kontaktwege ueberall in der Reihenfolge WhatsApp - Telefon - E-Mail; der Telefon-Knopf neben
-WhatsApp ist kein Hauptknopf (.btn-p); kein Kasten .hc-direkt mehr nach dem Hero."""
+WhatsApp ist kein Hauptknopf (.btn-p); kein Kasten .hc-direkt mehr nach dem Hero.
+AKF (Stand 18.10.2026, Release 2.1.1 Task D): Film auf der Startseite als Fassade (kein <video>/<source>/<track> im
+HTML, kein autoplay), KI-Hinweis am Player, Untertitelspur in main.js, VideoObject, Filmdateien nicht im Pre-Cache."""
 import gzip, hashlib, html, json, re, subprocess, sys
 from html.parser import HTMLParser
 from pathlib import Path
@@ -57,6 +59,8 @@ AK8_ALLOW = [
     ("index.html", "wer hilft mir kurzfristig?",
      "FAQ-Frage in Worten des Besuchers; die Antwort nennt keine Zeit (Controller 11.10.2026, Hinweis an Andreas)"),
     ("index.html", "ohne garantierte Reaktionszeit", "verneint eine Reaktionszeit (geschuetzter Satz, Spec §5)"),
+    ("index.html", "Die Umsetzung erfolgte schnell, zuverlässig und in sehr guter Qualität.",
+     "woertliches Kundenzitat (Google-Bewertung Christian F.) im Text zum Film, Wortlaut wie im Film"),
     ("index.html", "einen 24/7-Vertrag mit festen Reaktionszeiten braucht",
      "FAQ Passungsfrage: nennt, wann ein Systemhaus passt (Stand 18.10.2026), keine eigene Zusage"),
     ("digitalbonus-bayern/index.html", "Umsetzung innerhalb von 18 Monaten nach der Bewilligung",
@@ -1114,6 +1118,107 @@ def akk():
     return errs
 
 
+# ----------------------------------------------------------------------------------------------------------------------
+# AKF (Stand 18.10.2026, Release 2.1.1 Task D): Film auf der Startseite. Statisch geprueft: Abschnitt #film mit Titel und
+# Zusatz, Fassade (Link mit Posterbild, Name „Film abspielen, 1:31“, ohne JS auf die 720p-Datei), kein <video>, <source>,
+# <track> oder <iframe> im HTML und nirgends autoplay, KI-Hinweis in derselben <figure> direkt nach dem Player, die
+# Dateien hinter den data-Attributen existieren, main.js setzt die Untertitelspur (subtitles, de, default), VideoObject
+# mit Pflichtfeldern und absoluten non-www-URLs auf vorhandene Dateien, sw.js laesst Filmdateien aus dem Pre-Cache und
+# reicht .mp4/.vtt durch, Textlink „Film ansehen (1:31)“ in der Zeile nach dem Hero. Im Browser (Netzwerk vor dem Klick,
+# Spur und Fokus nach dem Klick, Sichtbarkeit des Hinweises): check_design.py R2-FILM.
+# ----------------------------------------------------------------------------------------------------------------------
+FILM_TITLE = "Lieber schauen statt lesen?"
+FILM_META = "1:31 · mit Untertiteln"
+FILM_KI = "Sprecherstimme und Illustrationen mit KI erstellt. Inhalte von Andreas Grundke geprüft."
+FILM_LABEL = "Film abspielen, 1:31"
+FILM_LINK = ("#film", "Film ansehen (1:31)")
+FILM_FILES = {"film-sd": "/assets/video/werbefilm_v2.1_2026-10-18_720p.mp4",
+              "film-hd": "/assets/video/werbefilm_v2.1_2026-10-18_1080p.mp4",
+              "film-vtt": "/assets/video/werbefilm_v2.1.de.vtt"}
+FILM_POSTER = "/assets/video/werbefilm_v2.1_vorschau.webp"
+FILM_VIDEO_LD = {"name": str, "description": str, "thumbnailUrl": FILM_POSTER, "uploadDate": "2026-10-18",
+                 "duration": "PT1M31S", "contentUrl": FILM_FILES["film-hd"], "inLanguage": "de"}
+
+
+def akf():
+    errs, src = [], read(ROOT / "index.html")
+    dom = _Dom(src).root
+    nodes = list(dom.walk())
+    for tag in ("video", "source", "track", "iframe"):
+        # <source> in <picture> (Logo) ist ein Bild, kein Film
+        if any(n.tag == tag and not (tag == "source" and n.parent.tag == "picture") for n in nodes):
+            errs.append(f"index.html: <{tag}> im HTML (Film nur als Fassade, das Video setzt main.js beim Klick)")
+    if re.search(r"\bautoplay\b", src, re.I) or re.search(r"\bautoplay\b", read(ROOT / "assets/js/main.js"), re.I):
+        errs.append("index.html/main.js: 'autoplay' gefunden (Start nur durch Klick)")
+    sec = next((n for n in nodes if n.attrs.get("id") == "film"), None)
+    if sec is None:
+        return errs + ["index.html: Abschnitt #film fehlt"]
+    h2 = next((n for n in sec.walk() if n.tag == "h2"), None)
+    if h2 is None or h2.text() != FILM_TITLE:
+        errs.append(f"#film: H2 '{h2.text() if h2 else None}' statt '{FILM_TITLE}'")
+    meta = next((n for n in sec.walk() if n.has("film-meta")), None)
+    if meta is None or meta.text() != FILM_META:
+        errs.append(f"#film: Zusatz '{meta.text() if meta else None}' statt '{FILM_META}'")
+    box = next((n for n in sec.walk() if "data-film" in n.attrs), None)
+    if box is None:
+        return errs + ["#film: [data-film] fehlt"]
+    for key, want in FILM_FILES.items():
+        got = box.attrs.get("data-" + key)
+        if got != want:
+            errs.append(f"#film: data-{key} '{got}' statt '{want}'")
+        elif not (ROOT / want.lstrip("/")).is_file():
+            errs.append(f"#film: Datei {want} fehlt im Repo")
+    a = next((n for n in box.walk() if n.tag == "a" and n.has("film-start")), None)
+    if a is None:
+        errs.append("#film: Fassade a.film-start fehlt")
+    else:
+        if a.attrs.get("href") != FILM_FILES["film-sd"]:
+            errs.append(f"#film: Fassade ohne JS verlinkt '{a.attrs.get('href')}' statt der 720p-Datei")
+        if a.attrs.get("aria-label") != FILM_LABEL:
+            errs.append(f"#film: Name der Fassade '{a.attrs.get('aria-label')}' statt '{FILM_LABEL}'")
+        img = next((n for n in a.walk() if n.tag == "img"), None)
+        if img is None or img.attrs.get("src") != FILM_POSTER or img.attrs.get("loading") != "lazy" \
+                or not img.attrs.get("width") or not img.attrs.get("height"):
+            errs.append("#film: Posterbild fehlt oder ohne loading=lazy/width/height")
+        elif not (ROOT / FILM_POSTER.lstrip("/")).is_file():
+            errs.append(f"#film: Posterbild {FILM_POSTER} fehlt im Repo")
+    fig = box.up(lambda n: n.tag == "figure")
+    cap = [k for k in (fig.kids if fig else []) if isinstance(k, _N)]
+    i = cap.index(box) if box in cap else -1
+    if fig is None or i < 0 or i + 1 >= len(cap) or cap[i + 1].tag != "figcaption" or cap[i + 1].text() != FILM_KI:
+        errs.append(f"#film: KI-Hinweis '{FILM_KI}' steht nicht als <figcaption> direkt nach dem Player")
+    js = read(ROOT / "assets/js/main.js")
+    for need in ("t.kind = 'subtitles'", "t.srclang = 'de'", "t.default = true", "v.preload = 'none'",
+                 "v.controls = true", "playsinline", "v.focus()", "matchMedia('(min-width: 1024px)')"):
+        if need not in js:
+            errs.append(f"main.js: initFilm ohne {need!r}")
+    blocks = [json.loads(b) for b in re.findall(r'<script type="application/ld\+json">(.*?)</script>', src, re.S)]
+    vids = [b for b in blocks if isinstance(b, dict) and b.get("@type") == "VideoObject"]
+    if len(vids) != 1:
+        errs.append(f"index.html: {len(vids)} VideoObject statt 1")
+    for v in vids:
+        for k, want in FILM_VIDEO_LD.items():
+            got = v.get(k)
+            if want is str:
+                if not isinstance(got, str) or not got.strip():
+                    errs.append(f"VideoObject: {k} fehlt")
+            elif k in ("thumbnailUrl", "contentUrl"):
+                if got != "https://grundke-it.de" + want:
+                    errs.append(f"VideoObject: {k} '{got}' statt 'https://grundke-it.de{want}'")
+            elif got != want:
+                errs.append(f"VideoObject: {k} '{got}' statt '{want}'")
+    sw = read(ROOT / "sw.js")
+    if any("/assets/video/" in u or re.search(r"\.(mp4|webm|vtt)$", u.split("?")[0]) for u in (precache_urls() or [])):
+        errs.append("sw.js: Filmdatei im Pre-Cache")
+    if "req.headers.has('range')" not in sw or "mp4|webm|m4v|vtt" not in sw:
+        errs.append("sw.js: Durchreichen von Range-Anfragen bzw. .mp4/.vtt fehlt")
+    weiter = next((n for n in nodes if n.has("hc-weiter")), None)
+    links = [(x.attrs.get("href"), x.text()) for x in (weiter.walk() if weiter else []) if x.tag == "a"]
+    if FILM_LINK not in links:
+        errs.append(f"index.html: Textlink {FILM_LINK} fehlt in .hc-weiter (gefunden {links})")
+    return errs
+
+
 def write_legal_baseline():
     out = {}
     for p in legal_pages():
@@ -1128,6 +1233,7 @@ CHECKS = {
     "AK1": (ak1, ()), "AK2": (ak2, ()), "AK2b": (ak2b, ()), "AK7": (ak7, ()), "AK8": (ak8, ()), "AK9": (ak9, ()),
     "AK9b": (ak9b, ()), "AK11a": (ak11a, ()), "AK13": (ak13, ()), "AK13v": (ak13v, ("git",)), "AK14": (ak14, ()),
     "AK14r": (ak14r, ("intern", "git")), "AK13s": (ak13s, ()), "AKH": (akh, ()), "AKK": (akk, ()),
+    "AKF": (akf, ()),
 }
 
 if __name__ == "__main__":

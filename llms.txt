@@ -60,8 +60,10 @@ Unternehmen.
   Datensicherung über Grundke IT-Service; ChatGPT Business und Claude Team schließt
   der Kunde direkt beim Anbieter ab, Einrichtung und Verwaltung übernimmt Grundke IT-Service
 - KI im Betrieb und Prozessautomatisierung (siehe eigener Abschnitt)
-- Software nach Maß: kleine Anwendungen für Abläufe, die heute in Excel oder auf
-  Zetteln laufen, mit KI-Unterstützung entwickelt und danach betrieben
+- Software nach Maß: Individualsoftware und Software als Dienst (SaaS) für KMU, vom
+  Alleinselbstständigen bis zum kleinen und mittleren Unternehmen. Kleine Anwendungen für
+  Abläufe, die heute in Excel oder auf Zetteln laufen, mit KI-Unterstützung entwickelt,
+  zum Festpreis gebaut und danach als Dienst betrieben und gepflegt (Monatsbetrag)
 - Websites für Betriebe: technische Umsetzung von Neubau und Relaunch auf geprüften
   Vorlagen (keine Gestaltung), optimiert für Handy, Google und KI-Assistenten
 - E-Rechnung: Auswahl, Einrichtung, Anpassung oder Wechsel des Rechnungsprogramms

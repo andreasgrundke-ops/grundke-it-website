@@ -63,6 +63,9 @@ Aenderungen:
               WhatsApp zuerst (.m-wa); Seitenkopf (page_head) WhatsApp vor Anrufen, Abschluss closing() mit neuem
               cta-sub und WhatsApp vorn, Fuss in derselben Reihenfolge. Notdienst- und Wechselseite wieder mit der
               Kopfzeile „Dein ITler geht nicht ran? Ich schon.“ (Stand 810fec0).
+  2026-10-18  Version 2.12 (Release 2.1.1, Task D): WhatsApp-Einstieg „film“ (Knopf unter dem Film der Startseite);
+              Software nach Maß mit Software als Dienst (SaaS) und Zielgruppe vom Alleinselbststaendigen bis zum KMU
+              (answer, intro, Karte „Software als Dienst“, desc, service_type), gekuerzt statt angehaengt.
   2026-10-10  Generator-Huelle render_shell (section, page_head, mini_chat,
               voices_html, prices_html, closing) fuer managed-it-service, it-betreuer-wechseln und
               it-notdienst (Schalter SHELL_SLUGS), Kernsatz/Antwortsatz/Chat/Stimmen aus den freigegebenen Texten,
@@ -192,6 +195,7 @@ WA_TEXT = {
     "kontaktleiste": "Hallo Andreas, ich habe deine Nummer von deiner Website.",
     "faq": "Hallo Andreas, meine Frage war in deinen FAQ nicht dabei:",
     "abschluss": "Hallo Andreas, ich habe ein IT-Problem und komme über deine Website.",
+    "film": "Hallo Andreas, ich habe deinen Film gesehen und habe eine Frage zur IT in meinem Betrieb.",
     "fuss": "Hallo Andreas, ich komme über deine Website.",
 }
 
@@ -2620,16 +2624,17 @@ SERVICES = [
         "slug": "software-nach-mass", "nav": "Software nach Maß", "group": "ki",
         "title": "Software entwickeln lassen für kleine Betriebe | Grundke IT",
         "h1": "Software nach Maß für kleine Betriebe",
-        "service_type": "Individuelle Softwareentwicklung und Betrieb für kleine Unternehmen",
+        "service_type": "Individualsoftware und Software als Dienst (SaaS) für kleine und mittlere Unternehmen",
         # 10.10.2026: Betrieb ab 80 € statt 79 € (Inhaltsaenderung -> neues Datum), Kopf mit Kernsatz
         "published": NEW_DATE, "modified": CONTENT_DATE, "modified_disp": CONTENT_DATE_DISP,
         # Kopf der Huelle; Beleg = Betriebspreis der kleinen Anwendung (Andreas 10.10.2026:
         # 80 € netto), ohne Projektpreise der Vertrauenssatz der Seite
         "k": ("Aus der Excel-Liste, die drei Leute pflegen, baue ich eine kleine Anwendung, in der alle denselben "
               "Stand sehen."),
-        "answer": ("Als Grundke IT-Service aus Grasbrunn baue ich für Betriebe im Münchner Osten kleine Anwendungen "
-                   "dort, wo Standardsoftware nicht passt: zum Festpreis, betrieben auf einem Server in Deutschland "
-                   "oder im eigenen Netzwerk, danach gepflegt für einen festen Monatsbetrag."),
+        # 18.10.2026 (Andreas): SaaS und Individualsoftware fuer KMU, vom Alleinselbststaendigen bis zum KMU
+        "answer": ("Als Grundke IT-Service aus Grasbrunn baue ich Individualsoftware für Betriebe vom "
+                   "Alleinselbstständigen bis zum KMU, dort, wo Standardsoftware nicht passt: zum Festpreis, danach "
+                   "als Software-Dienst betrieben und gepflegt, auf einem Server in Deutschland oder bei euch."),
         "proof2": (("ico-check", "Betrieb und Pflege ab " + eur(PRICES["software_betrieb"]) + " netto im Monat")
                    if SHOW_FROM_PRICES else
                    ("ico-check", "Festpreis für das Projekt, fester Monatsbetrag für Betrieb und Pflege")),
@@ -2658,8 +2663,8 @@ SERVICES = [
             offer_from("Ablauf-Check vor Ort", PRICES["ablauf_check"], "Halber bis ganzer Tag im Betrieb, bei Auftrag angerechnet."),
         ] if SHOW_FROM_PRICES else [],
         "cta2_href": "/ki-automatisierung/", "cta2_text": "Abläufe automatisieren",
-        "desc": ("Excel-Listen, Zettel, doppelte Eingaben: Ich baue kleine Anwendungen für eure Abläufe und "
-                 "betreibe sie weiter. Festpreis, Server in Deutschland."),
+        "desc": ("Excel-Listen, Zettel, doppelte Eingaben: Individualsoftware und SaaS für KMU, zum Festpreis "
+                 "gebaut und weiter betrieben. Server in Deutschland."),
         "intro": ("In vielen Betrieben gibt es diese eine Liste. Sie liegt als Excel-Datei auf dem Server, drei "
                   "Leute pflegen sie, und keiner weiß genau, welche Fassung stimmt. Daneben ein Ordner mit "
                   "Zetteln und ein Programm, in das dieselben Daten noch einmal getippt werden. <strong>Für "
@@ -2667,8 +2672,7 @@ SERVICES = [
                   "Ablauf: eine Oberfläche im Browser, eine "
                   "Datenbank dahinter, Rechte für die, die damit arbeiten, und eine Schnittstelle dorthin, wo "
                   "die Daten weiter gebraucht werden. Mit KI-Unterstützung entwickelt, deshalb meist in Wochen "
-                  "und deutlich günstiger als bei einem Softwarehaus. Danach betreibe und pflege ich die "
-                  "Anwendung weiter."),
+                  "und deutlich günstiger als bei einem Softwarehaus. Danach läuft sie als Software-Dienst bei mir."),
         "raw_intro": True,
         "cards": [
             ("Aus der Liste wird eine Anwendung", "Was heute in Excel oder einer alten Access-Datenbank gepflegt wird, bekommt Eingabemasken, Prüfungen und einen Verlauf. Alle sehen denselben Stand.", "ico-list"),
@@ -2676,7 +2680,7 @@ SERVICES = [
             ("Rechte und Rollen", "Büro, Werkstatt und Chef arbeiten mit derselben Anwendung, aber nicht mit denselben Rechten.", "ico-key"),
             ("Im Browser, auch am Handy", "Nichts zu installieren. Die Anwendung läuft im Browser, auf der Baustelle genauso wie im Büro.", "ico-monitor"),
             ("Daten in Deutschland", "Betrieben auf einem Server in Deutschland mit Auftragsverarbeitungsvertrag oder auf Hardware bei dir im Netzwerk. Eure Daten könnt ihr jederzeit exportieren.", "ico-shield"),
-            ("Betrieb und Pflege", "Updates, Datensicherung und Anpassungen, wenn sich ein Ablauf ändert. Dafür gibt es einen festen Monatsbetrag.", "ico-tools"),
+            ("Software als Dienst (SaaS)", "Ich betreibe die Anwendung für euch: Updates, Datensicherung und Anpassungen für einen festen Monatsbetrag.", "ico-tools"),
         ],
         "extra": """
       <h2>Drei Beispiele</h2>

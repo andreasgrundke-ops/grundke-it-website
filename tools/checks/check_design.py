@@ -1,6 +1,6 @@
 """Design-Pruefungen fuer den Relaunch (Spec §5, §7, §11).
 Titel:        check_design.py
-Version:      0.6.0 (Task 1: AK-R1-Pruefungen, --release r1; Task 11: AK-R2-Pruefungen, --release r2;
+Version:      0.7.0 (Task 1: AK-R1-Pruefungen, --release r1; Task 11: AK-R2-Pruefungen, --release r2;
               0.3.1: R2-DOM, #it-betreuung in R2 nach Flaeche;
               0.4.0: R2 auf den Hero mit Chat-Handy umgestellt: R2-06/-07/-10/-16/-TAB pruefen den Chat,
               R2-KENNZ (Kennzeichnung) statt R2-08, R2-ERSTBILD (H1 als LCP, erstes Bild, Firmenkunden-Zeile)
@@ -10,7 +10,8 @@ Version:      0.6.0 (Task 1: AK-R1-Pruefungen, --release r1; Task 11: AK-R2-Prue
               0.6.0 (Stand 18.10.2026): AK-R1-03 statt Kasten nach dem Hero (.hc-direkt entfernt) die Kontaktknoepfe:
               Kopfzeile mit WhatsApp (gruen) vor Telefon (Kontur) ohne Umbruch bei 1024/1280/1366/1440, Gruen =
               Hauptaktion WhatsApp in Seitenkopf, Abschluss, Preisen, Schnellcheck, Fernwartung, Kontakt und
-              Mobilmenue, Telefon dort nie volle #0000FE-Flaeche; R2-LINK ohne den Kasten)
+              Mobilmenue, Telefon dort nie volle #0000FE-Flaeche; R2-LINK ohne den Kasten;
+              0.7.0 (Release 2.1.1 Task D): R2-FILM, Film der Startseite als Fassade im Browser)
 Datum:        18.10.2026
 Beschreibung: Misst Hoehen bei 390x844 (reduzierte Bewegung, Service Worker blockiert) und vergleicht sie
               mit einer gespeicherten Baseline. Dazu die Abnahmekriterien AK-R1-01a ... AK-R1-23 des Relaunchs R1
@@ -1457,11 +1458,77 @@ def test_hidden_tab_pauses():
     return errs
 
 
+FILM_STATE_JS = """() => { const sec = document.getElementById('film'); if (!sec) return null;
+  const box = sec.querySelector('[data-film]'), v = sec.querySelector('video'), t = v && v.querySelector('track');
+  const cap = sec.querySelector('figcaption.film-ki'), start = sec.querySelector('.film-start');
+  const r = box ? box.getBoundingClientRect() : null, c = cap ? cap.getBoundingClientRect() : null;
+  return { box: r ? { w: r.width, h: r.height, bottom: r.bottom } : null,
+    start: start ? { tag: start.tagName.toLowerCase(), name: start.getAttribute('aria-label') } : null,
+    cap: c ? { text: cap.textContent.replace(/\\s+/g, ' ').trim(), gap: Math.round(c.top - r.bottom),
+               vis: cap.checkVisibility({ visibilityProperty: true, opacityProperty: true }) && c.height > 0 } : null,
+    video: v ? { autoplay: v.autoplay || v.hasAttribute('autoplay'), preload: v.getAttribute('preload'), controls: v.controls,
+                 inline: v.hasAttribute('playsinline'), focus: document.activeElement === v,
+                 first: (v.querySelector('source') || {}).getAttribute ? v.querySelector('source').getAttribute('src') : null,
+                 track: t ? { kind: t.kind, srclang: t.srclang, def: t.default, label: t.label } : null } : null }; }"""
+
+
+def ak_r2_film():
+    """Release 2.1.1 Task D: Film als Fassade. Bei 390x844 und 1440x900: beim Laden und nach dem Scrollen zum Film keine
+    Anfrage auf .mp4/.vtt; Fassade ist ein <button> 'Film abspielen, 1:31' auf 16:9-Flaeche; der KI-Hinweis steht vor
+    dem Abspielen sichtbar direkt unter dem Player (Abstand 0..24 px). Nach dem Klick: <video> mit controls,
+    playsinline, preload none, ohne autoplay, Fokus auf dem Video, Untertitelspur subtitles/de/default, gleiche Hoehe
+    wie die Fassade (kein Sprung), erste Quelle 720p am Handy und 1080p ab 1024 px."""
+    errs, env = [], _env()
+    want = {390: "_720p.mp4", 1440: "_1080p.mp4"}
+    for vw, vh in ((390, 844), (1440, 900)):
+        ctx = env["b"].new_context(viewport={"width": vw, "height": vh}, service_workers="block", reduced_motion="reduce")
+        try:
+            pg, reqs = ctx.new_page(), []
+            pg.on("request", lambda r: reqs.append(r.url))
+            pg.goto(env["base"] + "/", wait_until="networkidle")
+            pg.locator("#film").scroll_into_view_if_needed()
+            pg.wait_for_timeout(600)
+            media = [u for u in reqs if re.search(r"\.(mp4|vtt)(\?|$)", u)]
+            if media:
+                errs.append(f"/ bei {vw}: Filmdateien vor dem Klick angefragt: {media}")
+            a = pg.evaluate(FILM_STATE_JS)
+            if a is None:
+                errs.append(f"/ bei {vw}: #film fehlt"); continue
+            if a["start"] != {"tag": "button", "name": "Film abspielen, 1:31"}:
+                errs.append(f"/ bei {vw}: Fassade {a['start']} statt <button> 'Film abspielen, 1:31'")
+            if not a["box"] or abs(a["box"]["w"] * 9 / 16 - a["box"]["h"]) > 2:
+                errs.append(f"/ bei {vw}: Player nicht 16:9 ({a['box']})")
+            c = a["cap"]
+            if not c or not c["vis"] or not 0 <= c["gap"] <= 24:
+                errs.append(f"/ bei {vw}: KI-Hinweis nicht sichtbar direkt unter dem Player ({c})")
+            if a["video"]:
+                errs.append(f"/ bei {vw}: <video> schon vor dem Klick")
+            pg.locator("#film .film-start").click()
+            pg.wait_for_timeout(500)
+            b = pg.evaluate(FILM_STATE_JS)
+            v = b["video"]
+            if not v:
+                errs.append(f"/ bei {vw}: nach dem Klick kein <video>"); continue
+            for k, ok in (("autoplay", v["autoplay"] is False), ("preload none", v["preload"] == "none"),
+                          ("controls", v["controls"]), ("playsinline", v["inline"]), ("Fokus", v["focus"])):
+                if not ok:
+                    errs.append(f"/ bei {vw}: Video nach dem Klick: {k} nicht erfuellt ({v})")
+            if v["track"] != {"kind": "subtitles", "srclang": "de", "def": True, "label": "Deutsch"}:
+                errs.append(f"/ bei {vw}: Untertitelspur {v['track']}")
+            if not (v["first"] or "").endswith(want[vw]):
+                errs.append(f"/ bei {vw}: erste Quelle {v['first']} statt *{want[vw]}")
+            if abs(b["box"]["h"] - a["box"]["h"]) > 1:
+                errs.append(f"/ bei {vw}: Hoehe des Players springt {a['box']['h']} -> {b['box']['h']}")
+        finally:
+            ctx.close()
+    return errs
+
+
 AK_R2 = {
     "R2-06": ak_r2_06_pause, "R2-07": ak_r2_07_reduced_motion, "R2-KENNZ": ak_r2_kennz,
     "R2-ERSTBILD": ak_r2_erstbild, "R2-LINK": ak_r2_link, "R2-10": ak_r2_10_hero_height, "R2-CHAT": ak_r2_chat,
     "R2-16": ak_r2_16_contrast, "R2-FOKUS": test_no_focusable_in_aria_hidden, "R2-TAB": test_hidden_tab_pauses,
-    "R2-DOM": ak_r2_dominant,
+    "R2-DOM": ak_r2_dominant, "R2-FILM": ak_r2_film,
 }
 RELEASES = {"r1": AK_R1, "r2": AK_R2}
 # Nicht hier: AK-R2-01..05, 18 (check_static AKH, AK8, AK13), AK-R2-12 (check_site), AK-R2-13 (check_seo),

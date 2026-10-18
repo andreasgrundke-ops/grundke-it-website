@@ -242,6 +242,23 @@
   }
   </script>
 
+  <!-- Werbefilm (seit Release 2.1.1) -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"VideoObject",
+    "@id":"https://grundke-it.de/#film",
+    "name":"Warum mit der IT zu Andreas Grundke?",
+    "description":"Kurzfilm über Grundke IT-Service: ein fester Ansprechpartner für die IT kleiner Betriebe, Hilfe meist per Fernwartung, planbare Monatspauschale oder Abrechnung nach Aufwand. Mit deutschen Untertiteln. Sprecherstimme und Illustrationen mit KI erstellt.",
+    "thumbnailUrl":"https://grundke-it.de/assets/video/werbefilm_v2.1_vorschau.webp",
+    "uploadDate":"2026-10-18",
+    "duration":"PT1M31S",
+    "contentUrl":"https://grundke-it.de/assets/video/werbefilm_v2.1_2026-10-18_1080p.mp4",
+    "inLanguage":"de",
+    "isFamilyFriendly":true,
+    "publisher":{"@id":"https://grundke-it.de/#localbusiness"}
+  }
+  </script>
   <style>
   /* ═══════════════════════════════════════════════
      Startseite-spezifische Styles
@@ -449,6 +466,14 @@
   .hc-weiter p { max-width:62ch; margin:0; line-height:1.5; }
   .hc-weiter a { transition:color .2s; }
   .hc-weiter a:hover { color:var(--cyan); }
+  /* Textlink zum Film (seit Release 2.1.1): am Handy eigene Zeile ohne Trennpunkt; die Polsterung ist dort kleiner
+     (zwei Zeilen je 24 px statt eine Zeile plus .8rem oben und unten), damit #preise unter 5.000 px bleibt (AK5) */
+  .hc-weiter-sep { color:var(--text2); }
+  @media (max-width:767px) {
+    .hc-weiter { padding-block:.2rem; }
+    .hc-weiter-sep { display:none; }
+    .hc-film-link { display:table; }
+  }
   /* Ab 768 px dieselbe Breite und Polsterung wie .inner (Hero-Text und Abschnitte an einer Kante);
      Text links, Handy rechts */
   @media (min-width:768px) {
@@ -1048,6 +1073,35 @@
   .pkg-monthly { margin:1.2rem 0 0; max-width:72ch; font-size:1.0667rem; line-height:1.7; color:var(--text2); }
   .pkg-monthly strong { color:var(--text); }
 
+  /* 6b Film (seit Release 2.1.1): Fassade 16:9 mit fester Flaeche (kein Layout-Sprung), Abspiel-Knopf in Weiss mit
+     CI-Blau, KI-Hinweis direkt unter dem Bild; Bewegung nur transform, reduzierte Bewegung = Endstand */
+  .film { background:var(--bg); border-top:1px solid var(--border); }
+  .film-wrap { max-width:960px; }
+  .film-meta { margin:.35rem 0 0; font-size:1.0667rem; color:var(--text2); }
+  .film-fig { margin:1.4rem 0 0; }
+  .film-player { position:relative; aspect-ratio:16/9; overflow:hidden; border-radius:var(--r); background:#0b0d12; border:1px solid var(--border); }
+  .film-player img, .film-player video { display:block; width:100%; height:100%; object-fit:cover; background:#0b0d12; }
+  .film-player video:focus-visible { outline:3px solid var(--cyan); outline-offset:-3px; }
+  .film-start { position:absolute; inset:0; display:block; width:100%; height:100%; padding:0; margin:0; border:0; background:none; color:#fff; cursor:pointer; font:inherit; text-decoration:none; }
+  .film-start:focus-visible { outline:3px solid var(--cyan); outline-offset:-3px; border-radius:var(--r); }
+  /* Abspiel-Hinweis unten links (die Bildmitte zeigt im Posterbild Text, der nicht verdeckt werden soll) */
+  .film-cue { position:absolute; left:1rem; bottom:1rem; display:inline-flex; align-items:center; gap:.7rem; padding:.4rem 1rem .4rem .4rem; border-radius:var(--r-m); background:#fff; color:#0f1117; font-size:1.0667rem; font-weight:700; line-height:1.2; box-shadow:0 12px 30px -10px rgba(0,0,0,.65); transition:transform .25s cubic-bezier(.16,1,.3,1); }
+  .film-play { display:grid; place-items:center; width:44px; height:44px; border-radius:var(--r-s); background:#0c4da2; color:#fff; }
+  .film-play svg { fill:currentColor; margin-left:3px; }
+  .film-dur { padding-left:.7rem; border-left:1px solid #d0daea; color:#555; font-weight:600; font-variant-numeric:tabular-nums; }
+  .film-start:hover .film-cue, .film-start:focus-visible .film-cue { transform:translateY(-2px); }
+  .film-ki { margin:.7rem 0 0; font-size:1.0667rem; line-height:1.5; color:var(--text2); }
+  .film-text { margin-top:1rem; max-width:72ch; }
+  .film-text-in { padding:.2rem 0 .4rem; }
+  .film-text-in > p, .film-quote p { margin:0 0 .75rem; font-size:1.0667rem; line-height:1.7; color:var(--text2); }
+  .film-text-in > p.film-im-bild { font-style:italic; }
+  .film-quote { margin:0 0 .9rem; padding:.1rem 0 .1rem 1rem; border-left:1px solid var(--border); }
+  .film-quote p { margin:0 0 .25rem; color:var(--text); }
+  .film-quote p.film-who { margin:0; font-size:.9333rem; color:var(--text2); }
+  .film-btns { justify-content:flex-start; margin-top:1.4rem; }
+  @media (max-width:767px) { .film-cue { left:.6rem; bottom:.6rem; gap:.55rem; padding-right:.8rem; } .film-play { width:36px; height:36px; } .film-dur { padding-left:.55rem; } }
+  @media (prefers-reduced-motion:reduce) { .film-cue { transition:none; } }
+
   /* 7 "Darum kümmere ich mich auch" */
   .k3-block { background:var(--bg2); }
   .k3-grid { margin-top:1.6rem; }
@@ -1225,7 +1279,7 @@
 </section>
 
 <!-- Link unter dem Hero (alle Breiten): Uebernahme, wenn der bisherige IT-Betreuer nicht mehr da ist -->
-<div class="hc-weiter inner"><p><a href="/it-betreuer-wechseln/">IT-Betreuer nicht mehr da? So übernehme ich.</a></p></div>
+<div class="hc-weiter inner"><p><a href="/it-betreuer-wechseln/">IT-Betreuer nicht mehr da? So übernehme ich.</a><span class="hc-weiter-sep" aria-hidden="true"> · </span><a href="#film" class="hc-film-link">Film ansehen (1:31)</a></p></div>
 
 <!-- IT-BETREUUNG: Typische Anrufe + Kernaussage (seit 10.10.2026 statt der Haken-Liste), Vergleich aufklappbar,
      Chips zu den IT-Leistungsseiten (ersetzen den Abschnitt „Leistungen“, Anker #leistungen bleibt) -->
@@ -1246,10 +1300,10 @@
     <details class="more itb-vgl">
       <summary>So arbeite ich</summary>
         <ul class="itb-how">
+          <li><svg aria-hidden="true"><use href="#ico-check"/></svg><span>Dein erster Ansprechpartner bei technischen Problemen. Ich entscheide, ob wir es selbst lösen oder ob ein Fachbetrieb dazukommen sollte.</span></li>
           <li><svg aria-hidden="true"><use href="#ico-check"/></svg><span>Ein Ansprechpartner: ich. Für Urlaub gibt es eine abgestimmte Vertretung.</span></li>
           <li><svg aria-hidden="true"><use href="#ico-check"/></svg><span>Direkter Kontakt per Telefon oder WhatsApp, kein Ticketsystem.</span></li>
-          <li><svg aria-hidden="true"><use href="#ico-check"/></svg><span>110&nbsp;€ netto zzgl. MwSt. je Stunde, 15-Minuten-Takt.</span></li>
-          <li><svg aria-hidden="true"><use href="#ico-check"/></svg><span>Kein Wochenendaufschlag.</span></li>
+          <li><svg aria-hidden="true"><use href="#ico-check"/></svg><span>110&nbsp;€ netto zzgl. MwSt. je Stunde, 15-Minuten-Takt, kein Wochenendaufschlag.</span></li>
           <li><svg aria-hidden="true"><use href="#ico-check"/></svg><span>Nach dem Start kenne ich deine Anlage.</span></li>
           <li><svg aria-hidden="true"><use href="#ico-check"/></svg><span>Vieles löse ich per Fernwartung.</span></li>
         </ul>
@@ -1610,6 +1664,49 @@
   </div>
 </section>
 
+<!-- FILM (seit Release 2.1.1): Fassade aus Posterbild und Knopf, das <video> setzt main.js (initFilm) erst beim Klick
+     ein; ohne JS fuehrt der Link auf die 720p-Datei. Keine Filmdatei wird vor dem Klick geladen, nichts davon im
+     Pre-Cache von sw.js. Untertitel als Spur (default), Text zum Film darunter. -->
+<section class="film section-pad" id="film" aria-labelledby="film-h">
+  <div class="inner film-wrap">
+    <h2 class="s-title" id="film-h">Lieber schauen statt lesen?</h2>
+    <p class="film-meta">1:31 · mit Untertiteln</p>
+    <figure class="film-fig">
+      <div class="film-player" data-film data-film-sd="/assets/video/werbefilm_v2.1_2026-10-18_720p.mp4" data-film-hd="/assets/video/werbefilm_v2.1_2026-10-18_1080p.mp4" data-film-vtt="/assets/video/werbefilm_v2.1.de.vtt">
+        <a class="film-start" href="/assets/video/werbefilm_v2.1_2026-10-18_720p.mp4" aria-label="Film abspielen, 1:31">
+          <img src="/assets/video/werbefilm_v2.1_vorschau.webp" alt="" width="1280" height="720" loading="lazy" decoding="async"/>
+          <span class="film-cue" aria-hidden="true"><span class="film-play"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M8 5.5v13l10.5-6.5z"/></svg></span>Film abspielen<span class="film-dur">1:31</span></span>
+        </a>
+      </div>
+      <figcaption class="film-ki">Sprecherstimme und Illustrationen mit KI erstellt. Inhalte von Andreas Grundke geprüft.</figcaption>
+    </figure>
+    <details class="more film-text">
+      <summary>Text zum Film</summary>
+      <div class="film-text-in">
+        <p>Freitag, kurz nach sechs. Keine Mails, die Kasse hängt. Dein IT-Dienstleister hat schon zu. Und an der Hotline fängst du wieder bei null an.</p>
+        <p>Es geht auch anders. Mit Andreas Grundke hast du einen festen Ansprechpartner für deine IT. Ob Netzwerk, Microsoft 365 oder Kasse: Er kümmert sich. Er ist dein erster Ansprechpartner bei technischen Problemen und entscheidet, ob er es selbst löst oder ein Fachbetrieb dazukommt.</p>
+        <p>Zum Start lernt er deinen Betrieb und deine Systeme kennen. Deshalb hilft er meistens per Fernwartung, ohne erst rauszufahren.</p>
+        <p>Stell ihn dir vor wie deine eigene IT-Abteilung. Nur extern. Ohne Schreibtisch, ohne Obstkorb, ohne Fahrradleasing.</p>
+        <p>Du zahlst eine planbare Monatspauschale. Oder ohne Vertrag nach Aufwand, im Viertelstundentakt und ohne Wochenendzuschlag.</p>
+        <p class="film-im-bild">Im Bild: Betreuung ab 149 € / Monat, ohne Vertrag 110 € / Std. Nur für Unternehmen, alle Preise zzgl. MwSt.</p>
+        <p>Feste Öffnungszeiten hat er nicht. Wer ein Betreuungspaket hat, kommt zuerst dran.</p>
+        <p class="film-im-bild">Im Bild: Keine Öffnungszeiten. Vertragskunden zuerst, ohne garantierte Reaktionszeit.</p>
+        <p>Das sagen seine Kunden.</p>
+        <blockquote class="film-quote"><p>„Man merkt gar nicht, dass man selber überhaupt keine Ahnung hat. Perfekt“</p><p class="film-who">Martina P. · Google-Bewertung, 5 Sterne</p></blockquote>
+        <blockquote class="film-quote"><p>„Sehr nette und kompetente Unterstützung! Empfehle ich uneingeschränkt.“</p><p class="film-who">Verena K. · Google-Bewertung, 5 Sterne</p></blockquote>
+        <blockquote class="film-quote"><p>„Ich bin sehr zufrieden mit der Arbeit der Firma. Die Umsetzung erfolgte schnell, zuverlässig und in sehr guter Qualität. Alle meine Anliegen wurden professionell gelöst. Klare Empfehlung!“</p><p class="film-who">Christian F. · Google-Bewertung, 5 Sterne</p></blockquote>
+        <p>Mach den kostenlosen IT-Schnellcheck. Dann kennt er deine Systeme, bevor es brennt. Schreib ihm einfach per WhatsApp.</p>
+        <p class="film-im-bild">Im Bild: grundke-it.de · 0178 258 44 38 · auch per WhatsApp</p>
+      </div>
+    </details>
+    <div class="cta-btns film-btns">
+      <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20habe%20deinen%20Film%20gesehen%20und%20habe%20eine%20Frage%20zur%20IT%20in%20meinem%20Betrieb." target="_blank" rel="noopener" class="btn-wa" data-wa="film"><svg width="20" height="20" aria-hidden="true"><use href="#ico-wa"/></svg> WhatsApp</a>
+      <a href="tel:+491782584438" class="btn-tel"><svg width="20" height="20" aria-hidden="true"><use href="#ico-phone"/></svg> 0178 258 44 38</a>
+      <a href="mailto:info@grundke-it.de?subject=Anfrage%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0AMein%20Anliegen%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F)." class="btn-email"><svg width="20" height="20" aria-hidden="true"><use href="#ico-mail"/></svg> E-Mail schreiben</a>
+    </div>
+  </div>
+</section>
+
 <!-- "Darum kümmere ich mich auch" (seit 10.10.2026): KI, Software, Websites und Schulung in einem Block.
      Ersetzt die Abschnitte #ki, #websites, #schulung; die Anker bleiben (Section-ID und zwei <span>).
      Potenzialcheck und Website-Check stehen auf ihren Seiten (/ki-fuer-kmu/, /websites-fuer-betriebe/). -->
@@ -1625,7 +1722,7 @@
       </article>
       <article class="card k3-card">
         <h3><a href="/software-nach-mass/">Software nach Maß<svg class="k3-arrow" aria-hidden="true"><use href="#ico-arrow-r"/></svg></a></h3>
-        <p>Aus Excel-Listen und Zetteln wird eine kleine Anwendung im Browser. Festpreis für den Bau, Betrieb ab <span data-price="software_betrieb">80 €</span> netto im Monat.</p>
+        <p>Individualsoftware und SaaS für KMU: Aus Excel-Listen und Zetteln wird eine Anwendung im Browser. Festpreis für den Bau, Betrieb ab <span data-price="software_betrieb">80 €</span> netto im Monat.</p>
       </article>
       <article class="card k3-card">
         <span id="websites" class="anchor"></span>

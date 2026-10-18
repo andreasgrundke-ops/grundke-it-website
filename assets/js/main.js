@@ -1,7 +1,7 @@
 /**
  * ═══════════════════════════════════════════════════════════
  * Grundke IT-Service · main.js
- * Version: 1.6.0
+ * Version: 1.7.0
  * Autor: Andreas Grundke / Grundke IT-Service
  * Datum: 2026-10-10
  * Beschreibung: Shared JS – Nav, FAQ, Scroll
@@ -17,6 +17,10 @@
  *                       entfernt (keine .flip-wrap mehr im Markup).
  *                       1.6.0: Position in der Wischleiste der Kundenstimmen
  *                       (initTestiRow, Startseite).
+ * Änderung 2026-10-18: 1.7.0: Film auf der Startseite (initFilm). Die Fassade
+ *                       (Link mit Posterbild) wird zum Knopf; erst der Klick setzt
+ *                       <video> mit Untertitelspur ein und startet es. Vorher wird
+ *                       keine Filmdatei angefragt (preload=none, keine <source> im HTML).
  * ═══════════════════════════════════════════════════════════
  */
 
@@ -440,6 +444,46 @@ function initInstallPrompt() {
   };
 }
 
+/* ── Film (Startseite, seit 1.7.0) ──
+   Ablauf: 1. Fassade suchen ([data-film] mit a.film-start; ohne JS bleibt der Link auf die 720p-Datei).
+   2. Link durch einen gleich aussehenden <button> ersetzen (Aktion statt Navigation).
+   3. Klick: 1080p ab 1024 px Breite oder wenn die Flaeche in Geraetepixeln mindestens 1.500 px breit ist,
+      sonst 720p; <video controls playsinline preload="none"> mit Untertitelspur (default) einsetzen,
+      Fokus aufs Video, play() (Start nur als Folge dieses Klicks). */
+function initFilm() {
+  const box = document.querySelector('[data-film]');
+  const link = box && box.querySelector('a.film-start');
+  if (!link) return;
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = link.className;
+  btn.setAttribute('aria-label', link.getAttribute('aria-label') || 'Film abspielen');
+  while (link.firstChild) btn.appendChild(link.firstChild);
+  link.replaceWith(btn);
+
+  btn.addEventListener('click', () => {
+    const img = btn.querySelector('img');
+    const wide = window.matchMedia('(min-width: 1024px)').matches ||
+      box.clientWidth * (window.devicePixelRatio || 1) >= 1500;
+    const v = document.createElement('video');
+    v.controls = true;
+    v.playsInline = true;
+    v.setAttribute('playsinline', '');
+    v.preload = 'none';
+    if (img) v.poster = img.currentSrc || img.src;
+    v.setAttribute('aria-label', 'Film über Grundke IT-Service, 1:31, mit Untertiteln');
+    [wide ? box.dataset.filmHd : box.dataset.filmSd, wide ? box.dataset.filmSd : box.dataset.filmHd]
+      .forEach(src => { const s = document.createElement('source'); s.src = src; s.type = 'video/mp4'; v.appendChild(s); });
+    const t = document.createElement('track');
+    t.kind = 'subtitles'; t.srclang = 'de'; t.label = 'Deutsch'; t.src = box.dataset.filmVtt; t.default = true;
+    v.appendChild(t);
+    btn.replaceWith(v);
+    v.focus();
+    const p = v.play();
+    if (p && p.catch) p.catch(() => { /* Start blockiert: die Steuerleiste bleibt sichtbar, ein Tipp startet */ });
+  }, { once: true });
+}
+
 /* ── Init ── */
 document.addEventListener('DOMContentLoaded', () => {
   initHamburger();
@@ -449,6 +493,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initSchnellcheck();
   initFooter();
   initTestiRow();
+  initFilm();
   initInstallPrompt();
   var lenis = initLenis();
   initScrollTop(lenis);
