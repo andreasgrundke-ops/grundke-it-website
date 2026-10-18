@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 build_landingpages.py
-Version : 2.8
+Version : 2.9
 Autor   : Andreas Grundke IT-Service (Grundke IT-Service)
 Datum   : 2026-10-18
 Zweck   : Generiert aus einem gemeinsamen Template + Datenlisten die Orts- und
@@ -49,6 +49,8 @@ Aenderungen:
               (HOME_VOICE_FEATURED statt HOME_VOICES_SHOWN), Abzeichen „Meine Empfehlung“, ohne Standort-Pille im Kopf.
   2026-10-18  Version 2.0.0: ASSET_VER 2026.10.g, SITE_DATE, Stand (dateModified) der Seiten mit geaendertem
               sichtbarem Inhalt (Stundensatz-Wortlaut, Abzeichen, Zitat, Claim) auf CONTENT_DATE.
+  2026-10-18  Version 2.1.0: Hero „Zwei Wege“ (assets/js/hero-wege.js), ASSET_VER 2026.10.h; sync_shared
+              versioniert hero-wege.js (HERO_WEGE_JS_RE) wie hero-chat.js.
   2026-10-10  Generator-Huelle render_shell (section, page_head, mini_chat,
               voices_html, prices_html, closing) fuer managed-it-service, it-betreuer-wechseln und
               it-notdienst (Schalter SHELL_SLUGS), Kernsatz/Antwortsatz/Chat/Stimmen aus den freigegebenen Texten,
@@ -123,10 +125,10 @@ NEW_DATE_DISP = "7. Oktober 2026"
 # prueft das gegen origin/main), zusammen mit CACHE_NAME/RUNTIME_CACHE in sw.js. Neue URLs
 # laufen am alten Cache des Service Workers vorbei, ein wiederkehrender Besucher bekommt nie neues
 # HTML mit altem CSS.
-ASSET_VER = "2026.10.g"
+ASSET_VER = "2026.10.h"
 # Sichtbare Website-Version im Fuss (seit 17.10.2026): gleicht dem Suffix von CACHE_NAME in sw.js
 # (check_static prueft das). SITE_DATE_DISP = Stand dieser Version im Fuss, Form TT.MM.JJJJ.
-SITE_VERSION = "2.0.0"
+SITE_VERSION = "2.1.0"
 SITE_DATE = "2026-10-18"
 SITE_DATE_DISP = "18.10.2026"
 # Stand der Seiten, deren sichtbarer Inhalt zuletzt geaendert wurde (dateModified, Sitemap, Abschluss).
@@ -396,6 +398,7 @@ FONTS_CSS_RE = re.compile(r'( *)<link rel="stylesheet" href="((?:\.\./)*|/)asset
 FONTS_CSS_VER_RE = re.compile(r'(href="(?:(?:\.\./)*|/)assets/css/fonts\.css)(?:\?v=[^"]*)?"')
 LENIS_JS_RE = re.compile(r'src="(?:\.\./)*/?assets/js/lenis\.min\.js(?:\?v=[^"]*)?"')
 HERO_JS_RE = re.compile(r'src="(?:\.\./)*/?assets/js/hero-chat\.js(?:\?v=[^"]*)?"')
+HERO_WEGE_JS_RE = re.compile(r'src="(?:\.\./)*/?assets/js/hero-wege\.js(?:\?v=[^"]*)?"')
 FONT_PRELOADS = ("Manrope-latin.woff2", "SpaceGrotesk-latin.woff2")
 
 
@@ -443,6 +446,7 @@ def sync_shared(places, services):
         html_new = FW_JS_RE.sub(lambda _m: 'src="' + asset("js/fernwartung.js") + '"', html_new)
         html_new = LENIS_JS_RE.sub(lambda _m: 'src="' + asset("js/lenis.min.js") + '"', html_new)
         html_new = HERO_JS_RE.sub(lambda _m: 'src="' + asset("js/hero-chat.js") + '"', html_new)
+        html_new = HERO_WEGE_JS_RE.sub(lambda _m: 'src="' + asset("js/hero-wege.js") + '"', html_new)
         html_new = FONTS_CSS_VER_RE.sub(lambda m: m.group(1) + "?v=" + ASSET_VER + '"', html_new)
         if not home:
             sprite = ICON_SPRITE.replace("\n", nl)

@@ -951,7 +951,7 @@ body.is-home {
 /* Der Beispiel-Chat (Handy im Hero, Mini-Chat) behaelt seine Groessen; :where() haelt die Ausnahme ohne Gewicht.
    Reihenfolge zaehlt: alle Gruppen haben dieselbe Spezifitaet, die spaetere gewinnt (Fliesstext zuerst,
    dann Bedienelemente und Klein, zuletzt die Ueberschriften-Stufen). */
-body.is-home main :is(p, li, dd, dt, .faq-a, .testi-txt, .praxis-text, .sc-checklist li, .sc-deliverable-list li, .sc-steps li, .price-feats li, .faq-more p, .itb-list dd, .itb-list dt):where(:not(.hc-stage *, .mini-chat-box *)) {
+body.is-home main :is(p, li, dd, dt, .faq-a, .testi-txt, .praxis-text, .sc-checklist li, .sc-deliverable-list li, .sc-steps li, .price-feats li, .faq-more p):where(:not(.hc-stage *, .mini-chat-box *)) {
   font-size: var(--fs-text-home);
 }
 body.is-home main :is(.btn-p, .btn-g, .btn-wa, .btn-tel, .btn-email, .hc-wa, .price-btn, .sc-cta, .sc-preview-btn, .praxis-cta,

@@ -7,10 +7,10 @@
 grundke-it.de Website – siehe README/CLAUDE.md im Projekt.
 
 ## Aktueller Stand
-18.10.2026: Release 2.0.0 „Ruhe“ (ruhigere Optik, Dock neu, Version im Fuß, Stundensatz-Wortlaut).
+18.10.2026: Release 2.1.0 „Hero“ (Hero „Zwei Wege“, Chat-Handy im Abschnitt IT-Betreuung); davor 2.0.0 (ruhigere Optik, Dock neu, Version im Fuß, Stundensatz-Wortlaut).
 
-- **Versionen:** `sw.js` `CACHE_NAME` `grundke-it-v2.0.0`, `RUNTIME_CACHE` `runtime-v37`, `ASSET_VER` 2026.10.g,
-  `SITE_VERSION` 2.0.0 (Fuß „Version x.y.z · Stand TT.MM.JJJJ“ aus dem Generator). `SITE_VERSION` bei jedem
+- **Versionen:** `sw.js` `CACHE_NAME` `grundke-it-v2.1.0`, `RUNTIME_CACHE` `runtime-v38`, `ASSET_VER` 2026.10.h,
+  `SITE_VERSION` 2.1.0 (Fuß „Version x.y.z · Stand TT.MM.JJJJ“ aus dem Generator). `SITE_VERSION` bei jedem
   Release mit dem `CACHE_NAME`-Suffix gleichziehen; `check_static.py` prüft das.
 - **Kontaktleiste (Dock):** eine Quelle im Generator (`STICKY`-Marken), nur bis 1279 px sichtbar, ab 1280 px
   ausgeblendet; nie in einzelnen Dateien ändern.
