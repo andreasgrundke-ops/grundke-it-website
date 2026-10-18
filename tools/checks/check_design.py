@@ -11,7 +11,7 @@ Version:      0.7.0 (Task 1: AK-R1-Pruefungen, --release r1; Task 11: AK-R2-Prue
               Kopfzeile mit WhatsApp (gruen) vor Telefon (Kontur) ohne Umbruch bei 1024/1280/1366/1440, Gruen =
               Hauptaktion WhatsApp in Seitenkopf, Abschluss, Preisen, Schnellcheck, Fernwartung, Kontakt und
               Mobilmenue, Telefon dort nie volle #0000FE-Flaeche; R2-LINK ohne den Kasten;
-              0.7.0 (Release 2.1.1 Task D): R2-FILM, Film der Startseite als Fassade im Browser)
+              0.7.0 (Release 2.1.1): R2-FILM, Film der Startseite als Fassade im Browser)
 Datum:        18.10.2026
 Beschreibung: Misst Hoehen bei 390x844 (reduzierte Bewegung, Service Worker blockiert) und vergleicht sie
               mit einer gespeicherten Baseline. Dazu die Abnahmekriterien AK-R1-01a ... AK-R1-23 des Relaunchs R1
@@ -1473,7 +1473,7 @@ FILM_STATE_JS = """() => { const sec = document.getElementById('film'); if (!sec
 
 
 def ak_r2_film():
-    """Release 2.1.1 Task D: Film als Fassade. Bei 390x844 und 1440x900: beim Laden und nach dem Scrollen zum Film keine
+    """Release 2.1.1: Film als Fassade. Bei 390x844 und 1440x900: beim Laden und nach dem Scrollen zum Film keine
     Anfrage auf .mp4/.vtt; Fassade ist ein <button> 'Film abspielen, 1:31' auf 16:9-Flaeche; der KI-Hinweis steht vor
     dem Abspielen sichtbar direkt unter dem Player (Abstand 0..24 px). Nach dem Klick: <video> mit controls,
     playsinline, preload none, ohne autoplay, Fokus auf dem Video, Untertitelspur subtitles/de/default, gleiche Hoehe

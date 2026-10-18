@@ -9,7 +9,7 @@ statisch im HTML, Pause-Knopf, sichtbare Kennzeichnung, genau ein [data-hero-cha
 Abschnitt IT-Betreuung wieder mit den typischen Anrufen (dl.itb-list).
 AKK (Stand 18.10.2026): Kontaktwege ueberall in der Reihenfolge WhatsApp - Telefon - E-Mail; der Telefon-Knopf neben
 WhatsApp ist kein Hauptknopf (.btn-p); kein Kasten .hc-direkt mehr nach dem Hero.
-AKF (Stand 18.10.2026, Release 2.1.1 Task D): Film auf der Startseite als Fassade (kein <video>/<source>/<track> im
+AKF (Stand 18.10.2026, Release 2.1.1): Film auf der Startseite als Fassade (kein <video>/<source>/<track> im
 HTML, kein autoplay), KI-Hinweis am Player, Untertitelspur in main.js, VideoObject, Filmdateien nicht im Pre-Cache."""
 import gzip, hashlib, html, json, re, subprocess, sys
 from html.parser import HTMLParser
@@ -42,7 +42,7 @@ PROMISE_RE = re.compile("|".join("(?:" + p + ")" for p in PROMISE_PATTERNS), re.
 # Ausgenommen (Spec AK8): Kundenzitate (blockquote.testi-txt), die Lesespalte der Ratgeber-Artikel
 # (article.lp-article), Rechtstexte und die Leitzeile.
 AK8_HERO_JS = "assets/js/hero-chat.js"   # Texte des Hero-Chats (CASES, NIGHT_REPLY, updateClock)
-AK8_LEITZEILE = "Dein ITler geht nicht ran? Ich schon."   # = H1_TEXT (Stand 18.10.2026, Task C)
+AK8_LEITZEILE = "Dein ITler geht nicht ran? Ich schon."   # = H1_TEXT (Stand 18.10.2026, Release 2.1.1)
 # Erlaubte Treffer: (Seite, exakter Ausschnitt um den Treffer, Grund). Ein Treffer ist erlaubt, wenn der Ausschnitt
 # auf dieser Seite im geprueften Text steht und den Treffer enthaelt. Ein Eintrag ohne Treffer ist ein Fehler (Liste
 # bleibt genau). Seite = Pfad wie rel(), fuer den Hero-Chat AK8_HERO_JS.
@@ -1119,7 +1119,7 @@ def akk():
 
 
 # ----------------------------------------------------------------------------------------------------------------------
-# AKF (Stand 18.10.2026, Release 2.1.1 Task D): Film auf der Startseite. Statisch geprueft: Abschnitt #film mit Titel und
+# AKF (Stand 18.10.2026, Release 2.1.1): Film auf der Startseite. Statisch geprueft: Abschnitt #film mit Titel und
 # Zusatz, Fassade (Link mit Posterbild, Name „Film abspielen, 1:31“, ohne JS auf die 720p-Datei), kein <video>, <source>,
 # <track> oder <iframe> im HTML und nirgends autoplay, KI-Hinweis in derselben <figure> direkt nach dem Player, die
 # Dateien hinter den data-Attributen existieren, main.js setzt die Untertitelspur (subtitles, de, default), VideoObject

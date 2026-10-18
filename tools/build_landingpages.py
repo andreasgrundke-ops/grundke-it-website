@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 build_landingpages.py
-Version : 2.11
+Version : 2.12
 Autor   : Andreas Grundke IT-Service (Grundke IT-Service)
 Datum   : 2026-10-18
 Zweck   : Generiert aus einem gemeinsamen Template + Datenlisten die Orts- und
@@ -63,7 +63,7 @@ Aenderungen:
               WhatsApp zuerst (.m-wa); Seitenkopf (page_head) WhatsApp vor Anrufen, Abschluss closing() mit neuem
               cta-sub und WhatsApp vorn, Fuss in derselben Reihenfolge. Notdienst- und Wechselseite wieder mit der
               Kopfzeile „Dein ITler geht nicht ran? Ich schon.“ (Stand 810fec0).
-  2026-10-18  Version 2.12 (Release 2.1.1, Task D): WhatsApp-Einstieg „film“ (Knopf unter dem Film der Startseite);
+  2026-10-18  Version 2.12 (Release 2.1.1): WhatsApp-Einstieg „film“ (Knopf unter dem Film der Startseite);
               Software nach Maß mit Software als Dienst (SaaS) und Zielgruppe vom Alleinselbststaendigen bis zum KMU
               (answer, intro, Karte „Software als Dienst“, desc, service_type), gekuerzt statt angehaengt.
   2026-10-10  Generator-Huelle render_shell (section, page_head, mini_chat,
@@ -2672,7 +2672,7 @@ SERVICES = [
                   "Ablauf: eine Oberfläche im Browser, eine "
                   "Datenbank dahinter, Rechte für die, die damit arbeiten, und eine Schnittstelle dorthin, wo "
                   "die Daten weiter gebraucht werden. Mit KI-Unterstützung entwickelt, deshalb meist in Wochen "
-                  "und deutlich günstiger als bei einem Softwarehaus. Danach läuft sie als Software-Dienst bei mir."),
+                  "und deutlich günstiger als bei einem Softwarehaus. Danach betreibe ich sie als Software-Dienst."),
         "raw_intro": True,
         "cards": [
             ("Aus der Liste wird eine Anwendung", "Was heute in Excel oder einer alten Access-Datenbank gepflegt wird, bekommt Eingabemasken, Prüfungen und einen Verlauf. Alle sehen denselben Stand.", "ico-list"),

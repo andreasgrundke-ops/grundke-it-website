@@ -123,10 +123,16 @@
                         Chat-Handy im Abschnitt IT-Betreuung, dazu Merge
                         Release 2.0.1 (So arbeite ich, FAQ Passungsfrage, KI-Kennzeichnung),
                         Asset-Version 2026.10.i.
- *   2.1.1 / 2026-10-18 — Hero der Startseite wieder mit Beispiel-Chat (hero-wege.js entfaellt),
-                        Ausrichtung auf Betriebe (Abschluss, Preise, FAQ, Schema), Kontaktleiste
-                        mit WhatsApp zuerst, neue Kopfzeile auf Notdienst- und Wechselseite,
-                        Asset-Version 2026.10.j.
+ *   2.1.1 / 2026-10-18 — Hero der Startseite wieder mit Beispiel-Chat (erste Nachricht
+                        statisch, gekennzeichnet; hero-wege.js entfaellt, Buehne entfernt),
+                        H1 „Dein ITler geht nicht ran? Ich schon.“ mit Schutzsatz,
+                        Ausrichtung auf Betriebe (Hero-Zeile, FAQ, Abschlusszeile, Preis-Hinweis,
+                        Schema), Kontaktreihenfolge WhatsApp - Telefon - E-Mail ueberall
+                        (WhatsApp als Hauptaktion, auch in der Navigation), Kasten „Direkt
+                        erreichbar“ entfernt, Film „Lieber schauen statt lesen?“ unter assets/video/
+                        (nie im Pre-Cache; dieser Worker reicht .mp4/.vtt und Range-Anfragen
+                        durch), „erster Ansprechpartner“ in „So arbeite ich“, Software als Dienst
+                        auf /software-nach-mass/, Asset-Version 2026.10.j.
  */
 
 const CACHE_NAME    = 'grundke-it-v2.1.1';

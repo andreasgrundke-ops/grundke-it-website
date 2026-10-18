@@ -57,12 +57,14 @@ geaendert hat, nicht wegen eines neuen Footer-Links.
   Einrichtungs-Pauschalen, Barrierefreiheitserklaerung neu.
 - **Release 2.0.1 (in 2.1.0 enthalten):** im Abschnitt IT-Betreuung „So arbeite ich“ (`ul.itb-how`, sechs Punkte)
   statt Systemhaus-Vergleich, FAQ-Passungsfrage, KI-Kennzeichnung `p.cta-ki` im Abschluss (`closing()`, Startseite von Hand).
-- **Startseite Hero „Der Chat“** (H1 „Dein ITler geht nicht ran? Ich schon.“, seit 2.1.1 wieder mit dem Chat-Handy): Kopf links mit
+- **Startseite Hero „Der Chat“** (H1 „Dein ITler geht nicht ran? Ich schon.“ mit Schutzsatz, seit 2.1.1 wieder mit dem Chat-Handy,
+  Bühne entfernt; Leitzeile auf Notdienst- und Wechselseite und Vorschaubild unverändert): Kopf links mit
   Unterzeile, Schutzsatz, Firmenkunden-Zeile, zwei Belegen und Knöpfen; rechts bzw. darunter das Chat-Handy
   (`[data-hero-chat]`, `assets/js/hero-chat.js`). Die erste Kundennachricht steht im HTML, das Skript läuft von dort weiter;
   sichtbare Kennzeichnung „Beispiel-Chat, …“ und Pause-Knopf am Chat, bei reduzierter Bewegung ein fertiger Chat, abends
   20-40 Min. bis zur Antwort. Direkt unter dem Hero der Link zu /it-betreuer-wechseln/. Abschnitt IT-Betreuung wieder
-  „Typische Anrufe“ (`dl.itb-list`).
+  „Typische Anrufe“ (`dl.itb-list`). „So arbeite ich“ nennt dich als ersten Ansprechpartner; `/software-nach-mass/` führt
+  Software als Dienst (SaaS) für Ein-Personen-Betriebe bis KMU.
 - **Kontaktwege (seit 2.1.1):** überall WhatsApp, Telefon, E-Mail in dieser Reihenfolge. WhatsApp ist die Hauptaktion
   (grün `--wa`), Telefon getönt mit Kontur (`--tel-*`), E-Mail neutral; Kopfzeile mit `.nav-wa` und `.nav-tel`
   (unter 1280 px nur das Telefon-Symbol). Den Kasten „Direkt erreichbar“ nach dem Hero gibt es nicht mehr.
@@ -73,6 +75,10 @@ geaendert hat, nicht wegen eines neuen Footer-Links.
   `check_static.py --ci` laeuft im Deploy und stoppt ihn bei Fehlern.
 - **Kontaktleiste (Dock):** kommt aus einer Quelle im Generator (`STICKY`-Marken), nur bis 1279 px sichtbar,
   ab 1280 px ausgeblendet; nie in einzelnen Dateien aendern. Reihenfolge WhatsApp (Hauptaktion), Anrufen, E-Mail.
+- **Film auf der Startseite (seit 2.1.1):** Abschnitt „Lieber schauen statt lesen?“ als Fassade (Vorschaubild, Player erst
+  auf Klick), Untertitel, KI-Hinweis am Player, `VideoObject`. Dateien unter `assets/video/`. `sw.js` reicht `.mp4`, `.vtt` und
+  Range-Anfragen durch. Prüfungen: `check_static.py` AKF und AKK, `check_design.py` R2-FILM.
+  **Filmdateien unter assets/video/ nicht in den Pre-Cache; neue Fassung ersetzt die alte (nur Endfassung im Repo).**
 - **Zielgruppe nur Betriebe:** Zeile `p.cta-fuer` in `closing()`, Hinweis an den Preisen der Startseite, FAQ
   „Für wen arbeitest du?“ (Notdienst), `audience` (BusinessAudience) im Unternehmensknoten. Positiv formulieren.
 - **Typo:** `body.is-home` traegt die groessere Schriftskala der Startseite; Unterseiten bewusst ohne.
@@ -83,7 +89,7 @@ geaendert hat, nicht wegen eines neuen Footer-Links.
   check_static vergleicht die Rechtstexte je Seite mit ihrem Basis-Commit (`LEGAL_BASE_COMMITS`);
   Rechtstext nur mit Andreas' OK aendern und dann Basis-Commit und `legal_hash.json` nachziehen.
 - **Offen:** Ortsseiten-Fakten (Entwurf in `../_intern/o5-ortsfakten.md`), Linux-Fernwartung auf echtem
-  Mint testen, Search Console um den 24.10. und 07.11.2026, Laengenbudgets fast voll (`#preise` bei 390 px: 4.983 von 5.000, siehe STATUS).
+  Mint testen, Search Console um den 24.10. und 07.11.2026, Laengenbudgets fast voll (bei 390 px: `#preise` 4.994 von 5.000, software-nach-mass 7.968 von 8.000, Startseite 11.392 von 12.000; siehe STATUS).
 - Details in `STATUS.md`; Spec, Plan, Textblatt, Messungen und Fachwissen ausserhalb des Repos in
   `../_intern/` (Repo ist oeffentlich).
 

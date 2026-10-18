@@ -7,7 +7,7 @@
 grundke-it.de Website – siehe README/CLAUDE.md im Projekt.
 
 ## Aktueller Stand
-18.10.2026: Release 2.1.1 (Hero wieder mit Beispiel-Chat, Ausrichtung auf Betriebe in Abschluss, Preisen, FAQ und Schema, Kontaktwege überall in der Reihenfolge WhatsApp, Telefon, E-Mail mit WhatsApp als Hauptaktion, auch in der Kopfzeile, Kasten nach dem Hero entfernt, H1 wieder „Dein ITler geht nicht ran? Ich schon.“, ebenso Notdienst- und Wechselseite und Vorschaubild); davor 2.1.0 (Hero „Ein Weg“), enthält 2.0.1 (Abschnitt „So arbeite ich“ statt Systemhaus-Vergleich, FAQ-Passungsfrage, KI-Kennzeichnung im Abschluss); davor 2.0.0 (ruhigere Optik, Dock neu, Version im Fuß, Stundensatz-Wortlaut).
+18.10.2026: Release 2.1.1 (Hero wieder mit Beispiel-Chat: erste Nachricht statisch, gekennzeichnet, Bühne entfernt; H1 „Dein ITler geht nicht ran? Ich schon.“ mit Schutzsatz, Leitzeile auf Notdienst- und Wechselseite und Vorschaubild unverändert; Ausrichtung auf Firmenkunden in Hero-Zeile, FAQ „Für wen arbeitest du?“, Abschlusszeile, Preis-Hinweis, Schema `audience` und `llms.txt`; Kontaktwege überall in der Reihenfolge WhatsApp, Telefon, E-Mail mit WhatsApp als grüner Hauptaktion, auch in der Navigation; Kasten „Direkt erreichbar“ entfernt; Film „Lieber schauen statt lesen?“ (1:31, `assets/video/`, Fassade, Untertitel, KI-Hinweis am Player, VideoObject); „erster Ansprechpartner“ in „So arbeite ich“; Software als Dienst auf `/software-nach-mass/`); davor 2.1.0 (Hero „Ein Weg“), enthält 2.0.1 (Abschnitt „So arbeite ich“ statt Systemhaus-Vergleich, FAQ-Passungsfrage, KI-Kennzeichnung im Abschluss); davor 2.0.0 (ruhigere Optik, Dock neu, Version im Fuß, Stundensatz-Wortlaut).
 
 - **Versionen:** `sw.js` `CACHE_NAME` `grundke-it-v2.1.1`, `RUNTIME_CACHE` `runtime-v40`, `ASSET_VER` 2026.10.j,
   `SITE_VERSION` 2.1.1 (Fuß „Version x.y.z · Stand TT.MM.JJJJ“ aus dem Generator). `SITE_VERSION` bei jedem
@@ -15,6 +15,10 @@ grundke-it.de Website – siehe README/CLAUDE.md im Projekt.
 - **Kontaktleiste (Dock):** eine Quelle im Generator (`STICKY`-Marken), nur bis 1279 px sichtbar, ab 1280 px
   ausgeblendet; nie in einzelnen Dateien ändern. Seit 2.1.1 Reihenfolge WhatsApp (Hauptaktion, grüne Fläche),
   Anrufen (getönt mit Kontur), E-Mail.
+- **Film (seit 2.1.1):** Abschnitt „Lieber schauen statt lesen?“ auf der Startseite, Dateien unter `assets/video/`
+  (Endfassung 1080p und 720p, Untertitel als VTT, Vorschaubild), geladen erst auf Klick (Fassade), KI-Hinweis am
+  Player, `VideoObject` im Schema. Video und VTT kommen nie in den Pre-Cache; `sw.js` reicht `.mp4`, `.vtt` und
+  Range-Anfragen durch. Neue Prüfungen: `check_static.py` AKF und AKK, `check_design.py` R2-FILM.
 - **Zielgruppe:** nur Betriebe (Ein-Personen-Gewerbe bis rund 50 Mitarbeiter). Sichtbar im Abschluss jeder Seite
   (`p.cta-fuer`), an den Preisen der Startseite, in der FAQ „Für wen arbeitest du?“ und als `audience` im Schema.
 - **Typo:** `body.is-home` trägt die größere Schriftskala der Startseite; Unterseiten bewusst ohne.
@@ -37,7 +41,7 @@ grundke-it.de Website – siehe README/CLAUDE.md im Projekt.
   Python 3.13 mit Playwright.
 
 ## Verlauf (kurz)
-- 18.10.2026: Release 2.1.1: Hero wieder mit Beispiel-Chat, Ausrichtung auf Betriebe, Dock mit WhatsApp zuerst, neue Kopfzeile auf Notdienst- und Wechselseite, Vorschaubild neu.
+- 18.10.2026: Release 2.1.1: Hero wieder mit Beispiel-Chat (Bühne entfernt), H1 mit Schutzsatz, Ausrichtung auf Firmenkunden, Kontaktreihenfolge WhatsApp, Telefon, E-Mail (WhatsApp grün, auch in der Navigation), Kasten „Direkt erreichbar“ entfernt, Film auf der Startseite, „erster Ansprechpartner“, Software als Dienst auf `/software-nach-mass/`.
 - 17.10.2026: Bing/IndexNow: `BingSiteAuth.xml` und IndexNow-Schlüsseldatei liegen live; `tools/indexnow.py` meldet die Sitemap-URLs (31) an IndexNow, erster Ping HTTP 200. Nach jedem Deploy mit neuen oder geänderten Seiten erneut laufen lassen (`python tools/indexnow.py`, nicht Teil des Builds).
 - 09.10.2026: Hero nur noch Chat, Fernwartung mit Umschalter Windows/Linux/macOS, TeamViewer raus,
   Website-Preise neu (ca. 800 / 1.300 / 2.000 €, Betrieb optional 40 €/Monat).
@@ -56,8 +60,8 @@ grundke-it.de Website – siehe README/CLAUDE.md im Projekt.
 - Bing Webmaster Tools (Andreas, im Browser): Seite verifiziert? Sitemap `https://grundke-it.de/sitemap.xml` eingereicht? Startseite per URL-Prüfung testen. Stand im Repo nicht sichtbar.
 - Search Console prüfen: um den 24.10. und den 07.11.2026 (zwei und vier Wochen nach dem Umbau).
 - Ortsseiten: eigene Fakten und FAQ, sobald die Angaben vorliegen (Entwurf intern).
-- Längenbudgets sind fast voll (`#preise` bei 390 px: 4.947 von 5.000; Startseite `#schnellcheck`,
-  software-nach-mass 7.986 von 8.000, ki-dsgvo, empfehlungen > 96 %): neue Texte dort nur mit Kürzung an anderer Stelle.
+- Längenbudgets sind fast voll (Stand 18.10.2026 bei 390 px: `#preise` 4.994 von 5.000, software-nach-mass 7.968 von 8.000,
+  Startseite 11.392 von 12.000; außerdem `#schnellcheck`, ki-dsgvo, empfehlungen > 96 %): neue Texte dort nur mit Kürzung an anderer Stelle.
 - GitHub Actions auf Versionen ohne Node-20-Warnung heben.
 - Offen: Linux-Fernwartung auf echtem Mint testen; AGB-PDF von 2024 aktualisieren.
 
