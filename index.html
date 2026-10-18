@@ -477,9 +477,13 @@
   .zw-stimme-q { display:block; margin:4px 0 0; font-size:14px; font-style:normal; line-height:1.45; color:var(--text2); }
   .zw-stimme-q a { color:var(--text2); text-decoration:underline; text-underline-offset:.22em; text-decoration-thickness:1px; }
   .zw-stimme-q a:hover { color:var(--text); }
+  /* Schmale Handys: die Bildtexte brechen haeufiger um, daher feste Buehnenhoehe je Breite (gemessen: laengster Fall
+     plus Schluss braucht bis 389 px 316, 390-413 px 294, ab 414 px 274; die Hoehen lassen jeweils >= 8 px Reserve) */
+  @media (max-width:413px) { .zw-stage { height:302px; } }
+  @media (max-width:389px) { .zw-stage { height:324px; } }
   /* Sehr schmal (unter 360 px): kleinere Figur, hoehere Buehne, damit der laengste Fall samt Schluss hineinpasst */
   @media (max-width:359px) {
-    .zw-stage { height:312px; }
+    .zw-stage { height:324px; }
     .zw-weg { grid-template-columns:72px minmax(0,1fr); gap:0 12px; }
     .zw-fig { width:72px; height:72px; }
   }

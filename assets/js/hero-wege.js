@@ -1,7 +1,7 @@
 /**
  * ═══════════════════════════════════════════════════════════
  * Grundke IT-Service · hero-wege.js
- * Version: 2.1.0
+ * Version: 2.1.1
  * Autor: Andreas Grundke / Grundke IT-Service
  * Datum: 2026-10-18
  * Beschreibung: Hero „Ein Weg" auf der Startseite. Die Buehne „So läuft das
@@ -25,7 +25,8 @@
  *   7. Mitte: Die Textspalte reserviert Platz fuer alle drei Bilder und den
  *      Schluss. Damit die Buehne nie halb leer wirkt, wird sie per transform
  *      so verschoben, dass die sichtbaren Bilder neben der Figur mittig
- *      stehen (nur transform, die Hoehe bleibt fest, kein CLS).
+ *      stehen (nur transform, die Hoehe bleibt fest, kein CLS). Neu gemessen
+ *      wird nach dem Laden der Schriften und gedrosselt bei Groessenaenderung.
  * Aenderungshistorie:
  *   1.0.0 (2026-10-18) Erste Fassung (Vorstufe, nicht veroeffentlicht).
  *   1.0.1 (2026-10-18) Umschalten auf reduzierte Bewegung waehrend des Besuchs
@@ -34,6 +35,8 @@
  *                      Zustand je Bild (data-bild); der Spurwechsel entfaellt.
  *   2.1.0 (2026-10-18) Sichtbare Bilder vertikal mittig (transform), auch nach
  *                      Groessenaenderung des Fensters.
+ *   2.1.1 (2026-10-18) Neu mitteln nach document.fonts.ready; resize per
+ *                      requestAnimationFrame gedrosselt.
  * ═══════════════════════════════════════════════════════════
  */
 (function () {
@@ -196,7 +199,14 @@
       abgleichen();
     }, { threshold: [0, 0.2] }).observe(stage);
   }
-  window.addEventListener('resize', function () { mitte(true); });
+  var rahmen = 0;
+  window.addEventListener('resize', function () {
+    if (rahmen) return;
+    rahmen = requestAnimationFrame(function () { rahmen = 0; mitte(true); });
+  });
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(function () { mitte(true); });
+  }
   document.addEventListener('visibilitychange', function () {
     imHintergrund = !!document.hidden;
     abgleichen();
