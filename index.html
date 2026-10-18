@@ -464,15 +464,17 @@
   /* Link im Hero (seit Release 2.1.2 direkt unter der Knopfreihe, vorher als einzelne Zeile unter dem Hero): Uebernahme
      fuer Betriebe, deren IT-Betreuer weg ist, und der Weg zum Film. Groesse Klein (style.css) wie Wer und Belege. */
   .hc-weiter { max-width:34rem; margin:1.1rem 0 0; line-height:1.5; }
-  .hc-weiter a { transition:color .2s; }
+  /* Trefferflaeche beider Links mindestens 24 px hoch (WCAG 2.5.8, Lighthouse target-size), Text und Farbe unveraendert;
+     Stand 18.10.2026, Release 2.1.2. */
+  .hc-weiter a { transition:color .2s; display:inline-flex; align-items:center; min-height:24px; }
   .hc-weiter a:hover { color:var(--cyan); }
   .hc-weiter-sep { color:var(--text2); }
   /* Am Handy (Knopfreihe aus, die Kontaktleiste traegt sie) direkt unter den Belegen; Film-Link in eigener Zeile ohne
      Trennpunkt. Hero-Unterkante und Abstand zum Chat knapper, damit der Hero bei 390 px im Budget (835 px) bleibt. */
   @media (max-width:767px) {
-    .hc-weiter { margin-top:.5rem; line-height:1.45; }
+    .hc-weiter { margin-top:.25rem; line-height:1.45; }
     .hc-weiter-sep { display:none; }
-    .hc-film-link { display:table; }
+    .hc-film-link { display:flex; width:fit-content; }
     .hc-inner { gap:1.2rem; padding-bottom:.8rem; }
   }
   /* Ab 768 px dieselbe Breite und Polsterung wie .inner (Hero-Text und Abschnitte an einer Kante);
