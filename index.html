@@ -417,7 +417,7 @@
   .hc-h1 em { font-style:normal; color:var(--cyan); }
   .hc-h1 em::before { content:"\A"; white-space:pre; }
   .hero .hc-k { font-size:18px; line-height:1.4; max-width:34rem; margin:0 0 .35rem; }
-  .hc-schutz { font-size:16px; line-height:1.5; color:var(--text2); max-width:34rem; margin:0 0 .9rem; }
+  .hc-schutz { font-size:16px; line-height:1.5; color:var(--text2); max-width:34rem; margin:0 0 .9rem; text-wrap:balance; }
   .hc-wer { font-size:14px; line-height:1.5; color:var(--text2); margin:0 0 1.4rem; }
   .hc-wer strong { color:var(--text); font-weight:600; }
   @media (max-width:767px) { .hc-wer { margin-bottom:1.1rem; } }
@@ -428,13 +428,17 @@
   .zw-stage { position:relative; display:grid; grid-template-rows:auto minmax(0,1fr); height:284px; padding:14px 14px 12px; border:1px solid var(--border); border-radius:var(--r-l); background:var(--bg2); overflow:hidden; }
   .zw-kopf { display:flex; align-items:center; justify-content:space-between; gap:12px; margin:0 0 10px; }
   .zw-titel { margin:0; font-size:14px; font-weight:700; line-height:1.4; color:var(--text2); }
-  .zw-dots { display:flex; gap:6px; flex-shrink:0; }
-  /* Fortschritt: kommend = Ring (3,4:1), erledigt = gefuellt grau, aktuell = gefuellt hell */
-  .zw-dots i { width:6px; height:6px; border-radius:50%; box-shadow:inset 0 0 0 1px #64748b; }
-  .zw-dots i.is-done { background:var(--text3); }
-  .zw-dots i.is-on { background:var(--text); }
-  .zw-weg { display:grid; grid-template-columns:96px minmax(0,1fr); gap:0 14px; align-items:start; min-height:0; }
-  /* Eine Figur, zwei Zustaende uebereinander: besorgt (Bild 1 und 2), entspannt (Bild 3) */
+  .zw-dots { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+  /* Fortschritt (8 px): kommend = Ring (3,4:1), erledigt = gefuellt grau (5,5:1), aktuell = hell und groesser
+     (nur transform, kein Layoutwechsel) */
+  .zw-dots i { width:8px; height:8px; border-radius:50%; box-shadow:inset 0 0 0 1px #64748b; transition:transform .25s ease-out, background-color .25s; }
+  .zw-dots i.is-done { background:var(--text3); box-shadow:none; }
+  .zw-dots i.is-on { background:var(--text); box-shadow:none; transform:scale(1.375); }
+  /* Figur und Text stehen vertikal mittig; hero-wege.js schiebt die sichtbaren Bilder per transform in die Mitte,
+     damit kein Zustand halb leer wirkt (Hoehe bleibt fest) */
+  .zw-weg { display:grid; grid-template-columns:96px minmax(0,1fr); gap:0 14px; align-items:center; min-height:0; }
+  /* Eine Figur, zwei Zustaende uebereinander: besorgt (Bild 1 und 2), entspannt (Bild 3: Arme locker, Hand an der
+     Tasse; das Haekchen steht nur am Text .zw-t--ok) */
   .zw-fig { position:relative; width:96px; height:96px; }
   .zw-fig svg { position:absolute; inset:0; display:block; width:100%; height:100%; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; transition:opacity .3s ease-out; }
   .zw-fig svg * { vector-effect:non-scaling-stroke; }
@@ -444,7 +448,7 @@
   .zw-stage[data-bild="3"] .zw-fig-a { opacity:0; }
   .zw-stage[data-bild="3"] .zw-fig-b { opacity:1; }
   /* Faelle liegen in einer Rasterzelle uebereinander, der Schluss steht darunter (Hoehe bleibt konstant) */
-  .zw-txt { display:grid; grid-template-rows:auto auto; min-width:0; }
+  .zw-txt { position:relative; display:grid; grid-template-rows:auto auto; min-width:0; transition:transform .45s cubic-bezier(.16,1,.3,1); }
   .zw-txt > .zw-case { grid-area:1 / 1; display:flex; flex-direction:column; gap:6px; min-width:0; }
   .zw-case { opacity:0; transition:opacity .25s ease-out; }
   .zw-case.is-on { opacity:1; }
@@ -457,7 +461,7 @@
   .zw-schluss { grid-area:2 / 1; margin:10px 0 0; font-family:var(--fh); font-size:18px; font-weight:700; line-height:1.2; text-wrap:balance; letter-spacing:-.01em; color:var(--cyan); opacity:0; transform:translateY(6px); transition:opacity .3s cubic-bezier(.16,1,.3,1), transform .3s cubic-bezier(.16,1,.3,1); }
   .zw-schluss.is-on { opacity:1; transform:none; }
   .zw-foot { display:flex; align-items:center; gap:12px; margin-top:8px; }
-  .zw-fuss { flex:1; margin:0; font-size:14px; line-height:1.45; color:var(--text3); text-wrap:pretty; }
+  .zw-fuss { flex:1; margin:0; font-size:14px; line-height:1.45; color:var(--text2); text-wrap:pretty; }
   .zw-pause { width:44px; height:44px; flex-shrink:0; display:grid; place-items:center; padding:0; border-radius:50%; border:1px solid #64748b; background:transparent; color:var(--text); cursor:pointer; transition:border-color .2s, background-color .2s, transform .15s ease-out; }
   .zw-pause[hidden] { display:none; }
   .zw-pause:hover { border-color:var(--text2); background:rgba(255,255,255,.06); }
@@ -466,8 +470,9 @@
   .zw-pause svg { display:none; width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
   .zw-pause[data-zustand="laeuft"] .i-pause, .zw-pause[data-zustand="pause"] .i-play, .zw-pause[data-zustand="ende"] .i-replay { display:block; }
   /* Echte Stimme unter der Kennzeichnung: wortgetreu, Quelle darunter, keine Ueberschrift, kein Schmuck */
-  .zw-stimme { margin:18px 0 0; padding:0 0 0 14px; border-left:2px solid var(--border); }
-  /* oeffnendes Anfuehrungszeichen haengt in den Einzug, der Text fluchtet mit der Quelle */
+  /* Trennung ueber den Einzug statt Linie; das oeffnende Anfuehrungszeichen haengt frei in den Einzug,
+     der Text fluchtet mit der Quelle */
+  .zw-stimme { margin:18px 0 0; padding:0 0 0 16px; }
   .zw-stimme-t { margin:0; line-height:1.5; color:var(--text); text-indent:-.4em; text-wrap:pretty; }
   .zw-stimme-q { display:block; margin:4px 0 0; font-size:14px; font-style:normal; line-height:1.45; color:var(--text2); }
   .zw-stimme-q a { color:var(--text2); text-decoration:underline; text-underline-offset:.22em; text-decoration-thickness:1px; }
@@ -484,7 +489,7 @@
   .hc-weiter a { transition:color .2s; }
   .hc-weiter a:hover { color:var(--cyan); }
   @media (prefers-reduced-motion: reduce) {
-    .zw-case, .zw-t, .zw-schluss, .zw-fig svg, .zw-pause { transition:none; }
+    .zw-case, .zw-t, .zw-schluss, .zw-fig svg, .zw-pause, .zw-txt, .zw-dots i { transition:none; }
   }
   /* Ab 768 px dieselbe Breite und Polsterung wie .inner: Hero-Text, Kasten und Abschnitte stehen an einer Kante */
   @media (min-width:768px) {
@@ -508,8 +513,10 @@
     .zw-t { font-size:17px; }
     .zw-schluss { margin-top:18px; font-size:20px; }
     .zw-foot { margin-top:10px; }
-    .zw-stimme { margin-top:22px; }
+    .zw-stimme { margin-top:22px; padding-left:20px; }
   }
+  /* ab 1152 px brechen die Bildtexte nicht mehr um: niedrigere Buehne, laengster Fall passt mit Luft */
+  @media (min-width:1152px) { .zw-stage { height:300px; } }
   /* Handy quer: kein Platz fuer die Buehne; Kennzeichnung, Stimme und Textalternative bleiben */
   @media (max-height:500px) and (orientation:landscape) {
     .hc-inner { min-height:0; padding-block:1.6rem; }
@@ -1251,7 +1258,7 @@
         <div class="zw-weg">
           <div class="zw-fig">
             <svg class="zw-fig-a" viewBox="0 0 96 96" width="144" height="144"><path d="M10 86h76"/><circle cx="42" cy="36" r="12"/><path d="M37 42.5h8"/><path d="M22 86c0-16 9-26 20-26s20 10 20 26"/><path d="M60 74c4-8 6-16 4-24l-6-6"/><rect x="52" y="27" width="8" height="15" rx="2.5" transform="rotate(14 56 34.5)"/><circle cx="78" cy="22" r="9"/><path d="M78 16.5V22l3.5 2.5"/><g class="zw-auge"><circle cx="37.5" cy="35" r="1.4"/><circle cx="45.5" cy="35" r="1.4"/></g></svg>
-            <svg class="zw-fig-b" viewBox="0 0 96 96" width="144" height="144"><path d="M10 86h76"/><circle cx="44" cy="34" r="12"/><path d="M39 39.5c2.8 2.6 7.2 2.6 10 0"/><path d="M24 86c0-16 9-26 20-26s20 10 20 26"/><path d="M31 64L16 28L35 25"/><path d="M57 64L72 28L53 25"/><path d="M72 86v-10h10v10M82 78.5h2.5a2.5 2.5 0 0 1 0 5H82"/><path d="M73 20l4 4 8-8"/><g class="zw-auge"><circle cx="39.5" cy="33" r="1.4"/><circle cx="48.5" cy="33" r="1.4"/></g></svg>
+            <svg class="zw-fig-b" viewBox="0 0 96 96" width="144" height="144"><path d="M10 86h76"/><circle cx="44" cy="34" r="12"/><path d="M39 39.5c2.8 2.6 7.2 2.6 10 0"/><path d="M24 86c0-16 9-26 20-26s20 10 20 26"/><path d="M28 66.5L19 79"/><path d="M60 66.5L72 78"/><path d="M72 86v-10h10v10M82 78.5h2.5a2.5 2.5 0 0 1 0 5H82"/><g class="zw-auge"><circle cx="39.5" cy="33" r="1.4"/><circle cx="48.5" cy="33" r="1.4"/></g></svg>
           </div>
           <div class="zw-txt">
             <div class="zw-case" data-fall="1"><p class="zw-zeit"><svg class="zw-g" viewBox="0 0 24 24"><path d="M5 20h14M6 20V11h12v9M8 11V6h8v5M10 8.5h4M9 14h1M12 14h1M15 14h1M9 17h1M12 17h1M15 17h1"/></svg><span>Kasse</span></p><p class="zw-t">Samstag, 12:10. Die Kasse steht.</p><p class="zw-t">Anruf. Andreas schaltet sich auf.</p><p class="zw-t zw-t--ok"><svg class="zw-ok" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Kassenserver neu gestartet. Läuft wieder.</span></p></div>

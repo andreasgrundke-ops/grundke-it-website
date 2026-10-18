@@ -1,7 +1,7 @@
 /**
  * ═══════════════════════════════════════════════════════════
  * Grundke IT-Service · hero-wege.js
- * Version: 2.0.0
+ * Version: 2.1.0
  * Autor: Andreas Grundke / Grundke IT-Service
  * Datum: 2026-10-18
  * Beschreibung: Hero „Ein Weg" auf der Startseite. Die Buehne „So läuft das
@@ -22,12 +22,18 @@
  *      20 % der Buehne sichtbar sind oder der Tab im Hintergrund liegt.
  *   6. Wird reduzierte Bewegung erst waehrend des Besuchs eingeschaltet:
  *      sofort zurueck in den Endstand aus dem HTML, Knopf ausblenden.
+ *   7. Mitte: Die Textspalte reserviert Platz fuer alle drei Bilder und den
+ *      Schluss. Damit die Buehne nie halb leer wirkt, wird sie per transform
+ *      so verschoben, dass die sichtbaren Bilder neben der Figur mittig
+ *      stehen (nur transform, die Hoehe bleibt fest, kein CLS).
  * Aenderungshistorie:
  *   1.0.0 (2026-10-18) Erste Fassung (Vorstufe, nicht veroeffentlicht).
  *   1.0.1 (2026-10-18) Umschalten auf reduzierte Bewegung waehrend des Besuchs
  *                      fuehrt sofort in den Endstand.
  *   2.0.0 (2026-10-18) Ein Weg: eine Spur, drei Bilder je Fall, eine Figur mit
  *                      Zustand je Bild (data-bild); der Spurwechsel entfaellt.
+ *   2.1.0 (2026-10-18) Sichtbare Bilder vertikal mittig (transform), auch nach
+ *                      Groessenaenderung des Fensters.
  * ═══════════════════════════════════════════════════════════
  */
 (function () {
@@ -40,6 +46,8 @@
 
   var knopf = stage.parentNode.querySelector('[data-zw-pause]');
   var schluss = stage.querySelector('.zw-schluss');
+  var spalte = stage.querySelector('.zw-txt');
+  var aktuell = null;                      // gerade sichtbarer Fall
   var punkte = stage.querySelectorAll('.zw-dots i');
 
   var FAELLE = 4, FALL_MS = 7000, AUS_MS = 250;
@@ -53,6 +61,25 @@
 
   function an(el, ja) { if (el) el.classList.toggle('is-on', ja); }
   function alle(list, ja) { for (var i = 0; i < list.length; i++) an(list[i], ja); }
+
+  /* Sichtbaren Teil der Textspalte mittig setzen: halber freier Platz unter dem letzten sichtbaren Bild.
+     .zw-txt ist position:relative und damit offsetParent der Bilder; offsetTop/-Height ignorieren transforms, die
+     Messung bleibt also stabil. sofort = ohne Uebergang (Fallwechsel) */
+  function mitte(sofort) {
+    if (!spalte) return;
+    var y = 0;
+    if (aktuell && !(schluss && schluss.classList.contains('is-on'))) {
+      var sichtbar = aktuell.querySelectorAll('.zw-t.is-on');
+      var letztes = sichtbar.length ? sichtbar[sichtbar.length - 1] : aktuell.querySelector('.zw-zeit');
+      if (letztes) {
+        var unten = letztes.offsetTop + letztes.offsetHeight;
+        y = Math.max(0, Math.round((spalte.offsetHeight - unten) / 2));
+      }
+    }
+    if (sofort) spalte.style.transition = 'none';
+    spalte.style.transform = y ? 'translateY(' + y + 'px)' : '';
+    if (sofort) { void spalte.offsetHeight; spalte.style.transition = ''; }
+  }
 
   /* ── Schrittliste: [Zeitpunkt in ms, Funktion] ── */
   var schritte = [[0, function () {          // Start aus dem Endstand: Texte ausblenden
@@ -71,19 +98,22 @@
         punkte[i].className = i < n - 1 ? 'is-done' : (i === n - 1 ? 'is-on' : '');
       }
       alle(bilder, false);
+      aktuell = el;
+      mitte(true);
       an(el, true);
     }]);
     BILD_MS.forEach(function (ms, k) {
       schritte.push([t0 + ms, function () {
         stage.setAttribute('data-bild', String(k + 1));
         an(bilder[k], true);
+        mitte(false);
       }]);
     });
     if (n < FAELLE) {
       schritte.push([t0 + 6750, function () { an(el, false); }]);
     } else {
       schritte.push(
-        [t0 + 5600, function () { an(schluss, true); }],
+        [t0 + 5600, function () { an(schluss, true); mitte(false); }],
         [t0 + 6200, function () { setzeZustand('ende'); }]
       );
     }
@@ -144,6 +174,8 @@
     idx = schritte.length; rest = 0;
     grund.forEach(function (g) { g[0].setAttribute('class', g[1]); });
     grundAttr.forEach(function (a) { if (a[1] !== null) stage.setAttribute(a[0], a[1]); });
+    aktuell = null;
+    mitte(true);
     setzeZustand('ende');
     if (knopf) knopf.hidden = true;
   }
@@ -164,6 +196,7 @@
       abgleichen();
     }, { threshold: [0, 0.2] }).observe(stage);
   }
+  window.addEventListener('resize', function () { mitte(true); });
   document.addEventListener('visibilitychange', function () {
     imHintergrund = !!document.hidden;
     abgleichen();
