@@ -23,6 +23,7 @@
  *                       keine Filmdatei angefragt (preload=none, keine <source> im HTML).
  * Änderung 2026-10-18: 1.7.1 (Release 2.1.2): Film-Knopf ohne eigenes aria-label, sein
  *                       Name ist der sichtbare Text (WCAG 2.5.3).
+ * Änderung 2026-10-18: 1.7.2: Untertitelspur nicht mehr default, im Player zuschaltbar.
  * ═══════════════════════════════════════════════════════════
  */
 
@@ -450,7 +451,7 @@ function initInstallPrompt() {
    Ablauf: 1. Fassade suchen ([data-film] mit a.film-start; ohne JS bleibt der Link auf die 720p-Datei).
    2. Link durch einen gleich aussehenden <button> ersetzen (Aktion statt Navigation).
    3. Klick: 1080p ab 1024 px Breite oder wenn die Flaeche in Geraetepixeln mindestens 1.500 px breit ist,
-      sonst 720p; <video controls playsinline preload="none"> mit Untertitelspur (default) einsetzen,
+      sonst 720p; <video controls playsinline preload="none"> mit Untertitelspur (nicht default, im Player zuschaltbar) einsetzen,
       Fokus aufs Video, play() (Start nur als Folge dieses Klicks). */
 function initFilm() {
   const box = document.querySelector('[data-film]');
@@ -474,11 +475,11 @@ function initFilm() {
     v.setAttribute('playsinline', '');
     v.preload = 'none';
     if (img) v.poster = img.currentSrc || img.src;
-    v.setAttribute('aria-label', 'Film über Grundke IT-Service, 1:31, mit Untertiteln');
+    v.setAttribute('aria-label', 'Film über Grundke IT-Service, 1:31, Untertitel zuschaltbar');
     [wide ? box.dataset.filmHd : box.dataset.filmSd, wide ? box.dataset.filmSd : box.dataset.filmHd]
       .forEach(src => { const s = document.createElement('source'); s.src = src; s.type = 'video/mp4'; v.appendChild(s); });
     const t = document.createElement('track');
-    t.kind = 'subtitles'; t.srclang = 'de'; t.label = 'Deutsch'; t.src = box.dataset.filmVtt; t.default = true;
+    t.kind = 'subtitles'; t.srclang = 'de'; t.label = 'Deutsch'; t.src = box.dataset.filmVtt;
     v.appendChild(t);
     btn.replaceWith(v);
     v.focus();

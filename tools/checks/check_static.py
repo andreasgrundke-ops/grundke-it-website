@@ -583,7 +583,8 @@ LEGAL_BASE_COMMIT = "865b00a"
 # zuerst am 12.10.2026 (Bild-Slider -> Beispiel-Chat, Wischleiste, Fuss, Stand-Datum; Sicherung
 # ../_intern/messungen/vorher/legal_hash_vor_2026-10-12.json), dann am 18.10.2026 (Hero-Buehne, Chat-Abschnitt,
 # Kontraste, Kontaktleiste, Stand-Datum; Sicherung ../_intern/messungen/vorher/legal_hash_vor_2026-10-18.json),
-# danach am 18.10.2026 der Film-Absatz (Sicherung legal_hash_vor_2026-10-18-film.json).
+# danach am 18.10.2026 der Film-Absatz (Sicherung legal_hash_vor_2026-10-18-film.json), danach am 18.10.2026
+# der Untertitel-Satz (Sicherung legal_hash_vor_2026-10-18-untertitel.json).
 # Ihre Basis ist der Commit mit dem freigegebenen Text, legal_hash.json traegt fuer sie den rohen Hash dieses Stands.
 # Alle anderen Rechtstexte bleiben bei 865b00a.
 LEGAL_BASE_COMMITS = {"barrierefreiheit/index.html": "8867f42"}
@@ -1129,13 +1130,13 @@ def akk():
 # Zusatz, Fassade (Link mit Posterbild, Name = sichtbarer Text „Film abspielen 1:31“ ohne aria-label, seit 2.1.2;
 # ohne JS auf die 720p-Datei), kein <video>, <source>,
 # <track> oder <iframe> im HTML und nirgends autoplay, KI-Hinweis in derselben <figure> direkt nach dem Player, die
-# Dateien hinter den data-Attributen existieren, main.js setzt die Untertitelspur (subtitles, de, default), VideoObject
+# Dateien hinter den data-Attributen existieren, main.js setzt die Untertitelspur (subtitles, de, nicht default), VideoObject
 # mit Pflichtfeldern und absoluten non-www-URLs auf vorhandene Dateien, sw.js laesst Filmdateien aus dem Pre-Cache und
 # reicht .mp4/.vtt durch, Textlink „Film ansehen (1:31)“ in der Zeile nach dem Hero. Im Browser (Netzwerk vor dem Klick,
 # Spur und Fokus nach dem Klick, Sichtbarkeit des Hinweises): check_design.py R2-FILM.
 # ----------------------------------------------------------------------------------------------------------------------
 FILM_TITLE = "Lieber schauen statt lesen?"
-FILM_META = "1:31 · mit Untertiteln"
+FILM_META = "1:31 · Untertitel zuschaltbar"
 FILM_KI = "Sprecherstimme und Illustrationen mit KI erstellt. Inhalte von Andreas Grundke geprüft."
 FILM_LABEL = "Film abspielen 1:31"   # Stand 18.10.2026, Release 2.1.2: sichtbarer Text = Name, kein aria-label
 FILM_LINK = ("#film", "Film ansehen (1:31)")
@@ -1199,10 +1200,14 @@ def akf():
     if fig is None or i < 0 or i + 1 >= len(cap) or cap[i + 1].tag != "figcaption" or cap[i + 1].text() != FILM_KI:
         errs.append(f"#film: KI-Hinweis '{FILM_KI}' steht nicht als <figcaption> direkt nach dem Player")
     js = read(ROOT / "assets/js/main.js")
-    for need in ("t.kind = 'subtitles'", "t.srclang = 'de'", "t.default = true", "v.preload = 'none'",
+    for need in ("t.kind = 'subtitles'", "t.srclang = 'de'", "t.label = 'Deutsch'", "t.src = box.dataset.filmVtt",
+                 "v.preload = 'none'",
                  "v.controls = true", "playsinline", "v.focus()", "matchMedia('(min-width: 1024px)')"):
         if need not in js:
             errs.append(f"main.js: initFilm ohne {need!r}")
+    init_film = js[js.find("function initFilm"):]
+    if re.search(r"\.default\s*=\s*true", init_film):
+        errs.append("main.js: initFilm setzt die Untertitelspur auf default (Untertitel sollen aus sein, im Player zuschaltbar)")
     blocks = [json.loads(b) for b in re.findall(r'<script type="application/ld\+json">(.*?)</script>', src, re.S)]
     vids = [b for b in blocks if isinstance(b, dict) and b.get("@type") == "VideoObject"]
     if len(vids) != 1:

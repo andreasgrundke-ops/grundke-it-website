@@ -1620,7 +1620,7 @@ FILM_STATE_JS = """() => { const sec = document.getElementById('film'); if (!sec
     video: v ? { autoplay: v.autoplay || v.hasAttribute('autoplay'), preload: v.getAttribute('preload'), controls: v.controls,
                  inline: v.hasAttribute('playsinline'), focus: document.activeElement === v,
                  first: (v.querySelector('source') || {}).getAttribute ? v.querySelector('source').getAttribute('src') : null,
-                 track: t ? { kind: t.kind, srclang: t.srclang, def: t.default, label: t.label } : null } : null }; }"""
+                 track: t ? { kind: t.kind, srclang: t.srclang, def: t.default, label: t.label, mode: t.track.mode } : null } : null }; }"""
 
 
 def ak_r2_film():
@@ -1628,7 +1628,7 @@ def ak_r2_film():
     Anfrage auf .mp4/.vtt; Fassade ist ein <button> 'Film abspielen 1:31' (Name = sichtbarer Text, kein aria-label,
     seit Release 2.1.2) auf 16:9-Flaeche; der KI-Hinweis steht vor
     dem Abspielen sichtbar direkt unter dem Player (Abstand 0..24 px). Nach dem Klick: <video> mit controls,
-    playsinline, preload none, ohne autoplay, Fokus auf dem Video, Untertitelspur subtitles/de/default, gleiche Hoehe
+    playsinline, preload none, ohne autoplay, Fokus auf dem Video, Untertitelspur subtitles/de, nicht default (mode disabled, im Player zuschaltbar), gleiche Hoehe
     wie die Fassade (kein Sprung), erste Quelle 720p am Handy und 1080p ab 1024 px."""
     errs, env = [], _env()
     want = {390: "_720p.mp4", 1440: "_1080p.mp4"}
@@ -1668,7 +1668,7 @@ def ak_r2_film():
                           ("controls", v["controls"]), ("playsinline", v["inline"]), ("Fokus", v["focus"])):
                 if not ok:
                     errs.append(f"/ bei {vw}: Video nach dem Klick: {k} nicht erfuellt ({v})")
-            if v["track"] != {"kind": "subtitles", "srclang": "de", "def": True, "label": "Deutsch"}:
+            if v["track"] != {"kind": "subtitles", "srclang": "de", "def": False, "label": "Deutsch", "mode": "disabled"}:
                 errs.append(f"/ bei {vw}: Untertitelspur {v['track']}")
             if not (v["first"] or "").endswith(want[vw]):
                 errs.append(f"/ bei {vw}: erste Quelle {v['first']} statt *{want[vw]}")
