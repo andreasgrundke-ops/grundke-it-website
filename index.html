@@ -429,7 +429,8 @@
   .zw-kopf { display:flex; align-items:center; justify-content:space-between; gap:12px; margin:0 0 10px; }
   .zw-titel { margin:0; font-size:14px; font-weight:700; line-height:1.4; color:var(--text2); }
   .zw-dots { display:flex; gap:6px; flex-shrink:0; }
-  .zw-dots i { width:6px; height:6px; border-radius:50%; background:#3a4356; }
+  /* Fortschritt: kommend = Ring (3,4:1), erledigt = gefuellt grau, aktuell = gefuellt hell */
+  .zw-dots i { width:6px; height:6px; border-radius:50%; box-shadow:inset 0 0 0 1px #64748b; }
   .zw-dots i.is-done { background:var(--text3); }
   .zw-dots i.is-on { background:var(--text); }
   .zw-weg { display:grid; grid-template-columns:96px minmax(0,1fr); gap:0 14px; align-items:start; min-height:0; }
@@ -455,17 +456,19 @@
   .zw-ok { width:18px; height:18px; margin-top:2px; flex-shrink:0; fill:none; stroke:var(--cyan); stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
   .zw-schluss { grid-area:2 / 1; margin:10px 0 0; font-family:var(--fh); font-size:18px; font-weight:700; line-height:1.2; text-wrap:balance; letter-spacing:-.01em; color:var(--cyan); opacity:0; transform:translateY(6px); transition:opacity .3s cubic-bezier(.16,1,.3,1), transform .3s cubic-bezier(.16,1,.3,1); }
   .zw-schluss.is-on { opacity:1; transform:none; }
-  .zw-foot { display:flex; align-items:center; gap:12px; margin-top:10px; }
-  .zw-fuss { flex:1; margin:0; font-size:14px; line-height:1.45; color:var(--text3); }
-  .zw-pause { width:44px; height:44px; flex-shrink:0; display:grid; place-items:center; padding:0; border-radius:50%; border:1px solid #64748b; background:transparent; color:var(--text); cursor:pointer; transition:border-color .2s, background-color .2s; }
+  .zw-foot { display:flex; align-items:center; gap:12px; margin-top:8px; }
+  .zw-fuss { flex:1; margin:0; font-size:14px; line-height:1.45; color:var(--text3); text-wrap:pretty; }
+  .zw-pause { width:44px; height:44px; flex-shrink:0; display:grid; place-items:center; padding:0; border-radius:50%; border:1px solid #64748b; background:transparent; color:var(--text); cursor:pointer; transition:border-color .2s, background-color .2s, transform .15s ease-out; }
   .zw-pause[hidden] { display:none; }
   .zw-pause:hover { border-color:var(--text2); background:rgba(255,255,255,.06); }
+  .zw-pause:active { transform:scale(.94); }
   .zw-pause:focus-visible { outline:2px solid var(--cyan); outline-offset:3px; }
   .zw-pause svg { display:none; width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
   .zw-pause[data-zustand="laeuft"] .i-pause, .zw-pause[data-zustand="pause"] .i-play, .zw-pause[data-zustand="ende"] .i-replay { display:block; }
   /* Echte Stimme unter der Kennzeichnung: wortgetreu, Quelle darunter, keine Ueberschrift, kein Schmuck */
-  .zw-stimme { margin:16px 0 0; padding:0 0 0 14px; border-left:2px solid var(--border); }
-  .zw-stimme-t { margin:0; line-height:1.5; color:var(--text); }
+  .zw-stimme { margin:18px 0 0; padding:0 0 0 14px; border-left:2px solid var(--border); }
+  /* oeffnendes Anfuehrungszeichen haengt in den Einzug, der Text fluchtet mit der Quelle */
+  .zw-stimme-t { margin:0; line-height:1.5; color:var(--text); text-indent:-.4em; text-wrap:pretty; }
   .zw-stimme-q { display:block; margin:4px 0 0; font-size:14px; font-style:normal; line-height:1.45; color:var(--text2); }
   .zw-stimme-q a { color:var(--text2); text-decoration:underline; text-underline-offset:.22em; text-decoration-thickness:1px; }
   .zw-stimme-q a:hover { color:var(--text); }
@@ -478,8 +481,10 @@
   /* Link unter dem Hero (alle Breiten): Uebernahme fuer Betriebe, deren IT-Betreuer weg ist */
   .hc-weiter { margin:0 auto; padding-block:.8rem; }
   .hc-weiter p { max-width:62ch; margin:0; line-height:1.5; }
+  .hc-weiter a { transition:color .2s; }
+  .hc-weiter a:hover { color:var(--cyan); }
   @media (prefers-reduced-motion: reduce) {
-    .zw-case, .zw-t, .zw-schluss, .zw-fig svg { transition:none; }
+    .zw-case, .zw-t, .zw-schluss, .zw-fig svg, .zw-pause { transition:none; }
   }
   /* Ab 768 px dieselbe Breite und Polsterung wie .inner: Hero-Text, Kasten und Abschnitte stehen an einer Kante */
   @media (min-width:768px) {
@@ -502,7 +507,8 @@
     .zw-txt > .zw-case { gap:10px; }
     .zw-t { font-size:17px; }
     .zw-schluss { margin-top:18px; font-size:20px; }
-    .zw-foot { margin-top:12px; }
+    .zw-foot { margin-top:10px; }
+    .zw-stimme { margin-top:22px; }
   }
   /* Handy quer: kein Platz fuer die Buehne; Kennzeichnung, Stimme und Textalternative bleiben */
   @media (max-height:500px) and (orientation:landscape) {

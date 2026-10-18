@@ -131,7 +131,7 @@ DOMINANT_SECTIONS = [".hero", "#it-betreuung", "#referenzen", "#praxis", "#schne
                      "#einsatzgebiet"]
 DOMINANT_COUNT_ONLY_R1 = [".hero", "#it-betreuung"]
 DOMINANT_COUNT_ONLY_R2 = [".hero"]      # R2: #it-betreuung nach Flaeche (Chat-Handy), .hero weiter nur Anzahl
-# Cyan in der Hero-Buehne (Spec §5.3, Neuentscheidung 18.10.2026 „Ein Weg"): nur fuer die Loesung, also die entspannte
+# Cyan in der Hero-Buehne (Spec §5.3, Stand 18.10.2026 „Ein Weg"): nur fuer die Loesung, also die entspannte
 # Figur (.zw-fig-b), das Haekchen an Bild 3 (.zw-t--ok) und den Schluss (.zw-schluss).
 NAMEN_OHNE_EINWILLIGUNG = ROOT.parent / "_intern" / "pruefdaten" / "namen-ohne-einwilligung.txt"
 DOCK_H, DOCK_GAP = 52, 12
@@ -836,7 +836,7 @@ AK_R1 = {
 
 
 # ----------------------------------------------------------------------------------------------------------------------
-# Task 11: Abnahmekriterien R2 (Spec §4.2, §4.4, §5.8, §6; AK-R2-06 ... AK-R2-16), seit der Neuentscheidung 18.10.2026
+# Task 11: Abnahmekriterien R2 (Spec §4.2, §4.4, §5.8, §6; AK-R2-06 ... AK-R2-16), seit 18.10.2026
 # auf „Ein Weg" umgestellt (Paket B: B-05, B-06; AK-R2-09 Spuren entfaellt, dafuer R2-BILDER). Zeit laeuft ueber
 # page.clock (Zeit steht, bis run_for sie weiterdreht); CSS-Uebergaenge laufen in echter Zeit und werden deshalb vor dem
 # Messen abgewartet oder beendet.
@@ -1106,7 +1106,7 @@ BILDER_JS = """() => { const eff = e => { let o = 1; for (let n = e; n; n = n.pa
 
 
 def ak_r2_bilder():
-    """Neuentscheidung 18.10.2026 (ersetzt AK-R2-09 Spuren): bei 390 und 1440 laeuft genau eine Spur. Stichprobe alle
+    """Stand 18.10.2026 (ersetzt AK-R2-09 Spuren): bei 390 und 1440 laeuft genau eine Spur. Stichprobe alle
     250 ms bis zum Endstand: nie zwei Faelle gleichzeitig sichtbar, Faelle 1 -> 4 in dieser Reihenfolge, je Fall
     erscheinen die drei Bilder nacheinander (nie weniger als zuvor), Endstand Fall 4 mit drei Bildern."""
     errs = []
@@ -1361,7 +1361,7 @@ def _is_alarm(c):
 
 def ak_r2_16_contrast():
     """AK-R2-16: Kontrast in .hero >= 4,5:1 (grosse Schrift >= 3:1) bei 390 und 1440 im Endstand; Pause-Knopf >= 3:1;
-    die Buehne nutzt keine Danger-/Warning-Farben (Neuentscheidung 18.10.2026: nur ein Weg, kein Gegenueber)."""
+    die Buehne nutzt keine Danger-/Warning-Farben (Stand 18.10.2026: nur ein Weg, kein Gegenueber)."""
     errs = []
     for vw in (390, 1440):
         ctx, pg = _open(vw, 900, reduced="reduce", clock=False)

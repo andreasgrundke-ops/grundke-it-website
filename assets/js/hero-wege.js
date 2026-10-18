@@ -23,7 +23,7 @@
  *   6. Wird reduzierte Bewegung erst waehrend des Besuchs eingeschaltet:
  *      sofort zurueck in den Endstand aus dem HTML, Knopf ausblenden.
  * Aenderungshistorie:
- *   1.0.0 (2026-10-18) Erste Fassung (zwei Spuren).
+ *   1.0.0 (2026-10-18) Erste Fassung (Vorstufe, nicht veroeffentlicht).
  *   1.0.1 (2026-10-18) Umschalten auf reduzierte Bewegung waehrend des Besuchs
  *                      fuehrt sofort in den Endstand.
  *   2.0.0 (2026-10-18) Ein Weg: eine Spur, drei Bilder je Fall, eine Figur mit

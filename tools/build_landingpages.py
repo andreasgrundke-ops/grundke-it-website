@@ -49,7 +49,8 @@ Aenderungen:
               (HOME_VOICE_FEATURED statt HOME_VOICES_SHOWN), Abzeichen „Meine Empfehlung“, ohne Standort-Pille im Kopf.
   2026-10-18  Version 2.0.0: ASSET_VER 2026.10.g, SITE_DATE, Stand (dateModified) der Seiten mit geaendertem
               sichtbarem Inhalt (Stundensatz-Wortlaut, Abzeichen, Zitat, Claim) auf CONTENT_DATE.
-  2026-10-18  Version 2.1.0: Hero „Zwei Wege“ (assets/js/hero-wege.js), ASSET_VER 2026.10.h; sync_shared
+  2026-10-18  Version 2.1.0: Hero „Ein Weg“ (vier Beispiele, echte Stimme, Link Betreuerwechsel;
+              assets/js/hero-wege.js), ASSET_VER 2026.10.h; sync_shared
               versioniert hero-wege.js (HERO_WEGE_JS_RE) wie hero-chat.js.
               Merge Release 2.0.1 (So arbeite ich, FAQ Passungsfrage, KI-Kennzeichnung); ASSET_VER 2026.10.i.
   2026-10-18  Version 2.0.1: ASSET_VER 2026.10.h, Abschnitt „So arbeite ich“ statt Vergleich, FAQ Passungsfrage.

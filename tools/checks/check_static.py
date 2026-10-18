@@ -34,7 +34,7 @@ PROMISE_RE = re.compile("|".join("(?:" + p + ")" for p in PROMISE_PATTERNS), re.
 # Ausgenommen (Spec AK8): Kundenzitate (blockquote.testi-txt), die Lesespalte der Ratgeber-Artikel
 # (article.lp-article), Rechtstexte und die Leitzeile.
 AK8_HERO_JS = "assets/js/hero-chat.js"   # Texte des Hero-Chats (CASES, NIGHT_REPLY, updateClock)
-AK8_LEITZEILE = "IT hängt? Ruf mich an."   # = H1_TEXT (Neuentscheidung 18.10.2026)
+AK8_LEITZEILE = "IT hängt? Ruf mich an."   # = H1_TEXT (Stand 18.10.2026)
 # Erlaubte Treffer: (Seite, exakter Ausschnitt um den Treffer, Grund). Ein Treffer ist erlaubt, wenn der Ausschnitt
 # auf dieser Seite im geprueften Text steht und den Treffer enthaelt. Ein Eintrag ohne Treffer ist ein Fehler (Liste
 # bleibt genau). Seite = Pfad wie rel(), fuer den Hero-Chat AK8_HERO_JS.
@@ -51,7 +51,7 @@ AK8_ALLOW = [
      "FAQ-Frage in Worten des Besuchers; die Antwort nennt keine Zeit (Controller 11.10.2026, Hinweis an Andreas)"),
     ("index.html", "ohne garantierte Reaktionszeit", "verneint eine Reaktionszeit (geschuetzter Satz, Spec §5)"),
     ("index.html", "einen 24/7-Vertrag mit festen Reaktionszeiten braucht",
-     "FAQ Passungsfrage: nennt, wann ein Systemhaus passt (freigegeben Andreas 18.10.2026), keine eigene Zusage"),
+     "FAQ Passungsfrage: nennt, wann ein Systemhaus passt (Stand 18.10.2026), keine eigene Zusage"),
     ("digitalbonus-bayern/index.html", "Umsetzung innerhalb von 18 Monaten nach der Bewilligung",
      "Frist des Foerderprogramms"),
     ("fernwartung/index.html", "beendest du die Sitzung jederzeit selbst", "der Kunde beendet die Sitzung selbst"),
@@ -108,8 +108,8 @@ AK8_ALLOW = [
 # dieser Runde nicht geaendert). Sie halten AK8 nicht rot, werden aber bei jedem Lauf als WARNUNG gemeldet.
 # Gleiches Format wie AK8_ALLOW; nach Andreas' Entscheidung Text aendern und Eintrag loeschen (oder nach AK8_ALLOW).
 AK8_OPEN = []
-# Relaunch R2 nach der Neuentscheidung vom 18.10.2026 („Ein Weg", kein Vergleich): Texte zeichengleich; AKH prueft sie
-# im HTML der Startseite (B-01 bis B-07). Gate-Texte aus 17.10. (Spurtitel, Fusszeile G1) gelten nicht mehr.
+# Relaunch R2, Stand 18.10.2026 („Ein Weg", kein Vergleich): Texte zeichengleich; AKH prueft sie
+# im HTML der Startseite (B-01 bis B-07). Spurtitel und Fusszeile der Fassung mit zwei Spuren entfallen.
 H1_TEXT = "IT hängt? Ruf mich an."
 H1_EM = "Ruf mich an."
 PAGE_K_HERO = "Deine IT-Abteilung. Nur extern."
@@ -117,7 +117,7 @@ SCHUTZSATZ = "Keine Öffnungszeiten. Vertragskunden zuerst, ohne garantierte Rea
 HERO_WER = "Andreas Grundke · IT-Service für Betriebe im Münchner Osten"
 HERO_PROOF = ["5,0 bei {n} Google-Bewertungen", "Über 20 Jahre IT-Erfahrung"]   # A16: nur diese zwei Zeilen
 KENNZEICHNUNG_HERO = "Beispiele, nachgestellt nach typischen Einsätzen bei Vertragskunden. Uhrzeiten beispielhaft."
-# Freiwilliger KI-Hinweis (Art. 50 KI-VO): nur mit eingebundenem assets/img/hero/ki-*-Bild (AK-R2-21, B-07)
+# Freiwilliger KI-Hinweis: nur mit eingebundenem assets/img/hero/ki-*-Bild (AK-R2-21, B-07)
 KI_HINWEISE = ("Illustrationen mit KI erstellt.", "Figuren mit KI erstellt.")
 SCHLUSS_HERO = "Kennt eure Anlage schon."
 BUEHNEN_TITEL = "So läuft das bei mir"
@@ -143,12 +143,12 @@ HERO_WEG = {
     ],
     "schluss": SCHLUSS_HERO,
 }
-# Echte Stimme an der Buehne: woertlicher Ausschnitt der Google-Bewertung (REVIEWS-Eintrag), Name gekuerzt (Vorgabe
-# Andreas 18.10.2026), keine Ueberschrift
+# Echte Stimme an der Buehne: woertlicher Ausschnitt der Google-Bewertung (REVIEWS-Eintrag), Name gekuerzt (Stand
+# 18.10.2026), keine Ueberschrift
 STIMME_HERO = {"review": "polednik", "text": "Man merkt gar nicht, dass man selber überhaupt keine Ahnung hat. Perfekt",
                "name": "Martina P.", "quelle": "Google-Bewertung"}
 WECHSEL_LINK = ("/it-betreuer-wechseln/", "IT-Betreuer nicht mehr da? So übernehme ich.")   # B-05, direkt nach dem Hero
-# B-03: kein Vergleich, kein Gegenueber (Neuentscheidung 18.10.2026). Gross/klein egal, Teilstring in .hero.
+# B-03: kein Vergleich, kein Gegenueber (Stand 18.10.2026). Gross/klein egal, Teilstring in .hero.
 HERO_VERBOTEN = ["Ohne feste Betreuung", "Ticket", "#20871", "Ansage", "Systemhaus", "Dienstleister", "Mitbewerber",
                  "Büro ab Montag", "#4711"]
 BILDTEXT_MAX_WOERTER = 6
@@ -837,7 +837,7 @@ def ak13s():
 
 
 # ----------------------------------------------------------------------------------------------------------------------
-# AKH (Relaunch R2 nach der Neuentscheidung 18.10.2026: B-01 ... B-05, B-06 (Markup-Teil), B-07; dazu AK-R2-14 und
+# AKH (Relaunch R2, Stand 18.10.2026: B-01 ... B-05, B-06 (Markup-Teil), B-07; dazu AK-R2-14 und
 # AK-R2-18 (Skript)): Hero-Kopf, Buehne "Ein Weg" mit Kennzeichnung und echter Stimme, Link nach dem Hero und der
 # Chat-Abschnitt der Startseite gegen den Markup-Vertrag. Eigener kleiner DOM-Baum, weil die Buehne verschachtelt ist
 # und Fall, Bild und Quelle eines Textes aus dem Vorfahren folgen.
@@ -922,7 +922,7 @@ def bild_woerter(t):
 
 
 def hero_weg_texte():
-    """Alle 12 Bildtexte der Buehne plus Schluss (Neuentscheidung 18.10.2026)."""
+    """Alle 12 Bildtexte der Buehne plus Schluss (Stand 18.10.2026)."""
     return [t for f in HERO_WEG["faelle"] for t in f["bilder"]] + [HERO_WEG["schluss"]]
 
 

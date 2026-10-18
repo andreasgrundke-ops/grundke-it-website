@@ -116,8 +116,9 @@
  *   2.0.0 / 2026-10-18 — ruhigere Optik (style.css), Kontaktleiste und Fuss aus einer
                         Quelle, grosses Kundenzitat, einheitlicher Stundensatz mit „zzgl. MwSt.“,
                         Asset-Version 2026.10.g.
- *   2.1.0 / 2026-10-18 — Hero der Startseite „Zwei Wege“ (neue Datei assets/js/hero-wege.js
-                        im Pre-Cache), Chat-Handy im Abschnitt IT-Betreuung, dazu Merge
+ *   2.1.0 / 2026-10-18 — Hero der Startseite „Ein Weg“ (vier Beispiele, echte Stimme, Link
+                        Betreuerwechsel; neue Datei assets/js/hero-wege.js im Pre-Cache),
+                        Chat-Handy im Abschnitt IT-Betreuung, dazu Merge
                         Release 2.0.1 (So arbeite ich, FAQ Passungsfrage, KI-Kennzeichnung),
                         Asset-Version 2026.10.i.
  */
