@@ -116,11 +116,13 @@
  *   2.0.0 / 2026-10-18 — ruhigere Optik (style.css), Kontaktleiste und Fuss aus einer
                         Quelle, grosses Kundenzitat, einheitlicher Stundensatz mit „zzgl. MwSt.“,
                         Asset-Version 2026.10.g.
+ *   2.0.1 / 2026-10-18 — 2.0.1: Abschnitt So arbeite ich, FAQ Passungsfrage,
+                        Asset-Version 2026.10.h.
  */
 
-const CACHE_NAME    = 'grundke-it-v2.0.0';
-const RUNTIME_CACHE = 'grundke-it-runtime-v37';
-const ASSET_VER     = '2026.10.g';   // muss ASSET_VER im Generator entsprechen
+const CACHE_NAME    = 'grundke-it-v2.0.1';
+const RUNTIME_CACHE = 'grundke-it-runtime-v38';
+const ASSET_VER     = '2026.10.h';   // muss ASSET_VER im Generator entsprechen
 
 /* Pre-Cache: minimaler Kern fuer Offline-First-Boot */
 const PRECACHE_URLS = [

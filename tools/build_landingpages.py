@@ -49,6 +49,8 @@ Aenderungen:
               (HOME_VOICE_FEATURED statt HOME_VOICES_SHOWN), Abzeichen „Meine Empfehlung“, ohne Standort-Pille im Kopf.
   2026-10-18  Version 2.0.0: ASSET_VER 2026.10.g, SITE_DATE, Stand (dateModified) der Seiten mit geaendertem
               sichtbarem Inhalt (Stundensatz-Wortlaut, Abzeichen, Zitat, Claim) auf CONTENT_DATE.
+  2026-10-18  Version 2.0.1: ASSET_VER 2026.10.h, Abschnitt „So arbeite ich“ statt Vergleich, FAQ Passungsfrage.
+  2026-10-18  Abschluss closing(): KI-Kennzeichnung (p.cta-ki) auf jeder Seite mit Abschluss.
   2026-10-10  Generator-Huelle render_shell (section, page_head, mini_chat,
               voices_html, prices_html, closing) fuer managed-it-service, it-betreuer-wechseln und
               it-notdienst (Schalter SHELL_SLUGS), Kernsatz/Antwortsatz/Chat/Stimmen aus den freigegebenen Texten,
@@ -123,10 +125,10 @@ NEW_DATE_DISP = "7. Oktober 2026"
 # prueft das gegen origin/main), zusammen mit CACHE_NAME/RUNTIME_CACHE in sw.js. Neue URLs
 # laufen am alten Cache des Service Workers vorbei, ein wiederkehrender Besucher bekommt nie neues
 # HTML mit altem CSS.
-ASSET_VER = "2026.10.g"
+ASSET_VER = "2026.10.h"
 # Sichtbare Website-Version im Fuss (seit 17.10.2026): gleicht dem Suffix von CACHE_NAME in sw.js
 # (check_static prueft das). SITE_DATE_DISP = Stand dieser Version im Fuss, Form TT.MM.JJJJ.
-SITE_VERSION = "2.0.0"
+SITE_VERSION = "2.0.1"
 SITE_DATE = "2026-10-18"
 SITE_DATE_DISP = "18.10.2026"
 # Stand der Seiten, deren sichtbarer Inhalt zuletzt geaendert wurde (dateModified, Sitemap, Abschluss).
@@ -1010,6 +1012,7 @@ def closing(mod_disp, wa=None, next_link=None, sticky=True):
       <span class="ava" aria-hidden="true">AG</span>
       <p><strong>Andreas Grundke</strong> · {role}{date}</p>
     </div>
+    <p class="cta-ki">Texte mit Hilfe von KI entworfen, von Andreas Grundke geprüft und verantwortet.</p>
   </div>
 </section>""".format(tel=PHONE, phone=PHONE_DISP, wa=wa or WA(WA_TEXT["abschluss"]), mailto=MAILTO_PREFILLED,
                      nxt=nxt, role=AUTHOR_ROLE, date=date, mob=" inline-cta-mobile" if sticky else "")
@@ -3524,12 +3527,12 @@ HOME_FAQS = [
      'Ohne Vertrag 110 € netto zzgl. MwSt. je Stunde im 15-Minuten-Takt, ohne Wochenendzuschlag. Vor Ort ist die Anfahrt bis 5 km inklusive, darüber gilt eine vereinbarte Pauschale. Mit Betreuungsvertrag ab 149 € netto im Monat, inklusive IT-Assessment, Fernwartung und bevorzugtem Support.'),
     ('Wie schnell bist du bei einem IT-Notfall erreichbar?',
      'Feste Reaktionszeiten sage ich nicht zu. Vertragskunden werden bevorzugt behandelt, Premium-Kunden zuerst. Ohne Vertrag melde ich mich, sobald ich kann, und viele Störungen lassen sich dann per Fernwartung lösen.'),
-    ('Was unterscheidet dich von einem großen IT-Systemhaus?',
-     'Kein Ticketsystem und kein wechselndes Team. Du hast einen festen Ansprechpartner, mich. Ich kenne deine Umgebung und sage dir, was demnächst ansteht, bevor es zum Problem wird.'),
+    ('Passt du zu meinem Betrieb oder eher ein Systemhaus?',
+     'Das hängt von der Größe ab. Wer viele Standorte hat, eine eigene IT-Abteilung entlasten will oder einen 24/7-Vertrag mit festen Reaktionszeiten braucht, ist bei einem Systemhaus richtig. Kleine Betriebe, die einen festen Ansprechpartner wollen, der ihre Anlage kennt und direkt erreichbar ist, sind bei mir richtig.'),
     ('Was passiert, wenn du im Urlaub oder krank bist?',
      'Für Urlaub und Krankheit gibt es eine abgestimmte Vertretung: einen selbstständigen IT-Kollegen, der im Notfall einspringt.'),
     ('Mein IT-Betreuer ist nicht mehr erreichbar – wer hilft mir kurzfristig?',
-     'Das ist einer der häufigsten Gründe, warum Betriebe bei mir anrufen. Zuerst kümmere ich mich um das, was gerade nicht läuft, danach kommt die geordnete Übernahme: Zugänge, Datensicherung, Dokumentation. Wie das abläuft, steht unter <a href="/it-betreuer-wechseln/">IT-Betreuer wechseln</a>. Ruf an: 0178 258 44 38.'),
+     'Das kommt bei kleinen Betrieben öfter vor. Zuerst kümmere ich mich um das, was gerade nicht läuft, danach kommt die geordnete Übernahme: Zugänge, Datensicherung, Dokumentation. Wie das abläuft, steht unter <a href="/it-betreuer-wechseln/">IT-Betreuer wechseln</a>. Ruf an: 0178 258 44 38.'),
     ('Welche Region betreust du?',
      'Vor Ort bin ich in Grasbrunn, Ottobrunn, Vaterstetten, Haar, Neubiberg, Putzbrunn und Hohenbrunn, etwa 25 km im Umkreis. Remote helfe ich deutschlandweit. Für Einsätze vor Ort bleibe ich bewusst im Münchner Osten: Auf der anderen Seite Münchens stehe ich im Stau, und das hilft dir nicht.'),
     ('Welche IT-Services gibt es in Grasbrunn und Ottobrunn?',

@@ -56,8 +56,8 @@ geaendert hat, nicht wegen eines neuen Footer-Links.
   alle Generator-Seiten in der Huelle `render_shell` (Kopf, Abschnitte im Wechsel, Abschluss `closing()`),
   Schulung/Kontakt/Fernwartung/Rechtsseiten/404 in der neuen Huelle, Empfehlungen mit Einrichtungs-Pauschalen,
   Hero-Chat abends 20-40 Min., Barrierefreiheitserklaerung neu.
-- **Versionen jetzt:** `sw.js` `CACHE_NAME` `grundke-it-v2.0.0`, `RUNTIME_CACHE` `runtime-v37`,
-  `ASSET_VER` 2026.10.g, `SITE_VERSION` 2.0.0 (Fuss „Version x.y.z · Stand TT.MM.JJJJ“ aus dem Generator).
+- **Versionen jetzt:** `sw.js` `CACHE_NAME` `grundke-it-v2.0.1`, `RUNTIME_CACHE` `runtime-v38`,
+  `ASSET_VER` 2026.10.h, `SITE_VERSION` 2.0.1 (Fuss „Version x.y.z · Stand TT.MM.JJJJ“ aus dem Generator).
   `SITE_VERSION` bei jedem Release mit dem `CACHE_NAME`-Suffix gleichziehen, `check_static.py` prueft das.
   `check_static.py --ci` laeuft im Deploy und stoppt ihn bei Fehlern.
 - **Kontaktleiste (Dock):** kommt aus einer Quelle im Generator (`STICKY`-Marken), nur bis 1279 px sichtbar,
