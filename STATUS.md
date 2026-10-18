@@ -7,7 +7,7 @@
 grundke-it.de Website – siehe README/CLAUDE.md im Projekt.
 
 ## Aktueller Stand
-18.10.2026: Release 2.1.1 (Hero wieder mit Beispiel-Chat, Ausrichtung auf Betriebe in Abschluss, Preisen, FAQ und Schema, Kontaktleiste mit WhatsApp zuerst, Kopfzeile „IT hängt? Ruf mich an.“ statt des alten Vergleichs, auch im Vorschaubild); davor 2.1.0 (Hero „Ein Weg“), enthält 2.0.1 (Abschnitt „So arbeite ich“ statt Systemhaus-Vergleich, FAQ-Passungsfrage, KI-Kennzeichnung im Abschluss); davor 2.0.0 (ruhigere Optik, Dock neu, Version im Fuß, Stundensatz-Wortlaut).
+18.10.2026: Release 2.1.1 (Hero wieder mit Beispiel-Chat, Ausrichtung auf Betriebe in Abschluss, Preisen, FAQ und Schema, Kontaktwege überall in der Reihenfolge WhatsApp, Telefon, E-Mail mit WhatsApp als Hauptaktion, auch in der Kopfzeile, Kasten nach dem Hero entfernt, H1 wieder „Dein ITler geht nicht ran? Ich schon.“, ebenso Notdienst- und Wechselseite und Vorschaubild); davor 2.1.0 (Hero „Ein Weg“), enthält 2.0.1 (Abschnitt „So arbeite ich“ statt Systemhaus-Vergleich, FAQ-Passungsfrage, KI-Kennzeichnung im Abschluss); davor 2.0.0 (ruhigere Optik, Dock neu, Version im Fuß, Stundensatz-Wortlaut).
 
 - **Versionen:** `sw.js` `CACHE_NAME` `grundke-it-v2.1.1`, `RUNTIME_CACHE` `runtime-v40`, `ASSET_VER` 2026.10.j,
   `SITE_VERSION` 2.1.1 (Fuß „Version x.y.z · Stand TT.MM.JJJJ“ aus dem Generator). `SITE_VERSION` bei jedem

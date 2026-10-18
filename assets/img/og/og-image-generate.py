@@ -1,13 +1,10 @@
 """
 ================================================================================
  OG-Image Generator · Grundke IT-Service
- Version:     V6 (2026-10-18)
+ Version:     V5 (2026-04-17)
  Autor:       Andreas Grundke
  Zweck:       Rendert assets/img/og-image.png (1200 x 630) aus Code —
               reproduzierbar, kein SVG-Renderer-Tool noetig (nur PIL + numpy).
-
- Aenderungen V6 gegenueber V5:
-   - Headline wie die Startseite: "IT hängt?" / "Ruf mich an." (zwei Zeilen statt drei)
 
  Aenderungen V5 gegenueber V4:
    - Vertikale Cyan-Stripes auf BEIDEN Seiten (links + rechts gespiegelt)
@@ -163,14 +160,15 @@ def render_foreground(bg_np):
         fill=CYAN,
     )
 
-    # ── Headline: 2 Zeilen zentriert (seit V6) ─────────────────────────
+    # ── Headline: 3 Zeilen zentriert ───────────────────────────────────
     h1_font   = ImageFont.truetype(F_BLACK, 66)
     hhi_font  = ImageFont.truetype(F_BLACK, 92)
 
     # y-Positionen sind TOP der jeweiligen Zeile (nicht Center) — vermeidet Bbox-Jitter
     lines_top = [
-        ("IT hängt?",       h1_font,  TEXT_MAIN, 262),
-        ("Ruf mich an.",    hhi_font, CYAN,      348),
+        ("Dein ITler geht", h1_font,  TEXT_MAIN, 228),
+        ("nicht ran?",      h1_font,  TEXT_MAIN, 298),
+        ("Ich schon.",      hhi_font, CYAN,      378),
     ]
     for text, font, color, y_top in lines_top:
         bbox = draw.textbbox((0, 0), text, font=font)

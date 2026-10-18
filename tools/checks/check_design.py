@@ -1,12 +1,16 @@
 """Design-Pruefungen fuer den Relaunch (Spec §5, §7, §11).
 Titel:        check_design.py
-Version:      0.5.0 (Task 1: AK-R1-Pruefungen, --release r1; Task 11: AK-R2-Pruefungen, --release r2;
+Version:      0.6.0 (Task 1: AK-R1-Pruefungen, --release r1; Task 11: AK-R2-Pruefungen, --release r2;
               0.3.1: R2-DOM, #it-betreuung in R2 nach Flaeche;
               0.4.0: R2 auf den Hero mit Chat-Handy umgestellt: R2-06/-07/-10/-16/-TAB pruefen den Chat,
               R2-KENNZ (Kennzeichnung) statt R2-08, R2-ERSTBILD (H1 als LCP, erstes Bild, Firmenkunden-Zeile)
               statt R2-BILDER, R2-CHAT (ein Chat im Hero, Typische Anrufe) statt R2-11, R2-DOM auf dl.itb-list;
               0.5.0: AK-R1-02 Dock Stand 18.10.2026: Reihenfolge WhatsApp, Anrufen, E-Mail; WhatsApp ist die
-              Hauptaktion (volle Flaeche #1a7a5e, weisse Schrift), Anrufen getoent mit Kontur statt #0000FE)
+              Hauptaktion (volle Flaeche #1a7a5e, weisse Schrift), Anrufen getoent mit Kontur statt #0000FE;
+              0.6.0 (Stand 18.10.2026): AK-R1-03 statt Kasten nach dem Hero (.hc-direkt entfernt) die Kontaktknoepfe:
+              Kopfzeile mit WhatsApp (gruen) vor Telefon (Kontur) ohne Umbruch bei 1024/1280/1366/1440, Gruen =
+              Hauptaktion WhatsApp in Seitenkopf, Abschluss, Preisen, Schnellcheck, Fernwartung, Kontakt und
+              Mobilmenue, Telefon dort nie volle #0000FE-Flaeche; R2-LINK ohne den Kasten)
 Datum:        18.10.2026
 Beschreibung: Misst Hoehen bei 390x844 (reduzierte Bewegung, Service Worker blockiert) und vergleicht sie
               mit einer gespeicherten Baseline. Dazu die Abnahmekriterien AK-R1-01a ... AK-R1-23 des Relaunchs R1
@@ -391,51 +395,115 @@ def ak_r1_02_dock_colors():
     return errs + agg(per)
 
 
+CONTACT_JS = """() => {
+  const kind = a => { const h = a.getAttribute('href') || ''; return h.includes('wa.me/') ? 'wa' : h.startsWith('tel:') ? 'tel' : h.startsWith('mailto:') ? 'mail' : null; };
+  const st = e => { const c = getComputedStyle(e), r = e.getBoundingClientRect();
+    return { bg: c.backgroundColor, color: c.color, bw: parseFloat(c.borderTopWidth), bc: c.borderTopColor, h: r.height, w: r.width,
+             vis: c.display !== 'none' && r.width > 0 && r.height > 0, text: e.textContent.replace(/\\s+/g, ' ').trim() }; };
+  const nav = document.querySelector('.nav-inner'), ul = document.querySelector('.nav-links'), logo = document.querySelector('.site-header .logo');
+  let navr = null;
+  if (nav && ul) {
+    const lis = [...ul.children].map(li => li.getBoundingClientRect()).filter(r => r.width > 0);
+    const wa = ul.querySelector('a.nav-wa'), tel = ul.querySelector('a.nav-tel');
+    const all = [...ul.querySelectorAll('a')];
+    navr = { disp: getComputedStyle(ul).display, top: Math.min(...lis.map(r => r.top)), bottom: Math.max(...lis.map(r => r.bottom)),
+      ulL: ul.getBoundingClientRect().left, ulR: ul.getBoundingClientRect().right, navR: nav.getBoundingClientRect().right,
+      logoR: logo ? logo.getBoundingClientRect().right : 0, rowTops: [...new Set(lis.map(r => Math.round(r.top + r.height / 2)))],
+      wa: wa ? st(wa) : null, tel: tel ? st(tel) : null, waFirst: !!(wa && tel) && all.indexOf(wa) < all.indexOf(tel) };
+  }
+  const mwa = document.querySelector('.mobile-menu .m-wa'), mtel = document.querySelector('.mobile-menu .m-cta');
+  const groups = [];
+  for (const sel of ['.hc-ctas', '.cta-btns', '.pkg-btns', '.sc-cta-row', '.fw-help-actions']) {
+    document.querySelectorAll('main ' + sel).forEach(g => {
+      const links = [...g.querySelectorAll('a')].filter(a => kind(a));
+      const wa = links.find(a => kind(a) === 'wa'), tel = links.find(a => kind(a) === 'tel');
+      groups.push({ sel, order: links.map(kind), wa: wa ? st(wa) : null, tel: tel ? st(tel) : null,
+                    telCls: tel ? tel.className : '' });
+    });
+  }
+  const kw = document.querySelector('.k-way--wa .k-ico'), kt = document.querySelector('.k-way--tel .k-ico');
+  return { sw: document.documentElement.scrollWidth, vw: innerWidth, direkt: document.querySelectorAll('.hc-direkt').length,
+           nav: navr, m: { wa: mwa ? st(mwa) : null, tel: mtel ? st(mtel) : null }, groups,
+           k: kw ? { wa: st(kw), tel: kt ? st(kt) : null } : null };
+}"""
+GREEN = (26, 122, 94, 1.0)
+VI_BLUE = (0, 0, 254, 1.0)
+
+
+def _tinted_tel(t):
+    """Telefon zurueckgenommen: getoent (Alpha > 0 und <= 0,4) mit Kontur >= 1 px, nie deckend #0000FE."""
+    a = rgba(t["bg"])
+    return bool(a) and 0 < a[3] <= 0.4 and t["bw"] >= 1
+
+
 def ak_r1_03_desktop_box():
-    """AK-R1-03: >= 1280: Dock weg (alle Seiten); .hc-direkt direkt nach .hero mit tel:-Link (>= 20 px) und
-    a[data-wa="direkt"], ohne Knopfflaechen (G9); bei 390 Hoehe 0."""
+    """AK-R1-03 (Stand 18.10.2026): Kontaktknoepfe. >= 1280 kein Dock; kein .hc-direkt (Kasten nach dem Hero entfernt).
+    Kopfzeile bei 1024, 1280, 1366, 1440: WhatsApp (.nav-wa, deckend #1a7a5e, weisse Schrift) vor Telefon (.nav-tel,
+    getoent mit Kontur), beide >= 44 px hoch, eine Zeile (kein Umbruch), nichts ragt ueber Logo oder Rand, keine
+    waagrechte Scrollleiste; ab 1280 traegt der Telefon-Knopf sichtbar „Anrufen“. Gruen = Hauptaktion WhatsApp: in
+    Seitenkopf, Abschluss, Preisen, Schnellcheck und Fernwartungshilfe ist der erste WhatsApp-Knopf deckend #1a7a5e mit
+    weisser Schrift und steht vor Telefon; der Telefon-Knopf daneben ist getoent mit Kontur (nie volle #0000FE-Flaeche).
+    Ratgeber-Kopf (nur Anrufen, .btn-p) bleibt Hauptaktion. Mobilmenue und Kontaktseite ebenso (Symbolflaeche)."""
     errs = []
     res = scan(1440, 900, DOCK_JS)
     per = {u: [f"Dock display:{d['display']} bei 1440 (soll none sein)"] for u, d in res.items()
            if d is not None and d["display"] != "none"}
     errs += agg(per)
-    js = """() => { const hero = document.querySelector('.hero'); if (!hero) return { nohero: true };
-      const n = hero.nextElementSibling, e = document.querySelector('.hc-direkt');
-      if (!e) return { missing: true };
-      const tel = e.querySelector('a[href^="tel:"]'), wa = e.querySelector('a[data-wa="direkt"]');
-      const box = a => a ? { bg: getComputedStyle(a).backgroundColor, bw: getComputedStyle(a).borderTopWidth } : null;
-      return { next: n === e, h: e.getBoundingClientRect().height, disp: getComputedStyle(e).display,
-        tel: tel ? { text: tel.textContent.replace(/\\s+/g, ' ').trim(), fs: parseFloat(getComputedStyle(tel).fontSize), box: box(tel) } : null,
-        wa: wa ? { text: wa.textContent.trim(), box: box(wa) } : null }; }"""
-    for vw, vh in ((1440, 900), (1280, 800)):
-        r = scan(vw, vh, js, ["/"])["/"]
-        if r.get("nohero"):
-            errs.append("/: kein .hero"); break
-        if r.get("missing"):
-            errs.append("/: kein .hc-direkt (Kasten nach dem Hero fehlt)"); break
-        tag = f"/ bei {vw}"
-        if not r["next"]:
-            errs.append(f"{tag}: .hc-direkt ist nicht das naechste Element nach .hero")
-        if r["h"] <= 0:
-            errs.append(f"{tag}: .hc-direkt nicht sichtbar (Hoehe {r['h']})")
-        if not r["tel"]:
-            errs.append(f"{tag}: kein tel:-Link in .hc-direkt")
-        else:
-            if "0178 258 44 38" not in r["tel"]["text"]:
-                errs.append(f"{tag}: tel:-Linktext '{r['tel']['text']}' ohne '0178 258 44 38'")
-            if r["tel"]["fs"] < 20:
-                errs.append(f"{tag}: tel:-Link {r['tel']['fs']} px < 20")
-        if not r["wa"]:
-            errs.append(f"{tag}: kein a[data-wa=\"direkt\"] in .hc-direkt")
-        for nm in ("tel", "wa"):
-            b = r[nm] and r[nm]["box"]
-            if b and ((rgba(b["bg"]) or (0, 0, 0, 0))[3] > 0 or float(b["bw"][:-2]) > 0):
-                errs.append(f"{tag}: {nm}-Link mit Knopffläche (Hintergrund {b['bg']}, Rand {b['bw']}), G9 verlangt Textlink")
-    r390 = scan(390, 844, js, ["/"])["/"]
-    if r390.get("missing"):
-        errs.append("/ bei 390: .hc-direkt fehlt (Hoehe 0 nicht belegbar)")
-    elif r390.get("h", 1) != 0:
-        errs.append(f"/ bei 390: .hc-direkt Hoehe {r390['h']} statt 0")
+    for vw in (1024, 1280, 1366, 1440):
+        per = {}
+        for u, r in scan(vw, 900, CONTACT_JS).items():
+            m = []
+            if r["direkt"]:
+                m.append(".hc-direkt vorhanden")
+            if r["sw"] > r["vw"]:
+                m.append(f"waagrechte Scrollleiste ({r['sw']} > {r['vw']})")
+            n = r["nav"]
+            if not n:
+                m.append("Kopfzeile (.nav-inner/.nav-links) fehlt")
+            else:
+                if len(n["rowTops"]) != 1 or n["bottom"] - n["top"] > 48:
+                    m.append(f"Kopfzeile bricht um (Zeilenmitten {n['rowTops']}, Hoehe {n['bottom'] - n['top']:.0f})")
+                if n["ulL"] < n["logoR"] or n["ulR"] > n["navR"] + 0.5:
+                    m.append(f"Menue ragt ueber Logo/Rand (links {n['ulL']:.0f} < Logo {n['logoR']:.0f} oder rechts "
+                             f"{n['ulR']:.0f} > {n['navR']:.0f})")
+                w, t = n["wa"], n["tel"]
+                if not w or not t:
+                    m.append("Kopfzeile ohne .nav-wa oder .nav-tel")
+                else:
+                    if not n["waFirst"]:
+                        m.append("Kopfzeile: Telefon vor WhatsApp")
+                    if rgba(w["bg"]) != GREEN or w["color"] != "rgb(255, 255, 255)":
+                        m.append(f"Kopfzeile WhatsApp {w['bg']}/{w['color']} statt deckend #1a7a5e mit weisser Schrift")
+                    if not _tinted_tel(t):
+                        m.append(f"Kopfzeile Telefon {t['bg']}, Rand {t['bw']} px (soll getoent mit Kontur sein)")
+                    if min(w["h"], t["h"]) < 44:
+                        m.append(f"Kopfzeile Knopfhoehe {w['h']:.0f}/{t['h']:.0f} < 44")
+                    if vw >= 1280 and t["w"] <= 50:
+                        m.append(f"Kopfzeile Telefon ohne sichtbares „Anrufen“ (Breite {t['w']:.0f})")
+            if vw == 1440:
+                for g in r["groups"]:
+                    if g["order"] != sorted(g["order"], key={"wa": 0, "tel": 1, "mail": 2}.get):
+                        m.append(f"{g['sel']}: Reihenfolge {g['order']}")
+                    if g["wa"] and g["wa"]["vis"] and (rgba(g["wa"]["bg"]) != GREEN or g["wa"]["color"] != "rgb(255, 255, 255)"):
+                        m.append(f"{g['sel']}: WhatsApp {g['wa']['bg']}/{g['wa']['color']} statt deckend #1a7a5e weiss")
+                    if g["wa"] and g["tel"] and g["tel"]["vis"]:
+                        if rgba(g["tel"]["bg"]) == VI_BLUE or not _tinted_tel(g["tel"]):
+                            m.append(f"{g['sel']}: Telefon neben WhatsApp {g['tel']['bg']}, Rand {g['tel']['bw']} px "
+                                     "(soll getoent mit Kontur sein)")
+                k = r["k"]
+                if k:
+                    if rgba(k["wa"]["bg"]) != GREEN:
+                        m.append(f"Kontaktseite: WhatsApp-Symbolflaeche {k['wa']['bg']} statt #1a7a5e")
+                    if k["tel"] and not _tinted_tel(k["tel"]):
+                        m.append(f"Kontaktseite: Telefon-Symbolflaeche {k['tel']['bg']} (soll getoent mit Kontur sein)")
+                mo = r["m"]
+                if mo["wa"] is None or rgba(mo["wa"]["bg"]) != GREEN:
+                    m.append(f"Mobilmenue: WhatsApp {mo['wa'] and mo['wa']['bg']} statt #1a7a5e")
+                if mo["tel"] is None or not _tinted_tel(mo["tel"]):
+                    m.append(f"Mobilmenue: Anrufen {mo['tel'] and mo['tel']['bg']} (soll getoent mit Kontur sein)")
+            if m:
+                per[u] = [f"{vw}: {x}" for x in m]
+        errs += agg(per)
     return errs
 
 
@@ -1131,8 +1199,7 @@ LINK_JS = """(want) => { const hero = document.querySelector('.hero'); if (!hero
   const vis = e => getComputedStyle(e).display !== 'none' && e.getBoundingClientRect().height > 0;
   let n = hero.nextElementSibling; const between = [];
   while (n && !vis(n)) n = n.nextElementSibling;
-  let ref = hero;
-  if (n && n.classList.contains('hc-direkt')) { between.push('hc-direkt'); ref = n; n = n.nextElementSibling; while (n && !vis(n)) n = n.nextElementSibling; }
+  const ref = hero;
   const a = n ? n.querySelector('a[href="' + want + '"]') : null;
   const r = a ? a.getBoundingClientRect() : null;
   return { cls: n ? n.className : null, between, text: a ? a.textContent.replace(/\\s+/g, ' ').trim() : null,
@@ -1142,7 +1209,7 @@ LINK_JS = """(want) => { const hero = document.querySelector('.hero'); if (!hero
 
 def ak_r2_link():
     """B-05: Link /it-betreuer-wechseln/ mit Linktext zeichengleich direkt nach der Hero-Section, sichtbar bei 390 und
-    1440. Ab 1280 px steht dazwischen nur der Kasten .hc-direkt (AK-R1-03 verlangt ihn als naechstes Element)."""
+    1440 (seit 18.10.2026 ohne Kasten dazwischen, bei keiner Breite)."""
     errs = []
     href, text = WECHSEL_LINK
     for vw, vh in ((390, 844), (1440, 900)):
@@ -1156,10 +1223,10 @@ def ak_r2_link():
             continue
         if not r["visible"]:
             errs.append(f"/ bei {vw}: Link {href} nicht sichtbar")
-        if vw == 390 and r["between"]:
-            errs.append(f"/ bei 390: zwischen Hero und Link steht {r['between']}")
+        if r["between"]:
+            errs.append(f"/ bei {vw}: zwischen Hero und Link steht {r['between']}")
         if r["gap"] is None or abs(r["gap"]) > 1:
-            errs.append(f"/ bei {vw}: Link-Zeile beginnt {r['gap']} px unter Hero bzw. Kasten (soll anschliessen)")
+            errs.append(f"/ bei {vw}: Link-Zeile beginnt {r['gap']} px unter dem Hero (soll anschliessen)")
     return errs
 
 

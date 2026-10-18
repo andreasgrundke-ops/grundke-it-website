@@ -23,6 +23,15 @@
   --blue-vi:     #0000FE;               /* Visitenkarten-Blau */
   --blue-vi-dim: rgba(0,0,254,.12);
   --blue-vi-glow:rgba(0,0,254,.25);
+  /* Kontaktknoepfe (Stand 18.10.2026): Reihenfolge immer WhatsApp - Telefon - E-Mail. Gruen = Hauptaktion WhatsApp
+     (weiss auf #1a7a5e 5,3:1, Hover 6,5:1); Telefon zurueckgenommen: getoent mit Kontur (Kontur 3,4-4,3:1 zu den
+     dunklen Flaechen, Schrift weiss ab 15:1); E-Mail neutral. Der helle Abschnitt setzt die Telefon-Werte um. */
+  --wa:          #1a7a5e;
+  --wa-hover:    #166a52;
+  --tel-bg:      rgba(0,0,254,.22);
+  --tel-bg-hover:rgba(0,0,254,.34);
+  --tel-line:    #5566ff;
+  --tel-text:    #fff;
   --text:      #f1f5f9;
   --text2:     #94a3b8;
   --text3:     #8a96aa;   /* seit 07.10.2026 heller: AA auf --bg2/--bg3 (5,5/5,1:1), vorher 3,5/3,2:1 */
@@ -93,7 +102,8 @@ button { font-family: var(--fb); cursor: pointer; }
 /* ── Dock (Kontaktleiste) ──
    Bis 1279 px eine schwebende Leiste unten (Stand 18.10.2026): WhatsApp links als Hauptaktion (breiter, volle gruene
    Flaeche #1a7a5e, weisse Schrift 5,3:1), Anrufen in der Mitte getoent mit blauer Kontur, E-Mail neutral.
-   Ab 1280 px gibt es kein Dock; dort tragen die Knoepfe im Seitenkopf und der Kasten nach dem Hero. */
+   Ab 1280 px gibt es kein Dock; dort tragen der WhatsApp- und der Telefon-Knopf in der Kopfzeile und die Knoepfe im
+   Seitenkopf. */
 .sticky-contact { display: none; }
 @media (max-width: 1279px) {
   .sticky-contact {
@@ -129,10 +139,10 @@ button { font-family: var(--fb); cursor: pointer; }
   }
   .sc-btn svg { flex-shrink: 0; width: 18px; height: 18px; }
   .sc-btn:active { transform: scale(.97); }
-  .sc-wa { background: #1a7a5e; color: #fff; }
-  .sc-wa:hover { background: #166a52; }
-  .sc-phone { background: rgba(0,0,254,.22); border: 1px solid #5566ff; color: #fff; }   /* Kontur 3,9:1 zur Leiste */
-  .sc-phone:hover { background: rgba(0,0,254,.34); }
+  .sc-wa { background: var(--wa); color: #fff; }
+  .sc-wa:hover { background: var(--wa-hover); }
+  .sc-phone { background: var(--tel-bg); border: 1px solid var(--tel-line); color: var(--tel-text); }   /* Kontur 3,9:1 zur Leiste */
+  .sc-phone:hover { background: var(--tel-bg-hover); }
   .sc-mail { background: transparent; color: var(--text2); }
   .sc-mail:hover { color: var(--text); }
   /* Platz unten: Dock (52 + 2 x 4 Innenabstand + 2 x 1 Rand) plus 12 Abstand, gerundet */
@@ -204,20 +214,26 @@ button { font-family: var(--fb); cursor: pointer; }
 /* Aktiver Bereich: Unterstrich in Cyan statt Farbwechsel, damit er sich vom Hover abhebt */
 .nav-links a[aria-current] { color:var(--text); text-decoration:underline; text-decoration-color:var(--cyan); text-decoration-thickness:2px; text-underline-offset:.55em; }
 .mobile-menu a[aria-current] { color:var(--text); background:var(--bg3); }
-.nav-cta {
-  background:var(--blue-vi) !important;
-  color:#fff !important;
-  padding:.5rem 1.1rem;
-  border-radius:var(--r-m);
-  font-weight:700 !important;
-  font-size:.85rem !important;
-  transition:background .2s, transform .15s, box-shadow .2s !important;
-  display:inline-flex !important;
-  align-items:center;
-  gap:.45rem;
+/* Kontakt in der Kopfzeile (Stand 18.10.2026): WhatsApp als Hauptaktion (gruen), daneben Telefon getoent mit Kontur.
+   1024-1279 px zeigt der Telefon-Knopf nur das Symbol (Text bleibt fuer Screenreader), damit die Zeile nicht umbricht.
+   Trefferflaeche je 44 px hoch. */
+.nav-links li:has(> .nav-tel) { margin-left:calc(.6rem - clamp(1rem,2vw,2rem)); }   /* die zwei Knoepfe stehen als Paar enger */
+.nav-links a.nav-wa, .nav-links a.nav-tel {
+  display:inline-flex; align-items:center; justify-content:center; gap:.45rem;
+  min-height:44px; padding:0 1rem; border-radius:var(--r-m);
+  font-weight:700; font-size:.85rem; color:#fff;
+  transition:background-color .2s, transform .15s;
 }
-.nav-cta svg { stroke: currentColor; fill: none; flex-shrink: 0; }
-.nav-cta:hover { transform:translateY(-1px); box-shadow: 0 4px 14px var(--blue-vi-glow); }
+.nav-links a.nav-wa { background:var(--wa); }
+.nav-links a.nav-wa:hover { background:var(--wa-hover); color:#fff; transform:translateY(-1px); }
+.nav-links a.nav-tel { background:var(--tel-bg); border:1px solid var(--tel-line); color:var(--tel-text); }
+.nav-links a.nav-tel:hover { background:var(--tel-bg-hover); color:var(--tel-text); transform:translateY(-1px); }
+.nav-wa svg { fill:currentColor; flex-shrink:0; }
+.nav-tel svg { stroke:currentColor; fill:none; flex-shrink:0; }
+@media (max-width:1279px) {
+  .nav-links a.nav-tel { width:44px; padding:0; }
+  .nav-tel-t { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+}
 /* Trefferflaeche 44x44 (Daumenbedienung) — Balken bleiben optisch gleich gross */
 .hamburger { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; background:none; border:none; padding:.4rem; min-width:44px; min-height:44px; cursor:pointer; }
 .hamburger span { display:block; width:24px; height:2px; background:var(--text); border-radius:2px; transition:transform .3s,opacity .3s; }
@@ -228,8 +244,11 @@ button { font-family: var(--fb); cursor: pointer; }
 .mobile-menu.open { display:flex; }
 .mobile-menu a { padding:.85rem 1rem; border-radius:var(--r-m); font-weight:600; font-size:.95rem; color:var(--text2); transition:background .2s,color .2s; }
 .mobile-menu a:hover { background:var(--bg3); color:var(--cyan); }
-.mobile-menu .m-cta { background:var(--blue-vi); color:#fff !important; text-align:center; margin-top:.5rem; font-weight:700 !important; }
-.mobile-menu .m-cta:hover, .mobile-menu .m-cta:focus-visible { background:#2222ff; color:#fff !important; }
+/* Mobilmenue: WhatsApp zuerst als Hauptaktion, darunter Anrufen getoent mit Kontur (Stand 18.10.2026) */
+.mobile-menu .m-wa { display:flex; align-items:center; justify-content:center; gap:.55rem; background:var(--wa); color:#fff !important; margin-top:.5rem; font-weight:700 !important; }
+.mobile-menu .m-wa:hover, .mobile-menu .m-wa:focus-visible { background:var(--wa-hover); color:#fff !important; }
+.mobile-menu .m-cta { background:var(--tel-bg); border:1px solid var(--tel-line); color:var(--tel-text) !important; text-align:center; font-weight:700 !important; }
+.mobile-menu .m-cta:hover, .mobile-menu .m-cta:focus-visible { background:var(--tel-bg-hover); color:var(--tel-text) !important; }
 /* Fernwartung im Mobilmenue hervorgehoben (Symbol aus dem Sprite statt Blitz-Zeichen, Klasse statt Inline-Style) */
 .mobile-menu .m-fw { display:flex; align-items:center; gap:.55rem; color:var(--text); font-weight:700; }
 .mobile-menu .m-fw svg { flex-shrink:0; }
@@ -362,7 +381,7 @@ button { font-family: var(--fb); cursor: pointer; }
 /* Buttons / Links mit eigener border-radius respektieren das weiterhin */
 .btn-p:focus-visible, .btn-g:focus-visible, .btn-wa:focus-visible,
 .btn-tel:focus-visible, .btn-email:focus-visible,
-.nav-cta:focus-visible {
+.nav-wa:focus-visible, .nav-tel:focus-visible {
   outline: 3px solid var(--cyan);
   outline-offset: 3px;
 }
@@ -404,8 +423,8 @@ button { font-family: var(--fb); cursor: pointer; }
    Standen bisher nur im <style> der Startseite; /schulung/ nutzt sie auch und zeigte
    die Anfrage-Knoepfe deshalb als nackten Text. Werte = Endstand der Startseite
    (Visitenkarten-Blau fuer .solid). Die Kopie in index.html raeumt der Umbau auf. */
-.btn-wa { display:inline-flex; align-items:center; gap:.55rem; padding:1rem 2rem; border-radius:var(--r-m); background:#15803d; color:#fff; font-family:var(--fb); font-weight:700; font-size:.95rem; border:none; cursor:pointer; text-decoration:none; transition:background .2s, transform .15s; }
-.btn-wa:hover { background:#166534; transform:translateY(-2px); }
+.btn-wa { display:inline-flex; align-items:center; gap:.55rem; padding:1rem 2rem; border-radius:var(--r-m); background:var(--wa); color:#fff; font-family:var(--fb); font-weight:700; font-size:.95rem; border:none; cursor:pointer; text-decoration:none; transition:background .2s, transform .15s; }
+.btn-wa:hover { background:var(--wa-hover); transform:translateY(-2px); }
 /* E-Mail neutral: kein Orange, Rand und Schrift wie ein Zweitknopf */
 .btn-email { display:inline-flex; align-items:center; gap:.45rem; padding:clamp(.7rem,.9rem,1rem) clamp(1.2rem,1.8rem,2rem); border-radius:var(--r-m); border:1px solid var(--border); background:transparent; color:var(--text); font-family:var(--fb); font-weight:700; font-size:clamp(.82rem,.9rem,1rem); cursor:pointer; text-decoration:none; transition:background .2s, transform .15s, box-shadow .2s; white-space:nowrap; }
 .btn-email:hover { border-color:var(--text2); background:rgba(255,255,255,.04); transform:translateY(-2px); }
@@ -418,6 +437,11 @@ button { font-family: var(--fb); cursor: pointer; }
 .price-btn.solid:hover { background:#2222ff; box-shadow:0 4px 20px var(--blue-vi-glow); }
 .price-btn.out { background:transparent; color:var(--text); border:1px solid var(--border); }
 .price-btn.out:hover { border-color:var(--blue-vi); color:#fff; background:var(--blue-vi-dim); }
+/* Kontaktknoepfe an Preisen (Stand 18.10.2026): WhatsApp gruen als Hauptaktion, Telefon getoent mit Kontur */
+.price-btn.wa { background:var(--wa); color:#fff; border:none; }
+.price-btn.wa:hover { background:var(--wa-hover); }
+.price-btn.tel { background:var(--tel-bg); color:var(--tel-text); border:1px solid var(--tel-line); }
+.price-btn.tel:hover { background:var(--tel-bg-hover); }
 .price-btn:focus-visible, .btn-wa:focus-visible, .btn-email:focus-visible { outline:2px solid var(--cyan); outline-offset:3px; }
 @media (max-width:640px) { .btn-wa, .btn-email { width:100%; justify-content:center; } }
 /* ──────────────────────────────────────────────────────────────── */
@@ -454,14 +478,17 @@ main > .sec:first-child { margin-top:var(--nav-h); } /* erster Abschnitt unter d
 .hc-proof a { color:inherit; text-decoration:underline; text-decoration-color:rgba(38,189,239,.5); text-decoration-thickness:1px; text-underline-offset:.28em; transition:text-decoration-color .2s; }
 .hc-proof a:hover { text-decoration-color:var(--cyan); }
 
-/* Knoepfe im Seitenkopf: Anrufen mit Nummer (.btn-p.hc-call), WhatsApp als ruhige Zweitoption.
-   Am Handy uebernimmt die feste Kontaktleiste unten. */
+/* Knoepfe im Seitenkopf (Stand 18.10.2026): WhatsApp zuerst als Hauptaktion (.hc-wa, gruen), daneben Anrufen mit
+   Nummer zurueckgenommen (.hc-call, getoent mit Kontur). Nur die Ratgeber behalten Anrufen als einzigen Knopf
+   (.btn-p.hc-call). Am Handy uebernimmt die feste Kontaktleiste unten. */
 .hc-ctas { display:flex; flex-wrap:wrap; gap:.75rem; align-items:center; }
 .hc-call { padding:.8rem 1.2rem; font-size:.93rem; gap:.55rem; }
+.hc-call:not(.btn-p) { display:inline-flex; align-items:center; padding:calc(.8rem - 1px) calc(1.2rem - 1px); border-radius:var(--r-m); border:1px solid var(--tel-line); background:var(--tel-bg); color:var(--tel-text); font-family:var(--fb); font-weight:700; white-space:nowrap; transition:background-color .2s, transform .15s; }
+.hc-call:not(.btn-p):hover { background:var(--tel-bg-hover); transform:translateY(-2px); }
 .hc-num { font-weight:600; padding-left:.65rem; margin-left:.1rem; border-left:1px solid rgba(255,255,255,.35); font-variant-numeric:tabular-nums; }
-.hc-wa { display:inline-flex; align-items:center; gap:.55rem; padding:.8rem 1.15rem; border-radius:var(--r-m); border:1px solid rgba(37,211,102,.5); background:rgba(37,211,102,.07); color:var(--text); font-family:var(--fb); font-weight:700; font-size:.93rem; white-space:nowrap; transition:border-color .2s, background .2s, transform .15s; }
-.hc-wa svg { color:#25d366; }
-.hc-wa:hover { border-color:#25d366; background:rgba(37,211,102,.13); transform:translateY(-2px); }
+.hc-wa { display:inline-flex; align-items:center; gap:.55rem; padding:.8rem 1.15rem; border-radius:var(--r-m); border:none; background:var(--wa); color:#fff; font-family:var(--fb); font-weight:700; font-size:.93rem; white-space:nowrap; transition:background-color .2s, transform .15s; }
+.hc-wa svg { color:currentColor; }
+.hc-wa:hover { background:var(--wa-hover); color:#fff; transform:translateY(-2px); }
 .hc-call:focus-visible, .hc-wa:focus-visible, .hc-proof a:focus-visible, .hc-qr a:focus-visible { outline:2px solid var(--cyan); outline-offset:3px; }
 @media (max-width:767px) { .hc-ctas { display:none; } }
 
@@ -547,10 +574,16 @@ blockquote.testi-txt { margin-top:0; margin-left:0; margin-right:0; }
 .cta-sub { font-size:1.0667rem; color:var(--text2); max-width:440px; margin:0 auto 2.5rem; line-height:1.7; position:relative; }
 /* Fuer wen (seit 18.10.2026): ruhige Zeile direkt unter cta-sub, Klein-Stufe; der Abstand nach unten bleibt der von cta-sub */
 .cta-sub:has(+ .cta-fuer) { margin-bottom:.6rem; }
+.cta-fuer .nowrap { white-space:nowrap; }   /* „Ein-Personen-Gewerbe“ bricht am Handy nicht am Bindestrich */
+/* Am Handy mit Kontaktleiste (Knoepfe des Abschlusses ausgeblendet) knapper nach unten: die Zeile laeuft dort ohne
+   Trennung ueber drei Zeilen, so bleibt die Seitenlaenge im Budget (check_site AK5) */
+@media (max-width:767px) { .cta-fuer:has(+ .inline-cta-mobile) { margin-bottom:1.2rem; } }
 .cta-fuer { font-size:.9333rem; color:var(--text2); max-width:440px; margin:0 auto 2.5rem; line-height:1.5; position:relative; text-wrap:balance; }
 .cta-btns { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; position:relative; }
-.btn-tel { display:inline-flex; align-items:center; gap:.55rem; padding:1rem 2rem; border-radius:var(--r-m); background:var(--blue-vi); color:#fff; font-family:var(--fb); font-weight:700; font-size:.95rem; border:none; cursor:pointer; transition:background .2s, border-color .2s, color .2s, transform .2s, box-shadow .2s, opacity .2s; }
-.btn-tel:hover { background:#2222ff; transform:translateY(-2px); box-shadow:0 8px 28px var(--blue-vi-glow); }
+/* Telefon im Abschluss zurueckgenommen (Stand 18.10.2026): getoent mit Kontur, WhatsApp davor ist die Hauptaktion.
+   Innenabstand 1 px kleiner, damit die Kontur die Hoehe der Nachbarknoepfe haelt. */
+.btn-tel { display:inline-flex; align-items:center; gap:.55rem; padding:calc(1rem - 1px) calc(2rem - 1px); border-radius:var(--r-m); background:var(--tel-bg); color:var(--tel-text); font-family:var(--fb); font-weight:700; font-size:.95rem; border:1px solid var(--tel-line); cursor:pointer; transition:background .2s, border-color .2s, color .2s, transform .2s, box-shadow .2s, opacity .2s; }
+.btn-tel:hover { background:var(--tel-bg-hover); transform:translateY(-2px); }
 @media (max-width:767px) {
   .cta-btns { flex-direction:column; align-items:center; }
   .cta-btns .btn-tel, .cta-btns .btn-wa, .cta-btns .btn-email { width:100%; max-width:320px; justify-content:center; }
@@ -842,7 +875,7 @@ html { scroll-padding-top: calc(var(--nav-h) + 12px); }
 section[tabindex="-1"]:focus, main[tabindex="-1"]:focus { outline: none; }
 
 /* ══ Ruhige Startseite (seit 17.10.2026) ═══════════════════════════════════════════
-   Heller Abschnitt, Kasten nach dem Hero, grosses Zitat, breite KI-Karte und die Typo-Skala
+   Heller Abschnitt, grosses Zitat, breite KI-Karte und die Typo-Skala
    der Startseite. Die Startseite traegt body.is-home; ihre Regeln stehen im eigenen <style>
    mit einer Klasse, daher hier mit body.is-home davor (hoehere Spezifitaet, gleiche Werte fuer alle). */
 
@@ -866,31 +899,8 @@ main .sec--light .sc-card::before { display: none; }
 main .sec--light .sc-icon { background: var(--bg4); border-color: var(--border); }
 main .sec--light .sc-preview-btn { background: transparent; border-color: var(--border); }
 main .sec--light .sc-checklist li:hover { background: var(--bg4); }
-main .sec--light .hc-wa { border-color: #15803d; background: transparent; }
-main .sec--light .hc-wa svg { color: #15803d; }   /* Gruen auf Hell: 5:1 statt 2:1 */
-main .sec--light .hc-wa:hover { background: rgba(21,128,61,.08); }
-
-/* Kasten nach dem Hero (nur ab 1280 px, dort gibt es kein Dock): eine schlanke Textzeile,
-   Nummer gross als tel:-Link, WhatsApp als Textlink, keine Knopfflaechen */
-.hc-direkt { display: none; }
-@media (min-width: 1280px) {
-  .hc-direkt {
-    display: block;
-    padding: 1.15rem 0;
-    background: var(--bg);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    font-size: 17px;
-    line-height: 1.4;
-    color: var(--text2);
-  }
-  .hc-direkt > .inner, .hc-direkt > p { display: flex; flex-wrap: wrap; align-items: baseline; gap: .35rem 1.1rem; }
-  .hc-direkt > p { margin: 0; }   /* .inner behaelt margin:0 auto (Flucht der Abschnitte) */
-  .hc-direkt a { background: none; border: 0; padding: 0; color: var(--text); text-underline-offset: .22em; text-decoration-thickness: 1px; }
-  .hc-direkt a[href^="tel:"] { font-family: var(--fh); font-size: 24px; font-weight: 700; letter-spacing: -.01em; font-variant-numeric: tabular-nums; text-decoration: none; }
-  .hc-direkt a[href^="tel:"]:hover { text-decoration: underline; }
-  .hc-direkt a[data-wa] { font-weight: 600; text-decoration: underline; text-decoration-color: #25d366; }
-}
+/* Telefon auf Hell: Visitenkarten-Blau als Schrift und Kontur (7,1:1 bzw. 8:1), leicht getoent */
+main .sec--light { --tel-bg: rgba(0,0,254,.06); --tel-bg-hover: rgba(0,0,254,.12); --tel-line: #0000FE; --tel-text: #0000FE; }
 
 /* Grosses Zitat (#referenzen): eine Stimme gross, die uebrigen in der Wischleiste darunter.
    Das Anfuehrungszeichen steht oben links im eigens freigehaltenen Innenabstand, nie auf dem Text. */
@@ -959,7 +969,7 @@ body.is-home {
 body.is-home main :is(p, li, dd, dt, .faq-a, .testi-txt, .praxis-text, .sc-checklist li, .sc-deliverable-list li, .sc-steps li, .price-feats li, .faq-more p, .itb-list dd, .itb-list dt):where(:not(.hc-stage *, .mini-chat-box *)) {
   font-size: var(--fs-text-home);
 }
-body.is-home main :is(.btn-p, .btn-g, .btn-wa, .btn-tel, .btn-email, .hc-wa, .price-btn, .sc-cta, .sc-preview-btn, .praxis-cta,
+body.is-home main :is(.btn-p, .btn-g, .btn-wa, .btn-tel, .btn-email, .hc-wa, .hc-call, .price-btn, .sc-cta, .sc-preview-btn, .praxis-cta,
   summary, .testi-who, .itb-how li, .faq-more strong, .hc-num):where(:not(.hc-stage *, .mini-chat-box *)) { font-size: var(--fs-ui-home); }
 body.is-home main :is(.s-label, .hc-wer, .hc-fuer, .hc-proof, .hc-proof li, .chips > *, .itb-leist .chips > a, .itb-leist-h, .price-note, .price-per,
   .price-tier, .price-badge, .testi-role, .testi-ctx, .testi-row-h, .praxis-tag, .sc-hint, .sc-promise span,

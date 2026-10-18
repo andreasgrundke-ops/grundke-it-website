@@ -57,12 +57,16 @@ geaendert hat, nicht wegen eines neuen Footer-Links.
   Einrichtungs-Pauschalen, Barrierefreiheitserklaerung neu.
 - **Release 2.0.1 (in 2.1.0 enthalten):** im Abschnitt IT-Betreuung „So arbeite ich“ (`ul.itb-how`, sechs Punkte)
   statt Systemhaus-Vergleich, FAQ-Passungsfrage, KI-Kennzeichnung `p.cta-ki` im Abschluss (`closing()`, Startseite von Hand).
-- **Startseite Hero „Der Chat“** (H1 „IT hängt? Ruf mich an.“, seit 2.1.1 wieder mit dem Chat-Handy): Kopf links mit
+- **Startseite Hero „Der Chat“** (H1 „Dein ITler geht nicht ran? Ich schon.“, seit 2.1.1 wieder mit dem Chat-Handy): Kopf links mit
   Unterzeile, Schutzsatz, Firmenkunden-Zeile, zwei Belegen und Knöpfen; rechts bzw. darunter das Chat-Handy
   (`[data-hero-chat]`, `assets/js/hero-chat.js`). Die erste Kundennachricht steht im HTML, das Skript läuft von dort weiter;
   sichtbare Kennzeichnung „Beispiel-Chat, …“ und Pause-Knopf am Chat, bei reduzierter Bewegung ein fertiger Chat, abends
   20-40 Min. bis zur Antwort. Direkt unter dem Hero der Link zu /it-betreuer-wechseln/. Abschnitt IT-Betreuung wieder
   „Typische Anrufe“ (`dl.itb-list`).
+- **Kontaktwege (seit 2.1.1):** überall WhatsApp, Telefon, E-Mail in dieser Reihenfolge. WhatsApp ist die Hauptaktion
+  (grün `--wa`), Telefon getönt mit Kontur (`--tel-*`), E-Mail neutral; Kopfzeile mit `.nav-wa` und `.nav-tel`
+  (unter 1280 px nur das Telefon-Symbol). Den Kasten „Direkt erreichbar“ nach dem Hero gibt es nicht mehr.
+  `check_static.py` AKK prüft die Reihenfolge, `check_design.py` AK-R1-03 Farben, Höhen und die Kopfzeile.
 - **Versionen jetzt (Release 2.1.1):** `sw.js` `CACHE_NAME` `grundke-it-v2.1.1`, `RUNTIME_CACHE` `runtime-v40`,
   `ASSET_VER` 2026.10.j, `SITE_VERSION` 2.1.1 (Fuss "Version x.y.z · Stand TT.MM.JJJJ" aus dem Generator).
   `SITE_VERSION` bei jedem Release mit dem `CACHE_NAME`-Suffix gleichziehen, `check_static.py` prueft das.

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 build_landingpages.py
-Version : 2.10
+Version : 2.11
 Autor   : Andreas Grundke IT-Service (Grundke IT-Service)
 Datum   : 2026-10-18
 Zweck   : Generiert aus einem gemeinsamen Template + Datenlisten die Orts- und
@@ -58,6 +58,11 @@ Aenderungen:
   2026-10-18  Version 2.1.1: ASSET_VER 2026.10.j. Abschluss closing() mit Zeile fuer wen (p.cta-fuer),
               FAQ „Für wen arbeitest du?“ auf der Notdienstseite, audience (BusinessAudience) im Unternehmensknoten
               der Ortsseiten, neue Kopfzeile auf Notdienst- und Wechselseite, Kontaktleiste mit WhatsApp zuerst.
+  2026-10-18  Version 2.11 (Release 2.1.1, Kontakt-Reihenfolge): ueberall WhatsApp - Telefon - E-Mail. Kopfzeile
+              mit WhatsApp-Knopf (.nav-wa, Hauptaktion gruen) und Telefon-Knopf (.nav-tel, Kontur), Mobilmenue mit
+              WhatsApp zuerst (.m-wa); Seitenkopf (page_head) WhatsApp vor Anrufen, Abschluss closing() mit neuem
+              cta-sub und WhatsApp vorn, Fuss in derselben Reihenfolge. Notdienst- und Wechselseite wieder mit der
+              Kopfzeile „Dein ITler geht nicht ran? Ich schon.“ (Stand 810fec0).
   2026-10-10  Generator-Huelle render_shell (section, page_head, mini_chat,
               voices_html, prices_html, closing) fuer managed-it-service, it-betreuer-wechseln und
               it-notdienst (Schalter SHELL_SLUGS), Kernsatz/Antwortsatz/Chat/Stimmen aus den freigegebenen Texten,
@@ -184,7 +189,6 @@ WA_TEXT = {
     "preise-business": "Hallo Andreas, ich komme über deine Preise und interessiere mich für das Paket Business.",
     "preise-premium": "Hallo Andreas, ich komme über deine Preise und interessiere mich für das Paket Premium.",
     "preise-adhoc": "Hallo Andreas, ich komme über deine Preise und brauche Hilfe ohne Vertrag.",
-    "direkt": "Hallo Andreas, ich komme über deine Startseite.",
     "kontaktleiste": "Hallo Andreas, ich habe deine Nummer von deiner Website.",
     "faq": "Hallo Andreas, meine Frage war in deinen FAQ nicht dabei:",
     "abschluss": "Hallo Andreas, ich habe ein IT-Problem und komme über deine Website.",
@@ -308,7 +312,9 @@ ICON_SPRITE = ('<svg xmlns="http://www.w3.org/2000/svg" id="icon-sprite" style="
 
 
 def nav_html(current=None, home=False):
-    """Kompletter Seitenkopf (Desktop-Leiste + Mobilmenue).
+    """Kompletter Seitenkopf (Desktop-Leiste + Mobilmenue). Kontakt rechts (Stand 18.10.2026): WhatsApp als
+    Hauptaktion (.nav-wa), daneben Telefon zurueckgenommen (.nav-tel, unter 1280 px nur das Symbol); im Mobilmenue
+    WhatsApp vor Anrufen. Der WhatsApp-Satz ist der allgemeine aus WA_TEXT["fuss"].
     current = (bereich, art): bereich aus NAV_ITEMS/NAV_KONTAKT, art "page" fuer die
     Bereichsseite selbst, "true" fuer Seiten darunter (aria-current)."""
     def cur(key):
@@ -329,7 +335,8 @@ def nav_html(current=None, home=False):
     <ul class="nav-links">{desk}
       <li><a href="/fernwartung/"{fw_cur}>Fernwartung starten</a></li>
       <li><a href="{k_href}"{k_cur}>{k_lbl}</a></li>
-      <li><a href="tel:+491782584438" class="nav-cta">{phone}<span>Jetzt anrufen</span></a></li>
+      <li><a href="{wa}" target="_blank" rel="noopener" class="nav-wa"><svg width="16" height="16" aria-hidden="true"><use href="#ico-wa"/></svg>WhatsApp</a></li>
+      <li><a href="tel:+491782584438" class="nav-tel">{phone}<span class="nav-tel-t">Anrufen</span></a></li>
     </ul>
     <button class="hamburger" id="ham" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span><span></span></button>
   </div>
@@ -337,9 +344,10 @@ def nav_html(current=None, home=False):
 <div class="mobile-menu" id="mobileMenu">{mob}
   <a href="{k_href}"{k_cur}>{k_lbl}</a>
   <a href="/fernwartung/"{fw_cur} class="m-fw"><svg width="18" height="18" aria-hidden="true"><use href="#ico-monitor"/></svg>Fernwartung starten</a>
+  <a href="{wa}" target="_blank" rel="noopener" class="m-wa"><svg width="18" height="18" aria-hidden="true"><use href="#ico-wa"/></svg>WhatsApp</a>
   <a href="tel:+491782584438" class="m-cta">Jetzt anrufen · 0178 258 44 38</a>
 </div>
-</header>""".format(desk=desk, mob=mob, phone=PHONE_SVG, fw_cur=fw_cur,
+</header>""".format(desk=desk, mob=mob, phone=PHONE_SVG, fw_cur=fw_cur, wa=WA(WA_TEXT["fuss"]),
                      k_href=k_href, k_lbl=k_lbl, k_cur=cur(k_key))
 
 
@@ -629,8 +637,8 @@ def footer_html(places, services, current_path="", updated=None, home=False):
         <div class="foot-brand">Grundke IT-Service</div>
         <p class="foot-desc">Deine IT-Abteilung. Nur extern.<br>IT, KI, Software und Websites für Betriebe im Münchner Osten.<br>Angebot für Unternehmen, alle Preise zzgl. MwSt.</p>
         <address class="foot-contact" style="font-style:normal;">
-          <a href="tel:+491782584438"><svg class="foot-ico" width="14" height="14" aria-hidden="true"><use href="#ico-phone"/></svg>0178 258 44 38</a>
           <a href="{wa}" target="_blank" rel="noopener">WhatsApp schreiben</a>
+          <a href="tel:+491782584438"><svg class="foot-ico" width="14" height="14" aria-hidden="true"><use href="#ico-phone"/></svg>0178 258 44 38</a>
           <a href="{mailto}">info@grundke-it.de</a>
           <a href="https://grundke-it.de">www.grundke-it.de</a>
         </address>
@@ -881,19 +889,22 @@ def page_head(s, crumbs):
     head_a = '\n      <h1 class="page-h1">{h1}</h1>'.format(h1=h1)
     if not ratgeber:
         head_a += '\n      <p class="page-k">{k}</p>'.format(k=esc(s["k"]))
+    # Reihenfolge WhatsApp - Anrufen (Stand 18.10.2026): WhatsApp ist die Hauptaktion, Anrufen zurueckgenommen
+    # (.hc-call ohne .btn-p). Ratgeber behalten nur den Anruf-Knopf als Hauptaktion (.btn-p.hc-call).
     wa_btn = "" if ratgeber else (
         '\n        <a href="{wa}" target="_blank" rel="noopener" class="hc-wa"><svg width="18" height="18" '
         'aria-hidden="true"><use href="#ico-wa"/></svg>WhatsApp</a>').format(wa=WA(WA_SEITE.format(nav=s["nav"])))
+    call_cls = "btn-p hc-call" if ratgeber else "hc-call"
     proofs = "" if ratgeber else (
         '\n      <ul class="hc-proof">\n        <li><svg class="is-star" aria-hidden="true"><use href="#ico-star"/></svg>'
         '<a href="/#bewertungen-herkunft" data-proof>5,0 bei {n} Google-Bewertungen</a></li>{proof2}\n      </ul>'
     ).format(n=REVIEW_COUNT_GOOGLE, proof2=proof2)
     head_b = """
       <p class="s-sub measure">{answer}</p>
-      <div class="hc-ctas">
-        <a href="tel:{tel}" class="btn-p hc-call"><svg width="18" height="18" aria-hidden="true"><use href="#ico-phone"/></svg>Anrufen <span class="hc-num">{phone}</span></a>{wa_btn}
+      <div class="hc-ctas">{wa_btn}
+        <a href="tel:{tel}" class="{call_cls}"><svg width="18" height="18" aria-hidden="true"><use href="#ico-phone"/></svg>Anrufen <span class="hc-num">{phone}</span></a>
       </div>{proofs}""".format(answer=esc(s["lead"] if ratgeber else s["answer"]), tel=PHONE, phone=PHONE_DISP,
-                               wa_btn=wa_btn, proofs=proofs)
+                               wa_btn=wa_btn, call_cls=call_cls, proofs=proofs)
     if two:
         # H1 und Kernsatz bleiben direkte Kinder (Rasterflaechen h1/kum), der Rest steht in .page-head-b (antwort)
         head_b = '\n      <div class="page-head-b">' + head_b.replace("\n", "\n  ") + '\n      </div>'
@@ -999,7 +1010,9 @@ def closing(mod_disp, wa=None, next_link=None, sticky=True):
     Kontaktseite ab 1025 px) mit kompakter Autorzeile und dem Datum der Seite. wa: WhatsApp-Link
     (Satz der Seite), next_link: (href, Text) als Weg zur passenden naechsten Seite.
     Seit 10.10.2026 (Handseiten): mod_disp None = Autorzeile ohne Datum; sticky=False fuer Seiten ohne Kontaktleiste,
-    dort bleiben die Knoepfe auch am Handy sichtbar."""
+    dort bleiben die Knoepfe auch am Handy sichtbar.
+    Seit 18.10.2026: Reihenfolge WhatsApp (Hauptaktion) - Telefon - E-Mail; „Ein-Personen-Gewerbe“ in .nowrap, damit es
+    am Handy nicht am Bindestrich bricht (Text unveraendert)."""
     nxt = ""
     if next_link:
         nxt = ('\n    <p class="cta-next"><a href="{h}">{t}<svg width="16" height="16" aria-hidden="true">'
@@ -1008,11 +1021,11 @@ def closing(mod_disp, wa=None, next_link=None, sticky=True):
     return """<section class="cta-sec">
   <div class="inner">
     <h2 class="cta-h">Problem? <em>Ich bin dran.</em></h2>
-    <p class="cta-sub">Ruf an, schreib auf WhatsApp oder per Mail. Am anderen Ende bin ich, Andreas Grundke. Gerne per Du.</p>
-    <p class="cta-fuer">Für Betriebe im Münchner Osten: vom Ein-Personen-Gewerbe bis zur Firma mit rund 50 Mitarbeitern.</p>
+    <p class="cta-sub">Schreib mir auf WhatsApp. Wenn es brennt, ruf an, oder schick eine Mail. Am anderen Ende bin ich, Andreas Grundke. Gerne per Du.</p>
+    <p class="cta-fuer">Für Betriebe im Münchner Osten: vom <span class="nowrap">Ein-Personen-Gewerbe</span> bis zur Firma mit rund 50 Mitarbeitern.</p>
     <div class="cta-btns{mob}">
-      <a href="tel:{tel}" class="btn-tel"><svg width="20" height="20" aria-hidden="true"><use href="#ico-phone"/></svg> {phone}</a>
       <a href="{wa}" target="_blank" rel="noopener" class="btn-wa"><svg width="20" height="20" aria-hidden="true"><use href="#ico-wa"/></svg> WhatsApp</a>
+      <a href="tel:{tel}" class="btn-tel"><svg width="20" height="20" aria-hidden="true"><use href="#ico-phone"/></svg> {phone}</a>
       <a href="{mailto}" class="btn-email"><svg width="20" height="20" aria-hidden="true"><use href="#ico-mail"/></svg> E-Mail schreiben</a>
     </div>
     <div class="hc-qr cta-qr">
@@ -1787,8 +1800,8 @@ SERVICES = [
         "h1": "IT-Notdienst für Unternehmen",
         "service_type": "IT-Notdienst",
         "desc": ("IT-Notdienst für Unternehmen im Münchner Osten: Hilfe bei Störungen, Viren und Datenverlust "
-                 "per Fernwartung oder vor Ort. IT hängt? Ruf mich an."),
-        "k": ("IT hängt? Ruf mich an. Betreue ich euch bereits, kenne ich eure Systeme und schaue "
+                 "per Fernwartung oder vor Ort. Dein ITler geht nicht ran? Ich schon."),
+        "k": ("Dein ITler geht nicht ran? Ich schon. Betreue ich euch bereits, kenne ich eure Systeme und schaue "
               "per Fernwartung nach, ohne lange Erklärungen."),
         "answer": ("Im IT-Notdienst helfe ich als Grundke IT-Service aus Grasbrunn Betrieben im Münchner Osten bei "
                    "Störungen per Fernwartung oder vor Ort, ad hoc für 110 € netto zzgl. MwSt. je Stunde im 15-Minuten-Takt und "
@@ -2311,7 +2324,7 @@ SERVICES = [
         "cta2_href": "/managed-it-service/", "cta2_text": "Laufende IT-Betreuung",
         "desc": ("Dein IT-Dienstleister ist nicht erreichbar oder hört auf? Übernahme-Checkliste, was du "
                  "vom alten Betreuer brauchst und wie eine geordnete Übernahme läuft."),
-        "k": ("IT-Betreuer nicht mehr da? So übernehme ich. Beim Wechsel sorge ich dafür, dass Kennwörter, Lizenzen und "
+        "k": ("Dein ITler geht nicht ran? Ich schon. Beim Wechsel sorge ich dafür, dass Kennwörter, Lizenzen und "
               "Netzwerkplan danach bei euch liegen."),
         "answer": ("Bei Grundke IT-Service in Grasbrunn läuft der Wechsel für Betriebe im Münchner Osten in vier "
                    "Schritten: kostenloser IT-Schnellcheck, Übergabe der Zugänge mit Checkliste, Datensicherung "

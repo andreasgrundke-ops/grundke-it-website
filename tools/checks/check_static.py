@@ -1,11 +1,14 @@
-"""Statische Pruefungen (Spec §9: AK1, AK2, AK2b, AK7, AK8, AK9, AK9b, AK11a, AK13, AK13v, AK14, AK14r; R2: AKH).
+"""Statische Pruefungen (Spec §9: AK1, AK2, AK2b, AK7, AK8, AK9, AK9b, AK11a, AK13, AK13v, AK14, AK14r; R2: AKH;
+2.1.1: AKK Kontakt-Reihenfolge).
 Aufruf: python tools/checks/check_static.py [--only AK1,AK9] [--ci]   Exit 1 bei Fehler.
 --ci: nur Pruefungen, die weder ../_intern/ noch Git-Historie brauchen (Deploy-Workflow); AK13v (Versionen gegen
 origin/main) und AK14r (Rechtstexte gegen Basis-Commit und legal_hash.json) werden dann sichtbar uebersprungen.
 Browser-Messungen stehen in check_site.py, nicht hier.
 AKH (Stand 18.10.2026): Hero der Startseite mit dem Chat-Handy (H1, Firmenkunden-Zeile, erste Kundennachricht
 statisch im HTML, Pause-Knopf, sichtbare Kennzeichnung, genau ein [data-hero-chat]) statt der frueheren Buehne;
-Abschnitt IT-Betreuung wieder mit den typischen Anrufen (dl.itb-list)."""
+Abschnitt IT-Betreuung wieder mit den typischen Anrufen (dl.itb-list).
+AKK (Stand 18.10.2026): Kontaktwege ueberall in der Reihenfolge WhatsApp - Telefon - E-Mail; der Telefon-Knopf neben
+WhatsApp ist kein Hauptknopf (.btn-p); kein Kasten .hc-direkt mehr nach dem Hero."""
 import gzip, hashlib, html, json, re, subprocess, sys
 from html.parser import HTMLParser
 from pathlib import Path
@@ -37,7 +40,7 @@ PROMISE_RE = re.compile("|".join("(?:" + p + ")" for p in PROMISE_PATTERNS), re.
 # Ausgenommen (Spec AK8): Kundenzitate (blockquote.testi-txt), die Lesespalte der Ratgeber-Artikel
 # (article.lp-article), Rechtstexte und die Leitzeile.
 AK8_HERO_JS = "assets/js/hero-chat.js"   # Texte des Hero-Chats (CASES, NIGHT_REPLY, updateClock)
-AK8_LEITZEILE = "IT hängt? Ruf mich an."   # = H1_TEXT (Stand 18.10.2026)
+AK8_LEITZEILE = "Dein ITler geht nicht ran? Ich schon."   # = H1_TEXT (Stand 18.10.2026, Task C)
 # Erlaubte Treffer: (Seite, exakter Ausschnitt um den Treffer, Grund). Ein Treffer ist erlaubt, wenn der Ausschnitt
 # auf dieser Seite im geprueften Text steht und den Treffer enthaelt. Ein Eintrag ohne Treffer ist ein Fehler (Liste
 # bleibt genau). Seite = Pfad wie rel(), fuer den Hero-Chat AK8_HERO_JS.
@@ -114,8 +117,8 @@ AK8_ALLOW = [
 AK8_OPEN = []
 # Startseite, Hero „Der Chat“ (Stand 18.10.2026, Release 2.1.1): Texte zeichengleich; AKH prueft sie im HTML der
 # Startseite. Der Hero zeigt wieder das Chat-Handy, der Abschnitt IT-Betreuung wieder die typischen Anrufe.
-H1_TEXT = "IT hängt? Ruf mich an."
-H1_EM = "Ruf mich an."
+H1_TEXT = "Dein ITler geht nicht ran? Ich schon."   # Andreas 18.10.2026: H1 zurueck
+H1_EM = "Ich schon."
 PAGE_K_HERO = "Deine IT-Abteilung. Nur extern."
 SCHUTZSATZ = "Keine Öffnungszeiten. Vertragskunden zuerst, ohne garantierte Reaktionszeit."
 FIRMENKUNDEN_HERO = "Für Selbstständige, Praxen, Handwerk und Büros bis 50 Mitarbeiter."
@@ -1020,12 +1023,11 @@ def akh():
         errs.append("index.html: Firmenname mit Rechtsform im Hero")
     for el in q(lambda n: n.tag in ("img", "svg", "use", "div", "span") and "logo" in " ".join(str(v) for v in n.attrs.values()).lower(), hero):
         errs.append(f"index.html: Logo im Hero (<{el.tag}>), AK-R2-04")
-    # Link /it-betreuer-wechseln/ direkt nach der Hero-Section. Direkt nach .hero steht (AK-R1-03) der Kasten
-    # .hc-direkt, der nur ab 1280 px sichtbar ist; der Link folgt als naechstes Element. Sichtbarkeit: check_design.py R2-LINK.
+    # Link /it-betreuer-wechseln/ direkt nach der Hero-Section (seit 18.10.2026 ohne den Kasten .hc-direkt dazwischen;
+    # dass es ihn nirgends mehr gibt, prueft AKK). Sichtbarkeit: check_design.py R2-LINK.
     sib = [k for k in hero.parent.kids if isinstance(k, _N)]
     i = next((k for k, x in enumerate(sib) if x is hero), -1)
-    nxt = [x for x in sib[i + 1:i + 3]]
-    cand = nxt[1] if nxt and nxt[0].has("hc-direkt") and len(nxt) > 1 else (nxt[0] if nxt else None)
+    cand = sib[i + 1] if 0 <= i < len(sib) - 1 else None
     links = q(lambda n: n.tag == "a" and n.attrs.get("href") == WECHSEL_LINK[0], cand) if cand is not None else []
     if cand is None or not cand.has("hc-weiter") or [a.text() for a in links] != [WECHSEL_LINK[1]]:
         errs.append(f"index.html: Link {WECHSEL_LINK[0]} '{WECHSEL_LINK[1]}' steht nicht direkt nach dem Hero (.hc-weiter)")
@@ -1075,6 +1077,43 @@ def akh():
     return errs
 
 
+# ----------------------------------------------------------------------------------------------------------------------
+# AKK (Stand 18.10.2026, Release 2.1.1): Kontakt-Reihenfolge ueberall WhatsApp - Telefon - E-Mail. Je Kontaktgruppe
+# (Kopfzeile, Mobilmenue, Seitenkopf, Abschluss, Preise, Schnellcheck, Fernwartungshilfe, Kontaktseite, Fuss, Dock)
+# stehen die Links in dieser Reihenfolge; steht WhatsApp in der Gruppe, ist der Telefon-Link kein Hauptknopf (.btn-p,
+# volle #0000FE-Flaeche). Ratgeber-Kopf mit nur dem Anruf-Knopf bleibt erlaubt. Kein .hc-direkt mehr.
+# Farben und Hauptaktion im gerenderten Zustand: check_design.py AK-R1-03.
+# ----------------------------------------------------------------------------------------------------------------------
+AKK_GROUPS = ("nav-links", "mobile-menu", "hc-ctas", "cta-btns", "pkg-btns", "sc-cta-row", "fw-help-actions", "k-ways",
+              "foot-contact", "sticky-contact")
+AKK_RANK = {"wa": 0, "tel": 1, "mail": 2}
+
+
+def _kind(a):
+    h = a.attrs.get("href", "")
+    return "wa" if "wa.me/" in h else "tel" if h.startswith("tel:") else "mail" if h.startswith("mailto:") else None
+
+
+def akk():
+    errs = []
+    for p in pages():
+        dom = _Dom(read(p)).root
+        if any(n.has("hc-direkt") for n in dom.walk()):
+            errs.append(f"{rel(p)}: .hc-direkt vorhanden (Kasten nach dem Hero ist seit 18.10.2026 entfernt)")
+        for g in (n for n in dom.walk() if n.tag != "#root" and any(n.has(c) for c in AKK_GROUPS)):
+            links = [(a, _kind(a)) for a in g.walk() if a.tag == "a" and _kind(a)]
+            order = [k for _a, k in links]
+            if order != sorted(order, key=AKK_RANK.get):
+                name = next(c for c in AKK_GROUPS if g.has(c))
+                errs.append(f"{rel(p)}: .{name} Reihenfolge {order} statt WhatsApp - Telefon - E-Mail")
+            if "wa" in order:
+                for a, k in links:
+                    if k == "tel" and a.has("btn-p"):
+                        errs.append(f"{rel(p)}: Telefon neben WhatsApp als Hauptknopf (.btn-p) in "
+                                    f"{(g.attrs.get('class') or '').split()[0]}")
+    return errs
+
+
 def write_legal_baseline():
     out = {}
     for p in legal_pages():
@@ -1088,7 +1127,7 @@ def write_legal_baseline():
 CHECKS = {
     "AK1": (ak1, ()), "AK2": (ak2, ()), "AK2b": (ak2b, ()), "AK7": (ak7, ()), "AK8": (ak8, ()), "AK9": (ak9, ()),
     "AK9b": (ak9b, ()), "AK11a": (ak11a, ()), "AK13": (ak13, ()), "AK13v": (ak13v, ("git",)), "AK14": (ak14, ()),
-    "AK14r": (ak14r, ("intern", "git")), "AK13s": (ak13s, ()), "AKH": (akh, ()),
+    "AK14r": (ak14r, ("intern", "git")), "AK13s": (ak13s, ()), "AKH": (akh, ()), "AKK": (akk, ()),
 }
 
 if __name__ == "__main__":
