@@ -293,18 +293,6 @@
     isolation: isolate;
     background: var(--bg);   /* ohne Verlauf und Leuchtleisten */
   }
-  .hc-inner {
-    display: grid;
-    grid-template-columns: minmax(0, 1.12fr) minmax(0, .88fr);
-    align-items: center;
-    gap: clamp(2rem, 5vw, 5rem);
-    max-width: 1240px;
-    margin: 0 auto;
-    padding: clamp(2.5rem, 6vh, 4.5rem) clamp(1.2rem, 5vw, 5.5rem);
-    min-height: clamp(560px, calc(100svh - var(--nav-h)), 880px);
-  }
-  .hc-h1 { font-family:var(--fh); font-weight:800; font-size:clamp(2.1rem, 4.6vw, 3.7rem); line-height:1.04; letter-spacing:-.04em; color:var(--text); margin:0 0 1.2rem; }
-  .hc-h1 em { font-style:normal; color:var(--cyan); }
   /* QR ruhig: kein dritter blauer Block neben „Anrufen" – das Bild (weiss auf Blau) wird
      per Graustufe zu weiss auf Fast-Schwarz, der Rahmen nimmt denselben Ton auf */
 
@@ -408,7 +396,6 @@
   }
   @media (min-width:1920px) { .hc-inner { max-width:1440px; } }
   @media (max-width:1024px) {
-    .hc-inner { gap:2rem; }
     .hc-phone { width:clamp(250px, 30vw, 290px); }
   }
   /* Schmales Tablet: neben dem Handy ist kein Platz, rechts liegt die feste Kontaktleiste -
@@ -422,9 +409,6 @@
   /* Handy: eine Spalte, Chat ohne Geraeterahmen als kompakter Streifen,
      die Buttons uebernimmt die feste Kontaktleiste unten */
   @media (max-width:767px) {
-    .hc-inner { grid-template-columns:1fr; gap:1.6rem; min-height:0; padding:2rem 1.2rem 2.4rem; }
-    .hc-h1 { font-size:clamp(2rem, 9vw, 2.6rem); margin-bottom:1rem; }
-    .hc-proof { margin-bottom:0; font-size:.88rem; gap:.5rem 1.1rem; }
     .hc-stage { align-items:stretch; gap:.6rem; }
     .hc-clock { text-align:left; font-size:.86rem; }
       .hc-phone { width:auto; aspect-ratio:auto; height:400px; min-height:0; max-height:none; padding:0; border-radius:18px; background:none; box-shadow:none; }
@@ -443,9 +427,94 @@
     .hc-pause { right:10px; top:36px; bottom:auto; }
   }
   /* Handy quer: kein Platz fuer die Buehne */
+
+  /* ── Hero „Zwei Wege" (Relaunch R2) ──
+     Kopf links: H1 in drei Zeilen („Ich schon." immer eigene Zeile), Unterzeile, Schutzsatz, Wer, zwei Belege.
+     Buehne rechts bzw. darunter: feste Hoehe je Breite (keine Layout-Verschiebung), Bewegung nur opacity/transform.
+     Unter 1024 px liegen beide Spuren in derselben Flaeche, sichtbar ist die mit .is-on; ab 1024 nebeneinander. */
+  .hc-inner { display:grid; grid-template-columns:minmax(0,1fr); gap:1.6rem; margin:0 auto; padding:1.6rem 1.2rem; }
+  .hc-h1 { font-family:var(--fh); font-weight:800; font-size:clamp(32px, 10vw, 40px); line-height:1.04; letter-spacing:-.04em; color:var(--text); margin:0 0 .9rem; text-wrap:balance; }
+  .hc-h1 em { display:block; font-style:normal; color:var(--cyan); }
+  .hero .hc-k { font-size:18px; line-height:1.4; max-width:34rem; margin:0 0 .35rem; }
+  .hc-schutz { font-size:16px; line-height:1.5; color:var(--text2); max-width:34rem; margin:0 0 .9rem; }
+  .hc-wer { font-size:14px; line-height:1.5; color:var(--text2); margin:0 0 .7rem; }
+  .hc-wer strong { color:var(--text); font-weight:600; }
+  .hero .hc-proof { margin:0; gap:.4rem 1.1rem; font-size:14px; }
+  .hero .hc-ctas { margin-top:1.6rem; }
+
+  .zw { position:relative; min-width:0; }
+  .zw-stage { position:relative; display:grid; grid-template-rows:auto minmax(0,1fr); height:248px; padding:14px 14px 12px; border:1px solid var(--border); border-radius:var(--r-l); background:var(--bg2); overflow:hidden; }
+  /* Faelle liegen je Ort (Kopf, Textspalte) in einer Rasterzelle uebereinander */
+  .zw-kopf, .zw-txt { display:grid; min-width:0; }
+  .zw-kopf > .zw-case, .zw-txt > .zw-case { grid-area:1 / 1; }
+  .zw-case { opacity:0; transition:opacity .25s ease-out; }
+  .zw-case.is-on { opacity:1; }
+  .zw-zeit { display:flex; align-items:center; gap:8px; margin:0 0 10px; padding-right:56px; font-size:14px; font-weight:700; line-height:1.4; color:var(--text); font-variant-numeric:tabular-nums; }
+  .zw-g { width:20px; height:20px; flex-shrink:0; fill:none; stroke:var(--text2); stroke-width:1.75; stroke-linecap:round; stroke-linejoin:round; }
+  .zw-dots { position:absolute; top:19px; right:14px; display:flex; gap:6px; }
+  .zw-dots i { width:6px; height:6px; border-radius:50%; background:#3a4356; transition:background-color .3s ease-out; }
+  .zw-dots i.is-done { background:var(--text3); }
+  .zw-dots i.is-on { background:var(--text); }
+  .zw-lane { position:relative; grid-area:2 / 1; display:grid; grid-template-columns:112px minmax(0,1fr); grid-template-rows:auto minmax(0,1fr); gap:6px 14px; min-height:0; opacity:0; transition:opacity .3s ease-out; }
+  .zw-lane.is-on { opacity:1; }
+  .zw-lane-t { grid-column:1 / -1; margin:0; font-size:14px; font-weight:700; line-height:1.4; }
+  .zw-lane--links .zw-lane-t { color:var(--text3); }
+  .zw-lane--rechts .zw-lane-t { color:var(--cyan); }
+  .zw-fig { width:112px; height:112px; }
+  .zw-fig svg { display:block; width:100%; height:100%; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+  .zw-fig svg * { vector-effect:non-scaling-stroke; }
+  .zw-fig .zw-auge { fill:currentColor; stroke:none; }
+  .zw-lane--links .zw-fig { color:var(--text2); }
+  .zw-lane--rechts .zw-fig { color:var(--cyan); }
+  .zw-txt > .zw-case { display:flex; flex-direction:column; gap:8px; min-width:0; }
+  .zw-t { margin:0; font-size:16px; line-height:1.4; font-weight:600; opacity:0; transform:translateY(6px); transition:opacity .3s cubic-bezier(.16,1,.3,1), transform .3s cubic-bezier(.16,1,.3,1); }
+  .zw-t.is-on { opacity:1; transform:none; }
+  .zw-lane--links .zw-t { color:var(--text2); }
+  .zw-lane--rechts .zw-t { color:var(--text); }
+  /* Ansage, Ticket, Mailbox: die Stimme der Maschine – gestrichelter Zettel, neutral */
+  .zw-t--ansage { padding:6px 9px; border:1px dashed #475166; border-radius:var(--r-s); font-size:14px; font-weight:500; font-variant-numeric:tabular-nums; }
+  .zw-t--ok { display:flex; align-items:flex-start; gap:6px; }
+  .zw-ok { width:18px; height:18px; margin-top:2px; flex-shrink:0; fill:none; stroke:var(--cyan); stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
+  .zw-schluss { position:absolute; left:126px; right:0; bottom:0; margin:0; font-family:var(--fh); font-size:18px; font-weight:700; line-height:1.2; letter-spacing:-.01em; color:var(--cyan); opacity:0; transform:translateY(6px); transition:opacity .3s cubic-bezier(.16,1,.3,1), transform .3s cubic-bezier(.16,1,.3,1); }
+  .zw-schluss.is-on { opacity:1; transform:none; }
+  .zw-foot { display:flex; align-items:center; gap:12px; margin-top:10px; }
+  .zw-fuss { flex:1; margin:0; font-size:14px; line-height:1.45; color:var(--text3); }
+  .zw-pause { width:44px; height:44px; flex-shrink:0; display:grid; place-items:center; padding:0; border-radius:50%; border:1px solid #64748b; background:transparent; color:var(--text); cursor:pointer; transition:border-color .2s, background-color .2s; }
+  .zw-pause[hidden] { display:none; }
+  .zw-pause:hover { border-color:var(--text2); background:rgba(255,255,255,.06); }
+  .zw-pause:focus-visible { outline:2px solid var(--cyan); outline-offset:3px; }
+  .zw-pause svg { display:none; width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
+  .zw-pause[data-zustand="laeuft"] .i-pause, .zw-pause[data-zustand="pause"] .i-play, .zw-pause[data-zustand="ende"] .i-replay { display:block; }
+  @media (prefers-reduced-motion: reduce) {
+    .zw-case, .zw-lane, .zw-t, .zw-schluss, .zw-dots i { transition:none; }
+  }
+  @media (min-width:768px) {
+    .hc-inner { padding:2.5rem clamp(1rem, 5vw, 2.5rem); }
+    .hc-h1 { font-size:clamp(44px, 5vw, 64px); }
+  }
+  /* ab 1024: Text links, Buehne rechts, beide Spuren nebeneinander mit gleicher Oberkante */
+  @media (min-width:1024px) {
+    .hc-inner { grid-template-columns:minmax(0,1fr) minmax(0,1fr); align-items:center; gap:clamp(2.5rem, 4.5vw, 4.5rem); min-height:clamp(560px, calc(100svh - var(--nav-h)), 842px); padding-block:3rem; }
+    .hc-h1 { font-size:clamp(48px, 4.45vw, 64px); margin-bottom:1.1rem; }
+    .hero .hc-k { font-size:20px; }
+    .hc-schutz { font-size:17px; margin-bottom:1.3rem; }
+    .zw-stage { grid-template-columns:minmax(0,1fr) minmax(0,1fr); height:452px; padding:20px 0 0; }
+    .zw-kopf { grid-column:1 / -1; padding:0 22px; }
+    .zw-zeit { margin-bottom:14px; }
+    .zw-dots { top:26px; right:22px; }
+    .zw-lane, .zw-lane.is-on { opacity:1; }
+    .zw-lane { grid-area:auto; grid-row:2; grid-template-columns:minmax(0,1fr); grid-template-rows:auto auto minmax(0,1fr); row-gap:12px; padding:18px 22px 64px; border-top:1px solid var(--border); }
+    .zw-lane--rechts { background:var(--bg3); border-left:1px solid var(--border); }
+    .zw-fig { width:144px; height:144px; }
+    .zw-t { font-size:17px; }
+    .zw-t--ansage { font-size:14px; }
+    .zw-schluss { left:22px; right:22px; bottom:20px; font-size:20px; }
+    .zw-foot { margin-top:12px; }
+  }
+  /* Handy quer: kein Platz fuer die Buehne */
   @media (max-height:500px) and (orientation:landscape) {
     .hc-inner { min-height:0; padding-block:1.6rem; }
-    .hc-stage { display:none; }
+    .zw { display:none; }
     .hc-h1 { font-size:clamp(1.5rem, 5vh, 2.1rem); }
   }
 
@@ -1200,26 +1269,79 @@
 
 <main id="main">
 
-<!-- HERO „Der Chat" (seit 02.10.2026, ersetzt den Foto-Slider)
-     Rechts laeuft ein Beispiel-Einsatz als Chat ab, gesteuert von assets/js/hero-chat.js.
-     Ohne JS steht der erste Fall fertig da. Bis zum Foto-Shooting traegt der Avatar die Initialen. -->
-<section class="hero" aria-labelledby="hero-h1" data-hero-chat>
+<!-- HERO „Zwei Wege" (Relaunch R2): links der Kopf mit H1, Unterzeile, Schutzsatz, Belegen und Kontaktwegen;
+     rechts die Buehne mit vier Beispielen in zwei Spuren, gesteuert von assets/js/hero-wege.js.
+     Das HTML liefert den Endstand (Fall 4 + Schluss): so steht die Buehne ohne JS und bei reduzierter Bewegung.
+     Die Buehne ist aria-hidden; Screenreader lesen die Liste .zw-alt. Pause-Knopf ausserhalb der Buehne. -->
+<section class="hero" aria-labelledby="hero-h1">
   <div class="hc-inner">
     <div class="hc-copy">
-      <h1 id="hero-h1" class="hc-h1" data-dominant>Deine IT-Abteilung.<br> <em>Nur extern.</em></h1>
-      <p class="page-k hc-k">Ich kümmere mich um eure IT, damit ihr in Ruhe arbeitet. Und wenn es brennt, kenne ich eure Systeme schon.</p>
+      <h1 id="hero-h1" class="hc-h1">Dein ITler geht nicht ran? <em>Ich schon.</em></h1>
+      <p class="page-k hc-k">Deine IT-Abteilung. Nur extern.</p>
+      <p class="hc-schutz">Keine Öffnungszeiten. Vertragskunden zuerst, ohne garantierte Reaktionszeit.</p>
       <p class="hc-wer"><strong>Andreas Grundke</strong> · IT-Service für Betriebe im Münchner Osten</p>
       <ul class="hc-proof">
         <li><svg class="is-star" aria-hidden="true"><use href="#ico-star"/></svg><a href="#referenzen" data-proof>5,0 bei 5 Google-Bewertungen</a></li>
         <li><svg aria-hidden="true"><use href="#ico-user-check"/></svg>Über 20 Jahre IT-Erfahrung</li>
-        <li><svg aria-hidden="true"><use href="#ico-check"/></svg>Monatspauschale ab 149&nbsp;€ netto</li>
-        <li><svg aria-hidden="true"><use href="#ico-clock"/></svg>Ad hoc 110&nbsp;€ netto zzgl. MwSt./Std. im 15-Minuten-Takt</li>
       </ul>
       <div class="hc-ctas">
         <a href="tel:+491782584438" class="btn-p hc-call"><svg width="18" height="18" aria-hidden="true"><use href="#ico-phone"/></svg>Anrufen <span class="hc-num">0178 258 44 38</span></a>
         <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20komme%20%C3%BCber%20deine%20Startseite." target="_blank" rel="noopener" class="hc-wa" data-wa="hero"><svg width="18" height="18" aria-hidden="true"><use href="#ico-wa"/></svg>WhatsApp</a>
       </div>
     </div>
+    <div class="zw" data-dominant>
+      <div class="zw-stage" data-zw aria-hidden="true" data-zustand="ende" data-fall="4">
+        <div class="zw-kopf">
+          <div class="zw-case" data-fall="1"><p class="zw-zeit"><svg class="zw-g" viewBox="0 0 24 24"><path d="M5 20h14M6 20V11h12v9M8 11V6h8v5M10 8.5h4M9 14h1M12 14h1M15 14h1M9 17h1M12 17h1M15 17h1"/></svg><span>Sa 12:10 · Kasse</span></p></div>
+          <div class="zw-case" data-fall="2"><p class="zw-zeit"><svg class="zw-g" viewBox="0 0 24 24"><rect x="4" y="5.5" width="16" height="14.5" rx="2"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4M8 14h2M14 14h2M8 17h2"/></svg><span>So 19:40 · Terminbuchung</span></p></div>
+          <div class="zw-case" data-fall="3"><p class="zw-zeit"><svg class="zw-g" viewBox="0 0 24 24"><rect x="3.5" y="6" width="17" height="12.5" rx="2"/><path d="M4 7l8 6 8-6"/></svg><span>Fr 17:30 · E-Mail</span></p></div>
+          <div class="zw-case is-on" data-fall="4"><p class="zw-zeit"><svg class="zw-g" viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="11" rx="1.5"/><path d="M9 20h6M12 15.5V20"/></svg><span>Do 18:15 · PC/NAS</span></p></div>
+          <span class="zw-dots"><i class="is-done"></i><i class="is-done"></i><i class="is-done"></i><i class="is-on"></i></span>
+        </div>
+        <div class="zw-lane zw-lane--links">
+            <p class="zw-lane-t">Ohne feste Betreuung</p>
+            <div class="zw-fig"><svg viewBox="0 0 96 96" width="144" height="144"><path d="M10 86h76"/><circle cx="42" cy="36" r="12"/><path d="M37 42.5h8"/><path d="M22 86c0-16 9-26 20-26s20 10 20 26"/><path d="M60 74c4-8 6-16 4-24l-6-6"/><rect x="52" y="27" width="8" height="15" rx="2.5" transform="rotate(14 56 34.5)"/><circle cx="78" cy="22" r="9"/><path d="M78 16.5V22l3.5 2.5"/><g class="zw-auge"><circle cx="37.5" cy="35" r="1.4"/><circle cx="45.5" cy="35" r="1.4"/></g></svg></div>
+            <div class="zw-txt">
+              <div class="zw-case" data-fall="1"><p class="zw-t">Samstag. Die Kasse steht.</p><p class="zw-t zw-t--ansage">Ansage: Büro ab Montag besetzt.</p></div>
+              <div class="zw-case" data-fall="2"><p class="zw-t">Online-Buchung zeigt Fehler.</p><p class="zw-t zw-t--ansage">Ticket #20871 angelegt. Bearbeitung folgt.</p></div>
+              <div class="zw-case" data-fall="3"><p class="zw-t">Keine Mails seit Mittag.</p><p class="zw-t zw-t--ansage">Mailbox. Bitte Ticket erstellen.</p></div>
+              <div class="zw-case is-on" data-fall="4"><p class="zw-t is-on">Alles hängt beim Öffnen.</p><p class="zw-t zw-t--ansage is-on">Nächster freier Termin: nächste Woche.</p></div>
+            </div>
+        </div>
+        <div class="zw-lane zw-lane--rechts is-on">
+            <p class="zw-lane-t">Mit Grundke-Betreuung</p>
+            <div class="zw-fig"><svg viewBox="0 0 96 96" width="144" height="144"><path d="M10 86h76"/><circle cx="44" cy="34" r="12"/><path d="M39 39.5c2.8 2.6 7.2 2.6 10 0"/><path d="M24 86c0-16 9-26 20-26s20 10 20 26"/><path d="M30 66l-8-20 12-10"/><path d="M58 66l8-20-12-10"/><path d="M72 86v-10h10v10M82 78.5h2.5a2.5 2.5 0 0 1 0 5H82"/><path d="M73 20l4 4 8-8"/><g class="zw-auge"><circle cx="39.5" cy="33" r="1.4"/><circle cx="48.5" cy="33" r="1.4"/></g></svg></div>
+            <div class="zw-txt">
+              <div class="zw-case" data-fall="1"><p class="zw-t">Andreas ruft zurück.</p><p class="zw-t zw-t--ok"><svg class="zw-ok" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Kassenserver neu gestartet. Läuft.</span></p></div>
+              <div class="zw-case" data-fall="2"><p class="zw-t">Er kennt die Seite schon.</p><p class="zw-t zw-t--ok"><svg class="zw-ok" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Buchungen gehen wieder.</span></p></div>
+              <div class="zw-case" data-fall="3"><p class="zw-t">Rückruf am Abend.</p><p class="zw-t zw-t--ok"><svg class="zw-ok" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Postfach war voll. Mails kommen.</span></p></div>
+              <div class="zw-case is-on" data-fall="4"><p class="zw-t is-on">Fehler gefunden: Speicher defekt.</p><p class="zw-t zw-t--ok is-on"><svg class="zw-ok" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Ersatz da, Daten zurückgespielt.</span></p></div>
+            </div>
+            <p class="zw-schluss is-on">Kennt eure Anlage schon.</p>
+        </div>
+      </div>
+      <div class="zw-foot">
+        <p class="zw-fuss">So kann es laufen. Vertragskunden zuerst, ohne garantierte Reaktionszeit.</p>
+        <button class="zw-pause" type="button" data-zw-pause data-zustand="ende" aria-label="Nochmal abspielen" data-label-laeuft="Beispiele anhalten" data-label-pause="Beispiele weiter abspielen" data-label-ende="Nochmal abspielen" hidden>
+          <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5v14M15 5v14"/></svg>
+          <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>
+          <svg class="i-replay" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>
+        </button>
+      </div>
+      <div class="zw-alt sr-only"><p>Vier Beispiele aus dem Alltag</p><ol><li>Sa 12:10 · Kasse. Ohne feste Betreuung: Samstag. Die Kasse steht. Ansage: Büro ab Montag besetzt. Mit Grundke-Betreuung: Andreas ruft zurück. Kassenserver neu gestartet. Läuft.</li><li>So 19:40 · Terminbuchung. Ohne feste Betreuung: Online-Buchung zeigt Fehler. Ticket #20871 angelegt. Bearbeitung folgt. Mit Grundke-Betreuung: Er kennt die Seite schon. Buchungen gehen wieder.</li><li>Fr 17:30 · E-Mail. Ohne feste Betreuung: Keine Mails seit Mittag. Mailbox. Bitte Ticket erstellen. Mit Grundke-Betreuung: Rückruf am Abend. Postfach war voll. Mails kommen.</li><li>Do 18:15 · PC/NAS. Ohne feste Betreuung: Alles hängt beim Öffnen. Nächster freier Termin: nächste Woche. Mit Grundke-Betreuung: Fehler gefunden: Speicher defekt. Ersatz da, Daten zurückgespielt.</li></ol><p>Kennt eure Anlage schon.</p></div>
+    </div>
+  </div>
+</section>
+<!-- Kasten nach dem Hero (nur ab 1280 px sichtbar): Nummer und WhatsApp als schlanke Textzeile -->
+<div class="hc-direkt">
+  <div class="inner"><span>Direkt erreichbar:</span> <a href="tel:+491782584438">0178 258 44 38</a> <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20komme%20%C3%BCber%20deine%20Startseite." target="_blank" rel="noopener" data-wa="direkt">WhatsApp</a></div>
+</div>
+
+<!-- IT-BETREUUNG: Typische Anrufe + Kernaussage (seit 10.10.2026 statt der Haken-Liste), Vergleich aufklappbar,
+     Chips zu den IT-Leistungsseiten (ersetzen den Abschnitt „Leistungen“, Anker #leistungen bleibt) -->
+<!-- HC-MOVE:START  Chat-Handy aus dem bisherigen Hero, unveraendert. Zieht als naechstes in #it-betreuung um;
+     bis dahin geparkt und ausgeblendet (haelt das Laengenbudget, kein doppelter Ablauf). -->
+<div class="hc-park" hidden>
     <div class="hc-stage">
       <p class="hc-clock is-empty" data-hc-clock aria-hidden="true"></p>
       <div class="hc-device">
@@ -1251,15 +1373,8 @@
         </button>
       </div>
     </div>
-  </div>
-</section>
-<!-- Kasten nach dem Hero (nur ab 1280 px sichtbar): Nummer und WhatsApp als schlanke Textzeile -->
-<div class="hc-direkt">
-  <div class="inner"><span>Direkt erreichbar:</span> <a href="tel:+491782584438">0178 258 44 38</a> <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20komme%20%C3%BCber%20deine%20Startseite." target="_blank" rel="noopener" data-wa="direkt">WhatsApp</a></div>
 </div>
-
-<!-- IT-BETREUUNG: Typische Anrufe + Kernaussage (seit 10.10.2026 statt der Haken-Liste), Vergleich aufklappbar,
-     Chips zu den IT-Leistungsseiten (ersetzen den Abschnitt „Leistungen“, Anker #leistungen bleibt) -->
+<!-- HC-MOVE:END -->
 <section class="itb section-pad" id="it-betreuung">
   <div class="inner">
     <h2 class="s-title">Typische Anrufe.<br>Und was ich dann mache.</h2>
@@ -2018,6 +2133,7 @@
 <script src="/assets/js/lenis.min.js?v=2026.10.g" defer></script>
 <script src="/assets/js/main.js?v=2026.10.g" defer></script>
 <script src="/assets/js/hero-chat.js?v=2026.10.g" defer></script>
+<script src="/assets/js/hero-wege.js?v=2026.10.g" defer></script>
 
 <!-- Sticky Contact Bar — Mobile: Bottom-Leiste · Desktop: Sidebar rechts -->
 <!-- STICKY:START -->
