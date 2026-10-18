@@ -57,8 +57,10 @@ geaendert hat, nicht wegen eines neuen Footer-Links.
   Einrichtungs-Pauschalen, Barrierefreiheitserklaerung neu.
 - **Release 2.0.1 (in 2.1.0 enthalten):** im Abschnitt IT-Betreuung „So arbeite ich“ (`ul.itb-how`, sechs Punkte)
   statt Systemhaus-Vergleich, FAQ-Passungsfrage, KI-Kennzeichnung `p.cta-ki` im Abschluss (`closing()`, Startseite von Hand).
-- **Startseite Hero "Zwei Wege":** `assets/js/hero-wege.js`. Der Endstand ist der HTML-Grundzustand (ohne JS sichtbar),
-  Pause-Knopf, bei reduzierter Bewegung bleibt es beim Endstand. Das Chat-Handy steht im Abschnitt IT-Betreuung
+- **Startseite Hero "Ein Weg"** (H1 „IT hängt? Ruf mich an.“): Bühne „So läuft das bei mir“, vier Fälle mit je drei
+  Bildern, sichtbare Kennzeichnung als nachgestellte Beispiele, darunter eine echte Google-Stimme; gesteuert von
+  `assets/js/hero-wege.js`. Kein Vergleich mit anderen Anbietern. Der Endstand ist der HTML-Grundzustand (ohne JS sichtbar),
+  Pause-Knopf, bei reduzierter Bewegung bleibt es beim Endstand. Direkt unter dem Hero der Link zu /it-betreuer-wechseln/. Das Chat-Handy steht im Abschnitt IT-Betreuung
   (`[data-hero-chat]`, `assets/js/hero-chat.js`) und startet erst bei Sichtbarkeit; abends 20-40 Min. bis zur Antwort.
 - **Versionen jetzt:** `sw.js` `CACHE_NAME` `grundke-it-v2.1.0`, `RUNTIME_CACHE` `runtime-v39`,
   `ASSET_VER` 2026.10.i, `SITE_VERSION` 2.1.0 (Fuss "Version x.y.z · Stand TT.MM.JJJJ" aus dem Generator).

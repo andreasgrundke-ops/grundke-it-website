@@ -9,7 +9,7 @@ Beschreibung: Misst Hoehen bei 390x844 (reduzierte Bewegung, Service Worker bloc
 Aufruf:       PY313 tools/checks/check_design.py --measure-baseline DIR
               PY313 tools/checks/check_design.py --heights --baseline DIR
               PY313 tools/checks/check_design.py --release r1 [--baseline DIR] [--only R1-01a,R1-08]
-              PY313 tools/checks/check_design.py --release r2 --baseline DIR [--only R2-06,R2-09]
+              PY313 tools/checks/check_design.py --release r2 --baseline DIR [--only R2-06,R2-BILDER]
 Ablauf:       1. serve.py startet den lokalen Static-Server (127.0.0.1, freier Port).
               2. Fuer jede Seite aus check_static.pages() bei 390x844 messen.
               3. --measure-baseline: DIR/hoehen.json schreiben.
@@ -124,13 +124,15 @@ def heights(dir_):
 # ----------------------------------------------------------------------------------------------------------------------
 from check_static import ROOT, read, gen, deployable
 
-CYAN_ALLOW = ["h1 em", ".cta-h em", ".is-ag", ".hc-sys", ".hc-bar", ".zw-lane--rechts", "main p a", "main li a", ".faq-a a",
+CYAN_ALLOW = ["h1 em", ".cta-h em", ".is-ag", ".hc-sys", ".hc-bar", ".zw-fig-b", ".zw-t--ok", ".zw-schluss", "main p a", "main li a", ".faq-a a",
               "[aria-current]", ":focus-visible"]
 # Spec §5.6: Abschnitt -> (Selektor des Abschnitts). R1 prueft bei .hero und #it-betreuung nur die Anzahl.
 DOMINANT_SECTIONS = [".hero", "#it-betreuung", "#referenzen", "#praxis", "#schnellcheck", "#preise", "#ki",
                      "#einsatzgebiet"]
 DOMINANT_COUNT_ONLY_R1 = [".hero", "#it-betreuung"]
 DOMINANT_COUNT_ONLY_R2 = [".hero"]      # R2: #it-betreuung nach Flaeche (Chat-Handy), .hero weiter nur Anzahl
+# Cyan in der Hero-Buehne (Spec §5.3, Neuentscheidung 18.10.2026 „Ein Weg"): nur fuer die Loesung, also die entspannte
+# Figur (.zw-fig-b), das Haekchen an Bild 3 (.zw-t--ok) und den Schluss (.zw-schluss).
 NAMEN_OHNE_EINWILLIGUNG = ROOT.parent / "_intern" / "pruefdaten" / "namen-ohne-einwilligung.txt"
 DOCK_H, DOCK_GAP = 52, 12
 SAFE = "env(safe-area-inset-bottom)"
@@ -834,12 +836,13 @@ AK_R1 = {
 
 
 # ----------------------------------------------------------------------------------------------------------------------
-# Task 11: Abnahmekriterien R2 (Spec §4.2, §4.4, §5.8, §6; AK-R2-06 ... AK-R2-16). Rot, bis die Buehne (Task 12) und der
-# Umzug des Chats (Task 13) gebaut sind. Zeit laeuft ueber page.clock (Zeit steht, bis run_for sie weiterdreht); CSS-
-# Uebergaenge laufen in echter Zeit und werden deshalb vor dem Messen abgewartet oder beendet.
+# Task 11: Abnahmekriterien R2 (Spec §4.2, §4.4, §5.8, §6; AK-R2-06 ... AK-R2-16), seit der Neuentscheidung 18.10.2026
+# auf „Ein Weg" umgestellt (Paket B: B-05, B-06; AK-R2-09 Spuren entfaellt, dafuer R2-BILDER). Zeit laeuft ueber
+# page.clock (Zeit steht, bis run_for sie weiterdreht); CSS-Uebergaenge laufen in echter Zeit und werden deshalb vor dem
+# Messen abgewartet oder beendet.
 # ----------------------------------------------------------------------------------------------------------------------
 import datetime
-from check_static import HERO_WEGE, FUSSZEILE_HERO
+from check_static import HERO_WEG, ALT_EINLEITUNG, WECHSEL_LINK
 
 BASELINE = {}   # hoehen.json der Vorher-Messung; run_release setzt sie aus --baseline
 ZW_BTN = "button.zw-pause[data-zw-pause]"
@@ -847,10 +850,10 @@ ZW_LABELS = {"laeuft": "Beispiele anhalten", "pause": "Beispiele weiter abspiele
 ZW_MAX_MS = 40000          # Spec §5.8: Gesamtdauer <= 40 s
 CLOCK_T0 = datetime.datetime(2026, 10, 19, 10, 0, 0)
 
-# Zeichenketten der Fall-Bildtexte in Lesereihenfolge (Fall 1..4; links 1, links 2, rechts 1, rechts 2)
+# Zeichenketten eines Falls in Lesereihenfolge der Textalternative (Fall 1..4: Zeitmarke, Bild 1, Bild 2, Bild 3)
 def _fall_texts(n):
-    f = HERO_WEGE["faelle"][n - 1]
-    return list(f["links"]) + list(f["rechts"])
+    f = HERO_WEG["faelle"][n - 1]
+    return [f["zeit"]] + list(f["bilder"])
 
 
 def _open(vw, vh, reduced="no-preference", clock=True, js=True):
@@ -997,11 +1000,15 @@ def ak_r2_07_reduced_motion():
           const sch = document.querySelector('.zw-schluss');
           return { off, n4: document.querySelectorAll('.zw-case[data-fall="4"]').length,
                    schluss: sch ? sch.checkVisibility({ visibilityProperty: true, opacityProperty: true }) && parseFloat(getComputedStyle(sch).opacity) > 0.99 : null,
+                   bild: document.querySelector('.zw-stage').getAttribute('data-bild'),
+                   bilder: [...document.querySelectorAll('.zw-case[data-fall="4"] .zw-t')].filter(t => t.classList.contains('is-on') && parseFloat(getComputedStyle(t).opacity) > 0.99).length,
                    anims: document.querySelector('.hero').getAnimations({ subtree: true }).filter(a => a.playState === 'running').length }; }""")
         if r["n4"] == 0 or r["off"]:
             errs.append(f"/: Endstand: Fall 4 nicht sichtbar (is-on fehlt an {r['off']} von {r['n4']} Faellen)")
         if not r["schluss"]:
             errs.append("/: Endstand: .zw-schluss nicht voll sichtbar")
+        if r["bild"] != "3" or r["bilder"] != 3:
+            errs.append(f"/: Endstand: Fall 4 zeigt nicht alle drei Bilder (data-bild {r['bild']!r}, {r['bilder']} von 3 sichtbar)")
         if r["anims"]:
             errs.append(f"/: bei reduzierter Bewegung laufen {r['anims']} Animationen in .hero")
         _run(pg, 5000)
@@ -1020,7 +1027,7 @@ FOCUSABLE = "a[href], button, input, select, textarea, summary, iframe, [tabinde
 
 def ak_r2_08_text_alternative():
     """AK-R2-08: Buehne aria-hidden=true ohne fokussierbares Element; der Accessibility-Snapshot von .hero enthaelt alle
-    Bildtexte der Faelle in Lesereihenfolge (Liste 'Vier Beispiele aus dem Alltag', .zw-alt.sr-only)."""
+    Texte der Faelle in Lesereihenfolge (Einleitung ALT_EINLEITUNG, je Fall Zeitmarke und drei Bilder, .zw-alt.sr-only)."""
     errs = []
     ctx, pg = _open(1440, 900)
     try:
@@ -1047,9 +1054,9 @@ def ak_r2_08_text_alternative():
         except Exception as e:                      # Playwright-Fehler sichtbar machen, nie still ueberspringen
             return errs + [f"/: aria_snapshot von .hero nicht lesbar ({str(e).splitlines()[0][:80]})"]
         snap = re.sub(r"\s+", " ", snap.replace(" ", " "))
-        head = snap.find("Vier Beispiele aus dem Alltag")
+        head = snap.find(ALT_EINLEITUNG)
         if head < 0:
-            errs.append("/: Snapshot ohne 'Vier Beispiele aus dem Alltag'")
+            errs.append(f"/: Snapshot ohne '{ALT_EINLEITUNG}'")
         prev = head
         for n in range(1, 5):
             pos = [snap.find(t, max(head, 0)) for t in _fall_texts(n)]
@@ -1059,7 +1066,11 @@ def ak_r2_08_text_alternative():
                 continue
             if min(pos) <= prev:
                 errs.append(f"/: Snapshot: Fall {n} steht nicht hinter Fall {n - 1} (Lesereihenfolge)")
+            if pos != sorted(pos):
+                errs.append(f"/: Snapshot: Fall {n}: Zeitmarke und Bilder nicht in Lesereihenfolge")
             prev = min(pos)
+        if HERO_WEG["schluss"] not in snap[max(prev, 0):]:
+            errs.append(f"/: Snapshot: Schluss '{HERO_WEG['schluss']}' fehlt hinter Fall 4")
     finally:
         ctx.close()
     return errs
@@ -1086,48 +1097,90 @@ def test_no_focusable_in_aria_hidden():
     return errs
 
 
-LANES_JS = """() => { const eff = e => { let o = 1; for (let n = e; n; n = n.parentElement) o *= parseFloat(getComputedStyle(n).opacity); return o; };
-  const f = sel => { const e = document.querySelector(sel); if (!e) return null;
-    document.getAnimations().forEach(a => { if (a instanceof CSSTransition) { try { a.finish(); } catch (x) {} } });
-    const r = e.getBoundingClientRect();
-    const vis = e.checkVisibility({ visibilityProperty: true, opacityProperty: true }) && r.width > 0 && r.height > 0 &&
-                r.right > 0 && r.left < innerWidth && eff(e) > 0.5;
-    return { vis, top: r.top }; };
-  return { l: f('.zw-lane--links'), r: f('.zw-lane--rechts') }; }"""
+BILDER_JS = """() => { const eff = e => { let o = 1; for (let n = e; n; n = n.parentElement) o *= parseFloat(getComputedStyle(n).opacity); return o; };
+  document.getAnimations().forEach(a => { if (a instanceof CSSTransition) { try { a.finish(); } catch (x) {} } });
+  const s = document.querySelector('.zw-stage'); if (!s) return null;
+  const on = [...s.querySelectorAll('.zw-case')].filter(c => eff(c) > 0.5);
+  return { faelle: on.map(c => c.dataset.fall), bilder: on.length ? [...on[0].querySelectorAll('.zw-t')].filter(t => eff(t) > 0.5).length : 0,
+           bild: s.getAttribute('data-bild'), zustand: s.getAttribute('data-zustand'), lanes: document.querySelectorAll('.zw-lane').length }; }"""
 
 
-def ak_r2_09_lanes():
-    """AK-R2-09: unter 1024 px (390, 1023) sind nie beide Spuren sichtbar (Stichprobe alle 250 ms ueber 15 s, beide Spuren
-    kommen nacheinander vor); ab 1024 (1024, 1440) sind beide sichtbar, Oberkanten +-4 px."""
+def ak_r2_bilder():
+    """Neuentscheidung 18.10.2026 (ersetzt AK-R2-09 Spuren): bei 390 und 1440 laeuft genau eine Spur. Stichprobe alle
+    250 ms bis zum Endstand: nie zwei Faelle gleichzeitig sichtbar, Faelle 1 -> 4 in dieser Reihenfolge, je Fall
+    erscheinen die drei Bilder nacheinander (nie weniger als zuvor), Endstand Fall 4 mit drei Bildern."""
     errs = []
-    for vw, narrow in ((390, True), (1023, True), (1024, False), (1440, False)):
+    for vw in (390, 1440):
         ctx, pg = _open(vw, 900)
         try:
             if not _stage_to_view(pg):
                 return ["/: .zw-stage fehlt (Buehne nicht gebaut)"]
-            seen_l = seen_r = both = single_gap = 0
-            tops = []
-            for _ in range(60):
+            seen, last, both, back, r = [], {}, 0, [], None
+            for _ in range(ZW_MAX_MS // 250):
                 pg.clock.run_for(250)
-                s = pg.evaluate(LANES_JS)
-                if s["l"] is None or s["r"] is None:
-                    return errs + [f"/ bei {vw}: .zw-lane--links oder .zw-lane--rechts fehlt"]
-                seen_l += s["l"]["vis"]; seen_r += s["r"]["vis"]
-                both += s["l"]["vis"] and s["r"]["vis"]
-                single_gap += not (s["l"]["vis"] and s["r"]["vis"])
-                tops.append(abs(s["l"]["top"] - s["r"]["top"]))
-            if narrow:
-                if both:
-                    errs.append(f"/ bei {vw}: beide Spuren gleichzeitig sichtbar in {both} von 60 Stichproben")
-                if not seen_l or not seen_r:
-                    errs.append(f"/ bei {vw}: Spuren laufen nicht nacheinander (links {seen_l}x, rechts {seen_r}x sichtbar)")
-            else:
-                if single_gap:
-                    errs.append(f"/ bei {vw}: in {single_gap} von 60 Stichproben nicht beide Spuren sichtbar")
-                if max(tops) > 4:
-                    errs.append(f"/ bei {vw}: Oberkanten der Spuren weichen bis {max(tops):.1f} px ab (> 4)")
+                r = pg.evaluate(BILDER_JS)
+                if r["lanes"]:
+                    return errs + [f"/ bei {vw}: {r['lanes']} .zw-lane in der Buehne (soll ein Weg ohne Spuren sein)"]
+                if len(r["faelle"]) > 1:
+                    both += 1
+                if len(r["faelle"]) == 1:
+                    f = r["faelle"][0]
+                    if not seen or seen[-1] != f:
+                        seen.append(f)
+                    if r["bilder"] < last.get(f, 0):
+                        back.append(f)
+                    last[f] = max(last.get(f, 0), r["bilder"])
+                if r["zustand"] == "ende":
+                    break
+            if both:
+                errs.append(f"/ bei {vw}: in {both} Stichproben zwei Faelle gleichzeitig sichtbar")
+            if seen != ["1", "2", "3", "4"]:
+                errs.append(f"/ bei {vw}: Faelle in der Reihenfolge {seen} statt 1, 2, 3, 4")
+            if back:
+                errs.append(f"/ bei {vw}: Bilder verschwinden innerhalb eines Falls ({sorted(set(back))})")
+            short = {f: n for f, n in last.items() if n != 3}
+            if short:
+                errs.append(f"/ bei {vw}: Faelle zeigen nicht alle drei Bilder: {short}")
+            if r is None or r["zustand"] != "ende" or r["faelle"] != ["4"] or r["bilder"] != 3 or r["bild"] != "3":
+                errs.append(f"/ bei {vw}: kein Endstand (Fall 4, drei Bilder) nach {ZW_MAX_MS // 1000} s ({r})")
         finally:
             ctx.close()
+    return errs
+
+
+LINK_JS = """(want) => { const hero = document.querySelector('.hero'); if (!hero) return null;
+  const vis = e => getComputedStyle(e).display !== 'none' && e.getBoundingClientRect().height > 0;
+  let n = hero.nextElementSibling; const between = [];
+  while (n && !vis(n)) n = n.nextElementSibling;
+  let ref = hero;
+  if (n && n.classList.contains('hc-direkt')) { between.push('hc-direkt'); ref = n; n = n.nextElementSibling; while (n && !vis(n)) n = n.nextElementSibling; }
+  const a = n ? n.querySelector('a[href="' + want + '"]') : null;
+  const r = a ? a.getBoundingClientRect() : null;
+  return { cls: n ? n.className : null, between, text: a ? a.textContent.replace(/\\s+/g, ' ').trim() : null,
+           visible: !!a && a.checkVisibility({ visibilityProperty: true, opacityProperty: true }) && r.width > 0 && r.height > 0,
+           gap: n ? Math.round(n.getBoundingClientRect().top - ref.getBoundingClientRect().bottom) : null }; }"""
+
+
+def ak_r2_link():
+    """B-05: Link /it-betreuer-wechseln/ mit Linktext zeichengleich direkt nach der Hero-Section, sichtbar bei 390 und
+    1440. Ab 1280 px steht dazwischen nur der Kasten .hc-direkt (AK-R1-03 verlangt ihn als naechstes Element)."""
+    errs = []
+    href, text = WECHSEL_LINK
+    for vw, vh in ((390, 844), (1440, 900)):
+        r = scan(vw, vh, LINK_JS, ["/"], href)["/"]
+        if r is None:
+            errs.append(f"/ bei {vw}: .hero fehlt")
+            continue
+        if r["text"] != text:
+            errs.append(f"/ bei {vw}: naechstes sichtbares Element nach dem Hero ({r['cls']}) ohne Link {href} '{text}' "
+                        f"(gefunden {r['text']!r})")
+            continue
+        if not r["visible"]:
+            errs.append(f"/ bei {vw}: Link {href} nicht sichtbar")
+        if vw == 390 and r["between"]:
+            errs.append(f"/ bei 390: zwischen Hero und Link steht {r['between']}")
+        if r["gap"] is None or abs(r["gap"]) > 1:
+            errs.append(f"/ bei {vw}: Link-Zeile beginnt {r['gap']} px unter Hero bzw. Kasten (soll anschliessen)")
     return errs
 
 
@@ -1262,7 +1315,7 @@ HERO_TEXT_JS = """() => { const eff = e => { let L = []; for (let n = e; n; n = 
   if (b) { const ic = b.querySelector('svg path, svg line, svg circle, svg'); const s = ic ? getComputedStyle(ic) : null;
     pause = { color: getComputedStyle(b).color, stroke: s ? s.stroke : null, fill: s ? s.fill : null, border: getComputedStyle(b).borderTopColor,
               borderW: parseFloat(getComputedStyle(b).borderTopWidth), bg: eff(b), parentBg: eff(b.parentElement) }; }
-  const left = []; const lane = document.querySelector('.zw-lane--links');
+  const left = []; const lane = document.querySelector('.zw-stage');
   if (lane) for (const e of [lane, ...lane.querySelectorAll('*')]) { const c = getComputedStyle(e);
     left.push({ el: e.tagName.toLowerCase() + (e.className && typeof e.className === 'string' ? '.' + e.className.split(' ')[0] : ''),
                 v: [c.color, c.backgroundColor, c.borderTopColor, c.outlineColor, c.stroke, c.fill] }); }
@@ -1308,7 +1361,7 @@ def _is_alarm(c):
 
 def ak_r2_16_contrast():
     """AK-R2-16: Kontrast in .hero >= 4,5:1 (grosse Schrift >= 3:1) bei 390 und 1440 im Endstand; Pause-Knopf >= 3:1;
-    die linke Spur nutzt keine Danger-/Warning-Farben."""
+    die Buehne nutzt keine Danger-/Warning-Farben (Neuentscheidung 18.10.2026: nur ein Weg, kein Gegenueber)."""
     errs = []
     for vw in (390, 1440):
         ctx, pg = _open(vw, 900, reduced="reduce", clock=False)
@@ -1350,10 +1403,10 @@ def ak_r2_16_contrast():
                 errs.append(f"/ bei {vw}: Pause-Knopf Kontrast {max(cand) if cand else 0:.1f}:1 < 3:1")
         if vw == 1440:
             if not r["left"]:
-                errs.append("/: .zw-lane--links fehlt (Farbpruefung nicht moeglich)")
+                errs.append("/: .zw-stage fehlt (Farbpruefung nicht moeglich)")
             alarm = sorted({f"{e['el']} {v}" for e in r["left"] for v in e["v"] if _is_alarm(v)})
             if alarm:
-                errs.append(f"/: linke Spur nutzt Danger-/Warning-Toene: {'; '.join(alarm[:4])}")
+                errs.append(f"/: Buehne nutzt Danger-/Warning-Toene: {'; '.join(alarm[:4])}")
     return errs
 
 
@@ -1389,7 +1442,7 @@ def test_hidden_tab_pauses():
 
 AK_R2 = {
     "R2-06": ak_r2_06_pause, "R2-07": ak_r2_07_reduced_motion, "R2-08": ak_r2_08_text_alternative,
-    "R2-09": ak_r2_09_lanes, "R2-10": ak_r2_10_hero_height, "R2-11": ak_r2_11_chat_below,
+    "R2-BILDER": ak_r2_bilder, "R2-LINK": ak_r2_link, "R2-10": ak_r2_10_hero_height, "R2-11": ak_r2_11_chat_below,
     "R2-16": ak_r2_16_contrast, "R2-FOKUS": test_no_focusable_in_aria_hidden, "R2-TAB": test_hidden_tab_pauses,
     "R2-DOM": ak_r2_dominant,
 }
