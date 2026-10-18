@@ -1,7 +1,10 @@
 """Design-Pruefungen fuer den Relaunch (Spec §5, §7, §11).
 Titel:        check_design.py
-Version:      0.3.1 (Task 1: AK-R1-Pruefungen, --release r1; Task 11: AK-R2-Pruefungen, --release r2;
-              0.3.1: R2-DOM, #it-betreuung in R2 nach Flaeche)
+Version:      0.4.0 (Task 1: AK-R1-Pruefungen, --release r1; Task 11: AK-R2-Pruefungen, --release r2;
+              0.3.1: R2-DOM, #it-betreuung in R2 nach Flaeche;
+              0.4.0: R2 auf den Hero mit Chat-Handy umgestellt: R2-06/-07/-10/-16/-TAB pruefen den Chat,
+              R2-KENNZ (Kennzeichnung) statt R2-08, R2-ERSTBILD (H1 als LCP, erstes Bild, Firmenkunden-Zeile)
+              statt R2-BILDER, R2-CHAT (ein Chat im Hero, Typische Anrufe) statt R2-11, R2-DOM auf dl.itb-list)
 Datum:        18.10.2026
 Beschreibung: Misst Hoehen bei 390x844 (reduzierte Bewegung, Service Worker blockiert) und vergleicht sie
               mit einer gespeicherten Baseline. Dazu die Abnahmekriterien AK-R1-01a ... AK-R1-23 des Relaunchs R1
@@ -124,20 +127,18 @@ def heights(dir_):
 # ----------------------------------------------------------------------------------------------------------------------
 from check_static import ROOT, read, gen, deployable
 
-CYAN_ALLOW = ["h1 em", ".cta-h em", ".is-ag", ".hc-sys", ".hc-bar", ".zw-fig-b", ".zw-t--ok", ".zw-schluss", "main p a", "main li a", ".faq-a a",
+CYAN_ALLOW = ["h1 em", ".cta-h em", ".is-ag", ".hc-sys", ".hc-bar", "main p a", "main li a", ".faq-a a",
               "[aria-current]", ":focus-visible"]
 # Spec §5.6: Abschnitt -> (Selektor des Abschnitts). R1 prueft bei .hero und #it-betreuung nur die Anzahl.
 DOMINANT_SECTIONS = [".hero", "#it-betreuung", "#referenzen", "#praxis", "#schnellcheck", "#preise", "#ki",
                      "#einsatzgebiet"]
 DOMINANT_COUNT_ONLY_R1 = [".hero", "#it-betreuung"]
-DOMINANT_COUNT_ONLY_R2 = [".hero"]      # R2: #it-betreuung nach Flaeche (Chat-Handy), .hero weiter nur Anzahl
-# Cyan in der Hero-Buehne (Spec §5.3, Stand 18.10.2026 „Ein Weg"): nur fuer die Loesung, also die entspannte
-# Figur (.zw-fig-b), das Haekchen an Bild 3 (.zw-t--ok) und den Schluss (.zw-schluss).
+DOMINANT_COUNT_ONLY_R2 = [".hero"]      # R2: #it-betreuung nach Flaeche (dl.itb-list), .hero weiter nur Anzahl
 NAMEN_OHNE_EINWILLIGUNG = ROOT.parent / "_intern" / "pruefdaten" / "namen-ohne-einwilligung.txt"
 DOCK_H, DOCK_GAP = 52, 12
 SAFE = "env(safe-area-inset-bottom)"
 CHAT_EXCLUDE = ".hc-stage, [data-hero-chat] .hc-device"      # Chat-Handy: von 62ch- und Schriftgroessen-Pruefung ausgenommen
-RADIUS_ROUND_OK = ".ava, .hc-ava, .hc-pause, .zw-pause"      # 50 % / 999 px nur hier (und Punkte bis 12 px)
+RADIUS_ROUND_OK = ".ava, .hc-ava, .hc-pause"      # 50 % / 999 px nur hier (und Punkte bis 12 px)
 
 _ENV = {}
 
@@ -557,7 +558,7 @@ def ak_r1_08_cyan():
 
 def ak_r1_09_radius():
     """AK-R1-09: Tokens --r-s/-m/-l/-xl (6/10/16/28 px) definiert und je >= 1x verwendet; haeufigster Radius <= 60 %
-    der gerundeten Elemente in <main> der Startseite; 50 %/999 px nur an .ava/.hc-ava/.hc-pause/.zw-pause/Punkten."""
+    der gerundeten Elemente in <main> der Startseite; 50 %/999 px nur an .ava/.hc-ava/.hc-pause/Punkten."""
     errs, css = [], style_css()
     for tok, val in (("--r-s", "6px"), ("--r-m", "10px"), ("--r-l", "16px"), ("--r-xl", "28px")):
         if not re.search(re.escape(tok) + r"\s*:\s*" + val, css):
@@ -637,11 +638,11 @@ def ak_r1_11_dominant():
 
 
 def ak_r2_dominant():
-    """Spec §5.6 fuer R2: wie AK-R1-11, aber #it-betreuung nach Flaeche (dominant = Chat-Handy .itb-chat)."""
+    """Spec §5.6 fuer R2: wie AK-R1-11, aber #it-betreuung nach Flaeche (dominant = Typische Anrufe, dl.itb-list)."""
     errs = _dominant(DOMINANT_COUNT_ONLY_R2)
-    js = "() => { const d = document.querySelectorAll('#it-betreuung [data-dominant]'); return d.length === 1 && d[0].matches('.itb-chat'); }"
+    js = "() => { const d = document.querySelectorAll('#it-betreuung [data-dominant]'); return d.length === 1 && d[0].matches('dl.itb-list'); }"
     if not scan(1440, 900, js, ["/"])["/"]:
-        errs.append("#it-betreuung: [data-dominant] sitzt nicht auf dem Chat-Handy (.itb-chat)")
+        errs.append("#it-betreuung: [data-dominant] sitzt nicht auf den Typischen Anrufen (dl.itb-list)")
     return errs
 
 
@@ -836,24 +837,23 @@ AK_R1 = {
 
 
 # ----------------------------------------------------------------------------------------------------------------------
-# Task 11: Abnahmekriterien R2 (Spec §4.2, §4.4, §5.8, §6; AK-R2-06 ... AK-R2-16), seit 18.10.2026
-# auf „Ein Weg" umgestellt (Paket B: B-05, B-06; AK-R2-09 Spuren entfaellt, dafuer R2-BILDER). Zeit laeuft ueber
-# page.clock (Zeit steht, bis run_for sie weiterdreht); CSS-Uebergaenge laufen in echter Zeit und werden deshalb vor dem
-# Messen abgewartet oder beendet.
+# Abnahmekriterien R2 (Spec §4.2, §5.8, §6; AK-R2-06 ... AK-R2-16), Stand 18.10.2026: Hero mit dem Chat-Handy
+# ([data-hero-chat], assets/js/hero-chat.js) statt der frueheren Buehne. Gleichwertig ersetzt: Pause-Knopf (R2-06),
+# reduzierte Bewegung (R2-07), Kennzeichnung (R2-KENNZ statt Textalternative), erstes Bild und LCP (R2-ERSTBILD statt
+# Bilderfolge), feste Hoehe (R2-10), ein Chat im Hero und Typische Anrufe im Abschnitt IT-Betreuung (R2-CHAT),
+# Kontrast (R2-16), Hintergrund-Tab (R2-TAB). Zeit laeuft ueber page.clock (Zeit steht, bis run_for sie weiterdreht);
+# CSS-Animationen laufen in echter Zeit.
 # ----------------------------------------------------------------------------------------------------------------------
 import datetime
-from check_static import HERO_WEG, ALT_EINLEITUNG, WECHSEL_LINK
+from check_static import KENNZEICHNUNG_HERO, FIRMENKUNDEN_HERO, WECHSEL_LINK, hero_chat_first_me
 
 BASELINE = {}   # hoehen.json der Vorher-Messung; run_release setzt sie aus --baseline
-ZW_BTN = "button.zw-pause[data-zw-pause]"
-ZW_LABELS = {"laeuft": "Beispiele anhalten", "pause": "Beispiele weiter abspielen", "ende": "Nochmal abspielen"}
-ZW_MAX_MS = 40000          # Spec §5.8: Gesamtdauer <= 40 s
-CLOCK_T0 = datetime.datetime(2026, 10, 19, 10, 0, 0)
-
-# Zeichenketten eines Falls in Lesereihenfolge der Textalternative (Fall 1..4: Zeitmarke, Bild 1, Bild 2, Bild 3)
-def _fall_texts(n):
-    f = HERO_WEG["faelle"][n - 1]
-    return [f["zeit"]] + list(f["bilder"])
+CHAT = ".hero [data-hero-chat]"
+HC_BTN = CHAT + " button.hc-pause[data-hc-pause]"
+HC_LABELS = {"laeuft": "Beispiel-Chat anhalten", "pause": "Beispiel-Chat fortsetzen",
+             "fertig": "Beispiel-Chat noch einmal abspielen"}
+CHAT_MAX_MS = 240000       # Obergrenze fuer einen ganzen Durchlauf aller Faelle
+CLOCK_T0 = datetime.datetime(2026, 10, 19, 10, 0, 0)   # Montag 10 Uhr: Tagmodus, alle Faelle
 
 
 def _open(vw, vh, reduced="no-preference", clock=True, js=True):
@@ -871,109 +871,115 @@ def _open(vw, vh, reduced="no-preference", clock=True, js=True):
 
 
 def _run(pg, ms, step=250):
-    """Uhr um ms weiterdrehen, in Schritten (Timer und rAF feuern wie im Betrieb)."""
+    """Uhr um ms weiterdrehen, in Schritten (Timer feuern wie im Betrieb)."""
     for _ in range(max(1, ms // step)):
         pg.clock.run_for(step)
 
 
 def _settle(pg, ms=650):
-    pg.wait_for_timeout(ms)      # echte Zeit: laufende CSS-Uebergaenge (200-400 ms) auslaufen lassen
+    pg.wait_for_timeout(ms)      # echte Zeit: laufende CSS-Uebergaenge auslaufen lassen
 
 
-STAGE_SNAP = """() => { const s = document.querySelector('.zw-stage'); if (!s) return null;
-  const p = [s.getAttribute('data-zustand'), s.getAttribute('data-fall'), s.outerHTML];
-  for (const e of s.querySelectorAll('*')) { const c = getComputedStyle(e);
-    p.push((e.getAttribute('class') || '') + '|' + c.transform + '|' + c.opacity + '|' + c.visibility + '|' + c.display); }
-  return p.join('\\n'); }"""
-
-SCROLL_STAGE = "() => { const s = document.querySelector('.zw-stage'); if (s) s.scrollIntoView({block: 'center'}); return !!s; }"
+THREAD_JS = "(sel) => { const t = document.querySelector(sel + ' [data-hc-thread]'); return t ? t.innerHTML : null; }"
+PHONE_ANIMS_JS = """(sel) => { const p = document.querySelector(sel + ' .hc-phone'); if (!p) return null;
+  const a = [p, ...p.querySelectorAll('*')].flatMap(e => e.getAnimations()); return { n: a.length, running: a.filter(x => x.playState === 'running').length }; }"""
+ZUSTAND_JS = "(sel) => { const b = document.querySelector(sel); return b ? b.getAttribute('data-zustand') : null; }"
 
 
-def _stage_to_view(pg):
-    """Unter 1024 px liegt die Buehne unter dem Falz; sie pausiert, solange weniger als 20 % sichtbar sind (Spec §5.8)."""
-    ok = pg.evaluate(SCROLL_STAGE)
-    pg.wait_for_timeout(250)
-    return ok
+def _thread(pg):
+    return pg.evaluate(THREAD_JS, CHAT)
 
 
 def _btn_label(pg):
-    return pg.evaluate("(sel) => { const b = document.querySelector(sel); return b ? b.getAttribute('aria-label') : null; }", ZW_BTN)
+    return pg.evaluate("(sel) => { const b = document.querySelector(sel); return b ? b.getAttribute('aria-label') : null; }", HC_BTN)
 
 
-PAUSE_JS = """(sel) => { const bs = [...document.querySelectorAll(sel)], b = bs[0];
-  if (!b) return { n: 0 };
+PAUSE_JS = """(sel) => { const bs = [...document.querySelectorAll('button[data-hc-pause]')], b = document.querySelector(sel);
+  if (!b) return { n: bs.length, found: false };
   const r = b.getBoundingClientRect();
-  return { n: bs.length, inStage: !!b.closest('.zw-stage'), inHero: !!b.closest('.hero'), w: r.width, h: r.height,
+  return { n: bs.length, found: true, inHero: !!b.closest('.hero'), ariaHidden: !!b.closest('[aria-hidden="true"]'), w: r.width, h: r.height,
            visible: b.checkVisibility({ visibilityProperty: true, opacityProperty: true }) && r.width > 0 && r.height > 0,
-           disabled: b.disabled, hidden: b.hidden, label: b.getAttribute('aria-label') }; }"""
+           hidden: b.hidden, label: b.getAttribute('aria-label') }; }"""
+
+
+def _until_started(pg, ms=15000):
+    """Uhr drehen, bis sich der Thread aendert (der Chat laeuft). Rueckgabe True/False."""
+    a = _thread(pg)
+    for _ in range(ms // 250):
+        pg.clock.run_for(250)
+        if _thread(pg) != a:
+            return True
+    return False
 
 
 def ak_r2_06_pause():
-    """AK-R2-06: Pause-Knopf (WCAG 2.2.2) sichtbar, >= 44x44, per Tab erreichbar, ausserhalb der Buehne; nach dem Klick
-    3 s keine Aenderung an DOM/transform/opacity; Beschriftung wechselt; Ablauf endet nach <= 40 s im Endstand mit
-    'Nochmal abspielen'."""
+    """AK-R2-06: Pause-Knopf (WCAG 2.2.2) genau einmal, im Hero, ausserhalb des aria-hidden-Handys, sichtbar, >= 44x44,
+    per Tab erreichbar; nach dem Klick 3 s keine Thread-Aenderung, [data-hero-chat].is-paused, keine laufende Animation
+    im Handy; Beschriftung wechselt; nach einem ganzen Durchlauf 'noch einmal abspielen', der Klick startet neu."""
     errs = []
     ctx, pg = _open(1440, 900)
     try:
-        if pg.evaluate("() => !document.querySelector('.zw-stage')"):
-            return ["/: .zw-stage fehlt (Buehne nicht gebaut)"]
-        _run(pg, 1500)
-        i = pg.evaluate(PAUSE_JS, ZW_BTN)
-        if i["n"] != 1:
-            return [f"/: {i['n']}x {ZW_BTN} (soll genau 1)"]
-        if i["inStage"]:
-            errs.append("/: Pause-Knopf steht in der aria-hidden-Buehne (soll ausserhalb)")
+        if not _until_started(pg):
+            return ["/: Chat im Hero startet nicht (15 s keine Thread-Aenderung)"]
+        i = pg.evaluate(PAUSE_JS, HC_BTN)
+        if i["n"] != 1 or not i["found"]:
+            return [f"/: {i['n']}x button[data-hc-pause] auf der Seite, {HC_BTN} {'fehlt' if not i['found'] else 'da'} (soll genau 1)"]
         if not i["inHero"]:
             errs.append("/: Pause-Knopf steht nicht in .hero")
+        if i["ariaHidden"]:
+            errs.append("/: Pause-Knopf steht in einem aria-hidden-Bereich")
         if not i["visible"] or i["hidden"]:
             errs.append("/: Pause-Knopf nicht sichtbar")
         if i["w"] < 44 or i["h"] < 44:
             errs.append(f"/: Pause-Knopf {i['w']:.0f}x{i['h']:.0f} px, soll >= 44x44")
-        if i["label"] != ZW_LABELS["laeuft"]:
-            errs.append(f"/: Beschriftung im Lauf '{i['label']}' statt '{ZW_LABELS['laeuft']}'")
-        # Tastatur: per Tab erreichbar
+        if i["label"] != HC_LABELS["laeuft"]:
+            errs.append(f"/: Beschriftung im Lauf '{i['label']}' statt '{HC_LABELS['laeuft']}'")
         pg.evaluate("() => { document.activeElement && document.activeElement.blur(); window.scrollTo(0, 0); }")
         hit = False
         for _ in range(80):
             pg.keyboard.press("Tab")
-            if pg.evaluate("(sel) => !!document.activeElement && document.activeElement.matches(sel)", ZW_BTN):
+            if pg.evaluate("(sel) => !!document.activeElement && document.activeElement.matches(sel)", HC_BTN):
                 hit = True
                 break
         if not hit:
             errs.append("/: Pause-Knopf per Tab nicht erreichbar (80 Tab-Schritte)")
-        # Klick: 3 s Stillstand
-        pg.click(ZW_BTN)
-        _settle(pg)
-        a = pg.evaluate(STAGE_SNAP)
+        pg.click(HC_BTN)
+        _settle(pg, 300)
+        a = _thread(pg)
         _run(pg, 3000)
-        _settle(pg, 150)
-        b = pg.evaluate(STAGE_SNAP)
-        if a != b:
-            errs.append("/: nach dem Klick auf Pause aendern sich in 3 s DOM/transform/opacity der Buehne")
-        if pg.evaluate("() => document.querySelector('.zw-stage').getAttribute('data-zustand')") != "pause":
-            errs.append("/: nach dem Klick steht data-zustand nicht auf 'pause'")
-        if _btn_label(pg) != ZW_LABELS["pause"]:
-            errs.append(f"/: Beschriftung in Pause '{_btn_label(pg)}' statt '{ZW_LABELS['pause']}'")
+        if _thread(pg) != a:
+            errs.append("/: nach dem Klick auf Pause aendert sich der Thread in 3 s")
+        if not pg.evaluate("(sel) => document.querySelector(sel).classList.contains('is-paused')", CHAT):
+            errs.append("/: nach dem Klick fehlt [data-hero-chat].is-paused")
+        n = pg.evaluate(PHONE_ANIMS_JS, CHAT)
+        if n and n["running"]:
+            errs.append(f"/: nach Pause laufen noch {n['running']} Animationen im Handy")
+        if pg.evaluate(ZUSTAND_JS, HC_BTN) != "pause" or _btn_label(pg) != HC_LABELS["pause"]:
+            errs.append(f"/: in Pause data-zustand '{pg.evaluate(ZUSTAND_JS, HC_BTN)}', Beschriftung '{_btn_label(pg)}' "
+                        f"statt 'pause' / '{HC_LABELS['pause']}'")
+        pg.click(HC_BTN)
+        if not _until_started(pg, 10000):
+            errs.append("/: 'fortsetzen' laesst den Chat nicht weiterlaufen")
     finally:
         ctx.close()
-    # Ablauf bis zum Ende
+    # ganzer Durchlauf
     ctx, pg = _open(1440, 900)
     try:
-        if pg.evaluate("() => !document.querySelector('.zw-stage')"):
-            return errs or ["/: .zw-stage fehlt (Buehne nicht gebaut)"]
-        _run(pg, ZW_MAX_MS)
-        _settle(pg, 300)
-        z = pg.evaluate("() => document.querySelector('.zw-stage').getAttribute('data-zustand')")
-        if z != "ende":
-            errs.append(f"/: nach {ZW_MAX_MS // 1000} s steht data-zustand auf '{z}' statt 'ende'")
-        if _btn_label(pg) != ZW_LABELS["ende"]:
-            errs.append(f"/: Beschriftung am Ende '{_btn_label(pg)}' statt '{ZW_LABELS['ende']}'")
+        z = None
+        for _ in range(CHAT_MAX_MS // 1000):
+            _run(pg, 1000)
+            z = pg.evaluate(ZUSTAND_JS, HC_BTN)
+            if z == "fertig":
+                break
+        if z != "fertig":
+            errs.append(f"/: nach {CHAT_MAX_MS // 1000} s steht der Knopf auf '{z}' statt 'fertig' (Chat laeuft nicht durch)")
+        elif _btn_label(pg) != HC_LABELS["fertig"]:
+            errs.append(f"/: Beschriftung am Ende '{_btn_label(pg)}' statt '{HC_LABELS['fertig']}'")
         else:
-            pg.click(ZW_BTN)
+            pg.click(HC_BTN)
             _run(pg, 500)
-            z2 = pg.evaluate("() => document.querySelector('.zw-stage').getAttribute('data-zustand')")
-            if z2 != "laeuft":
-                errs.append(f"/: 'Nochmal abspielen' startet nicht neu (data-zustand '{z2}')")
+            if pg.evaluate(ZUSTAND_JS, HC_BTN) != "laeuft":
+                errs.append("/: 'noch einmal abspielen' startet nicht neu")
     finally:
         ctx.close()
     return errs
@@ -986,96 +992,108 @@ MUTATION_JS = """() => { window.__mut = 0;
 
 
 def ak_r2_07_reduced_motion():
-    """AK-R2-07: reduced_motion=reduce: Endstand beim Laden, getAnimations() in .hero leer, 5 s keine DOM-Aenderung."""
+    """AK-R2-07: reduced_motion=reduce (390 und 1440): fertiger Beispiel-Chat beim Laden (Kundennachricht, Antwort,
+    erledigte Pruefung, Loesung, Dank), keine laufende Animation in .hero, 5 s keine DOM-Aenderung."""
     errs = []
-    ctx, pg = _open(1440, 900, reduced="reduce")
-    try:
-        if pg.evaluate("() => !document.querySelector('.zw-stage')"):
-            return ["/: .zw-stage fehlt (Buehne nicht gebaut)"]
-        pg.evaluate(MUTATION_JS)
-        z = pg.evaluate("() => document.querySelector('.zw-stage').getAttribute('data-zustand')")
-        if z != "ende":
-            errs.append(f"/: bei reduzierter Bewegung steht data-zustand beim Laden auf '{z}' statt 'ende'")
-        r = pg.evaluate("""() => { const off = [...document.querySelectorAll('.zw-case[data-fall="4"]')].filter(c => !c.classList.contains('is-on')).length;
-          const sch = document.querySelector('.zw-schluss');
-          return { off, n4: document.querySelectorAll('.zw-case[data-fall="4"]').length,
-                   schluss: sch ? sch.checkVisibility({ visibilityProperty: true, opacityProperty: true }) && parseFloat(getComputedStyle(sch).opacity) > 0.99 : null,
-                   bild: document.querySelector('.zw-stage').getAttribute('data-bild'),
-                   bilder: [...document.querySelectorAll('.zw-case[data-fall="4"] .zw-t')].filter(t => t.classList.contains('is-on') && parseFloat(getComputedStyle(t).opacity) > 0.99).length,
-                   anims: document.querySelector('.hero').getAnimations({ subtree: true }).filter(a => a.playState === 'running').length }; }""")
-        if r["n4"] == 0 or r["off"]:
-            errs.append(f"/: Endstand: Fall 4 nicht sichtbar (is-on fehlt an {r['off']} von {r['n4']} Faellen)")
-        if not r["schluss"]:
-            errs.append("/: Endstand: .zw-schluss nicht voll sichtbar")
-        if r["bild"] != "3" or r["bilder"] != 3:
-            errs.append(f"/: Endstand: Fall 4 zeigt nicht alle drei Bilder (data-bild {r['bild']!r}, {r['bilder']} von 3 sichtbar)")
-        if r["anims"]:
-            errs.append(f"/: bei reduzierter Bewegung laufen {r['anims']} Animationen in .hero")
-        _run(pg, 5000)
-        m = pg.evaluate("() => window.__mut")
-        if m:
-            errs.append(f"/: bei reduzierter Bewegung {m} DOM-Aenderungen in 5 s (soll 0)")
-        if pg.evaluate("() => document.querySelector('.hero').getAnimations({ subtree: true }).length"):
-            errs.append("/: getAnimations() in .hero nach 5 s nicht leer")
-    finally:
-        ctx.close()
+    for vw, vh in ((390, 844), (1440, 900)):
+        ctx, pg = _open(vw, vh, reduced="reduce")
+        try:
+            pg.evaluate(MUTATION_JS)
+            r = pg.evaluate("""(sel) => { const t = document.querySelector(sel + ' [data-hc-thread]'); if (!t) return null;
+              return { me: t.querySelectorAll('.hc-msg.is-me').length, ag: t.querySelectorAll('.hc-msg.is-ag').length,
+                       sys: t.querySelectorAll('.hc-sys.is-done').length, typing: t.querySelectorAll('.hc-typing').length,
+                       anims: document.querySelector('.hero').getAnimations({ subtree: true }).filter(a => a.playState === 'running').length }; }""", CHAT)
+            if r is None:
+                return [f"/ bei {vw}: {CHAT} [data-hc-thread] fehlt"]
+            if (r["me"], r["ag"], r["sys"], r["typing"]) != (2, 2, 1, 0):
+                errs.append(f"/ bei {vw}: kein fertiger Chat bei reduzierter Bewegung (Kunde {r['me']}, Andreas {r['ag']}, "
+                            f"Pruefung {r['sys']}, tippt {r['typing']}; soll 2/2/1/0)")
+            if r["anims"]:
+                errs.append(f"/ bei {vw}: bei reduzierter Bewegung laufen {r['anims']} Animationen in .hero")
+            _run(pg, 5000)
+            m = pg.evaluate("() => window.__mut")
+            if m:
+                errs.append(f"/ bei {vw}: bei reduzierter Bewegung {m} DOM-Aenderungen in 5 s (soll 0)")
+        finally:
+            ctx.close()
+    return errs
+
+
+KENNZ_JS = """(sel) => { const c = document.querySelector(sel); if (!c) return null;
+  const k = c.querySelector('p.hc-kennz'), p = c.querySelector('.hc-phone');
+  const d = document.querySelector('.sticky-contact'), dt = d && getComputedStyle(d).display !== 'none' ? d.getBoundingClientRect().top : innerHeight;
+  if (!k || !p) return { k: !!k, p: !!p };
+  const r = k.getBoundingClientRect(), q = p.getBoundingClientRect();
+  let o = 1; for (let n = k; n; n = n.parentElement) o *= parseFloat(getComputedStyle(n).opacity);
+  return { k: true, p: true, text: k.textContent.replace(/\\s+/g, ' ').trim(), op: o, ariaHidden: !!k.closest('[aria-hidden="true"]'),
+           visible: k.checkVisibility({ visibilityProperty: true, opacityProperty: true }) && r.height > 0,
+           gap: Math.round(Math.max(q.top - r.bottom, r.top - q.bottom)), bottom: Math.round(r.bottom), dock: Math.round(dt) }; }"""
+
+
+def ak_r2_kennz():
+    """Kennzeichnung (ersetzt die Textalternative der frueheren Buehne): p.hc-kennz am Chat sichtbar (voll deckend,
+    nicht aria-hidden), Text zeichengleich, hoechstens 24 px vom Handy entfernt, bei 390x844 und 1440x900 im ersten Bild
+    ueber der Kontaktleiste."""
+    errs = []
+    for vw, vh in ((390, 844), (1440, 900)):
+        ctx, pg = _open(vw, vh)
+        try:
+            r = pg.evaluate(KENNZ_JS, CHAT)
+        finally:
+            ctx.close()
+        if r is None or not r["k"] or not r["p"]:
+            errs.append(f"/ bei {vw}: Chat, Handy oder p.hc-kennz fehlt ({r})")
+            continue
+        if r["text"] != KENNZEICHNUNG_HERO:
+            errs.append(f"/ bei {vw}: Kennzeichnung '{r['text']}' statt '{KENNZEICHNUNG_HERO}'")
+        if not r["visible"] or r["op"] < 0.999 or r["ariaHidden"]:
+            errs.append(f"/ bei {vw}: Kennzeichnung nicht sichtbar (sichtbar {r['visible']}, Deckkraft {r['op']:.2f}, "
+                        f"aria-hidden {r['ariaHidden']})")
+        if r["gap"] > 24:
+            errs.append(f"/ bei {vw}: Kennzeichnung {r['gap']} px vom Handy entfernt (soll <= 24, direkt am Chat)")
+        if r["bottom"] > min(r["dock"], vh):
+            errs.append(f"/ bei {vw}: Kennzeichnung endet bei {r['bottom']} px, unter der Kontaktleiste bzw. dem ersten Bild ({min(r['dock'], vh)})")
+    return errs
+
+
+LCP_JS = """() => new Promise(res => { const out = [];
+  new PerformanceObserver(l => { for (const e of l.getEntries()) out.push(e.element ? (e.element.id ? e.element.tagName.toLowerCase() + '#' + e.element.id : e.element.tagName.toLowerCase()) : null); })
+    .observe({ type: 'largest-contentful-paint', buffered: true });
+  setTimeout(() => res(out), 300); })"""
+ERSTBILD_JS = """() => { const d = document.querySelector('.sticky-contact'), dt = d && getComputedStyle(d).display !== 'none' ? d.getBoundingClientRect().top : innerHeight;
+  const b = s => { const e = document.querySelector(s); if (!e) return null; const r = e.getBoundingClientRect();
+    return { top: Math.round(r.top), bottom: Math.round(r.bottom), vis: e.checkVisibility({ visibilityProperty: true, opacityProperty: true }) && r.height > 0,
+             text: e.textContent.replace(/\\s+/g, ' ').trim() }; };
+  return { dock: Math.round(Math.min(dt, innerHeight)), h1: b('h1#hero-h1'), fuer: b('.hero .hc-fuer') }; }"""
+
+
+def ak_r2_erstbild():
+    """Erstes Bild (ersetzt die Bilderfolge der frueheren Buehne): bei 390x844 und 1440x900 stehen H1 und
+    Firmenkunden-Zeile ganz im ersten Bild ueber der Kontaktleiste; das LCP-Element ist h1#hero-h1."""
+    errs = []
+    for vw, vh in ((390, 844), (1440, 900)):
+        ctx, pg = _open(vw, vh, clock=False)
+        try:
+            pg.evaluate("() => document.fonts.ready.then(() => true)")
+            pg.wait_for_timeout(1200)
+            lcp = pg.evaluate(LCP_JS)
+            r = pg.evaluate(ERSTBILD_JS)
+        finally:
+            ctx.close()
+        if not lcp or lcp[-1] != "h1#hero-h1":
+            errs.append(f"/ bei {vw}: LCP-Element {lcp[-1] if lcp else None} statt h1#hero-h1 (Kandidaten {lcp})")
+        for key, name in (("h1", "H1"), ("fuer", "Firmenkunden-Zeile")):
+            e = r[key]
+            if e is None or not e["vis"]:
+                errs.append(f"/ bei {vw}: {name} fehlt oder ist nicht sichtbar")
+            elif e["top"] < 0 or e["bottom"] > r["dock"]:
+                errs.append(f"/ bei {vw}: {name} {e['top']}..{e['bottom']} px nicht ganz im ersten Bild ueber der Kontaktleiste ({r['dock']})")
+        if r["fuer"] and r["fuer"]["text"] != FIRMENKUNDEN_HERO:
+            errs.append(f"/ bei {vw}: Firmenkunden-Zeile '{r['fuer']['text']}' statt '{FIRMENKUNDEN_HERO}'")
     return errs
 
 
 FOCUSABLE = "a[href], button, input, select, textarea, summary, iframe, [tabindex], [contenteditable]"
-
-
-def ak_r2_08_text_alternative():
-    """AK-R2-08: Buehne aria-hidden=true ohne fokussierbares Element; der Accessibility-Snapshot von .hero enthaelt alle
-    Texte der Faelle in Lesereihenfolge (Einleitung ALT_EINLEITUNG, je Fall Zeitmarke und drei Bilder, .zw-alt.sr-only)."""
-    errs = []
-    ctx, pg = _open(1440, 900)
-    try:
-        _run(pg, 1000)
-        i = pg.evaluate("""(foc) => { const s = document.querySelector('.zw-stage'), a = document.querySelector('.zw-alt');
-          return { stage: !!s, hidden: s ? s.getAttribute('aria-hidden') : null, foc: s ? s.querySelectorAll(foc).length : 0,
-                   alt: !!a, altSr: a ? a.classList.contains('sr-only') : false, altHidden: a ? !!a.closest('[aria-hidden="true"]') : false,
-                   altInStage: a ? !!a.closest('.zw-stage') : false }; }""", FOCUSABLE)
-        if not i["stage"]:
-            return ["/: .zw-stage fehlt (Buehne nicht gebaut)"]
-        if i["hidden"] != "true":
-            errs.append(f"/: .zw-stage aria-hidden='{i['hidden']}' statt 'true'")
-        if i["foc"]:
-            errs.append(f"/: {i['foc']} fokussierbare Elemente in der aria-hidden-Buehne")
-        if not i["alt"]:
-            errs.append("/: .zw-alt (Textalternative) fehlt")
-        else:
-            if not i["altSr"]:
-                errs.append("/: .zw-alt ohne Klasse sr-only")
-            if i["altHidden"] or i["altInStage"]:
-                errs.append("/: .zw-alt steht in aria-hidden oder in der Buehne (Screenreader sehen sie nicht)")
-        try:
-            snap = pg.locator(".hero").aria_snapshot()
-        except Exception as e:                      # Playwright-Fehler sichtbar machen, nie still ueberspringen
-            return errs + [f"/: aria_snapshot von .hero nicht lesbar ({str(e).splitlines()[0][:80]})"]
-        snap = re.sub(r"\s+", " ", snap.replace(" ", " "))
-        head = snap.find(ALT_EINLEITUNG)
-        if head < 0:
-            errs.append(f"/: Snapshot ohne '{ALT_EINLEITUNG}'")
-        prev = head
-        for n in range(1, 5):
-            pos = [snap.find(t, max(head, 0)) for t in _fall_texts(n)]
-            miss = [t for t, p in zip(_fall_texts(n), pos) if p < 0]
-            if miss:
-                errs.append(f"/: Snapshot ohne Bildtexte von Fall {n}: {miss}")
-                continue
-            if min(pos) <= prev:
-                errs.append(f"/: Snapshot: Fall {n} steht nicht hinter Fall {n - 1} (Lesereihenfolge)")
-            if pos != sorted(pos):
-                errs.append(f"/: Snapshot: Fall {n}: Zeitmarke und Bilder nicht in Lesereihenfolge")
-            prev = min(pos)
-        if HERO_WEG["schluss"] not in snap[max(prev, 0):]:
-            errs.append(f"/: Snapshot: Schluss '{HERO_WEG['schluss']}' fehlt hinter Fall 4")
-    finally:
-        ctx.close()
-    return errs
-
-
 FOCUS_HIDDEN_JS = """(foc) => [...document.querySelectorAll(foc)].filter(e => e.closest('[aria-hidden="true"]') &&
     !e.disabled && e.checkVisibility && e.checkVisibility()).map(e => e.tagName.toLowerCase() +
     (e.className && typeof e.className === 'string' ? '.' + e.className.split(' ')[0] : '') + ' "' +
@@ -1083,8 +1101,8 @@ FOCUS_HIDDEN_JS = """(foc) => [...document.querySelectorAll(foc)].filter(e => e.
 
 
 def test_no_focusable_in_aria_hidden():
-    """Spec §6: kein fokussierbares, sichtbares Element in einem aria-hidden="true"-Bereich der Startseite (Buehne, Chat-
-    Handy, Deko), bei 390 und 1440."""
+    """Spec §6: kein fokussierbares, sichtbares Element in einem aria-hidden="true"-Bereich der Startseite (Chat-Handy,
+    Deko), bei 390 und 1440."""
     errs = []
     for vw, vh in ((390, 844), (1440, 900)):
         ctx, pg = _open(vw, vh, clock=False)
@@ -1092,57 +1110,6 @@ def test_no_focusable_in_aria_hidden():
             bad = pg.evaluate(FOCUS_HIDDEN_JS, FOCUSABLE)
             if bad:
                 errs.append(f"/ bei {vw}: {len(bad)} fokussierbare Elemente in aria-hidden, z. B. {'; '.join(bad[:4])}")
-        finally:
-            ctx.close()
-    return errs
-
-
-BILDER_JS = """() => { const eff = e => { let o = 1; for (let n = e; n; n = n.parentElement) o *= parseFloat(getComputedStyle(n).opacity); return o; };
-  document.getAnimations().forEach(a => { if (a instanceof CSSTransition) { try { a.finish(); } catch (x) {} } });
-  const s = document.querySelector('.zw-stage'); if (!s) return null;
-  const on = [...s.querySelectorAll('.zw-case')].filter(c => eff(c) > 0.5);
-  return { faelle: on.map(c => c.dataset.fall), bilder: on.length ? [...on[0].querySelectorAll('.zw-t')].filter(t => eff(t) > 0.5).length : 0,
-           bild: s.getAttribute('data-bild'), zustand: s.getAttribute('data-zustand'), lanes: document.querySelectorAll('.zw-lane').length }; }"""
-
-
-def ak_r2_bilder():
-    """Stand 18.10.2026 (ersetzt AK-R2-09 Spuren): bei 390 und 1440 laeuft genau eine Spur. Stichprobe alle
-    250 ms bis zum Endstand: nie zwei Faelle gleichzeitig sichtbar, Faelle 1 -> 4 in dieser Reihenfolge, je Fall
-    erscheinen die drei Bilder nacheinander (nie weniger als zuvor), Endstand Fall 4 mit drei Bildern."""
-    errs = []
-    for vw in (390, 1440):
-        ctx, pg = _open(vw, 900)
-        try:
-            if not _stage_to_view(pg):
-                return ["/: .zw-stage fehlt (Buehne nicht gebaut)"]
-            seen, last, both, back, r = [], {}, 0, [], None
-            for _ in range(ZW_MAX_MS // 250):
-                pg.clock.run_for(250)
-                r = pg.evaluate(BILDER_JS)
-                if r["lanes"]:
-                    return errs + [f"/ bei {vw}: {r['lanes']} .zw-lane in der Buehne (soll ein Weg ohne Spuren sein)"]
-                if len(r["faelle"]) > 1:
-                    both += 1
-                if len(r["faelle"]) == 1:
-                    f = r["faelle"][0]
-                    if not seen or seen[-1] != f:
-                        seen.append(f)
-                    if r["bilder"] < last.get(f, 0):
-                        back.append(f)
-                    last[f] = max(last.get(f, 0), r["bilder"])
-                if r["zustand"] == "ende":
-                    break
-            if both:
-                errs.append(f"/ bei {vw}: in {both} Stichproben zwei Faelle gleichzeitig sichtbar")
-            if seen != ["1", "2", "3", "4"]:
-                errs.append(f"/ bei {vw}: Faelle in der Reihenfolge {seen} statt 1, 2, 3, 4")
-            if back:
-                errs.append(f"/ bei {vw}: Bilder verschwinden innerhalb eines Falls ({sorted(set(back))})")
-            short = {f: n for f, n in last.items() if n != 3}
-            if short:
-                errs.append(f"/ bei {vw}: Faelle zeigen nicht alle drei Bilder: {short}")
-            if r is None or r["zustand"] != "ende" or r["faelle"] != ["4"] or r["bilder"] != 3 or r["bild"] != "3":
-                errs.append(f"/ bei {vw}: kein Endstand (Fall 4, drei Bilder) nach {ZW_MAX_MS // 1000} s ({r})")
         finally:
             ctx.close()
     return errs
@@ -1184,9 +1151,13 @@ def ak_r2_link():
     return errs
 
 
+HEIGHTS_JS = """(sel) => { const h = document.querySelector('.hero'), p = document.querySelector(sel + ' .hc-phone');
+  return [h ? h.getBoundingClientRect().height : null, p ? p.getBoundingClientRect().height : null]; }"""
+
+
 def ak_r2_10_hero_height():
-    """AK-R2-10: Hoehe .hero bei 390x844 <= Vorher-Wert (Baseline hero_390); Buehnenhoehe ueber 15 s konstant
-    (390 und 1440)."""
+    """AK-R2-10: Hoehe .hero bei 390x844 <= Vorher-Wert (Baseline hero_390); reservierte Hoehe: Handy und Hero bleiben
+    beim Laden und ueber 15 s Ablauf gleich hoch (390 und 1440), auch wenn das Skript den Pause-Knopf einblendet."""
     errs = []
     base = BASELINE.get("hero_390")
     if base is None:
@@ -1200,56 +1171,58 @@ def ak_r2_10_hero_height():
             errs.append(f"/: .hero bei 390x844 {h} px > Vorher-Wert {base} px")
     finally:
         ctx.close()
-    for vw in (390, 1440):
-        ctx, pg = _open(vw, 900)
+    for vw, vh in ((390, 844), (1440, 900)):
+        ctx, pg = _open(vw, vh, js=False, clock=False)
         try:
-            if not _stage_to_view(pg):
-                errs.append("/: .zw-stage fehlt (Buehne nicht gebaut)")
-                break
+            ohne_js = pg.evaluate(HEIGHTS_JS, CHAT)
+        finally:
+            ctx.close()
+        ctx, pg = _open(vw, vh)
+        try:
             hs = []
             for _ in range(60):
                 pg.clock.run_for(250)
-                hs.append(pg.evaluate("() => document.querySelector('.zw-stage').getBoundingClientRect().height"))
-            if max(hs) - min(hs) > 0.5:
-                errs.append(f"/ bei {vw}: Buehnenhoehe aendert sich ueber 15 s ({min(hs):.1f} bis {max(hs):.1f} px)")
+                hs.append(pg.evaluate(HEIGHTS_JS, CHAT))
         finally:
             ctx.close()
+        if None in ohne_js or any(None in x for x in hs):
+            errs.append(f"/ bei {vw}: .hero oder Handy fehlt")
+            continue
+        for k, name in ((0, "Hero"), (1, "Handy")):
+            vals = [x[k] for x in hs] + [ohne_js[k]]
+            if max(vals) - min(vals) > 0.5:
+                errs.append(f"/ bei {vw}: {name}-Hoehe nicht fest ({min(vals):.1f} bis {max(vals):.1f} px, ohne JS {ohne_js[k]:.1f})")
     return errs
 
 
-THREAD_JS = """() => { const t = document.querySelector('#it-betreuung [data-hero-chat] [data-hc-thread]'); return t ? t.innerHTML : null; }"""
-PHONE_ANIMS_JS = """() => { const p = document.querySelector('#it-betreuung [data-hero-chat] .hc-phone'); if (!p) return null;
-  const a = [p, ...p.querySelectorAll('*')].flatMap(e => e.getAnimations()); return { n: a.length, running: a.filter(x => x.playState === 'running').length }; }"""
-
-
-def ak_r2_11_chat_below():
-    """AK-R2-11: Chat in section#it-betreuung [data-hero-chat], keine dl.itb-list; erste Kundenblase auch ohne JS; ohne
-    Scrollen 3 s keine Thread-Aenderung, ab >= 40 % Sichtbarkeit Start; Pause setzt [data-hero-chat].is-paused und alle
-    Animationen im Handy stehen auf paused; Hoehe #it-betreuung <= Vorher-Wert."""
+def ak_r2_chat():
+    """Ein Chat im Hero (ersetzt AK-R2-11): genau ein [data-hero-chat] auf der Seite, in .hero; ohne JS steht die erste
+    Kundennachricht (= erster Fall im Skript) im Thread; der Chat startet im Hero ohne Scrollen; #it-betreuung hat kein
+    Chat-Handy, sondern dl.itb-list und den Ratgeber-Link; Hoehe #it-betreuung <= Vorher-Wert."""
     errs = []
-    sel = "section#it-betreuung [data-hero-chat]"
-    # ohne JS
-    ctx, pg = _open(390, 700, clock=False, js=False)
+    ctx, pg = _open(390, 844, clock=False, js=False)
     try:
-        r = pg.evaluate("""(sel) => { const c = document.querySelector(sel);
-          const first = c ? c.querySelector('[data-hc-thread] .is-me') : null;
-          return { chat: !!c, dl: !!document.querySelector('dl.itb-list'), itbList: !!document.querySelector('.itb-list'),
-                   first: first ? first.textContent.trim().length : 0,
-                   link: !!document.querySelector('#it-betreuung a[href="/ratgeber/server-ausgefallen/"]'),
-                   heroChat: !!document.querySelector('.hero [data-hero-chat], .hero[data-hero-chat]') }; }""", sel)
-        if not r["chat"]:
-            return [f"/: {sel} fehlt (Chat nicht in #it-betreuung)"]
-        if r["dl"] or r["itbList"]:
-            errs.append("/: .itb-list (Typische Anrufe) steht noch auf der Seite")
-        if not r["first"]:
-            errs.append("/: erste Kundenblase fehlt im HTML (ohne JS)")
+        r = pg.evaluate("""() => { const all = document.querySelectorAll('[data-hero-chat]'), c = document.querySelector('.hero [data-hero-chat]');
+          const first = c ? c.querySelector('[data-hc-thread] .hc-msg') : null;
+          return { n: all.length, inHero: !!c, firstMe: !!first && first.classList.contains('is-me'),
+                   firstText: first ? [...first.childNodes].filter(x => x.nodeType === 3).map(x => x.textContent).join('').trim() : null,
+                   itbChat: !!document.querySelector('#it-betreuung [data-hero-chat], #it-betreuung .hc-phone'),
+                   dl: document.querySelectorAll('#it-betreuung dl.itb-list').length,
+                   link: !!document.querySelector('#it-betreuung a[href="/ratgeber/server-ausgefallen/"]') }; }""")
+        if r["n"] != 1 or not r["inHero"]:
+            errs.append(f"/: {r['n']}x [data-hero-chat] auf der Seite, im Hero {r['inHero']} (soll genau 1 im Hero)")
+        if not r["firstMe"]:
+            errs.append("/: erste Chat-Nachricht ist ohne JS keine Kundenblase (.hc-msg.is-me)")
+        elif r["firstText"] != hero_chat_first_me():
+            errs.append(f"/: erste Kundenblase ohne JS '{r['firstText']}' statt '{hero_chat_first_me()}'")
+        if r["itbChat"]:
+            errs.append("/: Chat-Handy steht (auch) in #it-betreuung")
+        if r["dl"] != 1:
+            errs.append(f"/: dl.itb-list in #it-betreuung {r['dl']}x statt genau 1")
         if not r["link"]:
             errs.append("/: Link /ratgeber/server-ausgefallen/ fehlt in #it-betreuung")
-        if r["heroChat"]:
-            errs.append("/: [data-hero-chat] steht noch in .hero")
     finally:
         ctx.close()
-    # Höhe
     ctx, pg = _open(390, 844, reduced="reduce", clock=False)
     try:
         h = pg.evaluate("() => { const e = document.getElementById('it-betreuung'); return e ? Math.round(e.getBoundingClientRect().height) : null; }")
@@ -1260,45 +1233,13 @@ def ak_r2_11_chat_below():
             errs.append(f"/: #it-betreuung bei 390x844 {h} px > Vorher-Wert {base} px")
     finally:
         ctx.close()
-    # Ablauf
-    ctx, pg = _open(390, 700)
-    try:
-        top = pg.evaluate("(sel) => { const c = document.querySelector(sel); return c ? c.getBoundingClientRect().top : null; }", sel)
-        if top is None:
-            return errs
-        if top < 700:
-            errs.append(f"/: Chat liegt bei 390x700 schon im Bild (Oberkante {top:.0f} px), Test 'ohne Scrollen' nicht aussagekraeftig")
-        _run(pg, 500)
-        a = pg.evaluate(THREAD_JS)
-        _run(pg, 3000)
-        if pg.evaluate(THREAD_JS) != a:
-            errs.append("/: Thread aendert sich in 3 s, ohne dass der Chat im Bild ist")
-        pg.evaluate("(sel) => document.querySelector(sel).scrollIntoView({ block: 'center' })", sel)
-        pg.wait_for_timeout(300)
-        changed, anim = False, False
-        for _ in range(60):
-            pg.clock.run_for(250)
-            if pg.evaluate(THREAD_JS) != a:
-                changed = True
-            n = pg.evaluate(PHONE_ANIMS_JS)
-            if n and n["running"]:
-                anim = True
-                break
-        if not changed:
-            errs.append("/: Chat startet nicht, obwohl er im Bild steht (15 s keine Thread-Aenderung)")
-        if not anim:
-            errs.append("/: keine laufende Animation im Chat-Handy gefunden (Pausentest nicht aussagekraeftig)")
-        else:
-            pg.click(sel + " [data-hc-pause]")
-            pg.wait_for_timeout(200)
-            paused = pg.evaluate("(sel) => document.querySelector(sel).classList.contains('is-paused')", sel)
-            n = pg.evaluate(PHONE_ANIMS_JS)
-            if not paused:
-                errs.append("/: Pause-Klick setzt [data-hero-chat].is-paused nicht")
-            if n and n["running"]:
-                errs.append(f"/: nach Pause laufen noch {n['running']} Animationen im Handy (playState nicht 'paused')")
-    finally:
-        ctx.close()
+    for vw, vh in ((390, 844), (1440, 900)):
+        ctx, pg = _open(vw, vh)
+        try:
+            if not _until_started(pg):
+                errs.append(f"/ bei {vw}: Chat im Hero startet ohne Scrollen nicht (15 s keine Thread-Aenderung)")
+        finally:
+            ctx.close()
     return errs
 
 
@@ -1311,11 +1252,11 @@ HERO_TEXT_JS = """() => { const eff = e => { let L = []; for (let n = e; n; n = 
     if (o < 0.5) continue;
     texts.push({ txt: t.textContent.trim().slice(0, 28), color: c.color, bg: eff(e), size: parseFloat(c.fontSize), weight: parseInt(c.fontWeight, 10) || 400,
                  el: e.tagName.toLowerCase() + (e.className && typeof e.className === 'string' ? '.' + e.className.split(' ')[0] : '') }); }
-  const b = document.querySelector('button.zw-pause'); let pause = null;
+  const b = document.querySelector('.hero button.hc-pause'); let pause = null;
   if (b) { const ic = b.querySelector('svg path, svg line, svg circle, svg'); const s = ic ? getComputedStyle(ic) : null;
     pause = { color: getComputedStyle(b).color, stroke: s ? s.stroke : null, fill: s ? s.fill : null, border: getComputedStyle(b).borderTopColor,
               borderW: parseFloat(getComputedStyle(b).borderTopWidth), bg: eff(b), parentBg: eff(b.parentElement) }; }
-  const left = []; const lane = document.querySelector('.zw-stage');
+  const left = []; const lane = document.querySelector('.hero .hc-stage');
   if (lane) for (const e of [lane, ...lane.querySelectorAll('*')]) { const c = getComputedStyle(e);
     left.push({ el: e.tagName.toLowerCase() + (e.className && typeof e.className === 'string' ? '.' + e.className.split(' ')[0] : ''),
                 v: [c.color, c.backgroundColor, c.borderTopColor, c.outlineColor, c.stroke, c.fill] }); }
@@ -1360,8 +1301,8 @@ def _is_alarm(c):
 
 
 def ak_r2_16_contrast():
-    """AK-R2-16: Kontrast in .hero >= 4,5:1 (grosse Schrift >= 3:1) bei 390 und 1440 im Endstand; Pause-Knopf >= 3:1;
-    die Buehne nutzt keine Danger-/Warning-Farben (Stand 18.10.2026: nur ein Weg, kein Gegenueber)."""
+    """AK-R2-16: Kontrast in .hero >= 4,5:1 (grosse Schrift >= 3:1) bei 390 und 1440 mit fertigem Chat (reduzierte
+    Bewegung); Pause-Knopf >= 3:1; das Chat-Handy nutzt keine Danger-/Warning-Farben."""
     errs = []
     for vw in (390, 1440):
         ctx, pg = _open(vw, 900, reduced="reduce", clock=False)
@@ -1387,7 +1328,7 @@ def ak_r2_16_contrast():
             errs.append(f"/ bei {vw}: {len(bad)} Textknoten in .hero unter Soll-Kontrast, z. B. {'; '.join(bad[:4])}")
         p = r["pause"]
         if p is None:
-            errs.append(f"/ bei {vw}: button.zw-pause fehlt (Kontrast nicht pruefbar)")
+            errs.append(f"/ bei {vw}: button.hc-pause fehlt (Kontrast nicht pruefbar)")
         else:
             bg = _flat(p["bg"])
             cand = []
@@ -1403,51 +1344,48 @@ def ak_r2_16_contrast():
                 errs.append(f"/ bei {vw}: Pause-Knopf Kontrast {max(cand) if cand else 0:.1f}:1 < 3:1")
         if vw == 1440:
             if not r["left"]:
-                errs.append("/: .zw-stage fehlt (Farbpruefung nicht moeglich)")
+                errs.append("/: .hc-stage fehlt (Farbpruefung nicht moeglich)")
             alarm = sorted({f"{e['el']} {v}" for e in r["left"] for v in e["v"] if _is_alarm(v)})
             if alarm:
-                errs.append(f"/: Buehne nutzt Danger-/Warning-Toene: {'; '.join(alarm[:4])}")
+                errs.append(f"/: Chat-Handy nutzt Danger-/Warning-Toene: {'; '.join(alarm[:4])}")
     return errs
 
 
 def test_hidden_tab_pauses():
-    """Spec §5.8: Tab im Hintergrund (document.hidden) haelt die Buehne an; sichtbar laeuft sie weiter."""
+    """Spec §5.8: Tab im Hintergrund (document.hidden) haelt den Chat an ([data-hero-chat].is-paused, Thread steht 8 s);
+    sichtbar laeuft er weiter."""
     errs = []
     ctx, pg = _open(1440, 900)
     try:
-        if not _stage_to_view(pg):
-            return ["/: .zw-stage fehlt (Buehne nicht gebaut)"]
-        _run(pg, 2000)
+        if not _until_started(pg):
+            return ["/: Chat im Hero startet nicht (15 s keine Thread-Aenderung)"]
         set_vis = """(h) => { Object.defineProperty(document, 'hidden', { configurable: true, get: () => h });
           Object.defineProperty(document, 'visibilityState', { configurable: true, get: () => h ? 'hidden' : 'visible' });
           document.dispatchEvent(new Event('visibilitychange')); }"""
         pg.evaluate(set_vis, True)
-        _settle(pg)
-        a = pg.evaluate(STAGE_SNAP)
+        _settle(pg, 300)
+        a = _thread(pg)
         _run(pg, 8000)
-        _settle(pg, 150)
-        if pg.evaluate(STAGE_SNAP) != a:
-            errs.append("/: bei document.hidden laeuft die Buehne weiter (DOM/transform/opacity aendern sich in 8 s)")
+        if _thread(pg) != a:
+            errs.append("/: bei document.hidden laeuft der Chat weiter (Thread aendert sich in 8 s)")
+        if not pg.evaluate("(sel) => document.querySelector(sel).classList.contains('is-paused')", CHAT):
+            errs.append("/: bei document.hidden fehlt [data-hero-chat].is-paused")
         pg.evaluate(set_vis, False)
-        _settle(pg, 150)
-        b = pg.evaluate(STAGE_SNAP)
-        _run(pg, 10000)
-        _settle(pg, 150)
-        if pg.evaluate(STAGE_SNAP) == b:
-            errs.append("/: nach Rueckkehr in den Vordergrund laeuft die Buehne nicht weiter")
+        if not _until_started(pg, 10000):
+            errs.append("/: nach Rueckkehr in den Vordergrund laeuft der Chat nicht weiter")
     finally:
         ctx.close()
     return errs
 
 
 AK_R2 = {
-    "R2-06": ak_r2_06_pause, "R2-07": ak_r2_07_reduced_motion, "R2-08": ak_r2_08_text_alternative,
-    "R2-BILDER": ak_r2_bilder, "R2-LINK": ak_r2_link, "R2-10": ak_r2_10_hero_height, "R2-11": ak_r2_11_chat_below,
+    "R2-06": ak_r2_06_pause, "R2-07": ak_r2_07_reduced_motion, "R2-KENNZ": ak_r2_kennz,
+    "R2-ERSTBILD": ak_r2_erstbild, "R2-LINK": ak_r2_link, "R2-10": ak_r2_10_hero_height, "R2-CHAT": ak_r2_chat,
     "R2-16": ak_r2_16_contrast, "R2-FOKUS": test_no_focusable_in_aria_hidden, "R2-TAB": test_hidden_tab_pauses,
     "R2-DOM": ak_r2_dominant,
 }
 RELEASES = {"r1": AK_R1, "r2": AK_R2}
-# Nicht hier: AK-R2-01..05, 18, 21 (check_static AKH, AK8, AK13), AK-R2-12 (check_site), AK-R2-13 (check_seo),
+# Nicht hier: AK-R2-01..05, 18 (check_static AKH, AK8, AK13), AK-R2-12 (check_site), AK-R2-13 (check_seo),
 # AK-R2-14/15 (Trace und Lighthouse per MCP), AK-R2-17 (AK14r), AK-R2-19/20 (Abnahme, Live).
 
 

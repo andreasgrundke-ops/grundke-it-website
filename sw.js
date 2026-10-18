@@ -137,7 +137,6 @@ const PRECACHE_URLS = [
   '/assets/css/fonts.css?v=' + ASSET_VER,
   '/assets/js/main.js?v=' + ASSET_VER,
   '/assets/js/hero-chat.js?v=' + ASSET_VER,
-  '/assets/js/hero-wege.js?v=' + ASSET_VER,
   '/assets/js/lenis.min.js?v=' + ASSET_VER,
   '/assets/img/logo-grundke-it-white.png',
   '/favicon.ico',

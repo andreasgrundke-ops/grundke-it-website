@@ -57,11 +57,12 @@ geaendert hat, nicht wegen eines neuen Footer-Links.
   Einrichtungs-Pauschalen, Barrierefreiheitserklaerung neu.
 - **Release 2.0.1 (in 2.1.0 enthalten):** im Abschnitt IT-Betreuung „So arbeite ich“ (`ul.itb-how`, sechs Punkte)
   statt Systemhaus-Vergleich, FAQ-Passungsfrage, KI-Kennzeichnung `p.cta-ki` im Abschluss (`closing()`, Startseite von Hand).
-- **Startseite Hero "Ein Weg"** (H1 „IT hängt? Ruf mich an.“): Bühne „So läuft das bei mir“, vier Fälle mit je drei
-  Bildern, sichtbare Kennzeichnung als nachgestellte Beispiele, darunter eine echte Google-Stimme; gesteuert von
-  `assets/js/hero-wege.js`. Kein Vergleich mit anderen Anbietern. Der Endstand ist der HTML-Grundzustand (ohne JS sichtbar),
-  Pause-Knopf, bei reduzierter Bewegung bleibt es beim Endstand. Direkt unter dem Hero der Link zu /it-betreuer-wechseln/. Das Chat-Handy steht im Abschnitt IT-Betreuung
-  (`[data-hero-chat]`, `assets/js/hero-chat.js`) und startet erst bei Sichtbarkeit; abends 20-40 Min. bis zur Antwort.
+- **Startseite Hero „Der Chat“** (H1 „IT hängt? Ruf mich an.“, seit 2.1.1 wieder mit dem Chat-Handy): Kopf links mit
+  Unterzeile, Schutzsatz, Firmenkunden-Zeile, zwei Belegen und Knöpfen; rechts bzw. darunter das Chat-Handy
+  (`[data-hero-chat]`, `assets/js/hero-chat.js`). Die erste Kundennachricht steht im HTML, das Skript läuft von dort weiter;
+  sichtbare Kennzeichnung „Beispiel-Chat, …“ und Pause-Knopf am Chat, bei reduzierter Bewegung ein fertiger Chat, abends
+  20-40 Min. bis zur Antwort. Direkt unter dem Hero der Link zu /it-betreuer-wechseln/. Abschnitt IT-Betreuung wieder
+  „Typische Anrufe“ (`dl.itb-list`).
 - **Versionen jetzt:** `sw.js` `CACHE_NAME` `grundke-it-v2.1.0`, `RUNTIME_CACHE` `runtime-v39`,
   `ASSET_VER` 2026.10.i, `SITE_VERSION` 2.1.0 (Fuss "Version x.y.z · Stand TT.MM.JJJJ" aus dem Generator).
   `SITE_VERSION` bei jedem Release mit dem `CACHE_NAME`-Suffix gleichziehen, `check_static.py` prueft das.

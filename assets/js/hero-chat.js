@@ -4,7 +4,7 @@
  * Version: 1.6.0
  * Autor: Andreas Grundke / Grundke IT-Service
  * Datum: 2026-10-18
- * Beschreibung: Beispiel-Chat im Abschnitt IT-Betreuung der Startseite. Im gezeichneten Handy
+ * Beschreibung: Beispiel-Chat im Hero der Startseite (seit Release 2.1.1 wieder dort). Im gezeichneten Handy
  *   laeuft ein Beispiel-Einsatz als Chat ab: Kundennachricht, Andreas tippt,
  *   Fernwartung, Ergebnis, Dank. Statusleiste und Zeitstempel tragen die echte
  *   Uhrzeit des Besuchers; abends, am Wochenende und nachts steht darueber die

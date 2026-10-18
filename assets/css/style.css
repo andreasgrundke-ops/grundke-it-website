@@ -950,17 +950,17 @@ body.is-home {
   --fs-small-home: 14px;
   --fs-small-tight: clamp(12.9px, 12.2px + .15vw, 14px);   /* Klein, am Handy so dicht wie bisher (Leistungs-Chips) */
 }
-/* Beispiel-Chat, Mini-Chat und die Hero-Buehne samt Fusszeile behalten ihre Groessen (die Textalternative .zw-alt nicht); :where() haelt die Ausnahme ohne Gewicht.
+/* Der Beispiel-Chat (Handy im Hero samt Fusszeile, Mini-Chat) behaelt seine Groessen; :where() haelt die Ausnahme ohne Gewicht.
    Reihenfolge zaehlt: alle Gruppen haben dieselbe Spezifitaet, die spaetere gewinnt (Fliesstext zuerst,
    dann Bedienelemente und Klein, zuletzt die Ueberschriften-Stufen). */
-body.is-home main :is(p, li, dd, dt, .faq-a, .testi-txt, .praxis-text, .sc-checklist li, .sc-deliverable-list li, .sc-steps li, .price-feats li, .faq-more p):where(:not(.hc-stage *, .mini-chat-box *, .zw-stage *, .zw-foot *)) {
+body.is-home main :is(p, li, dd, dt, .faq-a, .testi-txt, .praxis-text, .sc-checklist li, .sc-deliverable-list li, .sc-steps li, .price-feats li, .faq-more p, .itb-list dd, .itb-list dt):where(:not(.hc-stage *, .mini-chat-box *)) {
   font-size: var(--fs-text-home);
 }
 body.is-home main :is(.btn-p, .btn-g, .btn-wa, .btn-tel, .btn-email, .hc-wa, .price-btn, .sc-cta, .sc-preview-btn, .praxis-cta,
   summary, .testi-who, .itb-how li, .faq-more strong, .hc-num):where(:not(.hc-stage *, .mini-chat-box *)) { font-size: var(--fs-ui-home); }
-body.is-home main :is(.s-label, .hc-wer, .hc-proof, .hc-proof li, .chips > *, .itb-leist .chips > a, .itb-leist-h, .price-note, .price-per,
+body.is-home main :is(.s-label, .hc-wer, .hc-fuer, .hc-proof, .hc-proof li, .chips > *, .itb-leist .chips > a, .itb-leist-h, .price-note, .price-per,
   .price-tier, .price-badge, .testi-role, .testi-ctx, .testi-row-h, .praxis-tag, .sc-hint, .sc-promise span,
-  .hc-qr p, .pkg-table thead th):where(:not(.hc-stage *, .mini-chat-box *, .zw-stage *, .zw-foot *)) { font-size: var(--fs-small-home); }
+  .hc-qr p, .pkg-table thead th):where(:not(.hc-stage *, .mini-chat-box *)) { font-size: var(--fs-small-home); }
 body.is-home main :is(.s-label, .itb-leist .chips > a, .itb-leist-h, .sc-hint, .sc-promise span) { font-size: var(--fs-small-tight); }
 body.is-home main :is(h3, .itb-claim, .price-name, .k3-card h3) { font-size: var(--fs-h3-home); line-height: 1.3; }
 body.is-home main :is(.sc-title, .price-val, .praxis-card h3, .testi-card--featured .testi-txt, .testi-card--featured .testi-txt p) {

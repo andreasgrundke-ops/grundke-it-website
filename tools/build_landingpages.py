@@ -402,7 +402,6 @@ FONTS_CSS_RE = re.compile(r'( *)<link rel="stylesheet" href="((?:\.\./)*|/)asset
 FONTS_CSS_VER_RE = re.compile(r'(href="(?:(?:\.\./)*|/)assets/css/fonts\.css)(?:\?v=[^"]*)?"')
 LENIS_JS_RE = re.compile(r'src="(?:\.\./)*/?assets/js/lenis\.min\.js(?:\?v=[^"]*)?"')
 HERO_JS_RE = re.compile(r'src="(?:\.\./)*/?assets/js/hero-chat\.js(?:\?v=[^"]*)?"')
-HERO_WEGE_JS_RE = re.compile(r'src="(?:\.\./)*/?assets/js/hero-wege\.js(?:\?v=[^"]*)?"')
 FONT_PRELOADS = ("Manrope-latin.woff2", "SpaceGrotesk-latin.woff2")
 
 
@@ -450,7 +449,6 @@ def sync_shared(places, services):
         html_new = FW_JS_RE.sub(lambda _m: 'src="' + asset("js/fernwartung.js") + '"', html_new)
         html_new = LENIS_JS_RE.sub(lambda _m: 'src="' + asset("js/lenis.min.js") + '"', html_new)
         html_new = HERO_JS_RE.sub(lambda _m: 'src="' + asset("js/hero-chat.js") + '"', html_new)
-        html_new = HERO_WEGE_JS_RE.sub(lambda _m: 'src="' + asset("js/hero-wege.js") + '"', html_new)
         html_new = FONTS_CSS_VER_RE.sub(lambda m: m.group(1) + "?v=" + ASSET_VER + '"', html_new)
         if not home:
             sprite = ICON_SPRITE.replace("\n", nl)
