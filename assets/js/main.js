@@ -1,7 +1,7 @@
 /**
  * ═══════════════════════════════════════════════════════════
  * Grundke IT-Service · main.js
- * Version: 1.7.0
+ * Version: 1.7.1
  * Autor: Andreas Grundke / Grundke IT-Service
  * Datum: 2026-10-10
  * Beschreibung: Shared JS – Nav, FAQ, Scroll
@@ -21,6 +21,8 @@
  *                       (Link mit Posterbild) wird zum Knopf; erst der Klick setzt
  *                       <video> mit Untertitelspur ein und startet es. Vorher wird
  *                       keine Filmdatei angefragt (preload=none, keine <source> im HTML).
+ * Änderung 2026-10-18: 1.7.1 (Release 2.1.2): Film-Knopf ohne eigenes aria-label, sein
+ *                       Name ist der sichtbare Text (WCAG 2.5.3).
  * ═══════════════════════════════════════════════════════════
  */
 
@@ -457,7 +459,8 @@ function initFilm() {
   const btn = document.createElement('button');
   btn.type = 'button';
   btn.className = link.className;
-  btn.setAttribute('aria-label', link.getAttribute('aria-label') || 'Film abspielen');
+  // Name = sichtbarer Text („Film abspielen 1:31“, WCAG 2.5.3); ein aria-label nur uebernehmen, wenn der Link eins hat
+  if (link.hasAttribute('aria-label')) btn.setAttribute('aria-label', link.getAttribute('aria-label'));
   while (link.firstChild) btn.appendChild(link.firstChild);
   link.replaceWith(btn);
 

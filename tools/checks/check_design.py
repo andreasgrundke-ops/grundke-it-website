@@ -1,6 +1,6 @@
 """Design-Pruefungen fuer den Relaunch (Spec §5, §7, §11).
 Titel:        check_design.py
-Version:      0.7.0 (Task 1: AK-R1-Pruefungen, --release r1; Task 11: AK-R2-Pruefungen, --release r2;
+Version:      0.8.0 (Task 1: AK-R1-Pruefungen, --release r1; Task 11: AK-R2-Pruefungen, --release r2;
               0.3.1: R2-DOM, #it-betreuung in R2 nach Flaeche;
               0.4.0: R2 auf den Hero mit Chat-Handy umgestellt: R2-06/-07/-10/-16/-TAB pruefen den Chat,
               R2-KENNZ (Kennzeichnung) statt R2-08, R2-ERSTBILD (H1 als LCP, erstes Bild, Firmenkunden-Zeile)
@@ -11,7 +11,11 @@ Version:      0.7.0 (Task 1: AK-R1-Pruefungen, --release r1; Task 11: AK-R2-Prue
               Kopfzeile mit WhatsApp (gruen) vor Telefon (Kontur) ohne Umbruch bei 1024/1280/1366/1440, Gruen =
               Hauptaktion WhatsApp in Seitenkopf, Abschluss, Preisen, Schnellcheck, Fernwartung, Kontakt und
               Mobilmenue, Telefon dort nie volle #0000FE-Flaeche; R2-LINK ohne den Kasten;
-              0.7.0 (Release 2.1.1): R2-FILM, Film der Startseite als Fassade im Browser)
+              0.7.0 (Release 2.1.1): R2-FILM, Film der Startseite als Fassade im Browser;
+              0.8.0 (Stand 18.10.2026, Release 2.1.2): AK-R1-02 ohne Kontaktleiste auf /kontakt/, AK-R1-03 Preise der
+              Startseite: Business gruener Vollknopf, Starter/Premium gruene Kontur; neu 212-F1 (Kontaktknoepfe ueber
+              der Leiste), 212-F2 (keine Zeile ueber dem Chat abends), 212-F5 (Kicker), 212-F7 (WhatsApp-Saetze je
+              Quelle), 212-F8 (Name des Film-Knopfs); R2-LINK und R2-FILM auf Link im Hero bzw. Namen ohne aria-label)
 Datum:        18.10.2026
 Beschreibung: Misst Hoehen bei 390x844 (reduzierte Bewegung, Service Worker blockiert) und vergleicht sie
               mit einer gespeicherten Baseline. Dazu die Abnahmekriterien AK-R1-01a ... AK-R1-23 des Relaunchs R1
@@ -328,6 +332,9 @@ def ak_r1_01c_safe_area():
     return errs + agg(per)
 
 
+NO_DOCK_URLS = ("/kontakt/",)   # Stand 18.10.2026, Release 2.1.2: Seiten ohne Kontaktleiste (Generator NO_DOCK)
+
+
 def ak_r1_02_dock_colors():
     """AK-R1-02 (Stand 18.10.2026): Reihenfolge WhatsApp, Anrufen, E-Mail. WhatsApp ist die Hauptaktion: deckend
     #1a7a5e mit weisser Schrift. Anrufen getoent (Alpha > 0 und <= 0,4, nicht deckend #0000FE) mit Kontur >= 1 px und
@@ -351,6 +358,11 @@ def ak_r1_02_dock_colors():
     per = {}
     nocontent = ("none", "normal")
     for u, r in scan(390, 844, js).items():
+        if u in NO_DOCK_URLS:
+            # Stand 18.10.2026, Release 2.1.2: die Kontaktseite traegt die drei Wege als Karten, keine Leiste
+            if r is not None:
+                per[u] = ["Kontaktleiste vorhanden (soll auf dieser Seite fehlen)"]
+            continue
         if r is None:
             continue
         m = []
@@ -418,8 +430,11 @@ CONTACT_JS = """() => {
     document.querySelectorAll('main ' + sel).forEach(g => {
       const links = [...g.querySelectorAll('a')].filter(a => kind(a));
       const wa = links.find(a => kind(a) === 'wa'), tel = links.find(a => kind(a) === 'tel');
+      const card = g.closest('.price-card');
       groups.push({ sel, order: links.map(kind), wa: wa ? st(wa) : null, tel: tel ? st(tel) : null,
-                    telCls: tel ? tel.className : '' });
+                    telCls: tel ? tel.className : '', waOut: !!wa && wa.classList.contains('wa-out'),
+                    preis: !!g.closest('#preise') && !!card, feat: !!card && card.classList.contains('feat'),
+                    cardBg: card ? getComputedStyle(card).backgroundColor : null });
     });
   }
   const kw = document.querySelector('.k-way--wa .k-ico'), kt = document.querySelector('.k-way--tel .k-ico');
@@ -485,7 +500,20 @@ def ak_r1_03_desktop_box():
                 for g in r["groups"]:
                     if g["order"] != sorted(g["order"], key={"wa": 0, "tel": 1, "mail": 2}.get):
                         m.append(f"{g['sel']}: Reihenfolge {g['order']}")
-                    if g["wa"] and g["wa"]["vis"] and (rgba(g["wa"]["bg"]) != GREEN or g["wa"]["color"] != "rgb(255, 255, 255)"):
+                    if u == "/" and g["preis"] and g["waOut"] == g["feat"]:
+                        # Stand 18.10.2026, Release 2.1.2: nur die Empfehlung (Business) traegt den gruenen Vollknopf
+                        m.append(f"#preise: Paketkarte {'Empfehlung' if g['feat'] else 'ohne Empfehlung'} mit "
+                                 f"{'Kontur' if g['waOut'] else 'Vollknopf'} (Empfehlung voll, Starter/Premium Kontur)")
+                    if g["wa"] and g["wa"]["vis"] and g["waOut"]:
+                        w, bg = g["wa"], rgba(g["cardBg"] or "") or (30, 37, 56, 1.0)
+                        if (rgba(w["bg"]) or (0, 0, 0, 1))[3] != 0:
+                            m.append(f"{g['sel']}: Kontur-Knopf WhatsApp mit Flaeche {w['bg']} (soll transparent sein)")
+                        if w["bw"] < 1 or rgba(w["bc"]) != GREEN:
+                            m.append(f"{g['sel']}: Kontur-Knopf Rand {w['bw']} px {w['bc']} statt 1 px #1a7a5e")
+                        if contrast(rgba(w["color"]), bg) < 4.5:
+                            m.append(f"{g['sel']}: Kontur-Knopf Schrift {w['color']} auf {g['cardBg']} "
+                                     f"{contrast(rgba(w['color']), bg):.2f}:1 < 4,5")
+                    elif g["wa"] and g["wa"]["vis"] and (rgba(g["wa"]["bg"]) != GREEN or g["wa"]["color"] != "rgb(255, 255, 255)"):
                         m.append(f"{g['sel']}: WhatsApp {g['wa']['bg']}/{g['wa']['color']} statt deckend #1a7a5e weiss")
                     if g["wa"] and g["tel"] and g["tel"]["vis"]:
                         if rgba(g["tel"]["bg"]) == VI_BLUE or not _tinted_tel(g["tel"]):
@@ -906,6 +934,117 @@ def ak_r1_23_focus_not_obscured():
     return errs
 
 
+# ----------------------------------------------------------------------------------------------------------------------
+# Release 2.1.2 (Stand 18.10.2026): Aufraeumen. F1 Kontaktknoepfe ueber der Leiste, F5 Kicker der Startseite,
+# F7 WhatsApp-Saetze je Quelle. F2 und F8 stehen bei den R2-Pruefungen (brauchen Uhr bzw. Film).
+# ----------------------------------------------------------------------------------------------------------------------
+F1_JS = """() => { const kind = a => { const h = a.getAttribute('href') || ''; return h.includes('wa.me/') ? 'wa' : h.startsWith('tel:') ? 'tel' : h.startsWith('mailto:') ? 'mail' : null; };
+  const vis = e => { const c = getComputedStyle(e), r = e.getBoundingClientRect(); return c.display !== 'none' && c.visibility !== 'hidden' && r.width > 0 && r.height > 0; };
+  const groups = [...document.querySelectorAll('.cta-sec .cta-btns, #film .cta-btns')].map(g => ({
+    where: g.closest('#film') ? 'Film' : 'Abschluss', mob: g.classList.contains('inline-cta-mobile'),
+    vis: [...g.querySelectorAll('a')].filter(a => kind(a) && vis(a)).map(kind) }));
+  return { dock: !!document.querySelector('.sticky-contact'), groups }; }"""
+
+
+def ak_212_f1_contact_over_dock():
+    """212-F1: Mit Kontaktleiste (und auf /kontakt/, die die Wege als Karten traegt) zeigen der Abschluss und der Film
+    der Startseite unter 768 px genau einen Kontaktknopf (WhatsApp), ab 768 px alle drei (WhatsApp, Telefon, E-Mail).
+    Seiten ohne Leiste (Rechtsseiten, 404) zeigen am Handy weiter alle drei. Die Startseite hat beide Gruppen."""
+    per = {}
+    full = ["wa", "tel", "mail"]
+    for vw, vh in ((390, 844), (767, 1024), (768, 1024), (1440, 900)):
+        for u, r in scan(vw, vh, F1_JS).items():
+            m = []
+            narrow = vw < 768
+            leiste = r["dock"] or u in NO_DOCK_URLS
+            if u == "/" and sorted(g["where"] for g in r["groups"]) != ["Abschluss", "Film"]:
+                m.append(f"Gruppen {[g['where'] for g in r['groups']]} statt Film und Abschluss")
+            for g in r["groups"]:
+                if leiste and not g["mob"]:
+                    m.append(f"{g['where']}: ohne Klasse inline-cta-mobile")
+                want = ["wa"] if (narrow and leiste) else full
+                if g["vis"] != want:
+                    m.append(f"{vw}: {g['where']} sichtbar {g['vis']} statt {want}")
+            if m:
+                per.setdefault(u, []).extend(m)
+    return agg(per)
+
+
+KICKER_JS = """() => { const out = [];
+  document.querySelectorAll('main h2, main h3').forEach(h => {
+    const k = h.previousElementSibling; if (!k || !['DIV', 'SPAN', 'P'].includes(k.tagName)) return;
+    const t = k.textContent.replace(/\\s+/g, ' ').trim(), r = k.getBoundingClientRect();
+    if (!t || t.length > 80 || k.querySelector('a, button') || r.height === 0) return;
+    if (parseFloat(getComputedStyle(k).fontSize) >= parseFloat(getComputedStyle(h).fontSize)) return;
+    const sec = k.closest('section'); out.push({ t, cls: k.className, sec: sec ? sec.id : null }); });
+  return { kicker: out, slabel: document.querySelectorAll('main .s-label').length }; }"""
+KICKER_ANKER = ("referenzen", "schnellcheck", "preise")   # Spec A5/D6: hoechstens drei Kicker, nur hier
+
+
+def ak_212_f5_kicker():
+    """212-F5: Startseite bei 390 und 1440: Kicker (kurze Zeile in kleinerer Schrift direkt ueber einer H2/H3 in <main>)
+    hoechstens drei, nur in #referenzen, #schnellcheck, #preise; .s-label hoechstens drei."""
+    errs = []
+    for vw, vh in ((390, 844), (1440, 900)):
+        r = scan(vw, vh, KICKER_JS, ["/"])["/"]
+        if len(r["kicker"]) > 3:
+            errs.append(f"/ bei {vw}: {len(r['kicker'])} Kicker (max 3): {[k['t'] for k in r['kicker']]}")
+        for k in r["kicker"]:
+            if k["sec"] not in KICKER_ANKER:
+                errs.append(f"/ bei {vw}: Kicker '{k['t']}' ({k['cls']}) in #{k['sec']} (erlaubt nur #{', #'.join(KICKER_ANKER)})")
+        if r["slabel"] > 3:
+            errs.append(f"/ bei {vw}: .s-label {r['slabel']}x (max 3)")
+    return errs
+
+
+def ak_212_f7_wa_sources():
+    """212-F7: WhatsApp-Satz je Quelle (aus WA_TEXT im Generator): Kopfzeile (.nav-wa) und Mobilmenue (.m-wa)
+    'navigation', Kontaktleiste (.sc-wa) 'kontaktleiste', Fuss 'fuss' auf jeder Seite; Startseite: jedes a[data-wa]
+    traegt den Satz seines Schluessels, Film 'film', Abschluss 'abschluss'. Abschluss der anderen Seiten: 'abschluss'
+    oder der Seitensatz (WA_SEITE)."""
+    from urllib.parse import unquote
+    sys.path.insert(0, str(ROOT / "tools"))
+    import build_landingpages as G
+    from check_static import _Dom
+    want = {k: G.WA(v) for k, v in G.WA_TEXT.items()}
+    seite = re.compile("^" + re.escape(G.WA_SEITE).replace(re.escape("{nav}"), ".+") + "$")
+    per = {}
+    for p in pages():
+        u, m = url_of(p), []
+        dom = _Dom(read(p)).root
+        wa_links = [a for a in dom.walk() if a.tag == "a" and "wa.me/" in (a.attrs.get("href") or "")]
+
+        def by(pred):
+            return [a for a in wa_links if pred(a)]
+        for name, pred, key in (("Kopfzeile", lambda a: a.has("nav-wa"), "navigation"),
+                                ("Mobilmenue", lambda a: a.has("m-wa"), "navigation"),
+                                ("Kontaktleiste", lambda a: a.up(lambda x: x.has("sticky-contact")), "kontaktleiste"),
+                                ("Fuss", lambda a: a.up(lambda x: x.tag == "footer"), "fuss")):
+            found = by(pred)
+            if not found and name in ("Kopfzeile", "Mobilmenue", "Fuss"):
+                m.append(f"{name}: kein WhatsApp-Link")
+            for a in found:
+                if a.attrs["href"] != want[key]:
+                    m.append(f"{name}: Satz '{unquote(a.attrs['href'].split('text=')[-1])}' statt Schluessel '{key}'")
+        for a in by(lambda a: "data-wa" in a.attrs):
+            k = a.attrs["data-wa"]
+            if k not in want or a.attrs["href"] != want[k]:
+                m.append(f"a[data-wa={k}]: Satz passt nicht zum Schluessel")
+        for a in by(lambda a: a.up(lambda x: x.has("cta-sec"))):
+            text = unquote(a.attrs["href"].split("text=")[-1])
+            if a.attrs["href"] != want["abschluss"] and not seite.match(text):
+                m.append(f"Abschluss: Satz '{text}' weder 'abschluss' noch Seitensatz")
+        if u == "/":
+            for key, sel in (("film", lambda a: a.up(lambda x: x.attrs.get("id") == "film")),
+                             ("abschluss", lambda a: a.up(lambda x: x.has("cta-sec")))):
+                hrefs = [a.attrs["href"] for a in by(sel)]
+                if hrefs != [want[key]]:
+                    m.append(f"{key}: {len(hrefs)} Link(s), Satz passt nicht zu Schluessel '{key}'")
+        if m:
+            per[u] = m
+    return agg(per)
+
+
 AK_R1 = {
     "R1-01a": ak_r1_01a_dock_narrow, "R1-01b": ak_r1_01b_dock_wide, "R1-01c": ak_r1_01c_safe_area,
     "R1-02": ak_r1_02_dock_colors, "R1-03": ak_r1_03_desktop_box, "R1-04": ak_r1_04_nav_loc, "R1-05": ak_r1_05_kicker,
@@ -913,6 +1052,7 @@ AK_R1 = {
     "R1-10": ak_r1_10_light_section, "R1-11": ak_r1_11_dominant, "R1-12": ak_r1_12_featured_quote,
     "R1-13": ak_r1_13_prices, "R1-14": ak_r1_14_geo_chips, "R1-22": ak_r1_22_voice_consent,
     "R1-23": ak_r1_23_focus_not_obscured,
+    "212-F1": ak_212_f1_contact_over_dock, "212-F5": ak_212_f5_kicker, "212-F7": ak_212_f7_wa_sources,
 }
 # Nicht hier: AK-R1-15 (Service Worker, check_sw.py), AK-R1-17 (Lighthouse/Trace per MCP), 16/18-21 (andere Skripte/Chat).
 
@@ -1197,20 +1337,22 @@ def test_no_focusable_in_aria_hidden():
 
 
 LINK_JS = """(want) => { const hero = document.querySelector('.hero'); if (!hero) return null;
-  const vis = e => getComputedStyle(e).display !== 'none' && e.getBoundingClientRect().height > 0;
-  let n = hero.nextElementSibling; const between = [];
-  while (n && !vis(n)) n = n.nextElementSibling;
-  const ref = hero;
+  const ctas = hero.querySelector('.hc-ctas'), n = ctas ? ctas.nextElementSibling : null;
   const a = n ? n.querySelector('a[href="' + want + '"]') : null;
-  const r = a ? a.getBoundingClientRect() : null;
-  return { cls: n ? n.className : null, between, text: a ? a.textContent.replace(/\\s+/g, ' ').trim() : null,
+  const r = a ? a.getBoundingClientRect() : null, h = hero.getBoundingClientRect();
+  const sibs = n ? [...n.parentElement.children] : [];
+  const prev = n ? sibs.slice(0, sibs.indexOf(n)).reverse()
+    .find(e => getComputedStyle(e).display !== 'none' && e.getBoundingClientRect().height > 0) : null;
+  return { cls: n ? n.className : null, text: a ? a.textContent.replace(/\\s+/g, ' ').trim() : null,
            visible: !!a && a.checkVisibility({ visibilityProperty: true, opacityProperty: true }) && r.width > 0 && r.height > 0,
-           gap: n ? Math.round(n.getBoundingClientRect().top - ref.getBoundingClientRect().bottom) : null }; }"""
+           inHero: !!r && r.top >= h.top && r.bottom <= h.bottom, after: prev ? prev.className : null,
+           gap: n && prev ? Math.round(n.getBoundingClientRect().top - prev.getBoundingClientRect().bottom) : null }; }"""
 
 
 def ak_r2_link():
-    """B-05: Link /it-betreuer-wechseln/ mit Linktext zeichengleich direkt nach der Hero-Section, sichtbar bei 390 und
-    1440 (seit 18.10.2026 ohne Kasten dazwischen, bei keiner Breite)."""
+    """B-05 (Stand 18.10.2026, Release 2.1.2): Link /it-betreuer-wechseln/ mit Linktext zeichengleich im Hero direkt
+    unter der Knopfreihe (.hc-ctas; am Handy ist sie aus, dort folgt der Link den Belegen), sichtbar und innerhalb des
+    Heros bei 390 und 1440, Abstand zum Element darueber 4..24 px (haengt nicht mehr allein unter dem Hero)."""
     errs = []
     href, text = WECHSEL_LINK
     for vw, vh in ((390, 844), (1440, 900)):
@@ -1219,15 +1361,15 @@ def ak_r2_link():
             errs.append(f"/ bei {vw}: .hero fehlt")
             continue
         if r["text"] != text:
-            errs.append(f"/ bei {vw}: naechstes sichtbares Element nach dem Hero ({r['cls']}) ohne Link {href} '{text}' "
+            errs.append(f"/ bei {vw}: Element nach .hc-ctas im Hero ({r['cls']}) ohne Link {href} '{text}' "
                         f"(gefunden {r['text']!r})")
             continue
         if not r["visible"]:
             errs.append(f"/ bei {vw}: Link {href} nicht sichtbar")
-        if r["between"]:
-            errs.append(f"/ bei {vw}: zwischen Hero und Link steht {r['between']}")
-        if r["gap"] is None or abs(r["gap"]) > 1:
-            errs.append(f"/ bei {vw}: Link-Zeile beginnt {r['gap']} px unter dem Hero (soll anschliessen)")
+        if not r["inHero"]:
+            errs.append(f"/ bei {vw}: Link {href} liegt nicht innerhalb des Heros")
+        if r["gap"] is None or not 4 <= r["gap"] <= 24:
+            errs.append(f"/ bei {vw}: Link-Zeile {r['gap']} px unter {r['after']} (soll 4..24)")
     return errs
 
 
@@ -1474,7 +1616,8 @@ FILM_STATE_JS = """() => { const sec = document.getElementById('film'); if (!sec
 
 def ak_r2_film():
     """Release 2.1.1: Film als Fassade. Bei 390x844 und 1440x900: beim Laden und nach dem Scrollen zum Film keine
-    Anfrage auf .mp4/.vtt; Fassade ist ein <button> 'Film abspielen, 1:31' auf 16:9-Flaeche; der KI-Hinweis steht vor
+    Anfrage auf .mp4/.vtt; Fassade ist ein <button> 'Film abspielen 1:31' (Name = sichtbarer Text, kein aria-label,
+    seit Release 2.1.2) auf 16:9-Flaeche; der KI-Hinweis steht vor
     dem Abspielen sichtbar direkt unter dem Player (Abstand 0..24 px). Nach dem Klick: <video> mit controls,
     playsinline, preload none, ohne autoplay, Fokus auf dem Video, Untertitelspur subtitles/de/default, gleiche Hoehe
     wie die Fassade (kein Sprung), erste Quelle 720p am Handy und 1080p ab 1024 px."""
@@ -1494,8 +1637,11 @@ def ak_r2_film():
             a = pg.evaluate(FILM_STATE_JS)
             if a is None:
                 errs.append(f"/ bei {vw}: #film fehlt"); continue
-            if a["start"] != {"tag": "button", "name": "Film abspielen, 1:31"}:
-                errs.append(f"/ bei {vw}: Fassade {a['start']} statt <button> 'Film abspielen, 1:31'")
+            if a["start"] != {"tag": "button", "name": None}:
+                errs.append(f"/ bei {vw}: Fassade {a['start']} statt <button> ohne aria-label (Stand 2.1.2)")
+            snap = pg.locator("#film .film-start").aria_snapshot()
+            if f'button "{FILM_NAME}"' not in snap:
+                errs.append(f"/ bei {vw}: berechneter Name der Fassade {snap!r} statt '{FILM_NAME}'")
             if not a["box"] or abs(a["box"]["w"] * 9 / 16 - a["box"]["h"]) > 2:
                 errs.append(f"/ bei {vw}: Player nicht 16:9 ({a['box']})")
             c = a["cap"]
@@ -1524,11 +1670,69 @@ def ak_r2_film():
     return errs
 
 
+FILM_NAME = "Film abspielen 1:31"
+
+
+def ak_212_f2_kein_kicker_chat():
+    """212-F2: Ueber dem Beispiel-Chat steht abends (Montag 20 Uhr) und tagsueber keine Zeile ([data-hc-clock] leer
+    oder unsichtbar); 'Keine Öffnungszeiten' steht im sichtbaren Hero genau einmal (Schutzsatz), bei 768, 1024 und
+    1440. Nachts (0-7 Uhr) bleibt der Satz zum Wachwerden erlaubt."""
+    errs, env = [], _env()
+    js = """() => { const c = document.querySelector('[data-hc-clock]'), h = document.querySelector('.hero');
+      const vis = !!c && c.checkVisibility() && c.textContent.trim() !== '';
+      return { clock: c ? c.textContent.trim() : null, vis, n: (h.innerText.match(/Keine Öffnungszeiten/g) || []).length }; }"""
+    for when in (datetime.datetime(2026, 10, 19, 20, 0, 0), datetime.datetime(2026, 10, 19, 10, 0, 0)):
+        for vw, vh in ((768, 1024), (1024, 768), (1440, 900)):
+            ctx = env["b"].new_context(viewport={"width": vw, "height": vh}, service_workers="block")
+            try:
+                pg = ctx.new_page()
+                pg.clock.install(time=when)
+                pg.goto(env["base"] + "/", wait_until="load")
+                pg.wait_for_timeout(300)
+                r = pg.evaluate(js)
+                if r["vis"]:
+                    errs.append(f"/ {when:%H} Uhr bei {vw}: Zeile ueber dem Chat '{r['clock']}'")
+                if r["n"] != 1:
+                    errs.append(f"/ {when:%H} Uhr bei {vw}: 'Keine Öffnungszeiten' {r['n']}x im Hero (soll 1)")
+            finally:
+                ctx.close()
+    return errs
+
+
+def ak_212_f8_film_name():
+    """212-F8 (WCAG 2.5.3, Lighthouse label-content-name-mismatch): der berechnete Name des Film-Knopfs enthaelt den
+    sichtbaren Text, mit JS (Knopf) und ohne JS (Link), bei 390 und 1440; sichtbarer Text = FILM_NAME."""
+    errs, env = [], _env()
+    for js_on in (True, False):
+        for vw, vh in ((390, 844), (1440, 900)):
+            ctx = env["b"].new_context(viewport={"width": vw, "height": vh}, service_workers="block",
+                                       reduced_motion="reduce", java_script_enabled=js_on)
+            try:
+                pg = ctx.new_page()
+                pg.goto(env["base"] + "/", wait_until="networkidle")
+                loc = pg.locator("#film .film-start")
+                seen = re.sub(r"\s+", " ", loc.inner_text()).strip()
+                snap = loc.aria_snapshot()
+                m = re.search(r'^- (\w+) "([^"]*)"', snap)
+                role, name = (m.group(1), m.group(2)) if m else (None, None)
+                tag = f"/ bei {vw} {'mit' if js_on else 'ohne'} JS"
+                if seen != FILM_NAME:
+                    errs.append(f"{tag}: sichtbarer Text '{seen}' statt '{FILM_NAME}'")
+                if not name or seen.lower() not in name.lower():
+                    errs.append(f"{tag}: Name {name!r} enthaelt den sichtbaren Text '{seen}' nicht ({snap!r})")
+                if role != ("button" if js_on else "link"):
+                    errs.append(f"{tag}: Rolle {role!r}")
+            finally:
+                ctx.close()
+    return errs
+
+
 AK_R2 = {
     "R2-06": ak_r2_06_pause, "R2-07": ak_r2_07_reduced_motion, "R2-KENNZ": ak_r2_kennz,
     "R2-ERSTBILD": ak_r2_erstbild, "R2-LINK": ak_r2_link, "R2-10": ak_r2_10_hero_height, "R2-CHAT": ak_r2_chat,
     "R2-16": ak_r2_16_contrast, "R2-FOKUS": test_no_focusable_in_aria_hidden, "R2-TAB": test_hidden_tab_pauses,
     "R2-DOM": ak_r2_dominant, "R2-FILM": ak_r2_film,
+    "212-F2": ak_212_f2_kein_kicker_chat, "212-F8": ak_212_f8_film_name,
 }
 RELEASES = {"r1": AK_R1, "r2": AK_R2}
 # Nicht hier: AK-R2-01..05, 18 (check_static AKH, AK8, AK13), AK-R2-12 (check_site), AK-R2-13 (check_seo),

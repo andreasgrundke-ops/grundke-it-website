@@ -28,6 +28,7 @@
      dunklen Flaechen, Schrift weiss ab 15:1); E-Mail neutral. Der helle Abschnitt setzt die Telefon-Werte um. */
   --wa:          #1a7a5e;
   --wa-hover:    #166a52;
+  --wa-text:     #26b188;   /* WhatsApp-Gruen aufgehellt (gleicher Farbton) fuer Schrift auf dunklem Grund: 5,6:1 auf --bg3 */
   --tel-bg:      rgba(0,0,254,.22);
   --tel-bg-hover:rgba(0,0,254,.34);
   --tel-line:    #5566ff;
@@ -152,9 +153,10 @@ button { font-family: var(--fb); cursor: pointer; }
   .sticky-contact { left: 50%; right: auto; width: min(480px, 100% - 24px); transform: translateX(-50%); }
 }
 
-/* Inline-Kontakt-Buttons am Handy ausblenden — Sticky-Bar uebernimmt */
+/* Kontaktknoepfe ueber der Kontaktleiste (Abschluss, Film der Startseite): am Handy bleibt nur WhatsApp (Stand
+   18.10.2026, Release 2.1.2); Telefon und E-Mail traegt die Leiste darunter. Reine Medienabfrage, kein Skript. */
 @media (max-width: 767px) {
-  .inline-cta-mobile { display: none !important; }
+  .inline-cta-mobile > :is(.btn-tel, .btn-email) { display: none !important; }
 }
 
 /* ── Typography Utilities ── */
@@ -440,6 +442,12 @@ button { font-family: var(--fb); cursor: pointer; }
 /* Kontaktknoepfe an Preisen (Stand 18.10.2026): WhatsApp gruen als Hauptaktion, Telefon getoent mit Kontur */
 .price-btn.wa { background:var(--wa); color:#fff; border:none; }
 .price-btn.wa:hover { background:var(--wa-hover); }
+/* Kontur-Knopf WhatsApp (Stand 18.10.2026, Release 2.1.2): Preiskarten ohne Empfehlung. Rand #1a7a5e, Schrift
+   --wa-text (5,6:1 auf der Karte); Hover fuellt gruen wie der Vollknopf (weiss 5,3:1), Fokus mit Cyan-Ring wie alle
+   Knoepfe, Druck gibt leicht nach. Der grosse Vollknopf bleibt der Empfehlung (Business). */
+.price-btn.wa-out { background:transparent; color:var(--wa-text); border:1px solid var(--wa); }
+.price-btn.wa-out:hover { background:var(--wa); color:#fff; border-color:var(--wa); }
+.price-btn.wa-out:active { transform:translateY(1px); }
 .price-btn.tel { background:var(--tel-bg); color:var(--tel-text); border:1px solid var(--tel-line); }
 .price-btn.tel:hover { background:var(--tel-bg-hover); }
 .price-btn:focus-visible, .btn-wa:focus-visible, .btn-email:focus-visible { outline:2px solid var(--cyan); outline-offset:3px; }
@@ -575,9 +583,15 @@ blockquote.testi-txt { margin-top:0; margin-left:0; margin-right:0; }
 /* Fuer wen (seit 18.10.2026): ruhige Zeile direkt unter cta-sub, Klein-Stufe; der Abstand nach unten bleibt der von cta-sub */
 .cta-sub:has(+ .cta-fuer) { margin-bottom:.6rem; }
 .cta-fuer .nowrap { white-space:nowrap; }   /* „Ein-Personen-Gewerbe“ bricht am Handy nicht am Bindestrich */
-/* Am Handy mit Kontaktleiste (Knoepfe des Abschlusses ausgeblendet) knapper nach unten: die Zeile laeuft dort ohne
-   Trennung ueber drei Zeilen, so bleibt die Seitenlaenge im Budget (check_site AK5) */
-@media (max-width:767px) { .cta-fuer:has(+ .inline-cta-mobile) { margin-bottom:1.2rem; } }
+/* Am Handy mit Kontaktleiste (dort nur der WhatsApp-Knopf) knapper: die Zeile laeuft dort ohne Trennung ueber drei
+   Zeilen. Seit Release 2.1.2 steht der WhatsApp-Knopf dort wieder; damit die Seitenlaenge im Budget bleibt (check_site
+   AK5, 8.000 px), sind Abschnittsrand, Abstand zum Weiter-Link und Knopfhoehe am Handy etwas knapper. */
+@media (max-width:767px) {
+  .cta-fuer:has(+ .inline-cta-mobile) { margin-bottom:1rem; }
+  .cta-sec:has(.inline-cta-mobile) { padding-block:2.8rem; }
+  .cta-btns.inline-cta-mobile .btn-wa { padding-block:.85rem; }
+  .inline-cta-mobile ~ .cta-next { margin-top:1.2rem; }
+}
 .cta-fuer { font-size:.9333rem; color:var(--text2); max-width:440px; margin:0 auto 2.5rem; line-height:1.5; position:relative; text-wrap:balance; }
 .cta-btns { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; position:relative; }
 /* Telefon im Abschluss zurueckgenommen (Stand 18.10.2026): getoent mit Kontur, WhatsApp davor ist die Hauptaktion.
@@ -972,7 +986,7 @@ body.is-home main :is(p, li, dd, dt, .faq-a, .testi-txt, .praxis-text, .sc-check
 body.is-home main :is(.btn-p, .btn-g, .btn-wa, .btn-tel, .btn-email, .hc-wa, .hc-call, .price-btn, .sc-cta, .sc-preview-btn, .praxis-cta,
   summary, .testi-who, .itb-how li, .faq-more strong, .hc-num):where(:not(.hc-stage *, .mini-chat-box *)) { font-size: var(--fs-ui-home); }
 body.is-home main :is(.s-label, .hc-wer, .hc-fuer, .hc-proof, .hc-proof li, .chips > *, .itb-leist .chips > a, .itb-leist-h, .price-note, .price-per,
-  .price-tier, .price-badge, .testi-role, .testi-ctx, .testi-row-h, .praxis-tag, .sc-hint, .sc-promise span,
+  .price-tier, .price-badge, .testi-role, .testi-ctx, .testi-row-h, .hc-weiter, .sc-hint, .sc-promise span,
   .hc-qr p, .pkg-table thead th):where(:not(.hc-stage *, .mini-chat-box *)) { font-size: var(--fs-small-home); }
 body.is-home main :is(.s-label, .itb-leist .chips > a, .itb-leist-h, .sc-hint, .sc-promise span) { font-size: var(--fs-small-tight); }
 body.is-home main :is(h3, .itb-claim, .price-name, .k3-card h3) { font-size: var(--fs-h3-home); line-height: 1.3; }

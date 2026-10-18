@@ -1,14 +1,14 @@
 /**
  * ═══════════════════════════════════════════════════════════
  * Grundke IT-Service · hero-chat.js
- * Version: 1.7.0
+ * Version: 1.8.0
  * Autor: Andreas Grundke / Grundke IT-Service
  * Datum: 2026-10-18
  * Beschreibung: Beispiel-Chat im Hero der Startseite (seit Release 2.1.1 wieder dort). Im gezeichneten Handy
  *   laeuft ein Beispiel-Einsatz als Chat ab: Kundennachricht, Andreas tippt,
  *   Fernwartung, Ergebnis, Dank. Statusleiste und Zeitstempel tragen die echte
- *   Uhrzeit des Besuchers; abends, am Wochenende und nachts steht darueber die
- *   grosse Uhrzeit mit einem Satz.
+ *   Uhrzeit des Besuchers; nachts steht darueber ein Satz (abends seit 1.8.0
+ *   nicht mehr, der Schutzsatz im Hero sagt schon „Keine Öffnungszeiten.“).
  * Ablauf:
  *   1. Elemente suchen, ohne Chat-Container [data-hero-chat] sofort Abbruch.
  *   2. Tageszeit bestimmen (tag / abend / nacht), Statusleiste und Uhrzeit-Zeile
@@ -54,6 +54,11 @@
  *   1.7.0 (2026-10-18) Chat wieder im Hero. Der erste Fall steht schon im HTML und
  *                      laeuft immer zuerst, auch nachts; der Nachtfilter gilt fuer die
  *                      folgenden Faelle. So wechselt beim Start kein Text.
+ *   1.8.0 (2026-10-18) Release 2.1.2: nachts (0-7 Uhr) laufen nur die Faelle mit
+ *                      nacht:true, der erste ist damit die Mail-Stoerung statt der
+ *                      Kasse (keine Kasse mit „Guten Morgen“ um 7:12); die wartende
+ *                      Nachricht setzt warten() vor dem Start. Abends keine Zeile
+ *                      ueber dem Chat mehr (doppelte sich mit dem Schutzsatz).
  * ═══════════════════════════════════════════════════════════
  */
 (function () {
@@ -101,11 +106,12 @@
   ];
   var NIGHT_REPLY = 'Guten Morgen, hab\'s gesehen. Ich kümmere mich.';
 
-  /* Faelle fuer jetzt: der erste (CASES[0]) steht als erste Kundennachricht im HTML und laeuft deshalb immer
-     zuerst, auch nachts. Sonst wuerde das Skript beim Start den Text der wartenden Nachricht austauschen. */
+  /* Faelle fuer jetzt: tagsueber und abends alle, der erste (CASES[0]) steht als erste Kundennachricht im HTML.
+     Nachts nur die Faelle mit nacht:true; die Kasse (nacht:false) kaeme sonst zuerst mit der Morgen-Antwort.
+     warten() setzt nachts die erste Kundennachricht des ersten Nachtfalls, bevor der Chat ins Bild laeuft. */
   function poolFor(d) {
     var nachts = dayMode(d) === 'night';
-    return CASES.filter(function (c, i) { return i === 0 || !nachts || c.nacht; });
+    return CASES.filter(function (c) { return !nachts || c.nacht; });
   }
 
   /* ── Zeit ── */
@@ -140,11 +146,10 @@
     if (statusEl) statusEl.textContent = hhmm(now);
     if (!clockEl) return;
     clockEl.textContent = '';
-    clockEl.classList.toggle('is-empty', mode === 'day');
-    if (mode === 'day') return;
-    clockEl.appendChild(document.createTextNode(mode === 'night'
-      ? 'Schreib einfach, ich melde mich, sobald ich wach bin.'
-      : 'Bei mir gibt\'s keine Öffnungszeiten.'));
+    // Abends keine Zeile mehr (Release 2.1.2): der Schutzsatz im Hero sagt schon „Keine Öffnungszeiten.“
+    clockEl.classList.toggle('is-empty', mode !== 'night');
+    if (mode !== 'night') return;
+    clockEl.appendChild(document.createTextNode('Schreib einfach, ich melde mich, sobald ich wach bin.'));
   }
 
   /* ── Bausteine (nur textContent, kein innerHTML) ── */

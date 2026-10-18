@@ -53,10 +53,10 @@
   <meta property="og:image:height" content="630"/>
 
   <!-- Google Fonts (lokal gehostet, DSGVO-konform) -->
-  <link rel="stylesheet" href="assets/css/fonts.css?v=2026.10.j"/>
+  <link rel="stylesheet" href="assets/css/fonts.css?v=2026.10.k"/>
 
   <!-- Shared CSS -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=2026.10.j"/>
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026.10.k"/>
 
   <script type="application/ld+json">
   {
@@ -461,18 +461,19 @@
   @media (max-width:767px) { .hc-wer { margin-bottom:1.1rem; } }
   .hero .hc-proof { margin:0; gap:.4rem 1.1rem; font-size:14px; }
   .hero .hc-ctas { margin-top:1.6rem; }
-  /* Link unter dem Hero (alle Breiten): Uebernahme fuer Betriebe, deren IT-Betreuer weg ist */
-  .hc-weiter { margin:0 auto; padding-block:.8rem; }
-  .hc-weiter p { max-width:62ch; margin:0; line-height:1.5; }
+  /* Link im Hero (seit Release 2.1.2 direkt unter der Knopfreihe, vorher als einzelne Zeile unter dem Hero): Uebernahme
+     fuer Betriebe, deren IT-Betreuer weg ist, und der Weg zum Film. Groesse Klein (style.css) wie Wer und Belege. */
+  .hc-weiter { max-width:34rem; margin:1.1rem 0 0; line-height:1.5; }
   .hc-weiter a { transition:color .2s; }
   .hc-weiter a:hover { color:var(--cyan); }
-  /* Textlink zum Film (seit Release 2.1.1): am Handy eigene Zeile ohne Trennpunkt; die Polsterung ist dort kleiner
-     (zwei Zeilen je 24 px statt eine Zeile plus .8rem oben und unten), damit #preise unter 5.000 px bleibt (AK5) */
   .hc-weiter-sep { color:var(--text2); }
+  /* Am Handy (Knopfreihe aus, die Kontaktleiste traegt sie) direkt unter den Belegen; Film-Link in eigener Zeile ohne
+     Trennpunkt. Hero-Unterkante und Abstand zum Chat knapper, damit der Hero bei 390 px im Budget (835 px) bleibt. */
   @media (max-width:767px) {
-    .hc-weiter { padding-block:.2rem; }
+    .hc-weiter { margin-top:.5rem; line-height:1.45; }
     .hc-weiter-sep { display:none; }
     .hc-film-link { display:table; }
+    .hc-inner { gap:1.2rem; padding-bottom:.8rem; }
   }
   /* Ab 768 px dieselbe Breite und Polsterung wie .inner (Hero-Text und Abschnitte an einer Kante);
      Text links, Handy rechts */
@@ -794,11 +795,6 @@
   }
   .praxis-icon svg { width:36px; height:36px; }
   .praxis-body { min-width:0; }
-  .praxis-tag {
-    font-family:var(--fb); font-size:.93rem; letter-spacing:0; text-transform:none;
-    color:var(--text3); margin-bottom:.5rem; font-weight:600;
-    display:inline-flex; align-items:center; gap:.5rem;
-  }
   .praxis-card h3 {
     font-family:var(--fh); font-size:clamp(1.3rem,2.6vw,1.8rem); font-weight:800;
     color:var(--text); letter-spacing:-.02em; line-height:1.2; margin-bottom:1.1rem;
@@ -1203,7 +1199,7 @@
       <li><a href="#preise">Preise</a></li>
       <li><a href="/fernwartung/">Fernwartung starten</a></li>
       <li><a href="/kontakt/">Kontakt</a></li>
-      <li><a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20komme%20%C3%BCber%20deine%20Website." target="_blank" rel="noopener" class="nav-wa"><svg width="16" height="16" aria-hidden="true"><use href="#ico-wa"/></svg>WhatsApp</a></li>
+      <li><a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20komme%20%C3%BCber%20das%20Men%C3%BC%20deiner%20Website." target="_blank" rel="noopener" class="nav-wa"><svg width="16" height="16" aria-hidden="true"><use href="#ico-wa"/></svg>WhatsApp</a></li>
       <li><a href="tel:+491782584438" class="nav-tel"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.8a16 16 0 0 0 6 6l.94-.94a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span class="nav-tel-t">Anrufen</span></a></li>
     </ul>
     <button class="hamburger" id="ham" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span><span></span></button>
@@ -1217,7 +1213,7 @@
   <a href="#preise">Preise</a>
   <a href="/kontakt/">Kontakt</a>
   <a href="/fernwartung/" class="m-fw"><svg width="18" height="18" aria-hidden="true"><use href="#ico-monitor"/></svg>Fernwartung starten</a>
-  <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20komme%20%C3%BCber%20deine%20Website." target="_blank" rel="noopener" class="m-wa"><svg width="18" height="18" aria-hidden="true"><use href="#ico-wa"/></svg>WhatsApp</a>
+  <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20komme%20%C3%BCber%20das%20Men%C3%BC%20deiner%20Website." target="_blank" rel="noopener" class="m-wa"><svg width="18" height="18" aria-hidden="true"><use href="#ico-wa"/></svg>WhatsApp</a>
   <a href="tel:+491782584438" class="m-cta">Jetzt anrufen · 0178 258 44 38</a>
 </div>
 </header>
@@ -1244,6 +1240,7 @@
         <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20komme%20%C3%BCber%20deine%20Startseite." target="_blank" rel="noopener" class="hc-wa" data-wa="hero"><svg width="18" height="18" aria-hidden="true"><use href="#ico-wa"/></svg>WhatsApp</a>
         <a href="tel:+491782584438" class="hc-call"><svg width="18" height="18" aria-hidden="true"><use href="#ico-phone"/></svg>Anrufen <span class="hc-num">0178 258 44 38</span></a>
       </div>
+      <p class="hc-weiter"><a href="/it-betreuer-wechseln/">IT-Betreuer nicht mehr da? So übernehme ich.</a><span class="hc-weiter-sep" aria-hidden="true"> · </span><a href="#film" class="hc-film-link">Film ansehen (1:31)</a></p>
     </div>
     <div class="hc-stage" data-hero-chat>
       <p class="hc-clock is-empty" data-hc-clock aria-hidden="true"></p>
@@ -1277,9 +1274,6 @@
     </div>
   </div>
 </section>
-
-<!-- Link unter dem Hero (alle Breiten): Uebernahme, wenn der bisherige IT-Betreuer nicht mehr da ist -->
-<div class="hc-weiter inner"><p><a href="/it-betreuer-wechseln/">IT-Betreuer nicht mehr da? So übernehme ich.</a><span class="hc-weiter-sep" aria-hidden="true"> · </span><a href="#film" class="hc-film-link">Film ansehen (1:31)</a></p></div>
 
 <!-- IT-BETREUUNG: Typische Anrufe + Kernaussage (seit 10.10.2026 statt der Haken-Liste), Vergleich aufklappbar,
      Chips zu den IT-Leistungsseiten (ersetzen den Abschnitt „Leistungen“, Anker #leistungen bleibt) -->
@@ -1407,7 +1401,6 @@
     <div class="praxis-card">
       <div class="praxis-icon"><svg><use href="#ico-alert-octagon"/></svg></div>
       <div class="praxis-body" data-dominant>
-        <div class="praxis-tag">Aus der Praxis</div>
         <h3>„Ich muss <em>heute noch</em> fertig werden!“</h3>
         <div class="praxis-text">
           <p>Ein Kunde ruft an: Sein Rechner startet plötzlich nicht mehr. Er muss heute noch ein wichtiges Projekt abgeben. Keine Datensicherung. Festplatte fest verbaut.</p>
@@ -1589,7 +1582,7 @@
           <li><svg class="pfy" aria-hidden="true"><use href="#ico-check"/></svg>Priorisiert im Support</li>
         </ul>
         <div class="pkg-btns">
-          <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20komme%20%C3%BCber%20deine%20Preise%20und%20interessiere%20mich%20f%C3%BCr%20das%20Paket%20Starter." target="_blank" rel="noopener" class="price-btn wa" data-wa="preise-starter"><svg width="16" height="16" aria-hidden="true"><use href="#ico-wa"/></svg>Paket anfragen</a>
+          <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20komme%20%C3%BCber%20deine%20Preise%20und%20interessiere%20mich%20f%C3%BCr%20das%20Paket%20Starter." target="_blank" rel="noopener" class="price-btn wa-out" data-wa="preise-starter"><svg width="16" height="16" aria-hidden="true"><use href="#ico-wa"/></svg>Paket anfragen</a>
           <a href="mailto:info@grundke-it.de?subject=Paketanfrage%20Starter%20(%E2%82%AC149%2FMonat)%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0Aich%20interessiere%20mich%20f%C3%BCr%20das%20Paket%3A%20Starter%20(%E2%82%AC149%2FMonat)%0A%0AMein%20Unternehmen%20%2F%20meine%20Situation%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F)." class="price-btn out pkg-mail" aria-label="Paket Starter per E-Mail anfragen" title="Per E-Mail anfragen"><svg width="18" height="18" aria-hidden="true"><use href="#ico-mail"/></svg></a>
         </div>
       </div>
@@ -1624,7 +1617,7 @@
           <li><svg class="pfy" aria-hidden="true"><use href="#ico-check"/></svg>Monatlicher IT-Report</li>
         </ul>
         <div class="pkg-btns">
-          <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20komme%20%C3%BCber%20deine%20Preise%20und%20interessiere%20mich%20f%C3%BCr%20das%20Paket%20Premium." target="_blank" rel="noopener" class="price-btn wa" data-wa="preise-premium"><svg width="16" height="16" aria-hidden="true"><use href="#ico-wa"/></svg>Paket anfragen</a>
+          <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20komme%20%C3%BCber%20deine%20Preise%20und%20interessiere%20mich%20f%C3%BCr%20das%20Paket%20Premium." target="_blank" rel="noopener" class="price-btn wa-out" data-wa="preise-premium"><svg width="16" height="16" aria-hidden="true"><use href="#ico-wa"/></svg>Paket anfragen</a>
           <a href="mailto:info@grundke-it.de?subject=Paketanfrage%20Premium%20(%E2%82%AC449%2FMonat)%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0Aich%20interessiere%20mich%20f%C3%BCr%20das%20Paket%3A%20Premium%20(%E2%82%AC449%2FMonat)%0A%0AMein%20Unternehmen%20%2F%20meine%20Situation%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F)." class="price-btn out pkg-mail" aria-label="Paket Premium per E-Mail anfragen" title="Per E-Mail anfragen"><svg width="18" height="18" aria-hidden="true"><use href="#ico-mail"/></svg></a>
         </div>
       </div>
@@ -1673,9 +1666,9 @@
     <p class="film-meta">1:31 · mit Untertiteln</p>
     <figure class="film-fig">
       <div class="film-player" data-film data-film-sd="/assets/video/werbefilm_v2.1_2026-10-18_720p.mp4" data-film-hd="/assets/video/werbefilm_v2.1_2026-10-18_1080p.mp4" data-film-vtt="/assets/video/werbefilm_v2.1.de.vtt">
-        <a class="film-start" href="/assets/video/werbefilm_v2.1_2026-10-18_720p.mp4" aria-label="Film abspielen, 1:31">
+        <a class="film-start" href="/assets/video/werbefilm_v2.1_2026-10-18_720p.mp4">
           <img src="/assets/video/werbefilm_v2.1_vorschau.webp" alt="" width="1280" height="720" loading="lazy" decoding="async"/>
-          <span class="film-cue" aria-hidden="true"><span class="film-play"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M8 5.5v13l10.5-6.5z"/></svg></span>Film abspielen<span class="film-dur">1:31</span></span>
+          <span class="film-cue"><span class="film-play" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M8 5.5v13l10.5-6.5z"/></svg></span>Film abspielen <span class="film-dur">1:31</span></span>
         </a>
       </div>
       <figcaption class="film-ki">Sprecherstimme und Illustrationen mit KI erstellt. Inhalte von Andreas Grundke geprüft.</figcaption>
@@ -1699,7 +1692,7 @@
         <p class="film-im-bild">Im Bild: grundke-it.de · 0178 258 44 38 · auch per WhatsApp</p>
       </div>
     </details>
-    <div class="cta-btns film-btns">
+    <div class="cta-btns film-btns inline-cta-mobile">
       <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20habe%20deinen%20Film%20gesehen%20und%20habe%20eine%20Frage%20zur%20IT%20in%20meinem%20Betrieb." target="_blank" rel="noopener" class="btn-wa" data-wa="film"><svg width="20" height="20" aria-hidden="true"><use href="#ico-wa"/></svg> WhatsApp</a>
       <a href="tel:+491782584438" class="btn-tel"><svg width="20" height="20" aria-hidden="true"><use href="#ico-phone"/></svg> 0178 258 44 38</a>
       <a href="mailto:info@grundke-it.de?subject=Anfrage%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0AMein%20Anliegen%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F)." class="btn-email"><svg width="20" height="20" aria-hidden="true"><use href="#ico-mail"/></svg> E-Mail schreiben</a>
@@ -1912,7 +1905,7 @@
       </nav>
       <span>© 2026 Grundke IT-Service · Andreas Grundke · Beethovenring 16 · 85630 Grasbrunn</span>
       <span>Zuletzt aktualisiert: 18.10.2026</span>
-      <span class="foot-ci">CI 2026.01 · grundke-it.de · Version 2.1.1 · Stand 18.10.2026</span>
+      <span class="foot-ci">CI 2026.01 · grundke-it.de · Version 2.1.2 · Stand 18.10.2026</span>
     </div>
   </div>
 </footer>
@@ -2081,9 +2074,9 @@
     }
   }
   </script>
-<script src="/assets/js/lenis.min.js?v=2026.10.j" defer></script>
-<script src="/assets/js/main.js?v=2026.10.j" defer></script>
-<script src="/assets/js/hero-chat.js?v=2026.10.j" defer></script>
+<script src="/assets/js/lenis.min.js?v=2026.10.k" defer></script>
+<script src="/assets/js/main.js?v=2026.10.k" defer></script>
+<script src="/assets/js/hero-chat.js?v=2026.10.k" defer></script>
 
 <!-- Sticky Contact Bar — Mobile: Bottom-Leiste · Desktop: Sidebar rechts -->
 <!-- STICKY:START -->

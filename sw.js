@@ -133,11 +133,17 @@
                         (nie im Pre-Cache; dieser Worker reicht .mp4/.vtt und Range-Anfragen
                         durch), „erster Ansprechpartner“ in „So arbeite ich“, Software als Dienst
                         auf /software-nach-mass/, Asset-Version 2026.10.j.
+ *   2.1.2 / 2026-10-18 — Aufraeumen: am Handy unter Film und im Abschluss nur der
+                        WhatsApp-Knopf (Leiste traegt alle drei Wege), Kontaktseite ohne
+                        Leiste, Preiskarten Starter/Premium als Kontur-Knopf, weniger
+                        Ueberzeilen, Link zum Betreuerwechsel im Hero, Name des Film-Knopfs
+                        gleich dem sichtbaren Text, Beispiel-Chat nachts mit passendem Fall
+                        zuerst, eigener WhatsApp-Satz fuer das Menue, Asset-Version 2026.10.k.
  */
 
-const CACHE_NAME    = 'grundke-it-v2.1.1';
-const RUNTIME_CACHE = 'grundke-it-runtime-v40';
-const ASSET_VER     = '2026.10.j';   // muss ASSET_VER im Generator entsprechen
+const CACHE_NAME    = 'grundke-it-v2.1.2';
+const RUNTIME_CACHE = 'grundke-it-runtime-v41';
+const ASSET_VER     = '2026.10.k';   // muss ASSET_VER im Generator entsprechen
 
 /* Pre-Cache: minimaler Kern fuer Offline-First-Boot */
 const PRECACHE_URLS = [

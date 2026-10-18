@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 build_landingpages.py
-Version : 2.12
+Version : 2.13
 Autor   : Andreas Grundke IT-Service (Grundke IT-Service)
 Datum   : 2026-10-18
 Zweck   : Generiert aus einem gemeinsamen Template + Datenlisten die Orts- und
@@ -66,6 +66,10 @@ Aenderungen:
   2026-10-18  Version 2.12 (Release 2.1.1): WhatsApp-Einstieg „film“ (Knopf unter dem Film der Startseite);
               Software nach Maß mit Software als Dienst (SaaS) und Zielgruppe vom Alleinselbststaendigen bis zum KMU
               (answer, intro, Karte „Software als Dienst“, desc, service_type), gekuerzt statt angehaengt.
+  2026-10-18  Version 2.13 (Release 2.1.2, Aufraeumen): ASSET_VER 2026.10.k, SITE_VERSION 2.1.2. WhatsApp-Einstieg
+              „navigation“ fuer Kopf-Knopf und Mobilmenue (vorher „fuss“); Abschluss closing() am Handy nur mit dem
+              WhatsApp-Knopf (Telefon und E-Mail traegt dort die Kontaktleiste); /kontakt/ ohne Kontaktleiste
+              (NO_DOCK, die Seite traegt die drei Wege als Karten).
   2026-10-10  Generator-Huelle render_shell (section, page_head, mini_chat,
               voices_html, prices_html, closing) fuer managed-it-service, it-betreuer-wechseln und
               it-notdienst (Schalter SHELL_SLUGS), Kernsatz/Antwortsatz/Chat/Stimmen aus den freigegebenen Texten,
@@ -143,10 +147,10 @@ NEW_DATE_DISP = "7. Oktober 2026"
 # prueft das gegen origin/main), zusammen mit CACHE_NAME/RUNTIME_CACHE in sw.js. Neue URLs
 # laufen am alten Cache des Service Workers vorbei, ein wiederkehrender Besucher bekommt nie neues
 # HTML mit altem CSS.
-ASSET_VER = "2026.10.j"
+ASSET_VER = "2026.10.k"
 # Sichtbare Website-Version im Fuss (seit 17.10.2026): gleicht dem Suffix von CACHE_NAME in sw.js
 # (check_static prueft das). SITE_DATE_DISP = Stand dieser Version im Fuss, Form TT.MM.JJJJ.
-SITE_VERSION = "2.1.1"
+SITE_VERSION = "2.1.2"
 SITE_DATE = "2026-10-18"
 SITE_DATE_DISP = "18.10.2026"
 # Stand der Seiten, deren sichtbarer Inhalt zuletzt geaendert wurde (dateModified, Sitemap, Abschluss).
@@ -184,9 +188,14 @@ EMPF_DATE_DISP = CONTENT_DATE_DISP
 # erkennbar, ueber welchen Knopf eine Anfrage kam, ohne Tracking-Skript. Auf der Startseite
 # setzt sync_home() das href jedes <a data-wa="schluessel">; Kontaktleiste (STICKY) und Fuss
 # nutzen WA() direkt. Neue Einstiege nur hier eintragen.
+# Quelle -> Schluessel (Stand 18.10.2026, Release 2.1.2): Kopfzeile und Mobilmenue (nav_html) "navigation",
+# Kontaktleiste "kontaktleiste", Film-Knopf der Startseite "film", Abschluss der Startseite und der Seiten ohne
+# eigenen Seitennamen (closing ohne wa) "abschluss", Fuss "fuss". Generator-Seiten und Handseiten mit Namen
+# nennen im Abschluss ihre Seite (WA_SEITE).
 WA_NUMBER = "491782584438"
 WA_TEXT = {
     "hero": "Hallo Andreas, ich komme über deine Startseite.",
+    "navigation": "Hallo Andreas, ich komme über das Menü deiner Website.",
     "schnellcheck": "Hallo Andreas, ich komme über den IT-Schnellcheck auf deiner Website.",
     "preise-starter": "Hallo Andreas, ich komme über deine Preise und interessiere mich für das Paket Starter.",
     "preise-business": "Hallo Andreas, ich komme über deine Preise und interessiere mich für das Paket Business.",
@@ -318,7 +327,7 @@ ICON_SPRITE = ('<svg xmlns="http://www.w3.org/2000/svg" id="icon-sprite" style="
 def nav_html(current=None, home=False):
     """Kompletter Seitenkopf (Desktop-Leiste + Mobilmenue). Kontakt rechts (Stand 18.10.2026): WhatsApp als
     Hauptaktion (.nav-wa), daneben Telefon zurueckgenommen (.nav-tel, unter 1280 px nur das Symbol); im Mobilmenue
-    WhatsApp vor Anrufen. Der WhatsApp-Satz ist der allgemeine aus WA_TEXT["fuss"].
+    WhatsApp vor Anrufen. Der WhatsApp-Satz ist WA_TEXT["navigation"] (seit Release 2.1.2, vorher "fuss").
     current = (bereich, art): bereich aus NAV_ITEMS/NAV_KONTAKT, art "page" fuer die
     Bereichsseite selbst, "true" fuer Seiten darunter (aria-current)."""
     def cur(key):
@@ -351,7 +360,7 @@ def nav_html(current=None, home=False):
   <a href="{wa}" target="_blank" rel="noopener" class="m-wa"><svg width="18" height="18" aria-hidden="true"><use href="#ico-wa"/></svg>WhatsApp</a>
   <a href="tel:+491782584438" class="m-cta">Jetzt anrufen · 0178 258 44 38</a>
 </div>
-</header>""".format(desk=desk, mob=mob, phone=PHONE_SVG, fw_cur=fw_cur, wa=WA(WA_TEXT["fuss"]),
+</header>""".format(desk=desk, mob=mob, phone=PHONE_SVG, fw_cur=fw_cur, wa=WA(WA_TEXT["navigation"]),
                      k_href=k_href, k_lbl=k_lbl, k_cur=cur(k_key))
 
 
@@ -476,7 +485,14 @@ def sync_shared(places, services):
                 html_new = html_new.replace('<header class="site-header">',
                                             sprite + nl + '<header class="site-header">', 1)
             html_new = preload_fonts(html_new, nl)
-        if 'class="sticky-contact"' in html_new:
+        if rel in NO_DOCK:
+            # Stand 18.10.2026, Release 2.1.2: hier keine Kontaktleiste (Leiste samt Marken und Platzhalter unten weg)
+            html_new = NO_DOCK_RE.sub("", html_new)
+            html_new = re.sub(r'<body class="has-sticky-call">', "<body>", html_new)
+            html_new = re.sub(r'(<body class="[^"]*?)\s*\bhas-sticky-call\b', r"\1", html_new)
+            if 'class="sticky-contact"' in html_new:
+                raise SystemExit("Kontaktleiste: auf " + rel + " nicht entfernt (Marken fehlen?)")
+        elif 'class="sticky-contact"' in html_new:
             if STICKY_MARKED_RE.search(html_new):
                 if len(STICKY_MARKED_RE.findall(html_new)) != 1:
                     raise SystemExit("Kontaktleiste: nicht genau 1 Markenpfad-Treffer in " + rel)
@@ -488,8 +504,9 @@ def sync_shared(places, services):
         if rel in HAND_CLOSING:
             name, mod = HAND_CLOSING[rel]
             wa = WA(WA_SEITE.format(nav=name)) if name else None
-            # ohne Kontaktleiste (Rechtsseiten, 404) bleiben die Knoepfe des Abschlusses auch am Handy sichtbar
-            sticky = 'class="sticky-contact"' in html_new
+            # ohne Kontaktleiste (Rechtsseiten, 404) bleiben die Knoepfe des Abschlusses auch am Handy sichtbar;
+            # die Kontaktseite (NO_DOCK) traegt die drei Wege als Karten, dort am Handy wie mit Leiste nur WhatsApp
+            sticky = 'class="sticky-contact"' in html_new or rel in NO_DOCK
             block = closing(mod, wa, sticky=sticky).replace("\n", nl)
             if CLOSING_RE.search(html_new):
                 html_new = CLOSING_RE.sub(lambda _m: block, html_new, count=1)
@@ -508,6 +525,10 @@ STICKY_START = "<!-- STICKY:START -->"
 STICKY_END = "<!-- STICKY:END -->"
 STICKY_RE = re.compile(r'<div class="sticky-contact"[^>]*>.*?</div>', re.S)
 STICKY_MARKED_RE = re.compile(re.escape(STICKY_START) + r".*?" + re.escape(STICKY_END), re.S)
+# Handseiten ohne Kontaktleiste (Stand 18.10.2026, Release 2.1.2): die Kontaktseite zeigt WhatsApp, Telefon und E-Mail
+# selbst als Karten; die Leiste doppelte sie am Handy. sync_shared nimmt dort die Leiste samt Marken heraus.
+NO_DOCK = ("kontakt/index.html",)
+NO_DOCK_RE = re.compile(r"\r?\n?" + re.escape(STICKY_START) + r".*?" + re.escape(STICKY_END), re.S)
 MAILTO_PREFILLED = "mailto:info@grundke-it.de?subject=Anfrage%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0AMein%20Anliegen%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F)."
 _STICKY_BODY = """<div class="sticky-contact" id="stickyContact" role="navigation" aria-label="Kontakt-Optionen">
   <a href="__WA_KONTAKTLEISTE__" target="_blank" rel="noopener" class="sc-btn sc-wa" aria-label="WhatsApp">
@@ -1010,13 +1031,15 @@ def prices_html(s):
 
 
 def closing(mod_disp, wa=None, next_link=None, sticky=True):
-    """Abschluss wie auf der Startseite (Knoepfe ab 768 px, am Handy die Kontaktleiste; QR zur
+    """Abschluss wie auf der Startseite (alle Knoepfe ab 768 px, am Handy WhatsApp plus Kontaktleiste; QR zur
     Kontaktseite ab 1025 px) mit kompakter Autorzeile und dem Datum der Seite. wa: WhatsApp-Link
     (Satz der Seite), next_link: (href, Text) als Weg zur passenden naechsten Seite.
     Seit 10.10.2026 (Handseiten): mod_disp None = Autorzeile ohne Datum; sticky=False fuer Seiten ohne Kontaktleiste,
     dort bleiben die Knoepfe auch am Handy sichtbar.
     Seit 18.10.2026: Reihenfolge WhatsApp (Hauptaktion) - Telefon - E-Mail; „Ein-Personen-Gewerbe“ in .nowrap, damit es
-    am Handy nicht am Bindestrich bricht (Text unveraendert)."""
+    am Handy nicht am Bindestrich bricht (Text unveraendert).
+    Seit Release 2.1.2: mit Kontaktleiste (sticky=True, Klasse inline-cta-mobile) unter 768 px nur der WhatsApp-Knopf;
+    Telefon und E-Mail blendet style.css dort aus, weil die Leiste darunter alle drei Wege traegt."""
     nxt = ""
     if next_link:
         nxt = ('\n    <p class="cta-next"><a href="{h}">{t}<svg width="16" height="16" aria-hidden="true">'

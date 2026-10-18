@@ -62,15 +62,18 @@ geaendert hat, nicht wegen eines neuen Footer-Links.
   Unterzeile, Schutzsatz, Firmenkunden-Zeile, zwei Belegen und Knöpfen; rechts bzw. darunter das Chat-Handy
   (`[data-hero-chat]`, `assets/js/hero-chat.js`). Die erste Kundennachricht steht im HTML, das Skript läuft von dort weiter;
   sichtbare Kennzeichnung „Beispiel-Chat, …“ und Pause-Knopf am Chat, bei reduzierter Bewegung ein fertiger Chat, abends
-  20-40 Min. bis zur Antwort. Direkt unter dem Hero der Link zu /it-betreuer-wechseln/. Abschnitt IT-Betreuung wieder
+  20-40 Min. bis zur Antwort. Im Hero unter den Knöpfen (seit 2.1.2) der Link zu /it-betreuer-wechseln/. Abschnitt IT-Betreuung wieder
   „Typische Anrufe“ (`dl.itb-list`). „So arbeite ich“ nennt dich als ersten Ansprechpartner; `/software-nach-mass/` führt
   Software als Dienst (SaaS) für Ein-Personen-Betriebe bis KMU.
 - **Kontaktwege (seit 2.1.1):** überall WhatsApp, Telefon, E-Mail in dieser Reihenfolge. WhatsApp ist die Hauptaktion
   (grün `--wa`), Telefon getönt mit Kontur (`--tel-*`), E-Mail neutral; Kopfzeile mit `.nav-wa` und `.nav-tel`
   (unter 1280 px nur das Telefon-Symbol). Den Kasten „Direkt erreichbar“ nach dem Hero gibt es nicht mehr.
   `check_static.py` AKK prüft die Reihenfolge, `check_design.py` AK-R1-03 Farben, Höhen und die Kopfzeile.
-- **Versionen jetzt (Release 2.1.1):** `sw.js` `CACHE_NAME` `grundke-it-v2.1.1`, `RUNTIME_CACHE` `runtime-v40`,
-  `ASSET_VER` 2026.10.j, `SITE_VERSION` 2.1.1 (Fuss "Version x.y.z · Stand TT.MM.JJJJ" aus dem Generator).
+- **Release 2.1.2 (Aufräumen):** am Handy über der Leiste nur WhatsApp (Film, Abschluss), `/kontakt/` ohne Leiste
+  (`NO_DOCK`), Kontur-Knöpfe Starter/Premium, WhatsApp-Satz `navigation` für das Menü; neue Prüfungen `212-F*` in
+  `check_design.py`.
+- **Versionen jetzt (Release 2.1.2):** `sw.js` `CACHE_NAME` `grundke-it-v2.1.2`, `RUNTIME_CACHE` `runtime-v41`,
+  `ASSET_VER` 2026.10.k, `SITE_VERSION` 2.1.2 (Fuss "Version x.y.z · Stand TT.MM.JJJJ" aus dem Generator).
   `SITE_VERSION` bei jedem Release mit dem `CACHE_NAME`-Suffix gleichziehen, `check_static.py` prueft das.
   `check_static.py --ci` laeuft im Deploy und stoppt ihn bei Fehlern.
 - **Kontaktleiste (Dock):** kommt aus einer Quelle im Generator (`STICKY`-Marken), nur bis 1279 px sichtbar,

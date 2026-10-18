@@ -10,7 +10,9 @@ Abschnitt IT-Betreuung wieder mit den typischen Anrufen (dl.itb-list).
 AKK (Stand 18.10.2026): Kontaktwege ueberall in der Reihenfolge WhatsApp - Telefon - E-Mail; der Telefon-Knopf neben
 WhatsApp ist kein Hauptknopf (.btn-p); kein Kasten .hc-direkt mehr nach dem Hero.
 AKF (Stand 18.10.2026, Release 2.1.1): Film auf der Startseite als Fassade (kein <video>/<source>/<track> im
-HTML, kein autoplay), KI-Hinweis am Player, Untertitelspur in main.js, VideoObject, Filmdateien nicht im Pre-Cache."""
+HTML, kein autoplay), KI-Hinweis am Player, Untertitelspur in main.js, VideoObject, Filmdateien nicht im Pre-Cache.
+Stand 18.10.2026, Release 2.1.2: AKH erwartet den Link zum Betreuerwechsel im Hero direkt unter der Knopfreihe
+(p.hc-weiter nach .hc-ctas), AKF den Namen der Fassade aus dem sichtbaren Text (kein aria-label, WCAG 2.5.3)."""
 import gzip, hashlib, html, json, re, subprocess, sys
 from html.parser import HTMLParser
 from pathlib import Path
@@ -131,7 +133,7 @@ HERO_PROOF = ["5,0 bei {n} Google-Bewertungen", "Über 20 Jahre IT-Erfahrung"]  
 KENNZEICHNUNG_HERO = "Beispiel-Chat, nachgestellt nach typischen Einsätzen."
 ITB_H2 = "Typische Anrufe. Und was ich dann mache."   # H2 von #it-betreuung (Text mit <br>)
 ITB_ANRUFE = 4                                    # Eintraege in dl.itb-list
-WECHSEL_LINK = ("/it-betreuer-wechseln/", "IT-Betreuer nicht mehr da? So übernehme ich.")   # direkt nach dem Hero
+WECHSEL_LINK = ("/it-betreuer-wechseln/", "IT-Betreuer nicht mehr da? So übernehme ich.")   # im Hero unter den Knoepfen
 # Kein Vergleich, kein Gegenueber im Hero. Gross/klein egal, Teilstring in .hero.
 HERO_VERBOTEN = ["Ohne feste Betreuung", "Ticket", "#20871", "Ansage", "Systemhaus", "Dienstleister", "Mitbewerber",
                  "Büro ab Montag", "#4711"]
@@ -1028,14 +1030,17 @@ def akh():
         errs.append("index.html: Firmenname mit Rechtsform im Hero")
     for el in q(lambda n: n.tag in ("img", "svg", "use", "div", "span") and "logo" in " ".join(str(v) for v in n.attrs.values()).lower(), hero):
         errs.append(f"index.html: Logo im Hero (<{el.tag}>), AK-R2-04")
-    # Link /it-betreuer-wechseln/ direkt nach der Hero-Section (seit 18.10.2026 ohne den Kasten .hc-direkt dazwischen;
-    # dass es ihn nirgends mehr gibt, prueft AKK). Sichtbarkeit: check_design.py R2-LINK.
-    sib = [k for k in hero.parent.kids if isinstance(k, _N)]
-    i = next((k for k, x in enumerate(sib) if x is hero), -1)
+    # Link /it-betreuer-wechseln/ (Stand 18.10.2026, Release 2.1.2): im Hero direkt unter der Knopfreihe (.hc-ctas, am
+    # Handy ausgeblendet), vorher als einzelne Zeile nach dem Hero. Sichtbarkeit: check_design.py R2-LINK.
+    ctas = next((n for n in q(lambda n: n.has("hc-ctas"), hero)), None)
+    sib = [k for k in ctas.parent.kids if isinstance(k, _N)] if ctas is not None else []
+    i = next((k for k, x in enumerate(sib) if x is ctas), -1)
     cand = sib[i + 1] if 0 <= i < len(sib) - 1 else None
     links = q(lambda n: n.tag == "a" and n.attrs.get("href") == WECHSEL_LINK[0], cand) if cand is not None else []
     if cand is None or not cand.has("hc-weiter") or [a.text() for a in links] != [WECHSEL_LINK[1]]:
-        errs.append(f"index.html: Link {WECHSEL_LINK[0]} '{WECHSEL_LINK[1]}' steht nicht direkt nach dem Hero (.hc-weiter)")
+        errs.append(f"index.html: Link {WECHSEL_LINK[0]} '{WECHSEL_LINK[1]}' steht nicht im Hero direkt unter .hc-ctas (p.hc-weiter)")
+    if any(n.has("hc-weiter") and not n.up(lambda x: x is hero) for n in nodes):
+        errs.append("index.html: .hc-weiter ausserhalb des Heros (seit Release 2.1.2 nur im Hero)")
 
     # Abschnitt IT-Betreuung: typische Anrufe, kein zweites Chat-Handy
     itb = next((n for n in nodes if n.attrs.get("id") == "it-betreuung"), None)
@@ -1121,7 +1126,8 @@ def akk():
 
 # ----------------------------------------------------------------------------------------------------------------------
 # AKF (Stand 18.10.2026, Release 2.1.1): Film auf der Startseite. Statisch geprueft: Abschnitt #film mit Titel und
-# Zusatz, Fassade (Link mit Posterbild, Name „Film abspielen, 1:31“, ohne JS auf die 720p-Datei), kein <video>, <source>,
+# Zusatz, Fassade (Link mit Posterbild, Name = sichtbarer Text „Film abspielen 1:31“ ohne aria-label, seit 2.1.2;
+# ohne JS auf die 720p-Datei), kein <video>, <source>,
 # <track> oder <iframe> im HTML und nirgends autoplay, KI-Hinweis in derselben <figure> direkt nach dem Player, die
 # Dateien hinter den data-Attributen existieren, main.js setzt die Untertitelspur (subtitles, de, default), VideoObject
 # mit Pflichtfeldern und absoluten non-www-URLs auf vorhandene Dateien, sw.js laesst Filmdateien aus dem Pre-Cache und
@@ -1131,7 +1137,7 @@ def akk():
 FILM_TITLE = "Lieber schauen statt lesen?"
 FILM_META = "1:31 · mit Untertiteln"
 FILM_KI = "Sprecherstimme und Illustrationen mit KI erstellt. Inhalte von Andreas Grundke geprüft."
-FILM_LABEL = "Film abspielen, 1:31"
+FILM_LABEL = "Film abspielen 1:31"   # Stand 18.10.2026, Release 2.1.2: sichtbarer Text = Name, kein aria-label
 FILM_LINK = ("#film", "Film ansehen (1:31)")
 FILM_FILES = {"film-sd": "/assets/video/werbefilm_v2.1_2026-10-18_720p.mp4",
               "film-hd": "/assets/video/werbefilm_v2.1_2026-10-18_1080p.mp4",
@@ -1175,8 +1181,12 @@ def akf():
     else:
         if a.attrs.get("href") != FILM_FILES["film-sd"]:
             errs.append(f"#film: Fassade ohne JS verlinkt '{a.attrs.get('href')}' statt der 720p-Datei")
-        if a.attrs.get("aria-label") != FILM_LABEL:
-            errs.append(f"#film: Name der Fassade '{a.attrs.get('aria-label')}' statt '{FILM_LABEL}'")
+        if "aria-label" in a.attrs:
+            errs.append(f"#film: Fassade mit aria-label '{a.attrs.get('aria-label')}' (Name soll der sichtbare Text sein)")
+        if a.text() != FILM_LABEL:
+            errs.append(f"#film: sichtbarer Text der Fassade '{a.text()}' statt '{FILM_LABEL}'")
+        if any(n.attrs.get("aria-hidden") == "true" and "Film abspielen" in n.text() for n in a.walk()):
+            errs.append("#film: sichtbarer Text der Fassade steht in aria-hidden")
         img = next((n for n in a.walk() if n.tag == "img"), None)
         if img is None or img.attrs.get("src") != FILM_POSTER or img.attrs.get("loading") != "lazy" \
                 or not img.attrs.get("width") or not img.attrs.get("height"):
