@@ -605,7 +605,7 @@ LEGAL_BASE_COMMIT = "865b00a"
 # Kontraste, Kontaktleiste, Stand-Datum; Sicherung ../_intern/messungen/vorher/legal_hash_vor_2026-10-18.json).
 # Ihre Basis ist der Commit mit dem freigegebenen Text, legal_hash.json traegt fuer sie den rohen Hash dieses Stands.
 # Alle anderen Rechtstexte bleiben bei 865b00a.
-LEGAL_BASE_COMMITS = {"barrierefreiheit/index.html": "6ed3a5b"}
+LEGAL_BASE_COMMITS = {"barrierefreiheit/index.html": "ba40be6"}
 # Nur diese Zeichen zaehlen nicht zum Rechtstext: weiches Trennzeichen (U+00AD, H1 der Huelle), Emoji-Variantenwahl
 # (U+FE0F) und Bildzeichen U+1F300-U+1FAFF (AGB-Symbol, jetzt SVG). ©, ®, ™, Pfeile, § und Striche bleiben Text.
 LEGAL_DROP_RE = re.compile("[\u00ad\ufe0f\U0001F300-\U0001FAFF]")
