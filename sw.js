@@ -143,8 +143,8 @@
                         ausserhalb des Pre-Cache.
  */
 
-const CACHE_NAME    = 'grundke-it-v2.1.2';
-const RUNTIME_CACHE = 'grundke-it-runtime-v41';
+const CACHE_NAME    = 'grundke-it-v2.1.3';
+const RUNTIME_CACHE = 'grundke-it-runtime-v42';
 const ASSET_VER     = '2026.10.k';   // muss ASSET_VER im Generator entsprechen
 
 /* Pre-Cache: minimaler Kern fuer Offline-First-Boot */

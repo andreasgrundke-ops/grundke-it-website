@@ -272,6 +272,20 @@
       color: var(--warning);
       font-size: .76rem; font-weight: 600;
     }
+    /* Fernwartung selbst entfernen: bewusst ruhiger als der Download-Knopf */
+    .fw-remove {
+      margin: 3rem 0 0;
+      padding: clamp(1.25rem,4vw,1.75rem);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+    }
+    .fw-remove h2 { margin-top: 0; }
+    .fw-remove > p { margin: 0 0 1.1rem; color: var(--text2); line-height: var(--lh-body); }
+    .fw-remove-btn { white-space: normal; }
+    .fw-remove-btn svg { flex-shrink: 0; }
+    .fw-remove-steps { margin: 1.25rem 0 .75rem; padding-left: 1.25rem; color: var(--text2); line-height: var(--lh-body); }
+    .fw-remove-steps li + li { margin-top: .4rem; }
+    .fw-remove-steps strong { color: var(--text); }
     .fw-action-text { margin: 0 0 1.1rem; font-size: 1.0667rem; color: var(--text2); line-height: var(--lh-body); }
     .fw-action-text strong { color: var(--text); }
 
@@ -481,6 +495,23 @@
 
         </ol>
 
+        <!-- Selbst entfernen (seit 19.10.2026): Doppelklick-Datei aus git-platform/scripts,
+             holt sich Adminrechte, fragt J/N und ruft cleanup-agent.ps1 auf. -->
+        <div class="fw-remove" id="fernwartung-entfernen">
+          <h2>Fernwartung wieder entfernen</h2>
+          <p>Du brauchst den Zugang nicht mehr? Mit dieser Datei entfernst du die Fernwartung vollständig von deinem Rechner: Programm, Dienst und RustDesk.</p>
+          <a href="https://msp.grundke-it.de/dist/grundke-fernwartung-entfernen.cmd" class="btn-g fw-remove-btn" download>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+            Fernwartung deinstallieren
+          </a>
+          <ol class="fw-remove-steps">
+            <li>Datei herunterladen und per Doppelklick öffnen. Meldet Windows „Der Computer wurde durch Windows geschützt", auf <strong>„Weitere Informationen"</strong> und <strong>„Trotzdem ausführen"</strong> klicken.</li>
+            <li>Die Windows-Rückfrage mit <strong>„Ja"</strong> bestätigen.</li>
+            <li>Im schwarzen Fenster <kbd>J</kbd> drücken. Nach etwa einer Minute steht dort „Fertig".</li>
+          </ol>
+          <p class="fw-hint-fine">Lieber zusammen? Ruf kurz an, dann entferne ich den Zugang aus der Ferne.</p>
+        </div>
+
       </section>
 
       <!-- Linux: eigenes Programm fuer 64-Bit-Systeme mit apt (Mint, Ubuntu, Debian),
@@ -614,7 +645,7 @@
       <ul class="fw-trust">
         <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Verschlüsselte Verbindung</li>
         <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>Du siehst die ganze Sitzung mit</li>
-        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>Zugang wird auf Zuruf wieder entfernt</li>
+        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><a href="#fernwartung-entfernen">Zugang lässt sich selbst entfernen</a></li>
       </ul>
     </aside>
     </div>
@@ -718,7 +749,7 @@
         <a href="/barrierefreiheit/">Barrierefreiheit</a>
       </nav>
       <span>© 2026 Grundke IT-Service · Andreas Grundke · Beethovenring 16 · 85630 Grasbrunn</span>
-      <span class="foot-ci">CI 2026.01 · grundke-it.de · Version 2.1.2 · Stand 18.10.2026</span>
+      <span class="foot-ci">CI 2026.01 · grundke-it.de · Version 2.1.3 · Stand 19.10.2026</span>
     </div>
   </div>
 </footer>

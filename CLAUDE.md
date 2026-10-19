@@ -72,8 +72,9 @@ geaendert hat, nicht wegen eines neuen Footer-Links.
 - **Release 2.1.2 (Aufräumen):** am Handy über der Leiste nur WhatsApp (Film, Abschluss), `/kontakt/` ohne Leiste
   (`NO_DOCK`), Kontur-Knöpfe Starter/Premium, WhatsApp-Satz `navigation` für das Menü; neue Prüfungen `212-F*` in
   `check_design.py`. Film seit 2.1.2 in Fassung v2.2.
-- **Versionen jetzt (Release 2.1.2):** `sw.js` `CACHE_NAME` `grundke-it-v2.1.2`, `RUNTIME_CACHE` `runtime-v41`,
-  `ASSET_VER` 2026.10.k, `SITE_VERSION` 2.1.2 (Fuss "Version x.y.z · Stand TT.MM.JJJJ" aus dem Generator).
+- **Release 2.1.3 (19.10.2026):** /fernwartung/ mit Abschnitt „Fernwartung wieder entfernen“ (Download `msp.grundke-it.de/dist/grundke-fernwartung-entfernen.cmd`, Quelle git-platform/scripts).
+- **Versionen jetzt (Release 2.1.3):** `sw.js` `CACHE_NAME` `grundke-it-v2.1.3`, `RUNTIME_CACHE` `runtime-v42`,
+  `ASSET_VER` 2026.10.k, `SITE_VERSION` 2.1.3 (Fuss "Version x.y.z · Stand TT.MM.JJJJ" aus dem Generator).
   `SITE_VERSION` bei jedem Release mit dem `CACHE_NAME`-Suffix gleichziehen, `check_static.py` prueft das.
   `check_static.py --ci` laeuft im Deploy und stoppt ihn bei Fehlern.
 - **Kontaktleiste (Dock):** kommt aus einer Quelle im Generator (`STICKY`-Marken), nur bis 1279 px sichtbar,
