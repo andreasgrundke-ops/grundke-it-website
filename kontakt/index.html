@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
   <title>Kontakt · IT-Service München Ost – Grundke IT-Service</title>
   <meta name="description" content="Kontakt aufnehmen mit Grundke IT-Service. Anrufen, WhatsApp, E-Mail – die Antwort kommt von mir."/>
   <meta name="author" content="Andreas Grundke"/>
@@ -52,15 +52,21 @@
     .k-grid { display:grid; grid-template-columns:minmax(0,1fr); gap:1.2rem; align-items:start; margin-top:.6rem; }
     @media (min-width:768px) { .k-grid { grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:clamp(1.6rem,3vw,2.6rem); } }
     .k-ways { display:flex; flex-direction:column; gap:.9rem; }
-    .k-way { display:flex; align-items:center; gap:1.1rem; text-decoration:none; color:inherit; transition:border-color .2s, transform .2s, box-shadow .2s; }
-    .k-way:hover { border-color:rgba(255,255,255,.22); transform:translateY(-2px); box-shadow:0 10px 26px rgba(0,0,0,.28); }
+    .k-way { display:flex; align-items:center; gap:1.1rem; text-decoration:none; color:inherit; transition:border-color .2s, background-color .2s, transform 120ms cubic-bezier(0.23,1,0.32,1), box-shadow .2s; }
+    .k-way:hover { border-color:rgba(255,255,255,.22); }
+    /* 2.2.0: Anheben und Schatten nur mit Maus (am Handy bleibt sonst der Hover haengen), Druck gibt am Handy nach */
+    @media (hover: hover) and (pointer: fine) { .k-way:hover { transform:translateY(-2px); box-shadow:0 10px 26px rgba(0,0,0,.28); } }
+    .k-way:active { transform:scale(.97); }
     .k-way:focus-visible { outline:2px solid var(--cyan); outline-offset:3px; }
     /* Reihenfolge WhatsApp - Telefon - E-Mail (Stand 18.10.2026): WhatsApp ist die Hauptaktion (volle gruene Flaeche
        wie Dock und Knoepfe), Telefon zurueckgenommen (getoent mit Kontur), E-Mail neutral */
-    .k-way--wa { border-color:var(--wa); }
+    /* A8 (2.2.0): WhatsApp-Karte voll gruen (--wa), Schrift weiss (5,3:1, Hover 6,5:1), Symbolflaeche halbtransparent weiss */
+    .k-way.k-way--wa { background:var(--wa); border-color:var(--wa); color:#fff; }
+    .k-way.k-way--wa:hover { background:var(--wa-hover); border-color:var(--wa-hover); }
+    .k-way--wa .k-label, .k-way--wa .k-val, .k-way--wa .k-sub { color:#fff; }
     .k-ico { width:48px; height:48px; flex-shrink:0; border-radius:12px; display:grid; place-items:center; }
     .k-ico svg { width:22px; height:22px; }
-    .k-way--wa .k-ico { background:var(--wa); color:#fff; }
+    .k-way--wa .k-ico { background:rgba(255,255,255,.18); color:#fff; }
     .k-way--tel .k-ico { background:var(--tel-bg); border:1px solid var(--tel-line); color:var(--tel-text); }
     .k-way--mail .k-ico { background:var(--bg3); color:var(--text); border:1px solid var(--border); }
     .k-label { display:block; font-size:.87rem; color:var(--text2); line-height:1.4; }
@@ -299,7 +305,7 @@
         <p class="foot-desc">Deine IT-Abteilung. Nur extern.<br>IT, KI, Software und Websites für Betriebe im Münchner Osten.<br>Angebot für Unternehmen, alle Preise zzgl. MwSt.</p>
         <address class="foot-contact" style="font-style:normal;">
           <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20komme%20%C3%BCber%20deine%20Website." target="_blank" rel="noopener">WhatsApp schreiben</a>
-          <a href="tel:+491782584438"><svg class="foot-ico" width="14" height="14" aria-hidden="true"><use href="#ico-phone"/></svg>0178 258 44 38</a>
+          <a href="tel:+491782584438">0178 258 44 38</a>
           <a href="mailto:info@grundke-it.de?subject=Anfrage%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0AMein%20Anliegen%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F).">info@grundke-it.de</a>
           <a href="https://grundke-it.de">www.grundke-it.de</a>
         </address>

@@ -440,7 +440,8 @@ CONTACT_JS = """() => {
   const kw = document.querySelector('.k-way--wa .k-ico'), kt = document.querySelector('.k-way--tel .k-ico');
   return { sw: document.documentElement.scrollWidth, vw: innerWidth, direkt: document.querySelectorAll('.hc-direkt').length,
            nav: navr, m: { wa: mwa ? st(mwa) : null, tel: mtel ? st(mtel) : null }, groups,
-           k: kw ? { wa: st(kw), tel: kt ? st(kt) : null } : null };
+           k: kw ? { wa: st(kw), tel: kt ? st(kt) : null, card: st(document.querySelector('.k-way--wa')),
+                     txt: [...document.querySelectorAll('.k-way--wa .k-label,.k-way--wa .k-val,.k-way--wa .k-sub')].map(e => getComputedStyle(e).color) } : null };
 }"""
 GREEN = (26, 122, 94, 1.0)
 WA_TEXT = (38, 177, 136, 1.0)
@@ -530,8 +531,14 @@ def ak_r1_03_desktop_box():
                                      "(soll getoent mit Kontur sein)")
                 k = r["k"]
                 if k:
-                    if rgba(k["wa"]["bg"]) != GREEN:
-                        m.append(f"Kontaktseite: WhatsApp-Symbolflaeche {k['wa']['bg']} statt #1a7a5e")
+                    # 2.2.0 A8: WhatsApp-Karte deckend #1a7a5e mit weisser Schrift, Symbolflaeche weiss mit Alpha .18
+                    if rgba(k["card"]["bg"]) != GREEN:
+                        m.append(f"Kontaktseite: WhatsApp-Karte {k['card']['bg']} statt deckend #1a7a5e")
+                    if any(c != "rgb(255, 255, 255)" for c in k["txt"]):
+                        m.append(f"Kontaktseite: WhatsApp-Kartentext {k['txt']} statt weiss")
+                    ik = rgba(k["wa"]["bg"])
+                    if not ik or abs(ik[3] - 0.18) > 0.01 or ik[:3] != (255.0, 255.0, 255.0):
+                        m.append(f"Kontaktseite: WhatsApp-Symbolflaeche {k['wa']['bg']} statt rgba(255, 255, 255, 0.18)")
                     if k["tel"] and not _tinted_tel(k["tel"]):
                         m.append(f"Kontaktseite: Telefon-Symbolflaeche {k['tel']['bg']} (soll getoent mit Kontur sein)")
                 mo = r["m"]

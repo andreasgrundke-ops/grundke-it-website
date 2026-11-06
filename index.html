@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
 
   <!-- Performance: kritische Assets vorladen (Core Web Vitals: LCP/FCP) -->
   <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/Manrope-latin.woff2"/>
@@ -574,10 +574,10 @@
     padding:.75rem 1.3rem; border-radius:8px; border:1px solid var(--border);
     background:transparent; color:var(--text);
     font-family:var(--fb); font-weight:700; font-size:.85rem;
-    cursor:pointer; transition: background .15s, border-color .15s, color .15s, transform .15s, box-shadow .15s, opacity .15s;
+    cursor:pointer; transition: background .15s, border-color .15s, color .15s, transform 120ms cubic-bezier(0.23,1,0.32,1), box-shadow .15s, opacity .15s;
   }
   .sc-preview-btn svg { width:16px; height:16px; }
-  .sc-preview-btn:hover { border-color:var(--text2); background:var(--bg4); transform:translateY(-1px); }
+  .sc-preview-btn:hover { border-color:var(--text2); background:var(--bg4); }
 
   .sc-promise {
     display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));
@@ -600,9 +600,9 @@
     background:var(--tel-bg); color:var(--tel-text); border:1px solid var(--tel-line);
     font-family:var(--fb); font-weight:800; font-size:.95rem;
     text-decoration:none; cursor:pointer;
-    transition:background .2s,transform .15s;
+    transition:background .2s,transform 120ms cubic-bezier(0.23,1,0.32,1);
   }
-  .sc-cta:hover { background:var(--tel-bg-hover); transform:translateY(-2px); }
+  .sc-cta:hover { background:var(--tel-bg-hover); }
   .sc-cta svg { width:18px; height:18px; }
   .sc-hint { font-size:.78rem; color:var(--text3); line-height:1.6; max-width:380px; }
   .sc-hint a { color:var(--cyan); text-decoration:underline; text-underline-offset:.2em; }
@@ -619,13 +619,13 @@
   .modal.open { display:flex; }
   .modal-backdrop {
     position:absolute; inset:0;
-    background:rgba(7,9,14,.78); backdrop-filter:blur(4px);
+    background:rgba(7,9,14,.86);   /* 2.2.0 A7: dunkler statt Unschaerfe */
     animation:modalFadeIn .2s ease-out;
   }
   @keyframes modalFadeIn { from { opacity:0; } to { opacity:1; } }
   @keyframes modalSlideIn { from { opacity:0; transform:translateY(16px) scale(.97); } to { opacity:1; transform:translateY(0) scale(1); } }
   .modal-dialog {
-    position:relative; max-width:560px; width:100%; max-height:calc(100vh - 2rem);
+    position:relative; max-width:560px; width:100%; max-height:calc(100vh - 2rem); max-height:calc(100dvh - 2rem);
     background:var(--bg2); border:1px solid var(--border); border-radius:16px;
     box-shadow:0 24px 80px rgba(0,0,0,.6);
     display:flex; flex-direction:column; overflow:hidden;
@@ -770,7 +770,7 @@
   /* Mobile-Anpassung Modal */
   @media (max-width:600px) {
     .modal { padding:.5rem; }
-    .modal-dialog { max-height:calc(100vh - 1rem); border-radius:12px; }
+    .modal-dialog { max-height:calc(100vh - 1rem); max-height:calc(100dvh - 1rem); border-radius:12px; }
     .modal-header { padding:1.1rem 1.2rem .8rem; }
     .modal-body { padding:1.1rem 1.2rem 1.3rem; }
     .modal-title { font-size:1rem; }
@@ -816,9 +816,9 @@
     background:var(--blue-vi); color:#fff; border:none;
     font-family:var(--fb); font-weight:700; font-size:.9rem;
     text-decoration:none; cursor:pointer;
-    transition:background .2s,transform .15s,box-shadow .2s;
+    transition:background .2s,transform 120ms cubic-bezier(0.23,1,0.32,1),box-shadow .2s;
   }
-  .praxis-cta:hover { background:#2222ff; transform:translateY(-2px); box-shadow:0 10px 28px rgba(0,0,254,.4); }
+  .praxis-cta:hover { background:#2222ff; }
   .praxis-cta svg { width:16px; height:16px; }
   @media (max-width:700px) {
     .praxis-card { grid-template-columns:1fr; gap:1.2rem; padding:1.6rem 1.4rem; }
@@ -865,7 +865,7 @@
     box-shadow:0 4px 16px rgba(0,0,0,.35);
   }
   .scroll-top.visible { opacity:1; pointer-events:auto; transform:translateY(0); }
-  .scroll-top:hover { border-color:rgba(255,255,255,.35); transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,.4); }
+  .scroll-top:hover { border-color:rgba(255,255,255,.35); }   /* 2.2.0 A7: nur Farbe, kein Anheben */
   @media (max-width:1279px) {
     .scroll-top { bottom:calc(80px + env(safe-area-inset-bottom)); right:1rem; }
   }
@@ -1040,7 +1040,7 @@
   .pkg-grid { display:grid; grid-template-columns:minmax(0,1fr); gap:1.6rem 1.2rem; margin-top:1.8rem; }
   @media (min-width:900px) { .pkg-grid { grid-template-columns:minmax(0,1fr) minmax(0,1.15fr) minmax(0,1fr); align-items:start; } }
   .pkg-grid .price-card { display:flex; flex-direction:column; padding:1.35rem 1.3rem 1.3rem; }
-  .pkg-head { display:flex; align-items:flex-end; justify-content:space-between; gap:1rem; }
+  .pkg-head { display:flex; align-items:baseline; justify-content:space-between; gap:1rem; }
   .pkg-head .price-name { margin:0; }
   .pkg-price { text-align:right; }
   .pkg-price .price-per { margin:.25rem 0 0; }
@@ -1087,7 +1087,7 @@
   .film-play { display:grid; place-items:center; width:44px; height:44px; border-radius:var(--r-s); background:#0c4da2; color:#fff; }
   .film-play svg { fill:currentColor; margin-left:3px; }
   .film-dur { padding-left:.7rem; border-left:1px solid #d0daea; color:#555; font-weight:600; font-variant-numeric:tabular-nums; }
-  .film-start:hover .film-cue, .film-start:focus-visible .film-cue { transform:translateY(-2px); }
+  .film-start:focus-visible .film-cue { transform:translateY(-2px); }
   .film-ki { margin:.7rem 0 0; font-size:1.0667rem; line-height:1.5; color:var(--text2); }
   .film-text { margin-top:1rem; max-width:72ch; }
   .film-text-in { padding:.2rem 0 .4rem; }
@@ -1111,7 +1111,6 @@
   .k3-card h3 a:hover { color:var(--cyan); }
   .k3-card h3 a:focus-visible { outline:2px solid var(--cyan); outline-offset:3px; border-radius:4px; }
   .k3-arrow { width:16px; height:16px; color:currentColor; transition:transform .2s; }
-  .k3-card h3 a:hover .k3-arrow { transform:translateX(3px); }
   .k3-card .card-more { margin-top:.8rem; font-size:1.0667rem; }
   .k3-school { margin:1.4rem 0 0; max-width:68ch; font-size:1.0667rem; line-height:1.7; color:var(--text2); }
   .k3-school a { color:var(--cyan); }
@@ -1125,6 +1124,16 @@
   .faq-more p { font-size:1.0667rem; }
 
   @media (max-width:899px) { .scroll-top { display:none; } }
+
+  /* 2.2.0 Paket A: Hover mit Bewegung oder Schatten nur mit Maus; Druck-Feedback auf den Knoepfen der Startseite */
+  @media (hover: hover) and (pointer: fine) {
+    .sc-preview-btn:hover { transform:translateY(-1px); }
+    .sc-cta:hover { transform:translateY(-2px); }
+    .praxis-cta:hover { transform:translateY(-2px); box-shadow:0 10px 28px rgba(0,0,254,.4); }
+    .film-start:hover .film-cue { transform:translateY(-2px); }
+    .k3-card h3 a:hover .k3-arrow { transform:translateX(3px); }
+  }
+  .sc-preview-btn:active, .sc-cta:active, .praxis-cta:active { transform:scale(.97); }
 
   /* 10 Abschluss */
   .cta-sec .cta-sub { font-size:1.0667rem; }
@@ -1839,7 +1848,7 @@
         <p class="foot-desc">Deine IT-Abteilung. Nur extern.<br>IT, KI, Software und Websites für Betriebe im Münchner Osten.<br>Angebot für Unternehmen, alle Preise zzgl. MwSt.</p>
         <address class="foot-contact" style="font-style:normal;">
           <a href="https://wa.me/491782584438?text=Hallo%20Andreas%2C%20ich%20komme%20%C3%BCber%20deine%20Website." target="_blank" rel="noopener">WhatsApp schreiben</a>
-          <a href="tel:+491782584438"><svg class="foot-ico" width="14" height="14" aria-hidden="true"><use href="#ico-phone"/></svg>0178 258 44 38</a>
+          <a href="tel:+491782584438">0178 258 44 38</a>
           <a href="mailto:info@grundke-it.de?subject=Anfrage%20%C3%BCber%20grundke-it.de&amp;body=Hallo%20Andreas%2C%0A%0AMein%20Anliegen%3A%0A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich%20unter%3A%0ATelefon%3A%20%0AE-Mail%3A%20%0A%0AGew%C3%BCnschter%20R%C3%BCckruf-Zeitraum%3A%20%0A%0A---%0AMit%20dem%20Absenden%20dieser%20E-Mail%20stimme%20ich%20der%20Verarbeitung%20meiner%20Angaben%20gem%C3%A4%C3%9F%20der%20Datenschutzerkl%C3%A4rung%20zu%20(https%3A%2F%2Fgrundke-it.de%2Fdatenschutz%2F).">info@grundke-it.de</a>
           <a href="https://grundke-it.de">www.grundke-it.de</a>
         </address>

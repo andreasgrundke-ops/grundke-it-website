@@ -117,6 +117,9 @@ function initLenis() {
   if (typeof Lenis === 'undefined') return;
   // #30: bei reduced-motion-Praeferenz auf natives scroll-behavior:smooth zurueckfallen
   if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  // 2.2.0 A6: Lenis nur mit Maus (hover: hover, pointer: fine). Auf Touch scrollt der Browser nativ (Traegheit, Gummiband),
+  // Ankerklicks bleiben ueber html { scroll-behavior: smooth } weich.
+  if (!window.matchMedia || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
 
   const lenis = new Lenis({
     duration: 1.1,

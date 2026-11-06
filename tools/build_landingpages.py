@@ -581,7 +581,7 @@ def head(title, desc, slug, og_title, og_desc, og_alt, tw_desc=None, tw_alt=None
 <html lang="de">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
   <title>{title}</title>
   <meta name="description" content="{desc}"/>
   <meta name="author" content="Andreas Grundke"/>
@@ -666,7 +666,7 @@ def footer_html(places, services, current_path="", updated=None, home=False):
         <p class="foot-desc">Deine IT-Abteilung. Nur extern.<br>IT, KI, Software und Websites für Betriebe im Münchner Osten.<br>Angebot für Unternehmen, alle Preise zzgl. MwSt.</p>
         <address class="foot-contact" style="font-style:normal;">
           <a href="{wa}" target="_blank" rel="noopener">WhatsApp schreiben</a>
-          <a href="tel:+491782584438"><svg class="foot-ico" width="14" height="14" aria-hidden="true"><use href="#ico-phone"/></svg>0178 258 44 38</a>
+          <a href="tel:+491782584438">0178 258 44 38</a>
           <a href="{mailto}">info@grundke-it.de</a>
           <a href="https://grundke-it.de">www.grundke-it.de</a>
         </address>

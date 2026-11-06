@@ -87,7 +87,7 @@
 
 /* ── Reset ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { font-size: 15px; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+html { font-size: 15px; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; }
 body { font-family: var(--fb); background: var(--bg); color: var(--text); line-height: 1.65; overflow-x: hidden; }
 a { color: inherit; text-decoration: none; }
 img { display: block; max-width: 100%; }
@@ -97,7 +97,7 @@ button { font-family: var(--fb); cursor: pointer; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
 /* ── Layout Utilities ── */
-.inner { max-width: var(--inner); margin: 0 auto; padding: 0 clamp(1rem,5vw,2.5rem); }
+.inner { max-width: var(--inner); margin: 0 auto; padding: 0 max(clamp(1rem,5vw,2.5rem), env(safe-area-inset-right)) 0 max(clamp(1rem,5vw,2.5rem), env(safe-area-inset-left)); }   /* N10: Querformat mit Notch */
 .section-pad { padding: clamp(3.5rem,8vw,6.5rem) 0; }
 
 /* ── Dock (Kontaktleiste) ──
@@ -110,7 +110,7 @@ button { font-family: var(--fb); cursor: pointer; }
   .sticky-contact {
     position: fixed;
     z-index: 1000;
-    left: 12px; right: 12px;
+    left: max(12px, env(safe-area-inset-left)); right: max(12px, env(safe-area-inset-right));
     bottom: calc(12px + env(safe-area-inset-bottom));
     display: grid;
     grid-template-columns: 1.4fr 1fr 1fr;
@@ -136,7 +136,7 @@ button { font-family: var(--fb); cursor: pointer; }
     line-height: 1;
     white-space: nowrap;
     text-decoration: none;
-    transition: background-color .2s, color .2s, transform .15s;
+    transition: background-color .2s, color .2s, transform 120ms cubic-bezier(0.23,1,0.32,1);
   }
   .sc-btn svg { flex-shrink: 0; width: 18px; height: 18px; }
   .sc-btn:active { transform: scale(.97); }
@@ -186,7 +186,8 @@ button { font-family: var(--fb); cursor: pointer; }
    Logo und Hauptmenue verdeckt. */
 .site-header nav {
   position: fixed; top:0; left:0; right:0;
-  z-index: 300; height: var(--nav-h);
+  z-index: 300; height: calc(var(--nav-h) + env(safe-area-inset-top));
+  padding-top: env(safe-area-inset-top);
   background: rgba(15,17,23,.93);
   backdrop-filter: blur(18px);
   border-bottom: 1px solid var(--border);
@@ -224,12 +225,12 @@ button { font-family: var(--fb); cursor: pointer; }
   display:inline-flex; align-items:center; justify-content:center; gap:.45rem;
   min-height:44px; padding:0 1rem; border-radius:var(--r-m);
   font-weight:700; font-size:.85rem; color:#fff;
-  transition:background-color .2s, transform .15s;
+  transition:background-color .2s, transform 120ms cubic-bezier(0.23,1,0.32,1);
 }
 .nav-links a.nav-wa { background:var(--wa); }
-.nav-links a.nav-wa:hover { background:var(--wa-hover); color:#fff; transform:translateY(-1px); }
+.nav-links a.nav-wa:hover { background:var(--wa-hover); color:#fff; }
 .nav-links a.nav-tel { background:var(--tel-bg); border:1px solid var(--tel-line); color:var(--tel-text); }
-.nav-links a.nav-tel:hover { background:var(--tel-bg-hover); color:var(--tel-text); transform:translateY(-1px); }
+.nav-links a.nav-tel:hover { background:var(--tel-bg-hover); color:var(--tel-text); }
 .nav-wa svg { fill:currentColor; flex-shrink:0; }
 .nav-tel svg { stroke:currentColor; fill:none; flex-shrink:0; }
 @media (max-width:1279px) {
@@ -238,13 +239,13 @@ button { font-family: var(--fb); cursor: pointer; }
 }
 /* Trefferflaeche 44x44 (Daumenbedienung) — Balken bleiben optisch gleich gross */
 .hamburger { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; background:none; border:none; padding:.4rem; min-width:44px; min-height:44px; cursor:pointer; }
-.hamburger span { display:block; width:24px; height:2px; background:var(--text); border-radius:2px; transition:transform .3s,opacity .3s; }
+.hamburger span { display:block; width:24px; height:2px; background:var(--text); border-radius:2px; transition:transform .2s,opacity .2s; }
 .hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
 .hamburger.open span:nth-child(2) { opacity:0; }
 .hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
-.mobile-menu { display:none; position:fixed; top:var(--nav-h); left:0; right:0; background:var(--bg2); border-bottom:1px solid var(--border); padding:1.5rem; z-index:299; flex-direction:column; gap:.5rem; }
+.mobile-menu { display:none; position:fixed; top:calc(var(--nav-h) + env(safe-area-inset-top)); left:0; right:0; background:var(--bg2); border-bottom:1px solid var(--border); padding:1.5rem max(1.5rem, env(safe-area-inset-right)) 1.5rem max(1.5rem, env(safe-area-inset-left)); z-index:299; flex-direction:column; gap:.5rem; }
 .mobile-menu.open { display:flex; }
-.mobile-menu a { padding:.85rem 1rem; border-radius:var(--r-m); font-weight:600; font-size:.95rem; color:var(--text2); transition:background .2s,color .2s; }
+.mobile-menu a { padding:.85rem 1rem; border-radius:var(--r-m); font-weight:600; font-size:.95rem; color:var(--text2); transition:background .2s,color .2s,transform 120ms cubic-bezier(0.23,1,0.32,1); }
 .mobile-menu a:hover { background:var(--bg3); color:var(--cyan); }
 /* Mobilmenue: WhatsApp zuerst als Hauptaktion, darunter Anrufen getoent mit Kontur (Stand 18.10.2026) */
 .mobile-menu .m-wa { display:flex; align-items:center; justify-content:center; gap:.55rem; background:var(--wa); color:#fff !important; margin-top:.5rem; font-weight:700 !important; }
@@ -262,9 +263,9 @@ button { font-family: var(--fb); cursor: pointer; }
   border-radius:var(--r-m); border:none;
   background:var(--blue-vi); color:#fff;
   font-family:var(--fb); font-weight:700; font-size:clamp(.82rem,.9rem,1rem);
-  cursor:pointer; transition:background .2s,transform .15s,box-shadow .2s; white-space:nowrap;
+  cursor:pointer; transition:background .2s,transform 120ms cubic-bezier(0.23,1,0.32,1),box-shadow .2s; white-space:nowrap;
 }
-.btn-p:hover { background:#2222ff; transform:translateY(-2px); box-shadow:0 8px 24px var(--blue-vi-glow); }
+.btn-p:hover { background:#2222ff; }
 
 .btn-g {
   display:inline-flex; align-items:center; gap:.45rem;
@@ -272,7 +273,7 @@ button { font-family: var(--fb); cursor: pointer; }
   border-radius:var(--r-m); background:transparent; color:var(--text);
   font-family:var(--fb); font-weight:600; font-size:clamp(.82rem,.9rem,1rem);
   border:1px solid var(--border); cursor:pointer;
-  transition:border-color .2s,color .2s,background .2s; white-space:nowrap;
+  transition:border-color .2s,color .2s,background .2s,transform 120ms cubic-bezier(0.23,1,0.32,1); white-space:nowrap;
 }
 .btn-g:hover { border-color:var(--text2); background:rgba(255,255,255,.04); }   /* neutraler Hover statt Cyan-Flaeche */
 
@@ -300,12 +301,12 @@ button { font-family: var(--fb); cursor: pointer; }
 .foot-grid { display:grid; grid-template-columns:1fr; gap:2rem; margin-bottom:2.5rem; }
 .foot-brand { font-family:var(--fh); font-size:.98rem; font-weight:700; color:var(--text); margin-bottom:.4rem; }
 .foot-desc  { font-size:.82rem; color:var(--text3); line-height:1.7; margin-bottom:1.2rem; }
-.foot-contact a { font-size:.82rem; color:var(--text2); display:block; margin-bottom:.3rem; transition:color .2s; }
+/* 2.2.0 A9: Trefferflaeche >= 24 px hoch (WCAG 2.5.8), Abstand dafuer ueber Innenabstand statt Aussenabstand */
+.foot-contact a { font-size:.82rem; color:var(--text2); display:block; padding:.2rem 0; transition:color .2s; }
 .foot-contact a:hover { color:var(--cyan); }
-.foot-contact .foot-ico { display:inline-block; width:14px; height:14px; margin-right:.4rem; vertical-align:-2px; }
 .foot-h { font-family:var(--fb); font-size:.93rem; font-weight:600; letter-spacing:0; text-transform:none; color:var(--text2); margin-bottom:.9rem; } /* Spaltenkopf in normaler Schreibung, kein Versal-Etikett */
-.foot-links { list-style:none; display:flex; flex-direction:column; gap:.45rem; }
-.foot-links a { font-size:.84rem; color:var(--text2); transition:color .2s; }
+.foot-links { list-style:none; display:flex; flex-direction:column; gap:.1rem; }
+.foot-links a { display:inline-block; padding:.2rem 0; font-size:.84rem; color:var(--text2); transition:color .2s; }
 .foot-links a:hover { color:var(--cyan); }
 .foot-links a[aria-current="page"] { color:var(--cyan); font-weight:700; }
 /* Spalten 2-5 sind <details class="foot-col"> (seit 10.10.2026): ohne JS offen, am Handy
@@ -425,18 +426,18 @@ button { font-family: var(--fb); cursor: pointer; }
    Standen bisher nur im <style> der Startseite; /schulung/ nutzt sie auch und zeigte
    die Anfrage-Knoepfe deshalb als nackten Text. Werte = Endstand der Startseite
    (Visitenkarten-Blau fuer .solid). Die Kopie in index.html raeumt der Umbau auf. */
-.btn-wa { display:inline-flex; align-items:center; gap:.55rem; padding:1rem 2rem; border-radius:var(--r-m); background:var(--wa); color:#fff; font-family:var(--fb); font-weight:700; font-size:.95rem; border:none; cursor:pointer; text-decoration:none; transition:background .2s, transform .15s; }
-.btn-wa:hover { background:var(--wa-hover); transform:translateY(-2px); }
+.btn-wa { display:inline-flex; align-items:center; gap:.55rem; padding:1rem 2rem; border-radius:var(--r-m); background:var(--wa); color:#fff; font-family:var(--fb); font-weight:700; font-size:.95rem; border:none; cursor:pointer; text-decoration:none; transition:background .2s, transform 120ms cubic-bezier(0.23,1,0.32,1); }
+.btn-wa:hover { background:var(--wa-hover); }
 /* E-Mail neutral: kein Orange, Rand und Schrift wie ein Zweitknopf */
-.btn-email { display:inline-flex; align-items:center; gap:.45rem; padding:clamp(.7rem,.9rem,1rem) clamp(1.2rem,1.8rem,2rem); border-radius:var(--r-m); border:1px solid var(--border); background:transparent; color:var(--text); font-family:var(--fb); font-weight:700; font-size:clamp(.82rem,.9rem,1rem); cursor:pointer; text-decoration:none; transition:background .2s, transform .15s, box-shadow .2s; white-space:nowrap; }
-.btn-email:hover { border-color:var(--text2); background:rgba(255,255,255,.04); transform:translateY(-2px); }
+.btn-email { display:inline-flex; align-items:center; gap:.45rem; padding:clamp(.7rem,.9rem,1rem) clamp(1.2rem,1.8rem,2rem); border-radius:var(--r-m); border:1px solid var(--border); background:transparent; color:var(--text); font-family:var(--fb); font-weight:700; font-size:clamp(.82rem,.9rem,1rem); cursor:pointer; text-decoration:none; transition:background .2s, transform 120ms cubic-bezier(0.23,1,0.32,1), box-shadow .2s; white-space:nowrap; }
+.btn-email:hover { border-color:var(--text2); background:rgba(255,255,255,.04); }
 .price-feats { list-style:none; display:flex; flex-direction:column; gap:.65rem; margin:0 0 1.8rem; padding:0; }
 .price-feats li { display:flex; align-items:flex-start; gap:.55rem; font-size:1.0667rem; color:var(--text2); } /* 16 px (seit 10.10.2026, vorher .84rem) */
 .pfy { color:var(--text); flex-shrink:0; font-weight:700; }  /* Haken wie .lp-checklist (seit 10.10.2026; die Startseite setzt svg.pfy im eigenen Stil) */
 .pfn { color:var(--text3); flex-shrink:0; }
-.price-btn { display:block; width:100%; padding:.85rem; border-radius:var(--r-m); font-family:var(--fb); font-weight:700; font-size:.88rem; text-align:center; text-decoration:none; cursor:pointer; transition:background .2s, border-color .2s, color .2s, transform .2s, box-shadow .2s; }
+.price-btn { display:block; width:100%; padding:.85rem; border-radius:var(--r-m); font-family:var(--fb); font-weight:700; font-size:.88rem; text-align:center; text-decoration:none; cursor:pointer; transition:background .2s, border-color .2s, color .2s, transform 120ms cubic-bezier(0.23,1,0.32,1), box-shadow .2s; }
 .price-btn.solid { background:var(--blue-vi); color:#fff; border:none; }
-.price-btn.solid:hover { background:#2222ff; box-shadow:0 4px 20px var(--blue-vi-glow); }
+.price-btn.solid:hover { background:#2222ff; }
 .price-btn.out { background:transparent; color:var(--text); border:1px solid var(--border); }
 .price-btn.out:hover { border-color:var(--blue-vi); color:#fff; background:var(--blue-vi-dim); }
 /* Kontaktknoepfe an Preisen (Stand 18.10.2026): WhatsApp gruen als Hauptaktion, Telefon getoent mit Kontur */
@@ -447,7 +448,6 @@ button { font-family: var(--fb); cursor: pointer; }
    Knoepfe, Druck gibt leicht nach. Der grosse Vollknopf bleibt der Empfehlung (Business). */
 .price-btn.wa-out { background:transparent; color:var(--wa-text); border:1px solid var(--wa-text); }
 .price-btn.wa-out:hover { background:var(--wa); color:#fff; border-color:var(--wa); }
-.price-btn.wa-out:active { transform:translateY(1px); }
 .price-btn.tel { background:var(--tel-bg); color:var(--tel-text); border:1px solid var(--tel-line); }
 .price-btn.tel:hover { background:var(--tel-bg-hover); }
 .price-btn:focus-visible, .btn-wa:focus-visible, .btn-email:focus-visible { outline:2px solid var(--cyan); outline-offset:3px; }
@@ -473,7 +473,7 @@ button { font-family: var(--fb); cursor: pointer; }
 
 /* Abschnitte: .sec Grundflaeche, --alt zweite Flaeche, --glow blaues Licht wie im Hero */
 .sec { position:relative; padding:clamp(3.5rem,8vw,6.5rem) 0; background-color:var(--bg); }
-main > .sec:first-child { margin-top:var(--nav-h); } /* erster Abschnitt unter der festen Kopfzeile */
+main > .sec:first-child { margin-top:calc(var(--nav-h) + env(safe-area-inset-top)); } /* erster Abschnitt unter der festen Kopfzeile */
 .sec--alt { background-color:var(--bg2); }
 .sec--glow { background-image:none; }  /* kein Schein mehr (keine Verlaeufe als Schmuck); Klasse bleibt, der Generator setzt sie */
 .measure { max-width:68ch; }
@@ -491,12 +491,12 @@ main > .sec:first-child { margin-top:var(--nav-h); } /* erster Abschnitt unter d
    (.btn-p.hc-call). Am Handy uebernimmt die feste Kontaktleiste unten. */
 .hc-ctas { display:flex; flex-wrap:wrap; gap:.75rem; align-items:center; }
 .hc-call { padding:.8rem 1.2rem; font-size:.93rem; gap:.55rem; }
-.hc-call:not(.btn-p) { display:inline-flex; align-items:center; padding:calc(.8rem - 1px) calc(1.2rem - 1px); border-radius:var(--r-m); border:1px solid var(--tel-line); background:var(--tel-bg); color:var(--tel-text); font-family:var(--fb); font-weight:700; white-space:nowrap; transition:background-color .2s, transform .15s; }
-.hc-call:not(.btn-p):hover { background:var(--tel-bg-hover); transform:translateY(-2px); }
+.hc-call:not(.btn-p) { display:inline-flex; align-items:center; padding:calc(.8rem - 1px) calc(1.2rem - 1px); border-radius:var(--r-m); border:1px solid var(--tel-line); background:var(--tel-bg); color:var(--tel-text); font-family:var(--fb); font-weight:700; white-space:nowrap; transition:background-color .2s, transform 120ms cubic-bezier(0.23,1,0.32,1); }
+.hc-call:not(.btn-p):hover { background:var(--tel-bg-hover); }
 .hc-num { font-weight:600; padding-left:.65rem; margin-left:.1rem; border-left:1px solid rgba(255,255,255,.35); font-variant-numeric:tabular-nums; }
-.hc-wa { display:inline-flex; align-items:center; gap:.55rem; padding:.8rem 1.15rem; border-radius:var(--r-m); border:none; background:var(--wa); color:#fff; font-family:var(--fb); font-weight:700; font-size:.93rem; white-space:nowrap; transition:background-color .2s, transform .15s; }
+.hc-wa { display:inline-flex; align-items:center; gap:.55rem; padding:.8rem 1.15rem; border-radius:var(--r-m); border:none; background:var(--wa); color:#fff; font-family:var(--fb); font-weight:700; font-size:.93rem; white-space:nowrap; transition:background-color .2s, transform 120ms cubic-bezier(0.23,1,0.32,1); }
 .hc-wa svg { color:currentColor; }
-.hc-wa:hover { background:var(--wa-hover); color:#fff; transform:translateY(-2px); }
+.hc-wa:hover { background:var(--wa-hover); color:#fff; }
 .hc-call:focus-visible, .hc-wa:focus-visible, .hc-proof a:focus-visible, .hc-qr a:focus-visible { outline:2px solid var(--cyan); outline-offset:3px; }
 @media (max-width:767px) { .hc-ctas { display:none; } }
 
@@ -543,7 +543,6 @@ main > .sec:first-child { margin-top:var(--nav-h); } /* erster Abschnitt unter d
 @media (min-width:601px) { .price-grid { grid-template-columns:repeat(2,1fr); } }
 @media (min-width:1101px) { .price-grid { grid-template-columns:repeat(4,1fr); } }
 .price-card { background:var(--bg3); border:1px solid var(--border); border-radius:var(--r-l); padding:clamp(1.25rem,3.5vw,2rem); position:relative; transition:border-color .2s, transform .2s; }
-.price-card:hover { transform:translateY(-4px); }
 .price-card.feat { border-color:var(--blue-vi); box-shadow:0 0 0 1px var(--blue-vi), 0 8px 24px rgba(0,0,0,.35); }   /* ruhiger Schatten statt blauem Schein */
 /* Abzeichen in normaler Schreibung, kein Versal-Etikett */
 .price-badge { position:absolute; top:-12px; left:50%; transform:translateX(-50%); background:var(--blue-vi); color:#fff; font-family:var(--fb); font-size:14px; font-weight:600; letter-spacing:0; text-transform:none; line-height:1.4; padding:.15rem .8rem; border-radius:var(--r-s); white-space:nowrap; }
@@ -596,8 +595,8 @@ blockquote.testi-txt { margin-top:0; margin-left:0; margin-right:0; }
 .cta-btns { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; position:relative; }
 /* Telefon im Abschluss zurueckgenommen (Stand 18.10.2026): getoent mit Kontur, WhatsApp davor ist die Hauptaktion.
    Innenabstand 1 px kleiner, damit die Kontur die Hoehe der Nachbarknoepfe haelt. */
-.btn-tel { display:inline-flex; align-items:center; gap:.55rem; padding:calc(1rem - 1px) calc(2rem - 1px); border-radius:var(--r-m); background:var(--tel-bg); color:var(--tel-text); font-family:var(--fb); font-weight:700; font-size:.95rem; border:1px solid var(--tel-line); cursor:pointer; transition:background .2s, border-color .2s, color .2s, transform .2s, box-shadow .2s, opacity .2s; }
-.btn-tel:hover { background:var(--tel-bg-hover); transform:translateY(-2px); }
+.btn-tel { display:inline-flex; align-items:center; gap:.55rem; padding:calc(1rem - 1px) calc(2rem - 1px); border-radius:var(--r-m); background:var(--tel-bg); color:var(--tel-text); font-family:var(--fb); font-weight:700; font-size:.95rem; border:1px solid var(--tel-line); cursor:pointer; transition:background .2s, border-color .2s, color .2s, transform 120ms cubic-bezier(0.23,1,0.32,1), box-shadow .2s, opacity .2s; }
+.btn-tel:hover { background:var(--tel-bg-hover); }
 @media (max-width:767px) {
   .cta-btns { flex-direction:column; align-items:center; }
   .cta-btns .btn-tel, .cta-btns .btn-wa, .cta-btns .btn-email { width:100%; max-width:320px; justify-content:center; }
@@ -813,7 +812,6 @@ blockquote.testi-txt { margin-top:0; margin-left:0; margin-right:0; }
 .lp-paths a:focus-visible { outline:2px solid var(--cyan); outline-offset:2px; }
 .lp-path-t { display:block; font-family:var(--fh); font-weight:700; font-size:1.0667rem; color:var(--text); }
 .lp-path-t::after { content:" →"; color:var(--cyan); transition:margin .2s; }
-.lp-paths a:hover .lp-path-t::after { margin-left:.25rem; }
 .lp-path-d { display:block; font-size:.93rem; color:var(--text2); line-height:1.55; margin-top:.25rem; }
 /* Zwischenueberschriften im Fliesstext, auch im zugeklappten Teil (<details class="more">) */
 .lp-content > h3, .lp-content > .more > h3 { font-family:var(--fh); font-size:1.15rem; font-weight:700; line-height:1.3; color:var(--text); margin:1.8rem 0 .6rem; }
@@ -866,7 +864,7 @@ blockquote.testi-txt { margin-top:0; margin-left:0; margin-right:0; }
    Ein zusaetzliches scroll-margin-top hier wuerde sich dazu addieren (doppelter Abstand). */
 
 /* #16 Touch-UX: kein 300ms-iOS-Delay, kein grauer Tap-Flash */
-a, button {
+a, button, summary {
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
@@ -883,7 +881,7 @@ a, button {
 /* ──────────────────────────────────────────────────────────────────── */
 
 /* Fokus und Sprungziele nicht unter Kopf- oder Kontaktleiste (WCAG 2.2 SC 2.4.11) */
-html { scroll-padding-top: calc(var(--nav-h) + 12px); }
+html { scroll-padding-top: calc(var(--nav-h) + env(safe-area-inset-top) + 12px); }
 @media (max-width: 1279px) { html { scroll-padding-bottom: calc(76px + env(safe-area-inset-bottom)); } }  /* Dock-Hoehe + Abstand, wie body.has-sticky-call */
 /* Sprungziele (Abschnitte mit tabindex=-1) bekommen Fokus nur fuer die Tab-Reihenfolge, keinen Rahmen */
 section[tabindex="-1"]:focus, main[tabindex="-1"]:focus { outline: none; }
@@ -1004,3 +1002,18 @@ body.is-home main .s-title, body.is-home main .cta-h { font-size: var(--fs-h2-ho
    Seite bleiben; breitere Grenzen der Bausteine werden darunter ausdruecklich zurueckgeholt. */
 :where(body.is-home main) :where(p, li, dd) { max-width: 62ch; }
 body.is-home main :is(.testi-source, .pkg-monthly, .k3-school, .geo-remote p, .measure, .card-box p) { max-width: 62ch; }
+
+/* ── Release 2.2.0 (Paket A): Hover nur mit Maus, Druck-Feedback auf Knoepfen ──
+   Hover mit Bewegung oder Schatten steht nur hier, hinter (hover: hover) and (pointer: fine): am Handy bleibt sonst
+   nach dem Tippen der Hover-Zustand haengen. Reine Farbwechsel stehen weiter oben ungekapselt. Auf Touch gibt :active
+   das Feedback (Skalierung .97, 120 ms, starke Ease-out-Kurve); die transition-Listen der Knoepfe tragen transform. */
+@media (hover: hover) and (pointer: fine) {
+  .nav-links a.nav-wa:hover, .nav-links a.nav-tel:hover { transform:translateY(-1px); }
+  .btn-p:hover { transform:translateY(-2px); box-shadow:0 8px 24px var(--blue-vi-glow); }
+  .btn-wa:hover, .btn-email:hover, .hc-call:not(.btn-p):hover, .hc-wa:hover, .btn-tel:hover { transform:translateY(-2px); }
+  .price-btn.solid:hover { box-shadow:0 4px 20px var(--blue-vi-glow); }
+  .lp-paths a:hover .lp-path-t::after { margin-left:.25rem; }
+}
+.btn-p:active, .btn-g:active, .btn-wa:active, .btn-email:active, .btn-tel:active, .price-btn:active,
+.hc-wa:active, .hc-call:active, .hc-call:not(.btn-p):active, .nav-links a.nav-wa:active, .nav-links a.nav-tel:active,
+.mobile-menu .m-wa:active, .mobile-menu .m-cta:active, .sc-btn:active { transform:scale(.97); }
