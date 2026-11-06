@@ -1,6 +1,7 @@
 """Design-Pruefungen fuer den Relaunch (Spec §5, §7, §11).
 Titel:        check_design.py
-Version:      0.8.0 (Task 1: AK-R1-Pruefungen, --release r1; Task 11: AK-R2-Pruefungen, --release r2;
+Version:      0.9.1 (Fix-Runde 1, 2.2.0: _dominant loest [data-layout] und display:contents durch deren Kinder auf und meldet
+              Layout-Rahmen mit Hintergrund, Rahmen oder Schatten); davor 0.8.0 (Task 1: AK-R1-Pruefungen, --release r1; Task 11: AK-R2-Pruefungen, --release r2;
               0.3.1: R2-DOM, #it-betreuung in R2 nach Flaeche;
               0.4.0: R2 auf den Hero mit Chat-Handy umgestellt: R2-06/-07/-10/-16/-TAB pruefen den Chat,
               R2-KENNZ (Kennzeichnung) statt R2-08, R2-ERSTBILD (H1 als LCP, erstes Bild, Firmenkunden-Zeile)
@@ -760,7 +761,8 @@ def ak_r1_10_light_section():
 
 def ak_r1_11_dominant():
     """AK-R1-11: je Abschnitt aus §5.6 genau ein [data-dominant]; ausser .hero/#it-betreuung (R1: nur Anzahl) hat es bei
-    1440 die groesste Flaeche unter den sichtbaren Geschwistern (ohne Ueberschriften-Wrapper)."""
+    1440 die groesste Flaeche unter den sichtbaren Geschwistern (ohne Ueberschriften-Wrapper).
+    [data-layout] und display:contents werden rekursiv durch ihre Kinder ersetzt; ein [data-layout] muss unsichtbar bleiben."""
     return _dominant(DOMINANT_COUNT_ONLY_R1)
 
 
@@ -780,7 +782,14 @@ def _dominant(count_only):
       const e = d[0], area = x => { const r = x.getBoundingClientRect(); return r.width * r.height; };
       const isHead = x => /^H[1-6]$/.test(x.tagName) || x.matches('.s-label,.s-title,.s-sub') ||
         (x.querySelector('h1,h2,h3,h4') && !x.querySelector('p,figure,img,table,ul,ol,a.btn-p,blockquote'));
-      const sib = [...e.parentElement.children].filter(x => x !== e && getComputedStyle(x).display !== 'none' && area(x) > 0 && !isHead(x) && !x.hasAttribute('data-layout'));  // data-layout: reiner Layout-Rahmen (Spalten), kein Konkurrent
+      const flat = x => (x.hasAttribute('data-layout') || getComputedStyle(x).display === 'contents') ? [...x.children].flatMap(flat) : [x];
+      const sib = [...e.parentElement.children].flatMap(flat).filter(x => x !== e && getComputedStyle(x).display !== 'none' && area(x) > 0 && !isHead(x));
+      res.layoutErr = [...s.querySelectorAll('[data-layout]')].map(l => { const c = getComputedStyle(l), m = c.backgroundColor.match(/[0-9.]+/g) || [], bad = [];
+        if (m.length < 4 ? m.length === 3 : parseFloat(m[3]) > 0) bad.push('Hintergrundfarbe ' + c.backgroundColor);
+        if (c.backgroundImage !== 'none') bad.push('Hintergrundbild');
+        if (['Top', 'Right', 'Bottom', 'Left'].some(k => parseFloat(c['border' + k + 'Width']) > 0 && c['border' + k + 'Style'] !== 'none')) bad.push('Rahmen');
+        if (c.boxShadow !== 'none') bad.push('Schatten');
+        return bad.length ? l.tagName.toLowerCase() + '.' + String(l.className).split(' ')[0] + ': ' + bad.join(', ') : null; }).filter(Boolean);
       res.area = Math.round(area(e)); res.sib = sib.map(x => ({ n: x.tagName.toLowerCase() + (x.className ? '.' + String(x.className).split(' ')[0] : ''), a: Math.round(area(x)) }));
       return res; })"""
     errs = []
@@ -789,6 +798,8 @@ def _dominant(count_only):
             errs.append(f"{r['sel']}: Abschnitt fehlt"); continue
         if r["count"] != 1:
             errs.append(f"{r['sel']}: {r['count']} Elemente mit [data-dominant] (soll genau 1)"); continue
+        for le in r.get("layoutErr", []):
+            errs.append(f"{r['sel']}: [data-layout] darf kein Gestaltungselement sein ({le})")
         if r["sel"] in count_only:
             continue
         if not r["sib"]:
