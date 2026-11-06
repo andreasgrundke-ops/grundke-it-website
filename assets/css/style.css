@@ -983,7 +983,7 @@ body.is-home main :is(p, li, dd, dt, .faq-a, .testi-txt, .praxis-text, .sc-check
 }
 body.is-home main :is(.btn-p, .btn-g, .btn-wa, .btn-tel, .btn-email, .hc-wa, .hc-call, .price-btn, .sc-cta, .sc-preview-btn, .praxis-cta,
   summary, .testi-who, .itb-how li, .faq-more strong, .hc-num):where(:not(.hc-stage *, .mini-chat-box *)) { font-size: var(--fs-ui-home); }
-body.is-home main :is(.s-label, .hc-wer, .hc-fuer, .hc-proof, .hc-proof li, .chips > *, .itb-leist .chips > a, .itb-leist-h, .price-note, .price-per,
+body.is-home main :is(.s-label, .hc-wer, .hc-proof, .hc-proof li, .chips > *, .itb-leist .chips > a, .itb-leist-h, .price-note, .price-per,
   .price-tier, .price-badge, .testi-role, .testi-ctx, .testi-row-h, .hc-weiter, .sc-hint, .sc-promise span,
   .hc-qr p, .pkg-table thead th):where(:not(.hc-stage *, .mini-chat-box *)) { font-size: var(--fs-small-home); }
 body.is-home main :is(.s-label, .itb-leist .chips > a, .itb-leist-h, .sc-hint, .sc-promise span) { font-size: var(--fs-small-tight); }

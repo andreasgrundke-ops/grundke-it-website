@@ -176,7 +176,7 @@ function initSchnellcheck() {
     },
     backup: {
       title: 'Datensicherung (Backup)',
-      body:  'Hast du überhaupt ein Backup? Wo liegt es? Wann wurde es zuletzt getestet? Die 3-2-1-Regel ist der Maßstab — ich bewerte, wie weit du davon weg bist und was der einfachste Weg dahin wäre.'
+      body:  'Hast du überhaupt ein Backup? Wo liegt es? Wann wurde es zuletzt getestet? Die 3-2-1-Regel ist der Maßstab: Ich bewerte, wie weit du davon weg bist und was der einfachste Weg dahin wäre.'
     },
     router: {
       title: 'Router & Internet-Anschluss',

@@ -173,8 +173,8 @@ def review_count_phrase(n):
 
 # Startseite: Stand fuer WebPage.dateModified, Sitemap und 'Zuletzt aktualisiert' im Fuss
 # (sync_home). Nur hochsetzen, wenn sich der Inhalt der Startseite wirklich aendert.
-HOME_DATE = CONTENT_DATE
-HOME_DATE_DISP = ".".join(reversed(CONTENT_DATE.split("-")))  # TT.MM.JJJJ
+HOME_DATE = "2026-11-06"       # Release 2.2.0: Hero, Slop-Reste, Symbolbild, FAQ KI (Inhalt geaendert)
+HOME_DATE_DISP = ".".join(reversed(HOME_DATE.split("-")))  # TT.MM.JJJJ
 # Kontaktseite (Handseite): Stand fuer „Zuletzt aktualisiert“ im Abschluss (HAND_CLOSING) und lastmod der Sitemap
 # (STATIC_URLS). Nur hochsetzen, wenn sich der Inhalt der Kontaktseite wirklich aendert.
 KONTAKT_DATE = CONTENT_DATE
@@ -3594,7 +3594,7 @@ HOME_FAQS = [
     ('Welche IT-Services gibt es in Grasbrunn und Ottobrunn?',
      'Ich bin die externe IT-Abteilung für kleine Betriebe: Netzwerk, WLAN, Microsoft 365, IT-Sicherheit, Datensicherung, Kassen und Kameras, dazu KI im Betrieb, Software nach Maß und Websites. Vor Ort in Grasbrunn, Ottobrunn, Vaterstetten, Haar, Neubiberg und Umgebung.'),
     ('Kannst du auch bei KI und Automatisierung helfen?',
-     'Ja, das ist inzwischen einer meiner Schwerpunkte. Ich baue Anwendungen, die wiederkehrende Arbeit übernehmen: Schnittstellen zwischen Programmen, Auswertungen von Kameraaufnahmen, Daten, die heute jemand abtippt. Dazu kommt die Frage, welche KI-Werkzeuge im Betrieb überhaupt benutzt werden dürfen und wo die Daten dabei landen. Bei der E-Rechnung helfe ich, ein passendes Programm zu finden und umzustellen. In der eigenen Firma setze ich das seit über einem halben Jahr täglich ein, die ersten Kundenanwendungen entstehen gerade. Mehr unter <a href="/ki-fuer-kmu/">KI im Betrieb</a> und <a href="/e-rechnung/">E-Rechnung</a>.'),
+     'Ja, auch darum kümmere ich mich. Ich baue Anwendungen, die wiederkehrende Arbeit übernehmen: Schnittstellen zwischen Programmen, Auswertungen von Kameraaufnahmen, Daten, die heute jemand abtippt. Dazu kommt die Frage, welche KI-Werkzeuge im Betrieb überhaupt benutzt werden dürfen und wo die Daten dabei landen. Bei der E-Rechnung helfe ich, ein passendes Programm zu finden und umzustellen. In der eigenen Firma setze ich das seit über einem halben Jahr täglich ein, die ersten Kundenanwendungen entstehen gerade. Mehr unter <a href="/ki-fuer-kmu/">KI im Betrieb</a> und <a href="/e-rechnung/">E-Rechnung</a>.'),
     ('Baust du auch Software und Websites?',
      'Ja. Kleine Anwendungen für Abläufe, die heute in Excel oder auf Zetteln laufen, und Websites, die am Handy schnell laden, bei Google gefunden werden und für KI-Assistenten lesbar aufgebaut sind. Beides zum Festpreis, mit einem Monatsbetrag für Betrieb und Pflege. Gestaltet wird nicht: Die Optik kommt aus geprüften Vorlagen, ich setze technisch um. Mehr unter <a href="/software-nach-mass/">Software nach Maß</a> und <a href="/websites-fuer-betriebe/">Websites für Betriebe</a>.'),
     ('Mein WLAN funktioniert nicht mehr – was kann ich tun?',

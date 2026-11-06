@@ -12,7 +12,10 @@ WhatsApp ist kein Hauptknopf (.btn-p); kein Kasten .hc-direkt mehr nach dem Hero
 AKF (Stand 18.10.2026, Release 2.1.1): Film auf der Startseite als Fassade (kein <video>/<source>/<track> im
 HTML, kein autoplay), KI-Hinweis am Player, Untertitelspur in main.js, VideoObject, Filmdateien nicht im Pre-Cache.
 Stand 18.10.2026, Release 2.1.2: AKH erwartet den Link zum Betreuerwechsel im Hero direkt unter der Knopfreihe
-(p.hc-weiter nach .hc-ctas), AKF den Namen der Fassade aus dem sichtbaren Text (kein aria-label, WCAG 2.5.3)."""
+(p.hc-weiter nach .hc-ctas), AKF den Namen der Fassade aus dem sichtbaren Text (kein aria-label, WCAG 2.5.3).
+Stand 06.11.2026, Release 2.2.0 (Spec N2/N4): AKH erwartet im Hero H1 -> Kernsatz (.page-k.hc-k, mit Zielgruppe,
+ersetzt die Firmenkunden-Zeile .hc-fuer) -> Unterschied (.hc-diff) -> Schutzsatz (.hc-schutz) -> Name (.hc-wer),
+direkt hintereinander."""
 import gzip, hashlib, html, json, re, subprocess, sys
 from html.parser import HTMLParser
 from pathlib import Path
@@ -51,7 +54,6 @@ AK8_LEITZEILE = "Dein ITler geht nicht ran? Ich schon."   # = H1_TEXT (Stand 18.
 AK8_ALLOW = [
     ("index.html", "„Es muss heute noch laufen.“", "typischer Anruf in Worten des Kunden (Typische Anrufe)"),
     ("index.html", "„Ich muss heute noch fertig werden!“", "Ueberschrift der Praxisgeschichte, zitiert den Kunden"),
-    ("index.html", "Er muss heute noch ein wichtiges Projekt abgeben.", "Praxisgeschichte: Lage des Kunden"),
     ("index.html", "ohne Garantie, dass es klappt", "verneint eine Garantie"),
     ("index.html", "Top-3-Handlungsempfehlungen Sofort: Externes Backup", "Beispiel-Bericht: Dringlichkeit einer Empfehlung"),
     ("index.html", "Innerhalb 3 Monate: FritzBox 7490 tauschen", "Beispiel-Bericht: Frist einer Empfehlung an den Kunden"),
@@ -125,10 +127,14 @@ AK8_OPEN = []
 # Startseite. Der Hero zeigt wieder das Chat-Handy, der Abschnitt IT-Betreuung wieder die typischen Anrufe.
 H1_TEXT = "Dein ITler geht nicht ran? Ich schon."   # Andreas 18.10.2026: H1 zurueck
 H1_EM = "Ich schon."
-PAGE_K_HERO = "Deine IT-Abteilung. Nur extern."
+# Release 2.2.0 (Spec B1, B2, N2, N3): Kernsatz mit Leistung, Zielgruppe und Ort; die Zielgruppe steckt im Kernsatz,
+# deshalb ist FIRMENKUNDEN_HERO derselbe Satz (eine eigene Zeile .hc-fuer gibt es nicht mehr, N2). Der Name traegt
+# den Firmennamen und den Sitz, damit „Betriebe im Münchner Osten“ nicht zweimal untereinander steht.
+PAGE_K_HERO = "Externer IT-Betreuer für Betriebe bis 50 Mitarbeiter im Münchner Osten."
+UNTERSCHIED_HERO = "Ich lerne eure Geräte und Zugänge einmal kennen. Danach müsst ihr nichts mehr erklären."   # N3
 SCHUTZSATZ = "Keine Öffnungszeiten. Vertragskunden zuerst, ohne garantierte Reaktionszeit."
-FIRMENKUNDEN_HERO = "Für Selbstständige, Praxen, Handwerk und Büros bis 50 Mitarbeiter."
-HERO_WER = "Andreas Grundke · IT-Service für Betriebe im Münchner Osten"
+FIRMENKUNDEN_HERO = PAGE_K_HERO
+HERO_WER = "Andreas Grundke · Grundke IT-Service, Grasbrunn"
 HERO_PROOF = ["5,0 bei {n} Google-Bewertungen", "Über 20 Jahre IT-Erfahrung"]   # A16: nur diese zwei Zeilen
 KENNZEICHNUNG_HERO = "Beispiel-Chat, nachgestellt nach typischen Einsätzen."
 ITB_H2 = "Typische Anrufe. Und was ich dann mache."   # H2 von #it-betreuung (Text mit <br>)
@@ -916,7 +922,6 @@ def akh():
     raw = read(ROOT / "index.html")
     dom = _Dom(raw).root
     nodes = [n for n in dom.walk() if n.tag != "#root"]
-    pos = {id(n): i for i, n in enumerate(nodes)}
 
     def q(pred, within=None):
         return [n for n in (within or dom).walk() if n.tag != "#root" and pred(n)]
@@ -942,32 +947,35 @@ def akh():
         ems = [e.text() for e in q(lambda n: n.tag == "em", h1)]
         if ems != [H1_EM]:
             errs.append(f"index.html: <em> in der H1 {ems} statt ['{H1_EM}']")
-    # H1 -> .page-k -> .hc-schutz -> .hc-fuer, direkt hintereinander
+    # Release 2.2.0 (N2): H1 -> .page-k (Kernsatz mit Zielgruppe) -> .hc-diff (Unterschied) -> .hc-schutz -> .hc-wer,
+    # direkt hintereinander. Der Schutzsatz bleibt am Blickfang (UWG), vor Name und Belegen.
     ks, sc = q(lambda n: n.has("page-k"), hero), q(lambda n: n.has("hc-schutz"), hero)
-    fu = q(lambda n: n.has("hc-fuer"), hero)
+    di, wer = q(lambda n: n.has("hc-diff"), hero), q(lambda n: n.has("hc-wer"), hero)
+    if q(lambda n: n.has("hc-fuer"), hero):
+        errs.append("index.html: p.hc-fuer im Hero, die Zielgruppe steht seit 2.2.0 im Kernsatz (N2, nicht doppelt)")
     if len(ks) != 1 or ks[0].tag != "p" or not ks[0].has("hc-k"):
         errs.append(f"index.html: p.page-k.hc-k in .hero {len(ks)}x statt genau 1")
     elif ks[0].text() != PAGE_K_HERO:
         errs.append(f"index.html: .page-k '{ks[0].text()}' statt '{PAGE_K_HERO}'")
+    elif hidden_up(ks[0]):
+        errs.append("index.html: Kernsatz mit Zielgruppe ist versteckt (sr-only/aria-hidden/hidden)")
+    if len(di) != 1 or di[0].tag != "p":
+        errs.append(f"index.html: p.hc-diff (Unterschied) in .hero {len(di)}x statt genau 1")
+    elif di[0].text() != UNTERSCHIED_HERO:
+        errs.append(f"index.html: .hc-diff '{di[0].text()}' statt '{UNTERSCHIED_HERO}'")
+    elif hidden_up(di[0]):
+        errs.append("index.html: Unterschied (.hc-diff) ist versteckt (sr-only/aria-hidden/hidden)")
     if len(sc) != 1 or sc[0].tag != "p":
         errs.append(f"index.html: p.hc-schutz in .hero {len(sc)}x statt genau 1")
     elif sc[0].text() != SCHUTZSATZ:
         errs.append(f"index.html: .hc-schutz '{sc[0].text()}' statt '{SCHUTZSATZ}'")
-    # Firmenkunden-Zeile: sichtbar, direkt unter dem Schutzsatz
-    if len(fu) != 1 or fu[0].tag != "p":
-        errs.append(f"index.html: p.hc-fuer (Firmenkunden-Zeile) in .hero {len(fu)}x statt genau 1")
-    elif fu[0].text() != FIRMENKUNDEN_HERO:
-        errs.append(f"index.html: .hc-fuer '{fu[0].text()}' statt '{FIRMENKUNDEN_HERO}'")
-    elif hidden_up(fu[0]):
-        errs.append("index.html: Firmenkunden-Zeile ist versteckt (sr-only/aria-hidden/hidden)")
-    if h1 is not None and len(ks) == 1 and len(sc) == 1 and len(fu) == 1:
-        sib = [k for k in h1.parent.kids if isinstance(k, _N)]
-        i = next((k for k, x in enumerate(sib) if x is h1), -1)
-        if not (pos[id(h1)] < pos[id(ks[0])] < pos[id(sc[0])] < pos[id(fu[0])]) or sib[i + 1:i + 4] != [ks[0], sc[0], fu[0]]:
-            errs.append("index.html: Reihenfolge H1 -> .page-k -> .hc-schutz -> .hc-fuer (direkt hintereinander) verletzt")
-    wer = q(lambda n: n.has("hc-wer"), hero)
     if len(wer) != 1 or wer[0].text() != HERO_WER:
         errs.append(f"index.html: .hc-wer {[w.text() for w in wer]} statt ['{HERO_WER}']")
+    if h1 is not None and len(ks) == 1 and len(di) == 1 and len(sc) == 1 and len(wer) == 1:
+        sib = [k for k in h1.parent.kids if isinstance(k, _N)]
+        i = next((k for k, x in enumerate(sib) if x is h1), -1)
+        if sib[i + 1:i + 5] != [ks[0], di[0], sc[0], wer[0]]:
+            errs.append("index.html: Reihenfolge H1 -> .page-k -> .hc-diff -> .hc-schutz -> .hc-wer (direkt hintereinander) verletzt")
     # A16: genau zwei Belegzeilen, keine Preise im Hero
     proof_ul = q(lambda n: n.has("hc-proof"), hero)
     proof = q(lambda n: n.tag == "li", proof_ul[0]) if proof_ul else []

@@ -15,7 +15,9 @@ Version:      0.8.0 (Task 1: AK-R1-Pruefungen, --release r1; Task 11: AK-R2-Prue
               0.8.0 (Stand 18.10.2026, Release 2.1.2): AK-R1-02 ohne Kontaktleiste auf /kontakt/, AK-R1-03 Preise der
               Startseite: Business gruener Vollknopf, Starter/Premium gruene Kontur; neu 212-F1 (Kontaktknoepfe ueber
               der Leiste), 212-F2 (keine Zeile ueber dem Chat abends), 212-F5 (Kicker), 212-F7 (WhatsApp-Saetze je
-              Quelle), 212-F8 (Name des Film-Knopfs); R2-LINK und R2-FILM auf Link im Hero bzw. Namen ohne aria-label)
+              Quelle), 212-F8 (Name des Film-Knopfs); R2-LINK und R2-FILM auf Link im Hero bzw. Namen ohne aria-label;
+              0.9.0 (06.11.2026, Release 2.2.0): R2-ERSTBILD prueft Kernsatz (statt Firmenkunden-Zeile), Unterschied und
+              Schutzsatz ueber der Kontaktleiste, bei 390 mit 34 px Safe-Area)
 Datum:        18.10.2026
 Beschreibung: Misst Hoehen bei 390x844 (reduzierte Bewegung, Service Worker blockiert) und vergleicht sie
               mit einer gespeicherten Baseline. Dazu die Abnahmekriterien AK-R1-01a ... AK-R1-23 des Relaunchs R1
@@ -1082,7 +1084,7 @@ AK_R1 = {
 # CSS-Animationen laufen in echter Zeit.
 # ----------------------------------------------------------------------------------------------------------------------
 import datetime
-from check_static import KENNZEICHNUNG_HERO, FIRMENKUNDEN_HERO, WECHSEL_LINK, hero_chat_first_me
+from check_static import KENNZEICHNUNG_HERO, FIRMENKUNDEN_HERO, UNTERSCHIED_HERO, SCHUTZSATZ, WECHSEL_LINK, hero_chat_first_me
 
 BASELINE = {}   # hoehen.json der Vorher-Messung; run_release setzt sie aus --baseline
 CHAT = ".hero [data-hero-chat]"
@@ -1301,12 +1303,16 @@ ERSTBILD_JS = """() => { const d = document.querySelector('.sticky-contact'), dt
   const b = s => { const e = document.querySelector(s); if (!e) return null; const r = e.getBoundingClientRect();
     return { top: Math.round(r.top), bottom: Math.round(r.bottom), vis: e.checkVisibility({ visibilityProperty: true, opacityProperty: true }) && r.height > 0,
              text: e.textContent.replace(/\\s+/g, ' ').trim() }; };
-  return { dock: Math.round(Math.min(dt, innerHeight)), h1: b('h1#hero-h1'), fuer: b('.hero .hc-fuer') }; }"""
+  return { dock: Math.round(Math.min(dt, innerHeight)), h1: b('h1#hero-h1'), fuer: b('.hero .hc-k'), diff: b('.hero .hc-diff'),
+           schutz: b('.hero .hc-schutz') }; }"""
+# Release 2.2.0 (N13): am iPhone sitzt die Kontaktleiste rund 34 px hoeher (Safe-Area unten, in Chromium 0)
+SAFE_AREA_IPHONE = 34
 
 
 def ak_r2_erstbild():
-    """Erstes Bild (ersetzt die Bilderfolge der frueheren Buehne): bei 390x844 und 1440x900 stehen H1 und
-    Firmenkunden-Zeile ganz im ersten Bild ueber der Kontaktleiste; das LCP-Element ist h1#hero-h1."""
+    """Erstes Bild (ersetzt die Bilderfolge der frueheren Buehne): bei 390x844 und 1440x900 stehen H1, Kernsatz mit
+    Zielgruppe (seit 2.2.0 statt der Firmenkunden-Zeile), Unterschied und Schutzsatz ganz im ersten Bild ueber der
+    Kontaktleiste, bei 390 mit 34 px Safe-Area (N13); das LCP-Element ist h1#hero-h1."""
     errs = []
     for vw, vh in ((390, 844), (1440, 900)):
         ctx, pg = _open(vw, vh, clock=False)
@@ -1319,14 +1325,16 @@ def ak_r2_erstbild():
             ctx.close()
         if not lcp or lcp[-1] != "h1#hero-h1":
             errs.append(f"/ bei {vw}: LCP-Element {lcp[-1] if lcp else None} statt h1#hero-h1 (Kandidaten {lcp})")
-        for key, name in (("h1", "H1"), ("fuer", "Firmenkunden-Zeile")):
+        limit = r["dock"] - (SAFE_AREA_IPHONE if r["dock"] < vh else 0)
+        for key, name, want in (("h1", "H1", None), ("fuer", "Kernsatz mit Zielgruppe", FIRMENKUNDEN_HERO),
+                                ("diff", "Unterschied", UNTERSCHIED_HERO), ("schutz", "Schutzsatz", SCHUTZSATZ)):
             e = r[key]
             if e is None or not e["vis"]:
                 errs.append(f"/ bei {vw}: {name} fehlt oder ist nicht sichtbar")
-            elif e["top"] < 0 or e["bottom"] > r["dock"]:
-                errs.append(f"/ bei {vw}: {name} {e['top']}..{e['bottom']} px nicht ganz im ersten Bild ueber der Kontaktleiste ({r['dock']})")
-        if r["fuer"] and r["fuer"]["text"] != FIRMENKUNDEN_HERO:
-            errs.append(f"/ bei {vw}: Firmenkunden-Zeile '{r['fuer']['text']}' statt '{FIRMENKUNDEN_HERO}'")
+            elif e["top"] < 0 or e["bottom"] > limit:
+                errs.append(f"/ bei {vw}: {name} {e['top']}..{e['bottom']} px nicht ganz im ersten Bild ueber der Kontaktleiste ({limit})")
+            elif want and e["text"] != want:
+                errs.append(f"/ bei {vw}: {name} '{e['text']}' statt '{want}'")
     return errs
 
 
