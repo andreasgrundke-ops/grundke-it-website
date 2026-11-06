@@ -53,10 +53,10 @@
   <meta property="og:image:height" content="630"/>
 
   <!-- Google Fonts (lokal gehostet, DSGVO-konform) -->
-  <link rel="stylesheet" href="assets/css/fonts.css?v=2026.10.k"/>
+  <link rel="stylesheet" href="assets/css/fonts.css?v=2026.11.a"/>
 
   <!-- Shared CSS -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=2026.10.k"/>
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026.11.a"/>
 
   <script type="application/ld+json">
   {
@@ -914,9 +914,14 @@
     .sym-bild--mobil { display:none; }
   }
   @media (min-width:1024px) {
-    .itb-leist { display:grid; grid-template-columns:minmax(0,1fr) 400px; gap:0 3rem; align-items:center; }
-    .itb-leist > .anchor { grid-column:1 / -1; }
-    .sym-bild--desk { margin-top:0; }
+    /* Zitat und Symbolbild bilden die rechte Spalte: Bild direkt unter dem Zitat, buendig zur Spalte */
+    .itb-zeile { display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr); column-gap:3.5rem; grid-template-rows:auto auto 1fr; }
+    .itb-k { display:contents; }
+    .itb-k2 { grid-column:1; grid-row:1; align-self:center; }
+    .itb-claim { grid-column:2; grid-row:1; align-self:end; }
+    .itb-zeile > .itb-grenze { grid-column:1; grid-row:2; }
+    .itb-zeile > .itb-vgl { grid-column:1; grid-row:3; width:100%; align-self:start; }
+    .itb-zeile > .sym-bild--desk { grid-column:2; grid-row:2 / span 2; align-self:start; max-width:440px; margin-top:2rem; }
   }
   .sym-bild--mobil { margin-top:1.2rem; }
   .itb-leist-h { margin:0; max-width:62ch; font-size:.92rem; line-height:1.6; color:var(--text2); }
@@ -1319,6 +1324,7 @@
       <div><dt>„Der Server ist abgestürzt.“</dt><dd>Kein Zugriff auf Dateien, keine Mails. Ist er noch erreichbar, sehe ich ihn mir per Fernwartung an und sage dir, was los ist. <a href="/ratgeber/server-ausgefallen/">Was du bis dahin tun kannst</a></dd></div>
       <div><dt>„Es ist 16:30 Uhr, mein IT-Dienstleister hat schon zu.“</dt><dd>Ich habe keine klassischen Öffnungszeiten. Ruf an oder schreib per WhatsApp, auch abends und am Wochenende. Vertragskunden gehen vor.</dd></div>
     </dl>
+    <div class="itb-zeile" data-layout>
     <div class="itb-k">
       <p class="itb-k2">Ich habe eure Zugänge, kenne eure Geräte und weiß, wie bei euch gearbeitet wird. Wenn abends der Server steht oder am Samstag die Kasse, muss niemand erst herausfinden, wer zuständig ist. Und vorher kümmere ich mich je nach Paket um Updates, Datensicherung und Virenschutz, damit es seltener brennt.</p>
       <p class="itb-claim">Kein Gehalt. Kein Obstkorb. Kein Arbeitsplatz.<br><em>Dafür einer, der dein System kennt.</em></p>
@@ -1335,6 +1341,16 @@
           <li><svg aria-hidden="true"><use href="#ico-check"/></svg><span>Vieles löse ich per Fernwartung.</span></li>
         </ul>
     </details>
+    <!-- Symbolbild (Release 2.2.0, D1/N9) ab 768 px hier, ab 1024 px rechts unter dem Zitat; am Handy erst in #einsatzgebiet (Laengenbudget vor #preise) -->
+    <figure class="sym-bild sym-bild--desk">
+      <picture>
+        <source type="image/avif" srcset="/assets/img/fernwartung-arbeitsplatz-640.avif 640w, /assets/img/fernwartung-arbeitsplatz-1200.avif 1200w" sizes="(min-width:1024px) 490px, 560px">
+        <source type="image/webp" srcset="/assets/img/fernwartung-arbeitsplatz-640.webp 640w, /assets/img/fernwartung-arbeitsplatz-1200.webp 1200w" sizes="(min-width:1024px) 490px, 560px">
+        <img src="/assets/img/fernwartung-arbeitsplatz-640.jpg" srcset="/assets/img/fernwartung-arbeitsplatz-640.jpg 640w, /assets/img/fernwartung-arbeitsplatz-1200.jpg 1200w" sizes="(min-width:1024px) 490px, 560px" width="1200" height="675" loading="lazy" decoding="async" alt="Mann von hinten am Schreibtisch, vor sich Bildschirm und Laptop">
+      </picture>
+      <figcaption>Symbolbild</figcaption>
+    </figure>
+    </div>
     <div class="itb-leist">
       <span id="leistungen" class="anchor"></span>
       <div class="itb-leist-in">
@@ -1349,15 +1365,6 @@
         <a href="/lizenzen/">Lizenzen</a>
       </div>
       </div>
-      <!-- Symbolbild (Release 2.2.0, D1/N9) ab 768 px hier; am Handy erst in #einsatzgebiet (Laengenbudget vor #preise) -->
-      <figure class="sym-bild sym-bild--desk">
-        <picture>
-          <source type="image/avif" srcset="/assets/img/fernwartung-arbeitsplatz-640.avif 640w, /assets/img/fernwartung-arbeitsplatz-1200.avif 1200w" sizes="(min-width:1024px) 400px, 560px">
-          <source type="image/webp" srcset="/assets/img/fernwartung-arbeitsplatz-640.webp 640w, /assets/img/fernwartung-arbeitsplatz-1200.webp 1200w" sizes="(min-width:1024px) 400px, 560px">
-          <img src="/assets/img/fernwartung-arbeitsplatz-640.jpg" srcset="/assets/img/fernwartung-arbeitsplatz-640.jpg 640w, /assets/img/fernwartung-arbeitsplatz-1200.jpg 1200w" sizes="(min-width:1024px) 400px, 560px" width="1200" height="675" loading="lazy" decoding="async" alt="Mann von hinten am Schreibtisch, vor sich Bildschirm und Laptop">
-        </picture>
-        <figcaption>Symbolbild</figcaption>
-      </figure>
     </div>
   </div>
 </section>
@@ -1953,7 +1960,7 @@
       </nav>
       <span>© 2026 Grundke IT-Service · Andreas Grundke · Beethovenring 16 · 85630 Grasbrunn</span>
       <span>Zuletzt aktualisiert: 06.11.2026</span>
-      <span class="foot-ci">CI 2026.01 · grundke-it.de · Version 2.1.3 · Stand 19.10.2026</span>
+      <span class="foot-ci">CI 2026.01 · grundke-it.de · Version 2.2.0 · Stand 06.11.2026</span>
     </div>
   </div>
 </footer>
@@ -2122,9 +2129,9 @@
     }
   }
   </script>
-<script src="/assets/js/lenis.min.js?v=2026.10.k" defer></script>
-<script src="/assets/js/main.js?v=2026.10.k" defer></script>
-<script src="/assets/js/hero-chat.js?v=2026.10.k" defer></script>
+<script src="/assets/js/lenis.min.js?v=2026.11.a" defer></script>
+<script src="/assets/js/main.js?v=2026.11.a" defer></script>
+<script src="/assets/js/hero-chat.js?v=2026.11.a" defer></script>
 
 <!-- Sticky Contact Bar — Mobile: Bottom-Leiste · Desktop: Sidebar rechts -->
 <!-- STICKY:START -->

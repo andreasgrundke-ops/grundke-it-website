@@ -147,12 +147,12 @@ NEW_DATE_DISP = "7. Oktober 2026"
 # prueft das gegen origin/main), zusammen mit CACHE_NAME/RUNTIME_CACHE in sw.js. Neue URLs
 # laufen am alten Cache des Service Workers vorbei, ein wiederkehrender Besucher bekommt nie neues
 # HTML mit altem CSS.
-ASSET_VER = "2026.10.k"
+ASSET_VER = "2026.11.a"
 # Sichtbare Website-Version im Fuss (seit 17.10.2026): gleicht dem Suffix von CACHE_NAME in sw.js
 # (check_static prueft das). SITE_DATE_DISP = Stand dieser Version im Fuss, Form TT.MM.JJJJ.
-SITE_VERSION = "2.1.3"
-SITE_DATE = "2026-10-19"
-SITE_DATE_DISP = "19.10.2026"
+SITE_VERSION = "2.2.0"
+SITE_DATE = "2026-11-06"
+SITE_DATE_DISP = "06.11.2026"
 # Stand der Seiten, deren sichtbarer Inhalt zuletzt geaendert wurde (dateModified, Sitemap, Abschluss).
 CONTENT_DATE = "2026-10-18"
 CONTENT_DATE_DISP = "18. Oktober 2026"

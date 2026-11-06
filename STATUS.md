@@ -1,16 +1,18 @@
 # STATUS – grundke-it.de Website
 <!-- CI 2026.01 · Grundke IT-Service · Standard-Statusdatei, wird von Mensch+KI gepflegt -->
 
-**Stand:** 2026-10-18 · **Status:** Live
+**Stand:** 2026-11-06 · **Status:** Live
 
 ## Was ist das
 grundke-it.de Website – siehe README/CLAUDE.md im Projekt.
 
 ## Aktueller Stand
+06.11.2026: Release 2.2.0 „Klarheit und Handwerk“ (T1 Mobil: Hover nur mit Maus, Druck-Feedback, `viewport-fit`, Lenis nur Desktop; T2 Startseite: Hero klarer, Slop-Reste raus, Symbolbild, `areaServed`; T3 Versionen, Bildposition Desktop unter dem Zitat, Höhenbasis, Doku). Höhe `#it-betreuung` am Handy 1454 px (Basis vorher 1346 px): bewusst, weil B7 zwei Sätze zu Vertretung und Systemhaus ergänzt. Budgets unverändert (`#schnellcheck` ≤ 4000, `#preise` ≤ 5000, Seite ≤ 12000). Push erst nach Sichtprüfung.
+
 18.10.2026: Release 2.1.2 (Aufräumen: am Handy unter dem Film und im Abschluss nur der WhatsApp-Knopf, die Leiste trägt alle drei Wege; `/kontakt/` ohne Leiste; Preiskarten Starter und Premium mit grünem Kontur-Knopf, Business voll; Überzeilen auf der Startseite nur noch an Stimmen, Schnellcheck und Preisen; Link zum Betreuerwechsel im Hero unter den Knöpfen; Film-Knopf mit sichtbarem Text als Namen; Beispiel-Chat nachts mit passendem Fall zuerst; eigener WhatsApp-Satz für das Menü; Film v2.2 mit „netto zzgl. MwSt.“ beim Preis und dem KI-Hinweis wie am Player); davor 2.1.1 (Hero wieder mit Beispiel-Chat: erste Nachricht statisch, gekennzeichnet, Bühne entfernt; H1 „Dein ITler geht nicht ran? Ich schon.“ mit Schutzsatz, Leitzeile auf Notdienst- und Wechselseite und Vorschaubild unverändert; Ausrichtung auf Firmenkunden in Hero-Zeile, FAQ „Für wen arbeitest du?“, Abschlusszeile, Preis-Hinweis, Schema `audience` und `llms.txt`; Kontaktwege überall in der Reihenfolge WhatsApp, Telefon, E-Mail mit WhatsApp als grüner Hauptaktion, auch in der Navigation; Kasten „Direkt erreichbar“ entfernt; Film „Lieber schauen statt lesen?“ (1:31, `assets/video/`, Fassade, Untertitel, KI-Hinweis am Player, VideoObject); „erster Ansprechpartner“ in „So arbeite ich“; Software als Dienst auf `/software-nach-mass/`); davor 2.1.0 (Hero „Ein Weg“), enthält 2.0.1 (Abschnitt „So arbeite ich“ statt Systemhaus-Vergleich, FAQ-Passungsfrage, KI-Kennzeichnung im Abschluss); davor 2.0.0 (ruhigere Optik, Dock neu, Version im Fuß, Stundensatz-Wortlaut).
 
-- **Versionen:** `sw.js` `CACHE_NAME` `grundke-it-v2.1.2`, `RUNTIME_CACHE` `runtime-v41`, `ASSET_VER` 2026.10.k,
-  `SITE_VERSION` 2.1.2 (Fuß „Version x.y.z · Stand TT.MM.JJJJ“ aus dem Generator). `SITE_VERSION` bei jedem
+- **Versionen:** `sw.js` `CACHE_NAME` `grundke-it-v2.2.0`, `RUNTIME_CACHE` `grundke-it-runtime-v43`, `ASSET_VER` 2026.11.a,
+  `SITE_VERSION` 2.2.0 (Fuß „Version x.y.z · Stand TT.MM.JJJJ“ aus dem Generator). `SITE_VERSION` bei jedem
   Release mit dem `CACHE_NAME`-Suffix gleichziehen; `check_static.py` prüft das.
 - **Kontaktleiste (Dock):** eine Quelle im Generator (`STICKY`-Marken), nur bis 1279 px sichtbar, ab 1280 px
   ausgeblendet; nie in einzelnen Dateien ändern. Seit 2.1.1 Reihenfolge WhatsApp (Hauptaktion, grüne Fläche),

@@ -780,7 +780,7 @@ def _dominant(count_only):
       const e = d[0], area = x => { const r = x.getBoundingClientRect(); return r.width * r.height; };
       const isHead = x => /^H[1-6]$/.test(x.tagName) || x.matches('.s-label,.s-title,.s-sub') ||
         (x.querySelector('h1,h2,h3,h4') && !x.querySelector('p,figure,img,table,ul,ol,a.btn-p,blockquote'));
-      const sib = [...e.parentElement.children].filter(x => x !== e && getComputedStyle(x).display !== 'none' && area(x) > 0 && !isHead(x));
+      const sib = [...e.parentElement.children].filter(x => x !== e && getComputedStyle(x).display !== 'none' && area(x) > 0 && !isHead(x) && !x.hasAttribute('data-layout'));  // data-layout: reiner Layout-Rahmen (Spalten), kein Konkurrent
       res.area = Math.round(area(e)); res.sib = sib.map(x => ({ n: x.tagName.toLowerCase() + (x.className ? '.' + String(x.className).split(' ')[0] : ''), a: Math.round(area(x)) }));
       return res; })"""
     errs = []
