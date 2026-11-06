@@ -14,11 +14,11 @@ Repo entfernt; sie stehen nur noch in der Git-Historie.
 | Feld | Wert |
 |---|---|
 | Dateien | `assets/img/fernwartung-arbeitsplatz-640.{avif,webp,jpg}`, `assets/img/fernwartung-arbeitsplatz-1200.{avif,webp,jpg}` |
-| Verwendung | Startseite, ab 768 px in `#it-betreuung`, am Handy in `#einsatzgebiet`; sichtbar als „Symbolbild“ gekennzeichnet |
+| Verwendung | Startseite, ab 768 px in `#it-betreuung` (am Handy nicht eingebunden); sichtbar als „Symbolbild“ gekennzeichnet |
 | Quelle | Unsplash, Foto-ID `P_dneF5Pz_c` (früher `hero-01-office.jpg` im Hero-Slider, Git `c3e7408^`) |
 | Fotograf | Power Digital Marketing |
 | Lizenz | [Unsplash License](https://unsplash.com/license), Prüfdatum 06.11.2026 |
-| Bearbeitet | Zuschnitt 16:9 ohne den oberen Teil des Wandposters, Weichzeichnung von Poster, Aushängen, Aufkleber, Herstellerschriftzug und Wandbild; Metadaten (EXIF/XMP) entfernt; verkleinert auf 640 und 1200 px |
+| Bearbeitet | Zuschnitt 16:9 ohne den oberen Teil des Wandposters, Hintergrund weich unscharf wie geringe Schärfentiefe (Poster, Aushänge, Aufkleber, Wandbild unlesbar), Person, Monitor und Laptop scharf; Metadaten (EXIF/XMP) entfernt; verkleinert auf 640 und 1200 px |
 
 Das Bild zeigt nicht Andreas Grundke. Es wird nicht als `Person.image` verwendet, und kein Text auf der
 Seite behauptet etwas anderes.
