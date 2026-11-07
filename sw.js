@@ -143,10 +143,12 @@
                         ausserhalb des Pre-Cache.
  *   2.2.0 / 2026-11-06 — Klarheit und Handwerk: Hero klarer, Symbolbild in #it-betreuung,
                         Hover nur mit Maus; Asset-Version 2026.11.a, RUNTIME_CACHE v43.
+ *   2.2.1 / 2026-11-07 — 9 Google-Bewertungen auf der Startseite,
+                        Kontaktkarten am Handy flacher; RUNTIME_CACHE v44.
  */
 
-const CACHE_NAME    = 'grundke-it-v2.2.0';
-const RUNTIME_CACHE = 'grundke-it-runtime-v43';
+const CACHE_NAME    = 'grundke-it-v2.2.1';
+const RUNTIME_CACHE = 'grundke-it-runtime-v44';
 const ASSET_VER     = '2026.11.a';   // muss ASSET_VER im Generator entsprechen
 
 /* Pre-Cache: minimaler Kern fuer Offline-First-Boot */

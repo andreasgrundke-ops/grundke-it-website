@@ -150,16 +150,16 @@ NEW_DATE_DISP = "7. Oktober 2026"
 ASSET_VER = "2026.11.a"
 # Sichtbare Website-Version im Fuss (seit 17.10.2026): gleicht dem Suffix von CACHE_NAME in sw.js
 # (check_static prueft das). SITE_DATE_DISP = Stand dieser Version im Fuss, Form TT.MM.JJJJ.
-SITE_VERSION = "2.2.0"
-SITE_DATE = "2026-11-06"
-SITE_DATE_DISP = "06.11.2026"
+SITE_VERSION = "2.2.1"
+SITE_DATE = "2026-11-07"
+SITE_DATE_DISP = "07.11.2026"
 # Stand der Seiten, deren sichtbarer Inhalt zuletzt geaendert wurde (dateModified, Sitemap, Abschluss).
 CONTENT_DATE = "2026-10-18"
 CONTENT_DATE_DISP = "18. Oktober 2026"
 # Bewertungen im Google-Unternehmensprofil (Stand 10.10.2026). Eine weitere Stimme kam
 # direkt und zaehlt hier nicht mit. Einzige Quelle fuer die Zahl auf allen Seiten (llms.txt
 # schreibt der Generator nicht; check_static vergleicht die Zahl dort).
-REVIEW_COUNT_GOOGLE = 5
+REVIEW_COUNT_GOOGLE = 9
 COUNT_WORDS = ("", "Eine", "Zwei", "Drei", "Vier", "Fünf", "Sechs", "Sieben", "Acht", "Neun", "Zehn", "Elf", "Zwölf")
 
 
@@ -173,7 +173,7 @@ def review_count_phrase(n):
 
 # Startseite: Stand fuer WebPage.dateModified, Sitemap und 'Zuletzt aktualisiert' im Fuss
 # (sync_home). Nur hochsetzen, wenn sich der Inhalt der Startseite wirklich aendert.
-HOME_DATE = "2026-11-06"       # Release 2.2.0: Hero, Slop-Reste, Symbolbild, FAQ KI (Inhalt geaendert)
+HOME_DATE = "2026-11-07"       # 9 Google-Bewertungen, Kontaktkarten mobil (Inhalt geaendert)
 HOME_DATE_DISP = ".".join(reversed(HOME_DATE.split("-")))  # TT.MM.JJJJ
 # Kontaktseite (Handseite): Stand fuer „Zuletzt aktualisiert“ im Abschluss (HAND_CLOSING) und lastmod der Sitemap
 # (STATIC_URLS). Nur hochsetzen, wenn sich der Inhalt der Kontaktseite wirklich aendert.
@@ -3505,6 +3505,49 @@ def render_service(s, places, services):
 # Akkordeon und FAQPage-Schema (Antwort ohne Tags) kommen aus dieser Liste; die ersten
 # HOME_FAQ_SHOWN stehen in der Liste, der Rest unter "Weitere Fragen" (im HTML, ohne JS lesbar).
 REVIEWS = [
+    # 07.11.2026: vier neue Google-Bewertungen (Profil hat jetzt 9, alle 5 Sterne), Wortlaut aus dem Profil.
+    # Bei Peiser-Aubaret entfaellt nur die erste Zeile "⭐⭐⭐⭐⭐" (die Sterne zeigt die Karte), sonst ungekuerzt.
+    {
+        'id': 'peiser-aubaret',
+        'name': 'Alexanda Peiser-Aubaret',
+        'who': 'Alexanda Peiser-Aubaret',
+        'role': '',
+        'source': 'Google-Bewertung',
+        'author_type': 'Person',
+        'paragraphs': [
+            'Es gibt Menschen, die einfach ihren Job machen. Und dann gibt es Menschen, die mitdenken, mitfühlen und mit ganz viel Herzblut dabei sind.',
+            'Genau so jemanden habe ich hier gefunden!',
+            'Ob bei der Gestaltung meiner Webseite oder bei all den kleinen und großen technischen Herausforderungen, die mich manchmal an den Rand des Wahnsinns bringen. Hier bekomme ich nicht nur Lösungen, sondern auch Geduld, ehrliche Beratung und das wunderbare Gefühl, bestens aufgehoben zu sein.',
+            'Besonders schätze ich, dass nicht einfach irgendetwas umgesetzt wird, sondern wirklich zugehört, mitgedacht und verstanden wird, was mir wichtig ist.',
+            'Fachlich großartig, menschlich sowieso!',
+            'Eine absolute Herzensempfehlung und ein riesengroßes Dankeschön! ❤️',
+        ],
+        'date': '2026-11-04',
+    },
+    {
+        'id': 'geyer',
+        'name': 'Frank Geyer',
+        'who': 'Frank Geyer',
+        'role': '',
+        'source': 'Google-Bewertung',
+        'author_type': 'Person',
+        'paragraphs': [
+            'Sehr schnelle und unkomplizierte Hilfe. Sofort erreichbar, kurzfristige Terminabstimmung für die Analyse und Behebung des Problems.',
+        ],
+        'date': '2026-11-03',
+    },
+    {
+        'id': 'resch',
+        'name': 'Rudolf Resch',
+        'who': 'Rudolf Resch',
+        'role': '',
+        'source': 'Google-Bewertung',
+        'author_type': 'Person',
+        'paragraphs': [
+            'Herr Grundke ist ein sehr seriöser und kompetenter IT – Fachmann, der zudem sehr sympathisch ist. Wir sind mit seiner Unterstützung sehr zufrieden.',
+        ],
+        'date': '2026-10-19',
+    },
     {
         'id': 'bauer',
         'name': 'Apartments Bauer',
@@ -3563,6 +3606,17 @@ REVIEWS = [
         'author_type': 'Person',
         'paragraphs': [
             'Man merkt gar nicht, dass man selber überhaupt keine Ahnung hat. Perfekt',
+        ],
+    },
+    {
+        'id': 'j-k',
+        'name': 'J K',     # so im Google-Profil angezeigt
+        'who': 'J K',
+        'role': '',
+        'source': 'Google-Bewertung',
+        'author_type': 'Person',
+        'paragraphs': [
+            'Super',
         ],
     },
     {

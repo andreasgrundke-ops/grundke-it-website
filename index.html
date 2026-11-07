@@ -121,12 +121,33 @@
         "aggregateRating":{
           "@type":"AggregateRating",
           "ratingValue":"5.0",
-          "ratingCount":"5",
-          "reviewCount":"5",
+          "ratingCount":"9",
+          "reviewCount":"9",
           "bestRating":"5",
           "worstRating":"1"
         },
         "review":[
+          {
+            "@type":"Review",
+            "reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"},
+            "author":{"@type":"Person","name":"Alexanda Peiser-Aubaret"},
+            "datePublished":"2026-11-04",
+            "reviewBody":"Es gibt Menschen, die einfach ihren Job machen. Und dann gibt es Menschen, die mitdenken, mitfühlen und mit ganz viel Herzblut dabei sind.\n\nGenau so jemanden habe ich hier gefunden!\n\nOb bei der Gestaltung meiner Webseite oder bei all den kleinen und großen technischen Herausforderungen, die mich manchmal an den Rand des Wahnsinns bringen. Hier bekomme ich nicht nur Lösungen, sondern auch Geduld, ehrliche Beratung und das wunderbare Gefühl, bestens aufgehoben zu sein.\n\nBesonders schätze ich, dass nicht einfach irgendetwas umgesetzt wird, sondern wirklich zugehört, mitgedacht und verstanden wird, was mir wichtig ist.\n\nFachlich großartig, menschlich sowieso!\n\nEine absolute Herzensempfehlung und ein riesengroßes Dankeschön! ❤️"
+          },
+          {
+            "@type":"Review",
+            "reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"},
+            "author":{"@type":"Person","name":"Frank Geyer"},
+            "datePublished":"2026-11-03",
+            "reviewBody":"Sehr schnelle und unkomplizierte Hilfe. Sofort erreichbar, kurzfristige Terminabstimmung für die Analyse und Behebung des Problems."
+          },
+          {
+            "@type":"Review",
+            "reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"},
+            "author":{"@type":"Person","name":"Rudolf Resch"},
+            "datePublished":"2026-10-19",
+            "reviewBody":"Herr Grundke ist ein sehr seriöser und kompetenter IT – Fachmann, der zudem sehr sympathisch ist. Wir sind mit seiner Unterstützung sehr zufrieden."
+          },
           {
             "@type":"Review",
             "reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"},
@@ -157,6 +178,12 @@
             "reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"},
             "author":{"@type":"Person","name":"Martina Polednik"},
             "reviewBody":"Man merkt gar nicht, dass man selber überhaupt keine Ahnung hat. Perfekt"
+          },
+          {
+            "@type":"Review",
+            "reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"},
+            "author":{"@type":"Person","name":"J K"},
+            "reviewBody":"Super"
           },
           {
             "@type":"Review",
@@ -236,7 +263,7 @@
     "about":{"@id":"https://grundke-it.de/#localbusiness"},
     "primaryImageOfPage":"https://grundke-it.de/assets/img/og-image.png",
     "datePublished":"2026-04-10",
-    "dateModified":"2026-11-06",
+    "dateModified":"2026-11-07",
     "author":{"@id":"https://grundke-it.de/#andreas"},
     "publisher":{"@id":"https://grundke-it.de/#localbusiness"}
   }
@@ -999,6 +1026,8 @@
     .testimonials .testi-card--long .testi-txt { margin-bottom:.45rem; }
     .testimonials .testi-card--long .stars { margin-bottom:.4rem; }
   }
+  /* 2.2.1: ab 1280 px dreispaltig (sechs Absaetze der neuesten Stimme), die Leiste bleibt flacher als die grosse Stimme */
+  @media (min-width:1280px) { .testi-card--long .testi-txt { column-count:3; } }
   /* Ab 1024 px: breitere Karten (weniger Zeilen, flachere Leiste) und mehr Luft um die grosse Stimme,
      damit sie die groesste Flaeche im Abschnitt bleibt */
   @media (min-width:1024px) {
@@ -1268,7 +1297,7 @@
       <p class="hc-schutz">Keine Öffnungszeiten. Vertragskunden zuerst, ohne garantierte Reaktionszeit.</p>
       <p class="hc-wer"><strong>Andreas Grundke</strong> · Grundke IT-Service, Grasbrunn</p>
       <ul class="hc-proof">
-        <li><svg class="is-star" aria-hidden="true"><use href="#ico-star"/></svg><a href="#referenzen" data-proof>5,0 bei 5 Google-Bewertungen</a></li>
+        <li><svg class="is-star" aria-hidden="true"><use href="#ico-star"/></svg><a href="#referenzen" data-proof>5,0 bei 9 Google-Bewertungen</a></li>
         <li><svg aria-hidden="true"><use href="#ico-user-check"/></svg>Über 20 Jahre IT-Erfahrung</li>
       </ul>
       <div class="hc-ctas">
@@ -1382,8 +1411,43 @@
         <div class="testi-role">Google-Bewertung</div>
       </figcaption>
     </figure>
-    <p class="testi-row-h">5 weitere Stimmen<span class="testi-pos" data-testi-pos aria-hidden="true"></span></p>
+    <p class="testi-row-h">9 weitere Stimmen<span class="testi-pos" data-testi-pos aria-hidden="true"></span></p>
     <div class="testi-row" tabindex="0" role="region" aria-label="Weitere Kundenstimmen">
+      <figure class="testi-card testi-card--long">
+        <div class="stars" role="img" aria-label="5 von 5 Sternen"><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg></div>
+        <blockquote class="testi-txt">
+          <p>„Es gibt Menschen, die einfach ihren Job machen. Und dann gibt es Menschen, die mitdenken, mitfühlen und mit ganz viel Herzblut dabei sind.</p>
+          <p>Genau so jemanden habe ich hier gefunden!</p>
+          <p>Ob bei der Gestaltung meiner Webseite oder bei all den kleinen und großen technischen Herausforderungen, die mich manchmal an den Rand des Wahnsinns bringen. Hier bekomme ich nicht nur Lösungen, sondern auch Geduld, ehrliche Beratung und das wunderbare Gefühl, bestens aufgehoben zu sein.</p>
+          <p>Besonders schätze ich, dass nicht einfach irgendetwas umgesetzt wird, sondern wirklich zugehört, mitgedacht und verstanden wird, was mir wichtig ist.</p>
+          <p>Fachlich großartig, menschlich sowieso!</p>
+          <p>Eine absolute Herzensempfehlung und ein riesengroßes Dankeschön! ❤️“</p>
+        </blockquote>
+        <figcaption>
+          <div class="testi-who">Alexanda Peiser-Aubaret</div>
+          <div class="testi-role">Google-Bewertung</div>
+        </figcaption>
+      </figure>
+      <figure class="testi-card">
+        <div class="stars" role="img" aria-label="5 von 5 Sternen"><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg></div>
+        <blockquote class="testi-txt">
+          <p>„Sehr schnelle und unkomplizierte Hilfe. Sofort erreichbar, kurzfristige Terminabstimmung für die Analyse und Behebung des Problems.“</p>
+        </blockquote>
+        <figcaption>
+          <div class="testi-who">Frank Geyer</div>
+          <div class="testi-role">Google-Bewertung</div>
+        </figcaption>
+      </figure>
+      <figure class="testi-card">
+        <div class="stars" role="img" aria-label="5 von 5 Sternen"><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg></div>
+        <blockquote class="testi-txt">
+          <p>„Herr Grundke ist ein sehr seriöser und kompetenter IT – Fachmann, der zudem sehr sympathisch ist. Wir sind mit seiner Unterstützung sehr zufrieden.“</p>
+        </blockquote>
+        <figcaption>
+          <div class="testi-who">Rudolf Resch</div>
+          <div class="testi-role">Google-Bewertung</div>
+        </figcaption>
+      </figure>
       <figure class="testi-card testi-card--long">
         <div class="stars" role="img" aria-label="5 von 5 Sternen"><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg></div>
         <blockquote class="testi-txt">
@@ -1429,6 +1493,16 @@
         </figcaption>
       </figure>
       <figure class="testi-card">
+        <div class="stars" role="img" aria-label="5 von 5 Sternen"><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg><svg aria-hidden="true"><use href="#ico-star"/></svg></div>
+        <blockquote class="testi-txt">
+          <p>„Super“</p>
+        </blockquote>
+        <figcaption>
+          <div class="testi-who">J K</div>
+          <div class="testi-role">Google-Bewertung</div>
+        </figcaption>
+      </figure>
+      <figure class="testi-card">
         <blockquote class="testi-txt">
           <p>„Ich kann Grundke IT Service uneingeschränkt empfehlen. Andreas zeichnet sich durch eine äußerst zeitnahe und zuverlässige Betreuung aus. Er ist fachlich hervorragend aufgestellt und setzt gezielt moderne Technologien wie Künstliche Intelligenz ein, um optimale Lösungen zu erarbeiten. Ich fühle mich in allen IT-Angelegenheiten bestens betreut und schätze die professionelle Zusammenarbeit sehr.“</p>
         </blockquote>
@@ -1439,7 +1513,7 @@
       </figure>
     </div>
     <!-- HOME_REVIEWS:END -->
-    <p class="testi-source" id="bewertungen-herkunft"><strong>Woher die Stimmen kommen:</strong> Fünf stammen aus meinem Google-Unternehmensprofil, eine hat mir eine Kundin direkt geschickt. Ich gebe sie wörtlich und ungekürzt wieder. Hier stehen nur Stimmen von Betrieben und Menschen, für die ich gearbeitet habe. Die Bewertungen bei Google prüft Google nach eigenen Regeln; ändern oder löschen kann ich sie dort nicht. Alle Google-Bewertungen stehen im <a href="https://maps.google.com/?cid=1934827868521304193" target="_blank" rel="noopener">Google-Profil</a>.</p>
+    <p class="testi-source" id="bewertungen-herkunft"><strong>Woher die Stimmen kommen:</strong> Neun stammen aus meinem Google-Unternehmensprofil, eine hat mir eine Kundin direkt geschickt. Ich gebe sie wörtlich und ungekürzt wieder. Hier stehen nur Stimmen von Betrieben und Menschen, für die ich gearbeitet habe. Die Bewertungen bei Google prüft Google nach eigenen Regeln; ändern oder löschen kann ich sie dort nicht. Alle Google-Bewertungen stehen im <a href="https://maps.google.com/?cid=1934827868521304193" target="_blank" rel="noopener">Google-Profil</a>.</p>
   </div>
 </section>
 
@@ -1948,8 +2022,8 @@
         <a href="/barrierefreiheit/">Barrierefreiheit</a>
       </nav>
       <span>© 2026 Grundke IT-Service · Andreas Grundke · Beethovenring 16 · 85630 Grasbrunn</span>
-      <span>Zuletzt aktualisiert: 06.11.2026</span>
-      <span class="foot-ci">CI 2026.01 · grundke-it.de · Version 2.2.0 · Stand 06.11.2026</span>
+      <span>Zuletzt aktualisiert: 07.11.2026</span>
+      <span class="foot-ci">CI 2026.01 · grundke-it.de · Version 2.2.1 · Stand 07.11.2026</span>
     </div>
   </div>
 </footer>
