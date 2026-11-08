@@ -1,11 +1,11 @@
-name: Deploy to GitHub Pages
+name: Deploy auf den Server (Branch live)
 
 # Ablauf (seit 08.11.2026, Umzug auf eigenen Server):
-#   1. build:  check_static --ci, interne Dateien entfernen, Artefakt fuer Pages hochladen. Schlaegt eine Pruefung
-#              fehl, endet hier alles: weder Pages noch Branch `live` aendern sich.
-#   2. deploy: GitHub Pages wie bisher (Rueckfall waehrend der Umstellungsfrist).
-#   3. live:   dasselbe bereinigte Artefakt als Einzel-Commit ohne Historie per Force-Push in Branch `live`;
+#   1. build:  check_static --ci, interne Dateien entfernen, Artefakt hochladen. Schlaegt eine Pruefung
+#              fehl, endet hier alles: Branch `live` aendert sich nicht.
+#   2. live:   dasselbe bereinigte Artefakt als Einzel-Commit ohne Historie per Force-Push in Branch `live`;
 #              der Server holt ihn von dort. Nur dieser Job darf schreiben (contents: write).
+# GitHub Pages ist seit 08.11.2026 abgeschaltet (Hosting nur noch auf dem Hetzner-VPS).
 # Actions sind per Commit-SHA gepinnt, der Tag steht als Kommentar daneben.
 
 on:
@@ -15,11 +15,9 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: "pages"
+  group: "deploy-live"
   cancel-in-progress: false
 
 jobs:
@@ -40,9 +38,6 @@ jobs:
       - name: Statische Pruefungen (check_static --ci)
         run: python -B tools/checks/check_static.py --ci
 
-      - name: Setup Pages
-        uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
-
       # Nicht ausliefern: Generator und Pruefskripte, Arbeitsdaten, docs/ (PUNKTE.md war live), Markdown im Wurzelordner und
       # Dotfiles (.gitignore nannte interne Dateinamen und war live abrufbar; .github schliesst
       # upload-pages-artifact zwar selbst aus, hier trotzdem ausdruecklich).
@@ -57,19 +52,8 @@ jobs:
         with:
           path: '.'
 
-  deploy:
-    needs: build
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4
-
   live:
-    # Haengt nur an build (also an check_static), nicht an Pages: faellt Pages aus, bekommt der Server trotzdem den Stand.
+    # Haengt an build, also an check_static: nur gepruefte Staende kommen auf den Server.
     needs: build
     runs-on: ubuntu-latest
     permissions:

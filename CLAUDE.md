@@ -12,7 +12,7 @@ KI-Anwendungen fuer den Betrieb.
 - **Hosting seit 08.11.2026: eigener Hetzner-VPS** (nginx-Container `grundke-it-web` hinter dem zentralen Caddy,
   Security-Header inkl. CSP aus Caddy). Deploy durch `git push origin main`: die Action prueft und baut, schreibt das
   bereinigte Artefakt in Branch `live`; ein Cron auf dem VPS holt `live` jede Minute und schaltet atomar um (3 Staende
-  bleiben, Rollback `rollback.sh --vorher`). GitHub Pages laeuft noch als Rueckfall mit, DNS zeigt aber auf den VPS.
+  bleiben, Rollback `rollback.sh --vorher`). GitHub Pages ist seit 08.11.2026 abgeschaltet.
   Startseite `Cache-Control: max-age=600`, `sw.js` `no-cache`. Betrieb, Rueckbau: `../_intern/vps/grundke-it-web/INSTALL.md`.
   Live pruefen mit `tools/checks/check_headers.py` und `check_csp.py --base https://grundke-it.de`.
 - **Kanonische Domain: non-www** (`https://grundke-it.de`). Neue URLs immer non-www schreiben.
