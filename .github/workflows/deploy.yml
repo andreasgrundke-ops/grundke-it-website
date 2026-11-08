@@ -26,6 +26,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false   # kein Token in .git/config
 
       # Statische Pruefungen vor dem Ausliefern (Spec §9). --ci laesst AK13v und AK14r aus: die brauchen
       # ../_intern/ bzw. Git-Historie, beides gibt es hier nicht. Schlaegt eine Pruefung fehl, endet der
@@ -37,6 +39,12 @@ jobs:
 
       - name: Statische Pruefungen (check_static --ci)
         run: python -B tools/checks/check_static.py --ci
+
+      # upload-pages-artifact packt mit --dereference: ein committeter Symlink wuerde durch den Inhalt seines
+      # Ziels ersetzt und veroeffentlicht. Deshalb hier pruefen, bevor gepackt wird (Review 08.11.2026).
+      - name: Keine Symlinks im Repo
+        run: |
+          if git ls-files -s | awk '$1=="120000"' | grep -q .; then echo "Symlink im Repo, Abbruch"; exit 1; fi
 
       # Nicht ausliefern: Generator und Pruefskripte, Arbeitsdaten, docs/ (PUNKTE.md war live), Markdown im Wurzelordner und
       # Dotfiles (.gitignore nannte interne Dateinamen und war live abrufbar; .github schliesst
@@ -54,6 +62,8 @@ jobs:
 
   live:
     # Haengt an build, also an check_static: nur gepruefte Staende kommen auf den Server.
+    # Nur von main: workflow_dispatch laesst sich sonst auf jedem Branch starten (Review 08.11.2026).
+    if: github.ref == 'refs/heads/main'
     needs: build
     runs-on: ubuntu-latest
     permissions:
@@ -77,6 +87,9 @@ jobs:
           tar -xf "$RUNNER_TEMP/pages/artifact.tar" -C "$site"
           test -f "$site/index.html" && test -f "$site/sw.js" && test -f "$site/404.html"
           if find "$site" -type l | grep -q .; then echo "Symlink im Artefakt, Abbruch"; exit 1; fi
+          # Groessenbremse: der Server klont live vollstaendig, bevor er selbst pruefen kann.
+          size_mb="$(du -sm "$site" | cut -f1)"
+          if [ "$size_mb" -ge 1400 ]; then echo "Artefakt ${size_mb} MB, Grenze 1400 MB, Abbruch"; exit 1; fi
           cd "$site"
           git init -q -b live
           git config user.name "github-actions[bot]"

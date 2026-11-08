@@ -90,8 +90,9 @@ def ak1(rep, base):
         rep.check("AK1", f"CSP enthaelt {need}", need in csp)
     d = csp_directives(csp)
     script = d.get("script-src", d.get("default-src"))
-    rep.check("AK1", "CSP script-src 'self' ohne unsafe-*",
-              script is not None and "'self'" in script and not any("unsafe" in s for s in script), f"script-src {script}")
+    # Positivliste: nur 'self'. Auch https:, *, data:, blob: oder fremde Hosts gelten als Fehler (Review 08.11.2026).
+    rep.check("AK1", "CSP script-src nur 'self'",
+              script is not None and set(script) == {"'self'"}, f"script-src {script}")
     rep.check("AK1", "kein Server-Header", "server" not in h, f"Server: {h.get('server')}")
 
 
