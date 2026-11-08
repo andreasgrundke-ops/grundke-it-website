@@ -9,8 +9,12 @@ KI-Anwendungen fuer den Betrieb.
 
 ## Stack / Technik
 - Statisches HTML, Vanilla CSS + JS, kein Framework. Dark Mode, PWA-faehig.
-- **GitHub Pages**, Deploy durch `git push origin main`. Startseite `Cache-Control: max-age=600`,
-  Live-Verifikation deshalb erst nach Build plus bis zu 10 Minuten CDN-Cache.
+- **Hosting seit 08.11.2026: eigener Hetzner-VPS** (nginx-Container `grundke-it-web` hinter dem zentralen Caddy,
+  Security-Header inkl. CSP aus Caddy). Deploy durch `git push origin main`: die Action prueft und baut, schreibt das
+  bereinigte Artefakt in Branch `live`; ein Cron auf dem VPS holt `live` jede Minute und schaltet atomar um (3 Staende
+  bleiben, Rollback `rollback.sh --vorher`). GitHub Pages laeuft noch als Rueckfall mit, DNS zeigt aber auf den VPS.
+  Startseite `Cache-Control: max-age=600`, `sw.js` `no-cache`. Betrieb, Rueckbau: `../_intern/vps/grundke-it-web/INSTALL.md`.
+  Live pruefen mit `tools/checks/check_headers.py` und `check_csp.py --base https://grundke-it.de`.
 - **Kanonische Domain: non-www** (`https://grundke-it.de`). Neue URLs immer non-www schreiben.
 - `assets/css/style.css` ist gemeinsam, seitenspezifische Styles liegen inline im `<style>`-Block.
 
@@ -85,9 +89,11 @@ geaendert hat, nicht wegen eines neuen Footer-Links.
   `tree/tree.js`, `ki-arbeitsplatz-onboarding-kit/arbeitsbuch.js`; die beiden letzten nicht im Pre-Cache), neue Prüfung AKCSP
   in `check_static.py` (auch kein `on…=`, kein `javascript:`). `fonts.css` steht als `<style id="fonts-css">` im Kopf jeder
   Seite (Generator `FONTS_STYLE`, Quelle bleibt `assets/css/fonts.css`), nicht mehr im Pre-Cache.
-- **Release 2.3.1: Hosting Hetzner, DSE §3/§5** (geht mit dem DNS-Wechsel live, Spec `_intern/specs/2026-11-08-hosting-vps-security-header-design.md`).
-- **Versionen jetzt (Release 2.3.1):** `sw.js` `CACHE_NAME` `grundke-it-v2.3.1`, `RUNTIME_CACHE` `grundke-it-runtime-v47`,
-  `ASSET_VER` 2026.11.b, `SITE_VERSION` 2.3.1 (Fuss "Version x.y.z · Stand TT.MM.JJJJ" aus dem Generator).
+- **Release 2.3.1 (08.11.2026): Hosting Hetzner, DSE §3/§5, Impressum** (live mit dem DNS-Wechsel, Spec `_intern/specs/2026-11-08-hosting-vps-security-header-design.md`).
+- **Release 2.3.2 (08.11.2026):** robots.txt mit eigenen Gruppen fuer `Claude-SearchBot` und `Applebot`; kein `<img>` mehr
+  in CSS-Kommentaren (der Deep Check zaehlte das als Bild ohne Alt-Text).
+- **Versionen jetzt (Release 2.3.2):** `sw.js` `CACHE_NAME` `grundke-it-v2.3.2`, `RUNTIME_CACHE` `grundke-it-runtime-v48`,
+  `ASSET_VER` 2026.11.b, `SITE_VERSION` 2.3.2 (Fuss "Version x.y.z · Stand TT.MM.JJJJ" aus dem Generator).
   `SITE_VERSION` bei jedem Release mit dem `CACHE_NAME`-Suffix gleichziehen, `check_static.py` prueft das.
   `check_static.py --ci` laeuft im Deploy und stoppt ihn bei Fehlern.
 - **Kontaktleiste (Dock):** kommt aus einer Quelle im Generator (`STICKY`-Marken), nur bis 1279 px sichtbar,

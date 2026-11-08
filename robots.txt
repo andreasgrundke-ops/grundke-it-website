@@ -51,6 +51,12 @@ Disallow: /tree/
 Disallow: /ki-arbeitsplatz-onboarding-kit/
 Disallow: /tools/
 
+User-agent: Claude-SearchBot
+Allow: /
+Disallow: /tree/
+Disallow: /ki-arbeitsplatz-onboarding-kit/
+Disallow: /tools/
+
 User-agent: anthropic-ai
 Allow: /
 Disallow: /tree/
@@ -76,6 +82,12 @@ Disallow: /ki-arbeitsplatz-onboarding-kit/
 Disallow: /tools/
 
 User-agent: CCBot
+Allow: /
+Disallow: /tree/
+Disallow: /ki-arbeitsplatz-onboarding-kit/
+Disallow: /tools/
+
+User-agent: Applebot
 Allow: /
 Disallow: /tree/
 Disallow: /ki-arbeitsplatz-onboarding-kit/
