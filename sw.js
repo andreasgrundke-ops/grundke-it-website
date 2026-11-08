@@ -145,10 +145,11 @@
                         Hover nur mit Maus; Asset-Version 2026.11.a, RUNTIME_CACHE v43.
  *   2.2.1 / 2026-11-07 — 9 Google-Bewertungen auf der Startseite,
                         Kontaktkarten am Handy flacher; RUNTIME_CACHE v44.
+ *   2.2.2 / 2026-11-08 — /it-notdienst/ mit der Stimme von Frank Geyer; RUNTIME_CACHE v45.
  */
 
-const CACHE_NAME    = 'grundke-it-v2.2.1';
-const RUNTIME_CACHE = 'grundke-it-runtime-v44';
+const CACHE_NAME    = 'grundke-it-v2.2.2';
+const RUNTIME_CACHE = 'grundke-it-runtime-v45';
 const ASSET_VER     = '2026.11.a';   // muss ASSET_VER im Generator entsprechen
 
 /* Pre-Cache: minimaler Kern fuer Offline-First-Boot */

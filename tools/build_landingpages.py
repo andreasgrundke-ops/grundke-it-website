@@ -150,9 +150,9 @@ NEW_DATE_DISP = "7. Oktober 2026"
 ASSET_VER = "2026.11.a"
 # Sichtbare Website-Version im Fuss (seit 17.10.2026): gleicht dem Suffix von CACHE_NAME in sw.js
 # (check_static prueft das). SITE_DATE_DISP = Stand dieser Version im Fuss, Form TT.MM.JJJJ.
-SITE_VERSION = "2.2.1"
-SITE_DATE = "2026-11-07"
-SITE_DATE_DISP = "07.11.2026"
+SITE_VERSION = "2.2.2"
+SITE_DATE = "2026-11-08"
+SITE_DATE_DISP = "08.11.2026"
 # Stand der Seiten, deren sichtbarer Inhalt zuletzt geaendert wurde (dateModified, Sitemap, Abschluss).
 CONTENT_DATE = "2026-10-18"
 CONTENT_DATE_DISP = "18. Oktober 2026"
@@ -1825,7 +1825,7 @@ SERVICES = [
     },
     {
         "slug": "it-notdienst", "nav": "IT-Notdienst",
-        "modified": CONTENT_DATE, "modified_disp": CONTENT_DATE_DISP,
+        "modified": "2026-11-08", "modified_disp": "8. November 2026",   # 2.2.2: Stimme Geyer
         "title": "IT-Notdienst für Firmen im Münchner Osten | Grundke IT",
         "h1": "IT-Notdienst für Unternehmen",
         "service_type": "IT-Notdienst",
@@ -1841,7 +1841,7 @@ SERVICES = [
             ("andreas", "Ich habe euren Zugang und schaue per Fernwartung auf Server, Netz und Datensicherung."),
             ("andreas", "Ein Dienst hing nach dem letzten Update. Neu gestartet, die Laufwerke sind wieder da."),
         ],
-        "voices": ["polednik", "verena-k"],
+        "voices": ["geyer", "verena-k"],   # 2.2.2: Geyer (sofort erreichbar) passt zum Notdienst
         # Darstellung in der Huelle: Preis neben dem Einstieg statt Vertrauenskasten
         "proof2": PROOF_ADHOC,
         "intro_price": ("Ad hoc", "110 €", "Abrechnung im 15-Minuten-Takt.", False, "netto/Std. zzgl. MwSt."),

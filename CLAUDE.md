@@ -80,8 +80,9 @@ geaendert hat, nicht wegen eines neuen Footer-Links.
 - **Release 2.2.1 (07.11.2026):** 9 Google-Bewertungen (`REVIEW_COUNT_GOOGLE`, `llms.txt`), alle wortgetreu auf der Startseite;
   lange Stimmen nur in der Wischleiste, nie als großes Zitat (#preise-Budget). /kontakt/ am Handy flache Karten (68 px).
   Anrede: ich; du für die Person, ihr/euch für den Betrieb.
-- **Versionen jetzt (Release 2.2.1):** `sw.js` `CACHE_NAME` `grundke-it-v2.2.1`, `RUNTIME_CACHE` `grundke-it-runtime-v44`,
-  `ASSET_VER` 2026.11.a, `SITE_VERSION` 2.2.1 (Fuss "Version x.y.z · Stand TT.MM.JJJJ" aus dem Generator).
+- **Release 2.2.2 (08.11.2026):** /it-notdienst/ zeigt Frank Geyer („Sofort erreichbar“) statt Polednik; auf der Startseite als großes Zitat zu lang (#preise 5.069 > 5.000).
+- **Versionen jetzt (Release 2.2.2):** `sw.js` `CACHE_NAME` `grundke-it-v2.2.2`, `RUNTIME_CACHE` `grundke-it-runtime-v45`,
+  `ASSET_VER` 2026.11.a, `SITE_VERSION` 2.2.2 (Fuss "Version x.y.z · Stand TT.MM.JJJJ" aus dem Generator).
   `SITE_VERSION` bei jedem Release mit dem `CACHE_NAME`-Suffix gleichziehen, `check_static.py` prueft das.
   `check_static.py --ci` laeuft im Deploy und stoppt ihn bei Fehlern.
 - **Kontaktleiste (Dock):** kommt aus einer Quelle im Generator (`STICKY`-Marken), nur bis 1279 px sichtbar,
