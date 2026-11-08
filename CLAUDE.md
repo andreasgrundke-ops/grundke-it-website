@@ -85,8 +85,9 @@ geaendert hat, nicht wegen eines neuen Footer-Links.
   `tree/tree.js`, `ki-arbeitsplatz-onboarding-kit/arbeitsbuch.js`; die beiden letzten nicht im Pre-Cache), neue Prüfung AKCSP
   in `check_static.py` (auch kein `on…=`, kein `javascript:`). `fonts.css` steht als `<style id="fonts-css">` im Kopf jeder
   Seite (Generator `FONTS_STYLE`, Quelle bleibt `assets/css/fonts.css`), nicht mehr im Pre-Cache.
-- **Versionen jetzt (Release 2.3.0):** `sw.js` `CACHE_NAME` `grundke-it-v2.3.0`, `RUNTIME_CACHE` `grundke-it-runtime-v46`,
-  `ASSET_VER` 2026.11.b, `SITE_VERSION` 2.3.0 (Fuss "Version x.y.z · Stand TT.MM.JJJJ" aus dem Generator).
+- **Release 2.3.1: Hosting Hetzner, DSE §3/§5** (geht mit dem DNS-Wechsel live, Spec `_intern/specs/2026-11-08-hosting-vps-security-header-design.md`).
+- **Versionen jetzt (Release 2.3.1):** `sw.js` `CACHE_NAME` `grundke-it-v2.3.1`, `RUNTIME_CACHE` `grundke-it-runtime-v47`,
+  `ASSET_VER` 2026.11.b, `SITE_VERSION` 2.3.1 (Fuss "Version x.y.z · Stand TT.MM.JJJJ" aus dem Generator).
   `SITE_VERSION` bei jedem Release mit dem `CACHE_NAME`-Suffix gleichziehen, `check_static.py` prueft das.
   `check_static.py --ci` laeuft im Deploy und stoppt ihn bei Fehlern.
 - **Kontaktleiste (Dock):** kommt aus einer Quelle im Generator (`STICKY`-Marken), nur bis 1279 px sichtbar,

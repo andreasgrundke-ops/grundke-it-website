@@ -152,10 +152,11 @@
  *                        fonts.css steht als <style id="fonts-css"> im Kopf jeder Seite statt als
  *                        Link (eine render-blockierende Anfrage weniger) und ist deshalb nicht mehr
  *                        im Pre-Cache. Asset-Version 2026.11.b, RUNTIME_CACHE v46.
+ *   2.3.1 / 2026-11-08 — Hosting Hetzner: Datenschutzerklaerung §3 und §5 neu; RUNTIME_CACHE v47.
  */
 
-const CACHE_NAME    = 'grundke-it-v2.3.0';
-const RUNTIME_CACHE = 'grundke-it-runtime-v46';
+const CACHE_NAME    = 'grundke-it-v2.3.1';
+const RUNTIME_CACHE = 'grundke-it-runtime-v47';
 const ASSET_VER     = '2026.11.b';   // muss ASSET_VER im Generator entsprechen
 
 /* Pre-Cache: minimaler Kern fuer Offline-First-Boot */
