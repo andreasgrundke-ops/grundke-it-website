@@ -63,15 +63,16 @@ jobs:
               --exclude='.next' \
               --exclude='*.exe' \
               --exclude='**/embedded/rustdesk.exe' \
-              -czf source.tar.gz .
-          ls -lh source.tar.gz
+              -czf "$RUNNER_TEMP/source.tar.gz" .
+          # Archiv ausserhalb des gepackten Ordners, sonst "file changed as we read it" (08.11.2026)
+          ls -lh "$RUNNER_TEMP/source.tar.gz"
 
       - name: Generate metadata
         env:
           WASABI_KEY: ${{ secrets.WASABI_ACCESS_KEY }}
         if: ${{ env.WASABI_KEY != '' }}
         run: |
-          cat > metadata.json <<EOF
+          cat > "$RUNNER_TEMP/metadata.json" <<EOF
           {
             "project": "${{ steps.vars.outputs.project }}",
             "version": "${{ steps.vars.outputs.version }}",
@@ -102,8 +103,8 @@ jobs:
           ENDPOINT="https://s3.eu-central-2.wasabisys.com"
           BUCKET="${{ secrets.WASABI_BUCKET }}"
           DEST="s3://${BUCKET}/projects/${{ steps.vars.outputs.project }}/${{ steps.vars.outputs.folder }}/"
-          s5cmd --endpoint-url "$ENDPOINT" cp source.tar.gz "${DEST}source.tar.gz"
-          s5cmd --endpoint-url "$ENDPOINT" cp metadata.json "${DEST}metadata.json"
+          s5cmd --endpoint-url "$ENDPOINT" cp "$RUNNER_TEMP/source.tar.gz" "${DEST}source.tar.gz"
+          s5cmd --endpoint-url "$ENDPOINT" cp "$RUNNER_TEMP/metadata.json" "${DEST}metadata.json"
           echo "✅ Uploaded to: $DEST"
 
       - name: Notify backend
