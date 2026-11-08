@@ -27,7 +27,7 @@
   <meta name="application-name" content="Grundke IT"/>
   <meta name="msapplication-TileColor" content="#0c4da2"/>
   <meta name="msapplication-TileImage" content="/android-chrome-192x192.png"/>
-  <link rel="stylesheet" href="../assets/css/fonts.css"/>
+  <style id="fonts-css">@font-face { font-family: 'Space Grotesk'; font-style: normal; font-weight: 400 700; font-display: swap; src: url('/assets/fonts/SpaceGrotesk-latin.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}@font-face { font-family: 'Manrope'; font-style: normal; font-weight: 400 700; font-display: swap; src: url('/assets/fonts/Manrope-latin.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}@font-face { font-family: 'JetBrains Mono'; font-style: normal; font-weight: 400 600; font-display: swap; src: url('/assets/fonts/JetBrainsMono-latin.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}</style>
 
   <style>
   /* ════════════════════════════════════════
@@ -821,44 +821,6 @@
 
 </div>
 
-<script>
-/* vCard generieren und als Download anbieten */
-document.getElementById('vcardBtn').addEventListener('click', function(e) {
-  e.preventDefault();
-
-  var vcard = [
-    'BEGIN:VCARD',
-    'VERSION:3.0',
-    'FN:Andreas Grundke',
-    'N:Grundke;Andreas;;;',
-    'ORG:Grundke IT-Service',
-    'TITLE:IT-Service · Fachinformatiker Systemintegration',
-    'TEL;TYPE=CELL,VOICE:+491782584438',
-    'TEL;TYPE=WORK,VOICE:+491782584438',
-    'EMAIL;TYPE=WORK:info@grundke-it.de',
-    'URL:https://grundke-it.de',
-    'ADR;TYPE=WORK:;;Beethovenring 16;Grasbrunn;;85630;Deutschland',
-    'NOTE:IT-Betreuung für KMUs im Raum München Ost. Kein Ticketsystem – immer persönlich.',
-    'END:VCARD'
-  ].join('\r\n');
-
-  var blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
-  var url = URL.createObjectURL(blob);
-  var a = document.createElement('a');
-  a.href = url;
-  a.download = 'Andreas-Grundke-IT-Service.vcf';
-  a.click();
-  URL.revokeObjectURL(url);
-});
-
-/* Release-2 PWA: Service Worker auch von tree-Page registrieren,
-   damit Add-to-Home-Screen ueberall greift. */
-if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js', { scope: '/' })
-      .catch(err => console.warn('[SW] tree page registration failed:', err));
-  });
-}
-</script>
+<script src="/tree/tree.js" defer></script>
 </body>
 </html>

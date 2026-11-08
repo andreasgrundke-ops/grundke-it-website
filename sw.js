@@ -146,11 +146,17 @@
  *   2.2.1 / 2026-11-07 — 9 Google-Bewertungen auf der Startseite,
                         Kontaktkarten am Handy flacher; RUNTIME_CACHE v44.
  *   2.2.2 / 2026-11-08 — /it-notdienst/ mit der Stimme von Frank Geyer; RUNTIME_CACHE v45.
+ *   2.3.0 / 2026-11-08 — Vorbereitung CSP script-src 'self': keine ausfuehrbaren Inline-Skripte
+ *                        mehr (/fernwartung/ laedt fernwartung-head.js, /tree/ und das Arbeitsbuch
+ *                        eigene Dateien im Seitenordner, beide weiter nicht im Pre-Cache).
+ *                        fonts.css steht als <style id="fonts-css"> im Kopf jeder Seite statt als
+ *                        Link (eine render-blockierende Anfrage weniger) und ist deshalb nicht mehr
+ *                        im Pre-Cache. Asset-Version 2026.11.b, RUNTIME_CACHE v46.
  */
 
-const CACHE_NAME    = 'grundke-it-v2.2.2';
-const RUNTIME_CACHE = 'grundke-it-runtime-v45';
-const ASSET_VER     = '2026.11.a';   // muss ASSET_VER im Generator entsprechen
+const CACHE_NAME    = 'grundke-it-v2.3.0';
+const RUNTIME_CACHE = 'grundke-it-runtime-v46';
+const ASSET_VER     = '2026.11.b';   // muss ASSET_VER im Generator entsprechen
 
 /* Pre-Cache: minimaler Kern fuer Offline-First-Boot */
 const PRECACHE_URLS = [
@@ -159,7 +165,6 @@ const PRECACHE_URLS = [
   '/404.html',
   '/site.webmanifest',
   '/assets/css/style.css?v=' + ASSET_VER,
-  '/assets/css/fonts.css?v=' + ASSET_VER,
   '/assets/js/main.js?v=' + ASSET_VER,
   '/assets/js/hero-chat.js?v=' + ASSET_VER,
   '/assets/js/lenis.min.js?v=' + ASSET_VER,

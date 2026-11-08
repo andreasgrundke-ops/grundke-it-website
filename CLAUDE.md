@@ -81,8 +81,12 @@ geaendert hat, nicht wegen eines neuen Footer-Links.
   lange Stimmen nur in der Wischleiste, nie als großes Zitat (#preise-Budget). /kontakt/ am Handy flache Karten (68 px).
   Anrede: ich; du für die Person, ihr/euch für den Betrieb.
 - **Release 2.2.2 (08.11.2026):** /it-notdienst/ zeigt Frank Geyer („Sofort erreichbar“) statt Polednik; auf der Startseite als großes Zitat zu lang (#preise 5.069 > 5.000).
-- **Versionen jetzt (Release 2.2.2):** `sw.js` `CACHE_NAME` `grundke-it-v2.2.2`, `RUNTIME_CACHE` `grundke-it-runtime-v45`,
-  `ASSET_VER` 2026.11.a, `SITE_VERSION` 2.2.2 (Fuss "Version x.y.z · Stand TT.MM.JJJJ" aus dem Generator).
+- **Release 2.3.0 (08.11.2026, Vorbereitung CSP):** keine ausführbaren Inline-Skripte mehr (`assets/js/fernwartung-head.js`,
+  `tree/tree.js`, `ki-arbeitsplatz-onboarding-kit/arbeitsbuch.js`; die beiden letzten nicht im Pre-Cache), neue Prüfung AKCSP
+  in `check_static.py` (auch kein `on…=`, kein `javascript:`). `fonts.css` steht als `<style id="fonts-css">` im Kopf jeder
+  Seite (Generator `FONTS_STYLE`, Quelle bleibt `assets/css/fonts.css`), nicht mehr im Pre-Cache.
+- **Versionen jetzt (Release 2.3.0):** `sw.js` `CACHE_NAME` `grundke-it-v2.3.0`, `RUNTIME_CACHE` `grundke-it-runtime-v46`,
+  `ASSET_VER` 2026.11.b, `SITE_VERSION` 2.3.0 (Fuss "Version x.y.z · Stand TT.MM.JJJJ" aus dem Generator).
   `SITE_VERSION` bei jedem Release mit dem `CACHE_NAME`-Suffix gleichziehen, `check_static.py` prueft das.
   `check_static.py --ci` laeuft im Deploy und stoppt ihn bei Fehlern.
 - **Kontaktleiste (Dock):** kommt aus einer Quelle im Generator (`STICKY`-Marken), nur bis 1279 px sichtbar,

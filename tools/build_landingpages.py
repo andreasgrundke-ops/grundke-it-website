@@ -147,10 +147,10 @@ NEW_DATE_DISP = "7. Oktober 2026"
 # prueft das gegen origin/main), zusammen mit CACHE_NAME/RUNTIME_CACHE in sw.js. Neue URLs
 # laufen am alten Cache des Service Workers vorbei, ein wiederkehrender Besucher bekommt nie neues
 # HTML mit altem CSS.
-ASSET_VER = "2026.11.a"
+ASSET_VER = "2026.11.b"
 # Sichtbare Website-Version im Fuss (seit 17.10.2026): gleicht dem Suffix von CACHE_NAME in sw.js
 # (check_static prueft das). SITE_DATE_DISP = Stand dieser Version im Fuss, Form TT.MM.JJJJ.
-SITE_VERSION = "2.2.2"
+SITE_VERSION = "2.3.0"
 SITE_DATE = "2026-11-08"
 SITE_DATE_DISP = "08.11.2026"
 # Stand der Seiten, deren sichtbarer Inhalt zuletzt geaendert wurde (dateModified, Sitemap, Abschluss).
@@ -406,6 +406,7 @@ SPRITE_RE = re.compile(r'<svg[^>]*\bid="icon-sprite"[^>]*>.*?</svg>', re.S)
 STYLE_CSS_RE = re.compile(r'href="(?:\.\./)*/?assets/css/style\.css(?:\?v=[^"]*)?"')
 MAIN_JS_RE = re.compile(r'src="(?:\.\./)*/?assets/js/main\.js(?:\?v=[^"]*)?"')
 FW_JS_RE = re.compile(r'src="(?:\.\./)*/?assets/js/fernwartung\.js(?:\?v=[^"]*)?"')   # nur /fernwartung/
+FW_HEAD_JS_RE = re.compile(r'src="(?:\.\./)*/?assets/js/fernwartung-head\.js(?:\?v=[^"]*)?"')   # seit 2.3.0, nur /fernwartung/
 # Abschluss auf den Handseiten: sync_shared ersetzt einen vorhandenen Abschluss
 # (CLOSING_RE) oder setzt ihn vor </main>. Pfad -> (Seitenname fuer den WhatsApp-Satz nach den freigegebenen Texten, None:
 # allgemeiner Abschluss-Satz; Datum der Autorzeile, None: ohne „Zuletzt aktualisiert“). Kontakt traegt das Datum
@@ -422,29 +423,67 @@ HAND_CLOSING = {
     "404.html": (None, None),
 }
 CLOSING_RE = re.compile(r'<section class="cta-sec".*?</section>', re.S)
-# Font-Preload wie in head() der Generator-Seiten, vor dem fonts.css-Link der Handseite und mit dessen Pfad
-# (../assets/… oder /assets/… bei der 404), damit die URL der des @font-face in fonts.css entspricht
+# Schriften (seit 08.11.2026, Release 2.3.0): fonts.css steht nicht mehr als <link> im Kopf, sondern als <style
+# id="fonts-css"> (FONTS_STYLE) – eine Anfrage weniger vor dem ersten Bild (Lighthouse: render-blockierend). Quelle
+# bleibt assets/css/fonts.css; die url() werden auf /assets/fonts/ (absolut) umgeschrieben, damit sie auf jeder
+# Seitentiefe gleich sind. Die Font-Preloads (../assets/… bzw. /assets/…) loesen auf dieselbe URL auf.
+# FONTS_CSS_RE findet den alten <link> (erster Lauf), FONTS_STYLE_RE den Block (jeder weitere Lauf).
 FONTS_CSS_RE = re.compile(r'( *)<link rel="stylesheet" href="((?:\.\./)*|/)assets/css/fonts\.css(?:\?v=[^"]*)?"/?>')
-# fonts.css behaelt den relativen Pfad (die Font-Preloads leiten ihren Pfad davon ab) und bekommt nur ?v=
-FONTS_CSS_VER_RE = re.compile(r'(href="(?:(?:\.\./)*|/)assets/css/fonts\.css)(?:\?v=[^"]*)?"')
+FONTS_STYLE_RE = re.compile(r'( *)<style id="fonts-css">.*?</style>', re.S)
+# Seiten ausserhalb von HAND_PAGES, die nur den Schriften-Block bekommen (unverlinkt, eigener Kopf)
+FONTS_ONLY_PAGES = ("tree/index.html", "ki-arbeitsplatz-onboarding-kit/index.html")
+
+
+def _fonts_style():
+    with open(os.path.join(ROOT, "assets", "css", "fonts.css"), encoding="utf-8") as f:
+        css = re.sub(r"/\*.*?\*/", "", f.read(), flags=re.S)
+    css = css.replace("url('../fonts/", "url('/assets/fonts/")
+    rules = [re.sub(r"\s*\n\s*", " ", r.strip()) + "}" for r in css.split("}") if r.strip()]
+    return '<style id="fonts-css">' + "".join(rules) + "</style>"
+
+
+FONTS_STYLE = _fonts_style()
 LENIS_JS_RE = re.compile(r'src="(?:\.\./)*/?assets/js/lenis\.min\.js(?:\?v=[^"]*)?"')
 HERO_JS_RE = re.compile(r'src="(?:\.\./)*/?assets/js/hero-chat\.js(?:\?v=[^"]*)?"')
 FONT_PRELOADS = ("Manrope-latin.woff2", "SpaceGrotesk-latin.woff2")
 
 
-def preload_fonts(html, nl):
-    """Setzt die Font-Preloads vor fonts.css (Layout-Sprung beim ersten Aufruf), je Schrift nur, wenn ihr
-    Preload noch fehlt (Startseite, zweiter Lauf: unveraendert)."""
+def inline_fonts(html):
+    """Ersetzt den fonts.css-Link oder einen vorhandenen Schriften-Block durch FONTS_STYLE (Einrueckung bleibt)."""
+    for rx in (FONTS_STYLE_RE, FONTS_CSS_RE):
+        m = rx.search(html)
+        if m:
+            return html[:m.start()] + m.group(1) + FONTS_STYLE + html[m.end():]
+    raise SystemExit("inline_fonts: weder fonts.css-Link noch Schriften-Block gefunden")
+
+
+def preload_fonts(html, nl, prefix):
+    """Setzt die Font-Preloads vor den Schriften-Block (Layout-Sprung beim ersten Aufruf), je Schrift nur, wenn ihr
+    Preload noch fehlt (Startseite, zweiter Lauf: unveraendert). prefix = Pfad zur Wurzel wie bei den uebrigen
+    Verweisen der Seite ('../', '/' bei der 404)."""
     missing = [f for f in FONT_PRELOADS
                if not re.search(r'<link rel="preload" as="font"[^>]*' + re.escape(f), html)]
     if not missing:
         return html
-    m = FONTS_CSS_RE.search(html)
+    m = FONTS_STYLE_RE.search(html)
     if not m:
-        raise SystemExit("preload_fonts: fonts.css-Link fehlt")
+        raise SystemExit("preload_fonts: Schriften-Block fehlt")
     links = "".join('{i}<link rel="preload" as="font" type="font/woff2" crossorigin href="{p}assets/fonts/{f}"/>{nl}'
-                    .format(i=m.group(1), p=m.group(2), f=f, nl=nl) for f in missing)
+                    .format(i=m.group(1), p=prefix, f=f, nl=nl) for f in missing)
     return html[:m.start()] + links + html[m.start():]
+
+
+def sync_fonts_only():
+    """Schriften-Block auch in den unverlinkten Seiten (FONTS_ONLY_PAGES), sonst nichts."""
+    for rel in FONTS_ONLY_PAGES:
+        path = os.path.join(ROOT, rel)
+        with open(path, encoding="utf-8", newline="") as f:
+            html = f.read()
+        html_new = inline_fonts(html)
+        if html_new != html:
+            with open(path, "w", encoding="utf-8", newline="") as f:
+                f.write(html_new)
+            print("  Schriften-Block aktualisiert: " + rel)
 
 
 def sync_shared(places, services):
@@ -474,9 +513,12 @@ def sync_shared(places, services):
         html_new = STYLE_CSS_RE.sub(lambda _m: 'href="' + asset("css/style.css") + '"', html_new)
         html_new = MAIN_JS_RE.sub(lambda _m: 'src="' + asset("js/main.js") + '"', html_new)
         html_new = FW_JS_RE.sub(lambda _m: 'src="' + asset("js/fernwartung.js") + '"', html_new)
+        html_new = FW_HEAD_JS_RE.sub(lambda _m: 'src="' + asset("js/fernwartung-head.js") + '"', html_new)
         html_new = LENIS_JS_RE.sub(lambda _m: 'src="' + asset("js/lenis.min.js") + '"', html_new)
         html_new = HERO_JS_RE.sub(lambda _m: 'src="' + asset("js/hero-chat.js") + '"', html_new)
-        html_new = FONTS_CSS_VER_RE.sub(lambda m: m.group(1) + "?v=" + ASSET_VER + '"', html_new)
+        fm = FONTS_CSS_RE.search(html_new)
+        font_prefix = fm.group(2) if fm else ("/" if rel == "404.html" else "../" * rel.count("/"))
+        html_new = inline_fonts(html_new)
         if not home:
             sprite = ICON_SPRITE.replace("\n", nl)
             if SPRITE_RE.search(html_new):
@@ -484,7 +526,7 @@ def sync_shared(places, services):
             else:
                 html_new = html_new.replace('<header class="site-header">',
                                             sprite + nl + '<header class="site-header">', 1)
-            html_new = preload_fonts(html_new, nl)
+            html_new = preload_fonts(html_new, nl, font_prefix)
         if rel in NO_DOCK:
             # Stand 18.10.2026, Release 2.1.2: hier keine Kontaktleiste (Leiste samt Marken und Platzhalter unten weg)
             html_new = NO_DOCK_RE.sub("", html_new)
@@ -612,12 +654,12 @@ def head(title, desc, slug, og_title, og_desc, og_alt, tw_desc=None, tw_alt=None
   <meta name="msapplication-TileColor" content="#0c4da2"/>
   <link rel="preload" as="font" type="font/woff2" crossorigin href="{up}assets/fonts/Manrope-latin.woff2"/>
   <link rel="preload" as="font" type="font/woff2" crossorigin href="{up}assets/fonts/SpaceGrotesk-latin.woff2"/>
-  <link rel="stylesheet" href="{up}assets/css/fonts.css?v={ver}"/>
+  {fonts}
   <link rel="stylesheet" href="{css}"/>
 """.format(title=esc(title), desc=esc_attr(desc), canonical=canonical,
            og_title=esc_attr(og_title), og_desc=esc_attr(og_desc), og_alt=esc_attr(og_alt),
            tw_desc=esc_attr(tw_desc or og_desc), tw_alt=tw_alt_html,
-           domain=DOMAIN, up=up(slug), css=asset("css/style.css"), ver=ASSET_VER)
+           domain=DOMAIN, up=up(slug), css=asset("css/style.css"), fonts=FONTS_STYLE)
 
 
 LEGAL_LINKS = [("Impressum", "/impressum/"), ("Datenschutz", "/datenschutz/"),
@@ -3892,6 +3934,7 @@ def main():
         print("  -", w)
     print("sitemap.xml aktualisiert")
     sync_shared(PLACES, SERVICES)
+    sync_fonts_only()
     sync_home()
 
 

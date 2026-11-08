@@ -1,5 +1,5 @@
 """Statische Pruefungen (Spec §9: AK1, AK2, AK2b, AK7, AK8, AK9, AK9b, AK11a, AK13, AK13v, AK14, AK14r; R2: AKH;
-2.1.1: AKK Kontakt-Reihenfolge).
+2.1.1: AKK Kontakt-Reihenfolge; 2.3.0: AKCSP keine Inline-Skripte und Ereignis-Attribute).
 Aufruf: python tools/checks/check_static.py [--only AK1,AK9] [--ci]   Exit 1 bei Fehler.
 --ci: nur Pruefungen, die weder ../_intern/ noch Git-Historie brauchen (Deploy-Workflow); AK13v (Versionen gegen
 origin/main) und AK14r (Rechtstexte gegen Basis-Commit und legal_hash.json) werden dann sichtbar uebersprungen.
@@ -205,7 +205,8 @@ def text_of(fragment):
 
 
 def styles(s):
-    return "\n".join(re.findall(r"<style[^>]*>(.*?)</style>", s, re.S))
+    """Eigene <style>-Bloecke einer Seite; der gemeinsame Schriften-Block (id="fonts-css", seit 2.3.0) zaehlt nicht."""
+    return "\n".join(re.findall(r'<style(?![^>]*\bid="fonts-css")[^>]*>(.*?)</style>', s, re.S))
 
 
 _GEN = []
@@ -696,7 +697,7 @@ def ak14r():
     return errs
 
 
-VERSIONED_ASSETS = r"(?:style\.css|main\.js|fernwartung\.js|fonts\.css|lenis\.min\.js|hero-chat\.js)"
+VERSIONED_ASSETS = r"(?:style\.css|main\.js|fernwartung\.js|fernwartung-head\.js|fonts\.css|lenis\.min\.js|hero-chat\.js)"
 
 
 def precache_urls():
@@ -1243,6 +1244,69 @@ def akf():
     return errs
 
 
+# ----------------------------------------------------------------------------------------------------------------------
+# AKCSP (seit 08.11.2026, Release 2.3.0): Vorbereitung der Content-Security-Policy script-src 'self'. In keiner
+# ausgelieferten HTML-Datei (alles ausser DEPLOY_DROPPED und versteckten Ordnern, also auch /tree/ und das Arbeitsbuch)
+# ein ausfuehrbares Inline-Skript (<script> ohne src; erlaubt nur nicht ausfuehrbare Typen wie application/ld+json),
+# ein <script src> mit Inhalt, ein Ereignis-Attribut (on…=) oder eine javascript:-URL. Die CSP wuerde all das blockieren.
+# ----------------------------------------------------------------------------------------------------------------------
+CSP_DATA_TYPES = {"application/ld+json", "application/json"}
+CSP_URL_ATTRS = {"href", "src", "action", "formaction", "xlink:href"}
+
+
+def delivered_html():
+    out = []
+    for p in sorted(ROOT.rglob("*.html")):
+        r = rel(p)
+        if r.startswith(DEPLOY_DROPPED) or any(part.startswith(".") or part == "node_modules"
+                                                for part in r.split("/")[:-1]):
+            continue
+        out.append(p)
+    return out
+
+
+class _CspScan(HTMLParser):
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.hits, self._script = [], None
+
+    def handle_starttag(self, tag, attrs):
+        line = self.getpos()[0]
+        for k, v in attrs:
+            if k.startswith("on"):
+                self.hits.append(f"Zeile {line}: <{tag} {k}=…> (Ereignis-Attribut)")
+            elif k in CSP_URL_ATTRS and (v or "").strip().lower().startswith("javascript:"):
+                self.hits.append(f"Zeile {line}: <{tag} {k}=\"javascript:…\">")
+        if tag == "script":
+            a = dict(attrs)
+            self._script = (line, a.get("src") is not None, (a.get("type") or "").strip().lower(), [])
+
+    def handle_data(self, d):
+        if self._script:
+            self._script[3].append(d)
+
+    def handle_endtag(self, tag):
+        if tag != "script" or not self._script:
+            return
+        line, has_src, typ, body = self._script
+        self._script = None
+        content = "".join(body).strip()
+        if has_src and content:
+            self.hits.append(f"Zeile {line}: <script src> mit Inhalt")
+        elif not has_src and typ not in CSP_DATA_TYPES:
+            self.hits.append(f"Zeile {line}: Inline-Skript{' (type=' + typ + ')' if typ else ''}")
+
+
+def akcsp():
+    errs = []
+    for p in delivered_html():
+        scan = _CspScan()
+        scan.feed(read(p))
+        scan.close()
+        errs += [f"{rel(p)}: {h}" for h in scan.hits]
+    return errs
+
+
 def write_legal_baseline():
     out = {}
     for p in legal_pages():
@@ -1257,7 +1321,7 @@ CHECKS = {
     "AK1": (ak1, ()), "AK2": (ak2, ()), "AK2b": (ak2b, ()), "AK7": (ak7, ()), "AK8": (ak8, ()), "AK9": (ak9, ()),
     "AK9b": (ak9b, ()), "AK11a": (ak11a, ()), "AK13": (ak13, ()), "AK13v": (ak13v, ("git",)), "AK14": (ak14, ()),
     "AK14r": (ak14r, ("intern", "git")), "AK13s": (ak13s, ()), "AKH": (akh, ()), "AKK": (akk, ()),
-    "AKF": (akf, ()),
+    "AKF": (akf, ()), "AKCSP": (akcsp, ()),
 }
 
 if __name__ == "__main__":
