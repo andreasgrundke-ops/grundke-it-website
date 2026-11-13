@@ -70,7 +70,7 @@ Unternehmen.
   für Betriebe ohne passendes Werkzeug, Empfang, Ausstellung, Ablage und Weg zur
   Steuerberatung, eigener Export aus Fachanwendungen
 - IT-Sicherheitsschulung für KMU (Live per Microsoft Teams 135 EUR netto pauschal,
-  Online-Portal in Vorbereitung, geplant ab 49 EUR netto/Halbjahr plus 5 EUR je Mitarbeiter),
+  Online-Portal in der Pilotphase, Preis noch nicht festgelegt),
   mit Modul „KI sicher nutzen“
 
 ## Preise für Projekte (netto, Richtwerte, Stand 11.10.2026)

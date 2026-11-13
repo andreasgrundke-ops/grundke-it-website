@@ -150,9 +150,9 @@ NEW_DATE_DISP = "7. Oktober 2026"
 ASSET_VER = "2026.11.b"
 # Sichtbare Website-Version im Fuss (seit 17.10.2026): gleicht dem Suffix von CACHE_NAME in sw.js
 # (check_static prueft das). SITE_DATE_DISP = Stand dieser Version im Fuss, Form TT.MM.JJJJ.
-SITE_VERSION = "2.3.2"
-SITE_DATE = "2026-11-08"
-SITE_DATE_DISP = "08.11.2026"
+SITE_VERSION = "2.3.3"
+SITE_DATE = "2026-11-13"
+SITE_DATE_DISP = "13.11.2026"
 # Stand der Seiten, deren sichtbarer Inhalt zuletzt geaendert wurde (dateModified, Sitemap, Abschluss).
 CONTENT_DATE = "2026-10-18"
 CONTENT_DATE_DISP = "18. Oktober 2026"
@@ -1032,7 +1032,8 @@ def price_card(pr, slug):
     tier, amount, desc, feat = pr[:4]
     unit = pr[4] if len(pr) > 4 else "/Monat zzgl. MwSt."
     opt = pr[5] if len(pr) > 5 else {}
-    if "zzgl. MwSt." not in unit:
+    # Karte ohne Betrag (z. B. „Pilotphase“, seit 13.11.2026): keine Einheit mit „zzgl. MwSt.“ noetig
+    if any(ch.isdigit() for ch in amount) and "zzgl. MwSt." not in unit:
         raise SystemExit("price_card: Einheit ohne 'zzgl. MwSt.' auf " + slug + ": " + unit)
     if set(opt) - PRICE_OPT_KEYS:
         raise SystemExit("price_card: unbekannte Felder " + ", ".join(sorted(set(opt) - PRICE_OPT_KEYS)) + " auf " + slug)
@@ -1608,7 +1609,8 @@ SCHULUNG_COURSE = {
     "name": "IT-Sicherheitsschulung für Mitarbeiter (KMU)",
     "description": ("Praxisnahe IT-Sicherheits- und Datenschutz-Awareness-Schulung für kleine und mittlere Unternehmen: "
                     "Phishing erkennen, sichere Passwörter, sicherer Umgang mit KI-Werkzeugen, richtiges Verhalten im "
-                    "Arbeitsalltag. Live per Microsoft Teams oder als Online-Portal mit Quiz und PDF-Zertifikat."),
+                    "Arbeitsalltag. Live per Microsoft Teams; das Online-Portal mit Quiz und Teilnahmebescheinigung "
+                    "läuft in der Pilotphase."),
     "provider": {
         "@type": "Organization",
         "@id": BUSINESS_ID,
@@ -1623,10 +1625,7 @@ SCHULUNG_COURSE = {
          "category": "Pauschale",
          "priceSpecification": {"@type": "PriceSpecification", "price": "135.00", "priceCurrency": "EUR",
                                 "valueAddedTaxIncluded": False}},
-        {"@type": "Offer", "name": "Online-Portal (Grundpauschale/Halbjahr)", "price": "49.00", "priceCurrency": "EUR",
-         "category": "Halbjahr", "availability": "https://schema.org/PreOrder",
-         "priceSpecification": {"@type": "UnitPriceSpecification", "price": "49.00", "priceCurrency": "EUR",
-                                "unitText": "Halbjahr", "valueAddedTaxIncluded": False}},
+        # Online-Portal: Pilotphase, kein Preis ausgewiesen (Andreas 13.11.2026), deshalb kein Offer
     ],
 }
 _SCHULUNG_MAIL_END = ("%0A%0AMein%20Unternehmen%20%2F%20meine%20Situation%3A%0A%0A%0AAm%20besten%20erreichbar%20bin%20ich"
@@ -2596,7 +2595,7 @@ SERVICES = [
         ],
         "extra": """
       <h2>Das Online-Portal im Detail</h2>
-      <p>Das Portal ist in Vorbereitung. So ist es geplant:</p>
+      <p>Das Portal läuft derzeit in der Pilotphase mit einem ersten Betrieb. So ist es aufgebaut:</p>
       <h3>Für den Firmeninhaber</h3>
       <ul class="lp-checklist">
         <li>Eigener Admin-Zugang</li>
@@ -2608,8 +2607,8 @@ SERVICES = [
       <ul class="lp-checklist">
         <li>Schulung im eigenen Tempo durcharbeiten</li>
         <li>Verständlich, praxisnah, kein IT-Fachwissen nötig</li>
-        <li>Freiwilliges Quiz am Ende</li>
-        <li>PDF-Zertifikat als Teilnahmenachweis</li>
+        <li>Quiz am Ende, bestanden ab 80 %</li>
+        <li>Teilnahmebescheinigung als PDF</li>
       </ul>
 """,
         # Hinweis zum Portal direkt ueber den Preiskarten (wie bisher in der Naehe der Preise). Nach dem Design-Review:
@@ -2618,8 +2617,9 @@ SERVICES = [
         # Abzeichen, Portal und Kombi ohne Hervorhebung und ohne Abzeichen („Beste Wahl“ entfaellt).
         "prices_before": "Das Online-Portal im Detail",
         "prices_wide": True,
-        "prices_intro": ("<strong>Das Online-Portal ist in Vorbereitung.</strong> Portal und Kombi-Paket kannst du schon "
-                         "vormerken, ich melde mich, sobald es startet. Die Live-Schulung ist schon buchbar."),
+        "prices_intro": ("<strong>Das Online-Portal läuft in der Pilotphase.</strong> Preise für Portal und Kombi-Paket "
+                         "nenne ich nach der Pilotphase. Vormerken kannst du dich schon, ich melde mich dann. "
+                         "Die Live-Schulung ist buchbar."),
         "prices": [
             ("Live-Schulung", "135 €",
              "Interaktive Schulung mit Präsentation, echten Beispielen und Raum für Fragen. Direkt auf dein Unternehmen "
@@ -2628,27 +2628,22 @@ SERVICES = [
               "feats": ["1:1 oder Gruppenformat per Microsoft Teams", "Phishing, Passwörter, Social Engineering, DSGVO",
                         "Empfohlene Dauer: 1,5 Stunden", "Unterlagen als PDF zum Nachschlagen"],
               "btn": ("Schulung anfragen", MAILTO_SCHULUNG["live"])}),
-            ("Online-Portal (in Vorbereitung)", "49 €",
-             "Geplant: Deine Mitarbeiter arbeiten die Schulung eigenständig durch, wann und wo sie wollen. Die Inhalte sollen "
-             "mindestens halbjährlich an aktuelle Bedrohungen angepasst werden.", False, "Grundpauschale / Halbjahr, zzgl. MwSt.",
-             {"add": "+ 5 € pro Mitarbeiter / Halbjahr, zzgl. MwSt.",
-              "feats": ["Eigener Firmenzugang mit Mitarbeiterverwaltung", "Inhalte mindestens alle 6 Monate aktualisiert",
-                        "Quiz + PDF-Zertifikat pro Teilnehmer", "Teilnahmeliste als Nachweis für den Inhaber"],
+            # Portal und Kombi: Pilotphase, kein Preis ausgewiesen (Andreas 13.11.2026)
+            ("Online-Portal (Pilotphase)", "Pilotphase",
+             "Deine Mitarbeiter arbeiten die Schulung eigenständig durch, wann und wo sie wollen. Die Inhalte sollen "
+             "mindestens halbjährlich an aktuelle Bedrohungen angepasst werden.", False, "Preis folgt nach der Pilotphase",
+             {"feats": ["Eigener Firmenzugang mit Mitarbeiterverwaltung", "Inhalte mindestens alle 6 Monate aktualisiert",
+                        "Quiz und Teilnahmebescheinigung je Teilnehmer", "Teilnahmeliste als Nachweis für den Inhaber"],
               "btn": ("Portal vormerken", MAILTO_SCHULUNG["portal"])}),
-            ("Kombi-Paket (in Vorbereitung)", "ab 165 €",
-             "Geplant: Die Live-Schulung bringt alle auf denselben Stand, das Portal frischt das Wissen danach jedes Halbjahr auf.",
-             False, "/ Halbjahr (statt 184 €), zzgl. MwSt.",
-             {"add": "Inkl. Live-Schulung + Portal + 4,50 €/Mitarbeiter, zzgl. MwSt.",
-              "feats": ["Live-Schulung per Teams (1,5h)", "Portal-Zugang für alle Mitarbeiter",
-                        "Quiz, Zertifikate & Teilnahmeliste", "10% Rabatt auf den Gesamtpreis"],
+            ("Kombi-Paket (Pilotphase)", "Pilotphase",
+             "Die Live-Schulung bringt alle auf denselben Stand, das Portal frischt das Wissen danach jedes Halbjahr auf.",
+             False, "Preis folgt nach der Pilotphase",
+             {"feats": ["Live-Schulung per Teams (1,5h)", "Portal-Zugang für alle Mitarbeiter",
+                        "Quiz, Teilnahmebescheinigungen und Teilnahmeliste"],
               "btn": ("Kombi-Paket vormerken", MAILTO_SCHULUNG["kombi"])}),
         ],
-        # Rechenbeispiel (bisher Kasten unter den Preisen) und der Satz aus dem frueheren Abschluss „Noch Fragen?“
-        "prices_after": ('      <p><strong>Rechenbeispiel:</strong> Firma mit 8 Mitarbeitern → Live-Schulung '
-                         '<strong>135&nbsp;€</strong> + Portal-Halbjahr <strong>49&nbsp;€ + 40&nbsp;€ (8×5&nbsp;€)</strong> = '
-                         '<strong>224&nbsp;€</strong> für ein komplett geschultes Team mit Zertifikat. Mit Kombi-Rabatt nur '
-                         '<strong>201&nbsp;€</strong>. Alle Preise zzgl. MwSt.</p>\n'
-                         '      <p><strong>Noch Fragen?</strong> Schreib mir – ich berate dich gerne, welche Variante für '
+        # Satz aus dem frueheren Abschluss „Noch Fragen?“ (Rechenbeispiel mit Portalpreis am 13.11.2026 entfernt)
+        "prices_after": ('      <p><strong>Noch Fragen?</strong> Schreib mir – ich berate dich gerne, welche Variante für '
                          'dein Team passt.</p>\n'),
         "extra_schema": [SCHULUNG_COURSE],
         # „IT-Sicherheitsschulung“ bricht sonst nach „IT-“ um (.s-title .nowrap); seitlich ab 1024 px kleiner (aside_long)
@@ -2657,9 +2652,8 @@ SERVICES = [
         "faqs": [
             ("Was kostet eine IT-Sicherheitsschulung?",
              "Die Live-Schulung per Microsoft Teams kostet 135 € pauschal für rund 1,5 Stunden (jede weitere Stunde "
-             "110 € netto zzgl. MwSt.). Für das Online-Portal, das gerade entsteht, sind 49 € Grundpauschale pro Halbjahr plus 5 € je Mitarbeiter und Halbjahr geplant. "
-             "Das Kombi-Paket aus Live-Schulung und Portal ist ab 165 € pro Halbjahr geplant. Alle Preise verstehen sich "
-             "zzgl. MwSt."),
+             "110 € netto zzgl. MwSt.). Das Online-Portal läuft derzeit in der Pilotphase mit einem ersten Betrieb. "
+             "Preise für das Portal und das Kombi-Paket nenne ich nach der Pilotphase; vormerken kannst du dich schon."),
             ("Wie läuft die Live-Schulung ab?",
              "Die Live-Schulung findet interaktiv per Microsoft Teams statt und dauert rund 1,5 Stunden. Inhalte sind "
              "unter anderem Phishing erkennen, sichere Passwörter, Social Engineering, DSGVO-Grundlagen und der sichere "

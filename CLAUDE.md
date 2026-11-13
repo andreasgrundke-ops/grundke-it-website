@@ -92,8 +92,11 @@ geaendert hat, nicht wegen eines neuen Footer-Links.
 - **Release 2.3.1 (08.11.2026): Hosting Hetzner, DSE §3/§5, Impressum** (live mit dem DNS-Wechsel, Spec `_intern/specs/2026-11-08-hosting-vps-security-header-design.md`).
 - **Release 2.3.2 (08.11.2026):** robots.txt mit eigenen Gruppen fuer `Claude-SearchBot` und `Applebot`; kein `<img>` mehr
   in CSS-Kommentaren (der Deep Check zaehlte das als Bild ohne Alt-Text).
-- **Versionen jetzt (Release 2.3.2):** `sw.js` `CACHE_NAME` `grundke-it-v2.3.2`, `RUNTIME_CACHE` `grundke-it-runtime-v48`,
-  `ASSET_VER` 2026.11.b, `SITE_VERSION` 2.3.2 (Fuss "Version x.y.z · Stand TT.MM.JJJJ" aus dem Generator).
+- **Release 2.3.3 (13.11.2026):** `/schulung/`: Online-Portal und Kombi-Paket stehen auf „Pilotphase“ ohne Preis
+  (Andreas 13.11.2026), kein Offer fuer das Portal im Course-Schema, Rechenbeispiel entfernt; Preis erst nach der Pilotphase.
+  `price_card` erlaubt Karten ohne Betrag.
+- **Versionen jetzt (Release 2.3.3):** `sw.js` `CACHE_NAME` `grundke-it-v2.3.3`, `RUNTIME_CACHE` `grundke-it-runtime-v49`,
+  `ASSET_VER` 2026.11.b, `SITE_VERSION` 2.3.3 (Fuss "Version x.y.z · Stand TT.MM.JJJJ" aus dem Generator).
   `SITE_VERSION` bei jedem Release mit dem `CACHE_NAME`-Suffix gleichziehen, `check_static.py` prueft das.
   `check_static.py --ci` laeuft im Deploy und stoppt ihn bei Fehlern.
 - **Kontaktleiste (Dock):** kommt aus einer Quelle im Generator (`STICKY`-Marken), nur bis 1279 px sichtbar,
