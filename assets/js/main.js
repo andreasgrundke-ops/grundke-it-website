@@ -1,0 +1,511 @@
+/**
+ * ═══════════════════════════════════════════════════════════
+ * Grundke IT-Service · main.js
+ * Version: 1.7.1
+ * Autor: Andreas Grundke / Grundke IT-Service
+ * Datum: 2026-10-18
+ * Beschreibung: Shared JS – Nav, FAQ, Scroll
+ * Änderung 2026-06-07: A11y – Hamburger aria-expanded/-label-Sync,
+ *                       Hero-Dots aria-selected im Slider-Wechsel.
+ * Änderung 2026-10-02: Foto-Slider entfernt (initSlider); der Hero der
+ *                       Startseite laeuft jetzt ueber assets/js/hero-chat.js.
+ * Änderung 2026-10-07: A11y aus dem UI-Audit – Skip-Link bleibt beim Browser,
+ *                       Anker-Klicks setzen Fokus und Hash (WCAG 2.4.1/2.4.3),
+ *                       Escape schliesst Mobilmenue und Fernwartung-Dropdown.
+ * Änderung 2026-10-09: Fernwartung ist direkter Menuepunkt, Dropdown-Logik entfernt.
+ * Änderung 2026-10-10: Fuss-Spalten am Handy zugeklappt (initFooter), Flip-Karten-Code
+ *                       entfernt (keine .flip-wrap mehr im Markup).
+ *                       1.6.0: Position in der Wischleiste der Kundenstimmen
+ *                       (initTestiRow, Startseite).
+ * Änderung 2026-10-18: 1.7.0: Film auf der Startseite (initFilm). Die Fassade
+ *                       (Link mit Posterbild) wird zum Knopf; erst der Klick setzt
+ *                       <video> mit Untertitelspur ein und startet es. Vorher wird
+ *                       keine Filmdatei angefragt (preload=none, keine <source> im HTML).
+ * Änderung 2026-10-18: 1.7.1 (Release 2.1.2): Film-Knopf ohne eigenes aria-label, sein
+ *                       Name ist der sichtbare Text (WCAG 2.5.3).
+ * Änderung 2026-10-18: 1.7.2: Untertitelspur nicht mehr default, im Player zuschaltbar.
+ * ═══════════════════════════════════════════════════════════
+ */
+
+/* ── Hamburger Menu ── */
+function initHamburger() {
+  const ham = document.getElementById('ham');
+  const mob = document.getElementById('mobileMenu');
+  if (!ham || !mob) return;
+
+  // A11y: Zustand zentral setzen, damit aria-expanded/-label immer mitlaufen
+  function setMenu(open) {
+    ham.classList.toggle('open', open);
+    mob.classList.toggle('open', open);
+    ham.setAttribute('aria-expanded', String(open));
+    ham.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
+  }
+
+  ham.addEventListener('click', () => setMenu(!ham.classList.contains('open')));
+
+  mob.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => setMenu(false));
+  });
+
+  document.addEventListener('click', e => {
+    if (!ham.contains(e.target) && !mob.contains(e.target)) {
+      setMenu(false);
+    }
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && ham.classList.contains('open')) {
+      setMenu(false);
+      ham.focus();
+    }
+  });
+}
+
+/* ── FAQ Accordion (Release-2 Schritt 5):
+   FAQ ist jetzt natives <details>/<summary> — kein JS noetig.
+   Funktion bleibt als No-Op, falls sie irgendwo aufgerufen wird. */
+function initFAQ() { /* native details/summary */ }
+
+/* ── Active Nav on Scroll ── */
+function initScrollNav() {
+  const sections = document.querySelectorAll('section[id]');
+  const navAs    = document.querySelectorAll('.nav-links a');
+  if (!sections.length) return;
+
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navAs.forEach(a => {
+          a.style.color = a.getAttribute('href') === '#' + e.target.id ? 'var(--cyan)' : '';
+        });
+      }
+    });
+  }, { threshold: 0.35 });
+
+  sections.forEach(s => obs.observe(s));
+}
+
+/* ── vCard Generator ── */
+function initVCard() {
+  const btn = document.getElementById('vcardBtn');
+  if (!btn) return;
+
+  btn.addEventListener('click', e => {
+    e.preventDefault();
+    const vcard = [
+      'BEGIN:VCARD', 'VERSION:3.0',
+      'FN:Andreas Grundke', 'N:Grundke;Andreas;;;',
+      'ORG:Grundke IT-Service',
+      'TITLE:IT-Service · Fachinformatiker Systemintegration',
+      'TEL;TYPE=CELL,VOICE:+491782584438',
+      'EMAIL;TYPE=WORK:info@grundke-it.de',
+      'URL:https://grundke-it.de',
+      'ADR;TYPE=WORK:;;Beethovenring 16;Grasbrunn;;85630;Deutschland',
+      'NOTE:IT-Betreuung für KMUs im Raum München Ost.',
+      'END:VCARD'
+    ].join('\r\n');
+    const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url; a.download = 'Andreas-Grundke-IT-Service.vcf';
+    a.click(); URL.revokeObjectURL(url);
+  });
+}
+
+/* ── Smooth Scroll (Lenis) ── */
+function initLenis() {
+  if (typeof Lenis === 'undefined') return;
+  // #30: bei reduced-motion-Praeferenz auf natives scroll-behavior:smooth zurueckfallen
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  // 2.2.0 A6: Lenis nur mit Maus (hover: hover, pointer: fine). Auf Touch scrollt der Browser nativ (Traegheit, Gummiband),
+  // Ankerklicks bleiben ueber html { scroll-behavior: smooth } weich.
+  if (!window.matchMedia || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
+  const lenis = new Lenis({
+    duration: 1.1,
+    easing: function(t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); },
+    smoothWheel: true,
+    touchMultiplier: 1.5
+  });
+
+  function raf(time) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+  }
+  requestAnimationFrame(raf);
+
+  // Anker-Klicks mit Lenis smooth scrollen. Der Skip-Link bleibt beim Browser,
+  // sonst landet der Fokus nach Enter wieder oben (WCAG 2.4.1). Nach dem Scrollen
+  // wandern Fokus und Hash zum Ziel, damit Tab dort weitergeht und Zurueck funktioniert.
+  document.querySelectorAll('a[href^="#"]:not(.skip-link)').forEach(function(a) {
+    a.addEventListener('click', function(e) {
+      var hash = a.getAttribute('href');
+      if (!hash || hash.length < 2) return;
+      var target = document.getElementById(hash.slice(1));
+      if (!target) return;
+      e.preventDefault();
+      lenis.scrollTo(target, { offset: -80 });
+      if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+      target.focus({ preventScroll: true });
+      if (history.pushState) history.pushState(null, '', hash);
+    });
+  });
+
+  return lenis;
+}
+
+/* ── IT-Schnellcheck: Info-Modals + Report-Vorschau ── */
+function initSchnellcheck() {
+  // Texte fuer die 9 Info-Popups (wartbar an einem Ort)
+  const INFO_TEXTS = {
+    netzwerk: {
+      title: 'Netzwerk & WLAN',
+      body:  'Ich schau mir die Ausleuchtung an, die Auslastung, wie viele Geräte drin sind, wo es klemmt. Bei Bedarf mit Mess-App. Wenn das WLAN instabil ist, weißt du danach warum.'
+    },
+    clients: {
+      title: 'Arbeitsplätze & Server',
+      body:  'Welche Rechner laufen, wie alt sind sie, wie voll sind sie, welcher Windows-Stand, welche Software ist drauf. Kurzcheck auf offensichtliche Bremsen und Risiken.'
+    },
+    m365: {
+      title: 'Microsoft 365 / E-Mail',
+      body:  'Welche Lizenzen hast du, wofür zahlst du zu viel oder zu wenig, wie ist die E-Mail konfiguriert, sind Spam und Phishing abgedeckt. Falls du noch bei POP3 oder einem alten Provider bist: ehrlicher Blick drauf.'
+    },
+    security: {
+      title: 'Virenschutz & Firewall',
+      body:  'Läuft ein aktiver Virenschutz oder nur die Windows-Basisausstattung? Ist die Firewall richtig konfiguriert oder hängt alles offen im Netz? Gefahrenpunkte werden benannt, nicht dramatisiert.'
+    },
+    backup: {
+      title: 'Datensicherung (Backup)',
+      body:  'Hast du überhaupt ein Backup? Wo liegt es? Wann wurde es zuletzt getestet? Die 3-2-1-Regel ist der Maßstab: Ich bewerte, wie weit du davon weg bist und was der einfachste Weg dahin wäre.'
+    },
+    router: {
+      title: 'Router & Internet-Anschluss',
+      body:  'FritzBox? Speedport? Alter? Firmware aktuell? Wird der Router noch mit Sicherheits-Updates versorgt oder ist er End-of-Life? Welche Anschlussgeschwindigkeit kommt bei dir wirklich an.'
+    },
+    peripherie: {
+      title: 'Drucker, Kameras, Peripherie',
+      body:  'Was hängt alles mit drin, wo gibt\u2019s kleine Stolperfallen. Netzwerk-Drucker ohne Passwort? Unbekannte IP-Kameras? Ich prüfe, ob da was sichtbar wird, das später zum Problem werden kann.'
+    },
+    eol: {
+      title: 'Software-Aktualität (EOL, BSI)',
+      body:  'Welche Software hast du im Einsatz, läuft davon etwas auf End-of-Life? Gibt es aktuelle BSI-Warnungen, die dich betreffen? Beispiel: TP-Link-Router, bestimmte Exchange-Stände, alte FritzBox-Firmwares.'
+    },
+    doku: {
+      title: 'Benutzer, Passwörter, Dokumentation',
+      body:  'Gibt es eine saubere Benutzerstruktur, nutzen alle eigene Konten, gibt es einen Passwortmanager, existiert überhaupt eine Dokumentation für deine Vertretung oder den Notfall? Das ist oft der meistvergessene Punkt.'
+    }
+  };
+
+  const FOCUSABLE = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"]), input, select, textarea';
+
+  // Modal-Helfer ── generisch fuer beide Modals (Info + Report)
+  let lastTrigger = null;
+
+  function openModal(modalEl) {
+    if (!modalEl) return;
+    lastTrigger = document.activeElement;
+    modalEl.hidden = false;
+    modalEl.classList.add('open');
+    document.body.classList.add('modal-open');
+    // Initial-Fokus auf den Dialog (nicht auf den Close-Button — angenehmer)
+    const dialog = modalEl.querySelector('.modal-dialog');
+    if (dialog) {
+      // microtask, damit Animation startet bevor Fokus wandert
+      requestAnimationFrame(() => dialog.focus());
+    }
+  }
+
+  function closeModal(modalEl) {
+    if (!modalEl || !modalEl.classList.contains('open')) return;
+    modalEl.classList.remove('open');
+    modalEl.hidden = true;
+    // Body-Scroll-Lock nur entfernen, wenn kein anderes Modal mehr offen ist
+    if (!document.querySelector('.modal.open')) {
+      document.body.classList.remove('modal-open');
+    }
+    if (lastTrigger && typeof lastTrigger.focus === 'function') {
+      lastTrigger.focus();
+      lastTrigger = null;
+    }
+  }
+
+  function trapFocus(e, modalEl) {
+    if (e.key !== 'Tab') return;
+    const dialog = modalEl.querySelector('.modal-dialog');
+    if (!dialog) return;
+    const focusables = Array.from(dialog.querySelectorAll(FOCUSABLE))
+      .filter(el => !el.hasAttribute('disabled') && el.offsetParent !== null);
+    if (focusables.length === 0) { e.preventDefault(); dialog.focus(); return; }
+    const first = focusables[0];
+    const last  = focusables[focusables.length - 1];
+    const active = document.activeElement;
+    if (e.shiftKey) {
+      if (active === first || active === dialog) {
+        e.preventDefault(); last.focus();
+      }
+    } else {
+      if (active === last) {
+        e.preventDefault(); first.focus();
+      }
+    }
+  }
+
+  // Info-Popups verdrahten
+  const infoModal      = document.getElementById('info-modal');
+  const infoModalTitle = document.getElementById('info-modal-title');
+  const infoModalBody  = document.getElementById('info-modal-body');
+  const infoBtns       = document.querySelectorAll('.info-btn[data-info]');
+
+  if (infoModal && infoModalTitle && infoModalBody) {
+    infoBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const key = btn.dataset.info;
+        const data = INFO_TEXTS[key];
+        if (!data) return;
+        infoModalTitle.textContent = data.title;
+        infoModalBody.innerHTML = '<p>' + data.body + '</p>';
+        openModal(infoModal);
+      });
+    });
+  }
+
+  // Report-Vorschau verdrahten
+  const previewModal = document.getElementById('preview-modal');
+  const previewBtn   = document.getElementById('sc-preview-btn');
+  if (previewModal && previewBtn) {
+    previewBtn.addEventListener('click', () => openModal(previewModal));
+  }
+
+  // Globale Schliess-Logik fuer alle Modals (Click-Outside via [data-modal-close])
+  document.querySelectorAll('.modal').forEach(modalEl => {
+    modalEl.addEventListener('click', e => {
+      if (e.target.closest('[data-modal-close]')) {
+        closeModal(modalEl);
+      }
+    });
+  });
+
+  // ESC schliesst das oberste offene Modal, Tab bleibt im Modal gefangen
+  document.addEventListener('keydown', e => {
+    const openModalEl = document.querySelector('.modal.open');
+    if (!openModalEl) return;
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      closeModal(openModalEl);
+    } else if (e.key === 'Tab') {
+      trapFocus(e, openModalEl);
+    }
+  });
+}
+
+/* ── Scroll-to-Top ── */
+function initScrollTop(lenis) {
+  const btn = document.getElementById('scrollTop');
+  if (!btn) return;
+
+  window.addEventListener('scroll', () => {
+    btn.classList.toggle('visible', window.scrollY > 400);
+  }, { passive: true });
+
+  btn.addEventListener('click', () => {
+    if (lenis) lenis.scrollTo(0);
+    else window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
+/* ── Fuss: Spalten am Handy zugeklappt (seit 2026-10-10)
+   Die Spalten sind <details class="foot-col" open>: ohne JS bleibt alles offen
+   (Crawler, Blocker). Unter 768 px klappt das Skript sie zu, ab 768 px wieder auf
+   (auch beim Drehen des Tablets). Ab 768 px sind die Koepfe reine Ueberschriften:
+   kein Zuklappen per Klick, nicht in der Tab-Reihenfolge. */
+function initFooter() {
+  const cols = document.querySelectorAll('.site-footer details.foot-col');
+  if (!cols.length || !window.matchMedia) return;
+  const mq = window.matchMedia('(max-width: 767px)');
+
+  function apply() {
+    cols.forEach(col => {
+      col.open = !mq.matches;
+      const head = col.querySelector('summary');
+      if (!head) return;
+      if (mq.matches) head.removeAttribute('tabindex');
+      else head.setAttribute('tabindex', '-1');
+    });
+  }
+
+  cols.forEach(col => {
+    const head = col.querySelector('summary');
+    if (head) head.addEventListener('click', e => { if (!mq.matches) e.preventDefault(); });
+  });
+
+  apply();
+  if (mq.addEventListener) mq.addEventListener('change', apply);
+  else if (mq.addListener) mq.addListener(apply); // Safari < 14
+}
+
+/* ── Startseite: Wischleiste der Kundenstimmen (seit 2026-10-10)
+   Ohne JS steht nur "4 weitere Stimmen" da. Mit JS kommt die Position dazu,
+   solange die Leiste wirklich seitlich scrollt. Gezaehlt werden die Rastpunkte:
+   Unter 900 px blaettert eine lange Stimme absatzweise ("· Apartments Bauer ·
+   Absatz 2 von 4"), danach zaehlen die Karten ("· 2 von 4"). Ab 900 px ist die
+   lange Stimme eine breite Karte mit einem Rastpunkt (Stil im <style> der Startseite). */
+function initTestiRow() {
+  document.querySelectorAll('.testi-row').forEach(row => {
+    const pos = row.parentElement.querySelector('[data-testi-pos]');
+    const cards = Array.from(row.querySelectorAll('.testi-card'));
+    if (!pos || cards.length < 2) return;
+
+    // Rastpunkte: je Karte einer, bei langen Stimmen unter 900 px je Absatz einer
+    // ohne matchMedia (sehr alte Browser) wie am Handy: absatzweise
+    const paged = window.matchMedia ? window.matchMedia('(max-width: 899px)') : { matches: true };
+    let stops = [];
+    function buildStops() {
+      stops = [];
+      cards.forEach((card, k) => {
+        const paras = paged.matches && card.classList.contains('testi-card--long')
+          ? Array.from(card.querySelectorAll('.testi-txt p')) : [];
+        const who = (card.querySelector('.testi-who') || {}).textContent || '';
+        if (paras.length > 1) {
+          paras.forEach((p, i) => stops.push({ el: p, label: who + ' · Absatz ' + (i + 1) + ' von ' + paras.length }));
+        } else {
+          stops.push({ el: card, label: (k + 1) + ' von ' + cards.length });
+        }
+      });
+    }
+    buildStops();
+
+    function update() {
+      row.classList.toggle('is-end', row.scrollLeft + row.clientWidth >= row.scrollWidth - 2); // Ausblend-Kante nur solange es weitergeht
+      if (row.scrollWidth <= row.clientWidth + 1) { pos.textContent = ''; return; }
+      const start = row.getBoundingClientRect().left;
+      let idx = 0;
+      // Absatz-Rastpunkte liegen um den Kartenrand (scroll-margin) eingerueckt: Toleranz 32 px
+      stops.forEach((s, k) => {
+        if (s.el.getBoundingClientRect().left - start <= 32) idx = k;
+      });
+      // Am Ende der Leiste kann die letzte Karte nicht ganz nach links rutschen
+      if (row.scrollLeft + row.clientWidth >= row.scrollWidth - 2) idx = stops.length - 1;
+      pos.textContent = ' · ' + stops[idx].label;
+    }
+
+    row.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    const rebuild = () => { buildStops(); update(); };
+    if (paged.addEventListener) paged.addEventListener('change', rebuild);
+    else if (paged.addListener) paged.addListener(rebuild); // Safari < 14
+    update();
+  });
+}
+
+/* ── Service Worker Registration (Release-2 PWA-Setup)
+   Registriert den SW unter Scope "/", sodass die ganze Site
+   als PWA installierbar wird (Add-to-Home, Offline-Cache).
+   Nur in produktiven HTTPS-/localhost-Kontexten registriert. */
+function initServiceWorker() {
+  if (!('serviceWorker' in navigator)) return;
+  if (location.protocol !== 'https:' && location.hostname !== 'localhost') return;
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js', { scope: '/' })
+      .then(reg => {
+        // Bei Update sofort skipWaiting triggern, damit neue Version greift
+        if (reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+        reg.addEventListener('updatefound', () => {
+          const sw = reg.installing;
+          if (!sw) return;
+          sw.addEventListener('statechange', () => {
+            if (sw.state === 'installed' && navigator.serviceWorker.controller) {
+              sw.postMessage({ type: 'SKIP_WAITING' });
+            }
+          });
+        });
+      })
+      .catch(err => console.warn('[SW] Registration failed:', err));
+  });
+}
+
+/* ── Install-Prompt (PWA):
+   Wir greifen das beforeinstallprompt-Event NICHT mehr ab — Chrome
+   zeigt seinen Default-Hinweis (Mini-Infobar / Address-Bar-Icon).
+   Wir merken uns den Event nur fuer eventuelle spaetere manuelle
+   Trigger via window.gIT.installPWA(). */
+function initInstallPrompt() {
+  let deferredPrompt = null;
+  window.addEventListener('beforeinstallprompt', e => {
+    /* KEIN preventDefault — Chrome darf seinen Banner zeigen */
+    deferredPrompt = e;
+    document.documentElement.classList.add('pwa-installable');
+  });
+  window.addEventListener('appinstalled', () => {
+    deferredPrompt = null;
+    document.documentElement.classList.remove('pwa-installable');
+    document.documentElement.classList.add('pwa-installed');
+  });
+  window.gIT = window.gIT || {};
+  window.gIT.installPWA = async () => {
+    if (!deferredPrompt) return false;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    deferredPrompt = null;
+    return outcome === 'accepted';
+  };
+}
+
+/* ── Film (Startseite, seit 1.7.0) ──
+   Ablauf: 1. Fassade suchen ([data-film] mit a.film-start; ohne JS bleibt der Link auf die 720p-Datei).
+   2. Link durch einen gleich aussehenden <button> ersetzen (Aktion statt Navigation).
+   3. Klick: 1080p ab 1024 px Breite oder wenn die Flaeche in Geraetepixeln mindestens 1.500 px breit ist,
+      sonst 720p; <video controls playsinline preload="none"> mit Untertitelspur (nicht default, im Player zuschaltbar) einsetzen,
+      Fokus aufs Video, play() (Start nur als Folge dieses Klicks). */
+function initFilm() {
+  const box = document.querySelector('[data-film]');
+  const link = box && box.querySelector('a.film-start');
+  if (!link) return;
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = link.className;
+  // Name = sichtbarer Text („Film abspielen 1:31“, WCAG 2.5.3); ein aria-label nur uebernehmen, wenn der Link eins hat
+  if (link.hasAttribute('aria-label')) btn.setAttribute('aria-label', link.getAttribute('aria-label'));
+  while (link.firstChild) btn.appendChild(link.firstChild);
+  link.replaceWith(btn);
+
+  btn.addEventListener('click', () => {
+    const img = btn.querySelector('img');
+    const wide = window.matchMedia('(min-width: 1024px)').matches ||
+      box.clientWidth * (window.devicePixelRatio || 1) >= 1500;
+    const v = document.createElement('video');
+    v.controls = true;
+    v.playsInline = true;
+    v.setAttribute('playsinline', '');
+    v.preload = 'none';
+    if (img) v.poster = img.currentSrc || img.src;
+    v.setAttribute('aria-label', 'Film über Grundke IT-Service, 1:31, Untertitel zuschaltbar');
+    [wide ? box.dataset.filmHd : box.dataset.filmSd, wide ? box.dataset.filmSd : box.dataset.filmHd]
+      .forEach(src => { const s = document.createElement('source'); s.src = src; s.type = 'video/mp4'; v.appendChild(s); });
+    const t = document.createElement('track');
+    t.kind = 'subtitles'; t.srclang = 'de'; t.label = 'Deutsch'; t.src = box.dataset.filmVtt;
+    v.appendChild(t);
+    btn.replaceWith(v);
+    v.focus();
+    const p = v.play();
+    if (p && p.catch) p.catch(() => { /* Start blockiert: die Steuerleiste bleibt sichtbar, ein Tipp startet */ });
+  }, { once: true });
+}
+
+/* ── Init ── */
+document.addEventListener('DOMContentLoaded', () => {
+  initHamburger();
+  initFAQ();
+  initScrollNav();
+  initVCard();
+  initSchnellcheck();
+  initFooter();
+  initTestiRow();
+  initFilm();
+  initInstallPrompt();
+  var lenis = initLenis();
+  initScrollTop(lenis);
+});
+
+
+/* SW-Registrierung laeuft eigenstaendig ueber window.load */
+initServiceWorker();
