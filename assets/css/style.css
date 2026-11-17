@@ -1,0 +1,1019 @@
+/*
+ * ═══════════════════════════════════════════════════════════
+ * Grundke IT-Service · CI 2026.01 · Dark Mode
+ * Shared Stylesheet
+ * Version: 1.0.0
+ * Autor: Andreas Grundke / Grundke IT-Service
+ * Datum: 2026-04-05
+ * ═══════════════════════════════════════════════════════════
+ */
+
+/* ── Google Fonts: per <link> im HTML eingebunden (kein @import – blockiert Rendering) ── */
+
+/* ── CI 2026.01 Variablen ── */
+:root {
+  color-scheme: dark;
+  --bg:        #0f1117;
+  --bg2:       #1a1f2e;
+  --bg3:       #1e2538;
+  --bg4:       #242b3d;
+  --accent:    #0c4da2;
+  --cyan:      #26bdef;
+  --cyan-dim:  rgba(38,189,239,0.12);
+  --blue-vi:     #0000FE;               /* Visitenkarten-Blau */
+  --blue-vi-dim: rgba(0,0,254,.12);
+  --blue-vi-glow:rgba(0,0,254,.25);
+  /* Kontaktknoepfe (Stand 18.10.2026): Reihenfolge immer WhatsApp - Telefon - E-Mail. Gruen = Hauptaktion WhatsApp
+     (weiss auf #1a7a5e 5,3:1, Hover 6,5:1); Telefon zurueckgenommen: getoent mit Kontur (Kontur 3,4-4,3:1 zu den
+     dunklen Flaechen, Schrift weiss ab 15:1); E-Mail neutral. Der helle Abschnitt setzt die Telefon-Werte um. */
+  --wa:          #1a7a5e;
+  --wa-hover:    #166a52;
+  --wa-text:     #26b188;   /* WhatsApp-Gruen aufgehellt (gleicher Farbton) fuer Schrift auf dunklem Grund: 5,6:1 auf --bg3 */
+  --tel-bg:      rgba(0,0,254,.22);
+  --tel-bg-hover:rgba(0,0,254,.34);
+  --tel-line:    #5566ff;
+  --tel-text:    #fff;
+  --text:      #f1f5f9;
+  --text2:     #94a3b8;
+  --text3:     #8a96aa;   /* seit 07.10.2026 heller: AA auf --bg2/--bg3 (5,5/5,1:1), vorher 3,5/3,2:1 */
+  --border:    #2d3748;
+  --success:   #22c55e;
+  --danger:    #ef4444;
+  --warning:   #f59e0b;
+  --fh:        'Space Grotesk', sans-serif;
+  --fb:        'Manrope',       sans-serif;
+  --fm:        'JetBrains Mono',monospace;
+  --nav-h:     58px;
+  --inner:     1280px;
+
+  /* Radius: vier Stufen statt freier Werte. 50 % nur fuer Avatar, Punkte, runde Pause-Knoepfe */
+  --r-s:       6px;    /* Chips, Tags, kleine Hinweise */
+  --r-m:       10px;   /* Knoepfe, Dock-Segmente */
+  --r-l:       16px;   /* Karten, Kasten, Dock */
+  --r-xl:      28px;   /* Handy-Rahmen */
+  --r:         var(--r-l);   /* alter Name, von Bestandsregeln weiter genutzt */
+
+  /* ── Spacing-Scale (Mobile-First, fluide via clamp) ── */
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.5rem;
+  --space-xs:  0.75rem;
+  --space-sm:  1rem;
+  --space-md:  1.5rem;
+  --space-lg:  2rem;
+  --space-xl:  3rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
+
+  /* Section-Padding — der groesste Hebel fuer Mobile-Verkuerzung */
+  --section-pad-y: clamp(2.5rem, 8vw, 6rem);
+  --section-pad-x: clamp(1rem, 4vw, 2rem);
+
+  /* Typography-Scale (fluide) */
+  --fs-hero:   clamp(1.875rem, 7vw, 3.75rem);
+  --fs-h1:     clamp(1.625rem, 5.5vw, 2.75rem);
+  --fs-h2:     clamp(1.375rem, 4.5vw, 2.25rem);
+  --fs-h3:     clamp(1.125rem, 3.5vw, 1.5rem);
+  --fs-body:   clamp(0.9375rem, 2.6vw, 1.0625rem);
+  --fs-sm:     clamp(0.8125rem, 2.2vw, 0.9375rem);
+
+  /* Line-Heights */
+  --lh-tight:  1.15;
+  --lh-snug:   1.35;
+  --lh-body:   1.6;
+
+  /* Container-Maximum (--inner bleibt fuer Bestand) */
+  --container-max: 1200px;
+}
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; }
+body { font-family: var(--fb); background: var(--bg); color: var(--text); line-height: 1.65; overflow-x: hidden; }
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+button { font-family: var(--fb); cursor: pointer; }
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* ── Layout Utilities ── */
+.inner { max-width: var(--inner); margin: 0 auto; padding: 0 max(clamp(1rem,5vw,2.5rem), env(safe-area-inset-right)) 0 max(clamp(1rem,5vw,2.5rem), env(safe-area-inset-left)); }   /* N10: Querformat mit Notch */
+.section-pad { padding: clamp(3.5rem,8vw,6.5rem) 0; }
+
+/* ── Dock (Kontaktleiste) ──
+   Bis 1279 px eine schwebende Leiste unten (Stand 18.10.2026): WhatsApp links als Hauptaktion (breiter, volle gruene
+   Flaeche #1a7a5e, weisse Schrift 5,3:1), Anrufen in der Mitte getoent mit blauer Kontur, E-Mail neutral.
+   Ab 1280 px gibt es kein Dock; dort tragen der WhatsApp- und der Telefon-Knopf in der Kopfzeile und die Knoepfe im
+   Seitenkopf. */
+.sticky-contact { display: none; }
+@media (max-width: 1279px) {
+  .sticky-contact {
+    position: fixed;
+    z-index: 1000;
+    left: max(12px, env(safe-area-inset-left)); right: max(12px, env(safe-area-inset-right));
+    bottom: calc(12px + env(safe-area-inset-bottom));
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 4px;
+    padding: 4px;
+    background: #141a26;
+    border: 1px solid rgba(255,255,255,.10);
+    border-radius: var(--r-l);
+    box-shadow: 0 8px 24px rgba(0,0,0,.35);
+  }
+  .sc-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .3rem;
+    height: 52px;
+    min-width: 0;
+    padding: 0 .25rem;   /* knapp, damit „WhatsApp“ ab 360 px in sein Segment passt */
+    border-radius: var(--r-m);
+    font-family: var(--fb);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: background-color .2s, color .2s, transform 120ms cubic-bezier(0.23,1,0.32,1);
+  }
+  .sc-btn svg { flex-shrink: 0; width: 18px; height: 18px; }
+  .sc-btn:active { transform: scale(.97); }
+  .sc-wa { background: var(--wa); color: #fff; }
+  .sc-wa:hover { background: var(--wa-hover); }
+  .sc-phone { background: var(--tel-bg); border: 1px solid var(--tel-line); color: var(--tel-text); }   /* Kontur 3,9:1 zur Leiste */
+  .sc-phone:hover { background: var(--tel-bg-hover); }
+  .sc-mail { background: transparent; color: var(--text2); }
+  .sc-mail:hover { color: var(--text); }
+  /* Platz unten: Dock (52 + 2 x 4 Innenabstand + 2 x 1 Rand) plus 12 Abstand, gerundet */
+  body.has-sticky-call { padding-bottom: calc(76px + env(safe-area-inset-bottom)); }
+}
+@media (min-width: 600px) and (max-width: 1279px) {
+  .sticky-contact { left: 50%; right: auto; width: min(480px, 100% - 24px); transform: translateX(-50%); }
+}
+
+/* Kontaktknoepfe ueber der Kontaktleiste (Abschluss, Film der Startseite): am Handy bleibt nur WhatsApp (Stand
+   18.10.2026, Release 2.1.2); Telefon und E-Mail traegt die Leiste darunter. Reine Medienabfrage, kein Skript. */
+@media (max-width: 767px) {
+  .inline-cta-mobile > :is(.btn-tel, .btn-email) { display: none !important; }
+}
+
+/* ── Typography Utilities ── */
+/* Kicker ruhig: grau, normale Schreibung, ohne Strich; Farbe gehoert der Handlung, nicht der Ueberschrift */
+.s-label {
+  font-family: var(--fb);
+  font-size: 0.9rem; font-weight: 600;
+  color: var(--text2); line-height: 1.25;
+  margin-bottom: 0.6rem;
+}
+
+.s-title {
+  font-family: var(--fh);
+  font-size: clamp(1.6rem,3.5vw,2.6rem);
+  font-weight: 800; color: var(--text);
+  letter-spacing: -0.04em; line-height: 1.15;
+  margin-bottom: 1rem;
+}
+
+/* Fliesstext 16 px (seit 10.10.2026, vorher clamp(.9rem,1.5vw,1.05rem) = 13,5 px am Handy) */
+.s-sub { font-size: 1.0667rem; color: var(--text2); max-width: 560px; line-height: 1.7; }
+
+/* ── Navigation ──
+   Bewusst auf den Seitenkopf eingegrenzt: als blosses `nav {}` traf die Regel
+   JEDES nav-Element — auch die Rechtsspalte im Fuss (`<nav class="foot-legal">`)
+   und die Linkliste auf /tree/. Beide wurden dadurch oben festgepinnt und haben
+   Logo und Hauptmenue verdeckt. */
+.site-header nav {
+  position: fixed; top:0; left:0; right:0;
+  z-index: 300; height: calc(var(--nav-h) + env(safe-area-inset-top));
+  padding-top: env(safe-area-inset-top);
+  background: rgba(15,17,23,.93);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-inner { height:100%; display:flex; align-items:center; justify-content:space-between; }
+/* Header-Logo: weisser Schriftzug ohne Schein (keine Verlaeufe als Schmuck). */
+.logo {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  position: relative;
+  isolation: isolate;
+}
+.logo-img {
+  display: block;
+  height: clamp(2.4rem, 8vw, 2.9rem); /* Mobile: ~38–46 px */
+  width: auto;
+}
+@media (min-width: 1024px) {
+  /* Desktop: ~42–50 px. */
+  .logo-img { height: clamp(2.6rem, 3vw, 3.1rem); }
+}
+/* margin-left haelt den ersten Menuepunkt vom Logo fern, wenn es eng wird (die Ortspille ist entfallen). */
+.nav-links { display:none; align-items:center; gap:clamp(1rem,2vw,2rem); list-style:none; margin-left:1.5rem; }
+.nav-links a { font-size:.875rem; font-weight:500; color:var(--text2); transition:color .2s; white-space:nowrap; }
+.nav-links a:hover { color:var(--cyan); }
+/* Aktiver Bereich: Unterstrich in Cyan statt Farbwechsel, damit er sich vom Hover abhebt */
+.nav-links a[aria-current] { color:var(--text); text-decoration:underline; text-decoration-color:var(--cyan); text-decoration-thickness:2px; text-underline-offset:.55em; }
+.mobile-menu a[aria-current] { color:var(--text); background:var(--bg3); }
+/* Kontakt in der Kopfzeile (Stand 18.10.2026): WhatsApp als Hauptaktion (gruen), daneben Telefon getoent mit Kontur.
+   1024-1279 px zeigt der Telefon-Knopf nur das Symbol (Text bleibt fuer Screenreader), damit die Zeile nicht umbricht.
+   Trefferflaeche je 44 px hoch. */
+.nav-links li:has(> .nav-tel) { margin-left:calc(.6rem - clamp(1rem,2vw,2rem)); }   /* die zwei Knoepfe stehen als Paar enger */
+.nav-links a.nav-wa, .nav-links a.nav-tel {
+  display:inline-flex; align-items:center; justify-content:center; gap:.45rem;
+  min-height:44px; padding:0 1rem; border-radius:var(--r-m);
+  font-weight:700; font-size:.85rem; color:#fff;
+  transition:background-color .2s, transform 120ms cubic-bezier(0.23,1,0.32,1);
+}
+.nav-links a.nav-wa { background:var(--wa); }
+.nav-links a.nav-wa:hover { background:var(--wa-hover); color:#fff; }
+.nav-links a.nav-tel { background:var(--tel-bg); border:1px solid var(--tel-line); color:var(--tel-text); }
+.nav-links a.nav-tel:hover { background:var(--tel-bg-hover); color:var(--tel-text); }
+.nav-wa svg { fill:currentColor; flex-shrink:0; }
+.nav-tel svg { stroke:currentColor; fill:none; flex-shrink:0; }
+@media (max-width:1279px) {
+  .nav-links a.nav-tel { width:44px; padding:0; }
+  .nav-tel-t { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+}
+/* Trefferflaeche 44x44 (Daumenbedienung) — Balken bleiben optisch gleich gross */
+.hamburger { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; background:none; border:none; padding:.4rem; min-width:44px; min-height:44px; cursor:pointer; }
+.hamburger span { display:block; width:24px; height:2px; background:var(--text); border-radius:2px; transition:transform .2s,opacity .2s; }
+.hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity:0; }
+.hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+.mobile-menu { display:none; position:fixed; top:calc(var(--nav-h) + env(safe-area-inset-top)); left:0; right:0; background:var(--bg2); border-bottom:1px solid var(--border); padding:1.5rem max(1.5rem, env(safe-area-inset-right)) 1.5rem max(1.5rem, env(safe-area-inset-left)); z-index:299; flex-direction:column; gap:.5rem; }
+.mobile-menu.open { display:flex; }
+.mobile-menu a { padding:.85rem 1rem; border-radius:var(--r-m); font-weight:600; font-size:.95rem; color:var(--text2); transition:background .2s,color .2s,transform 120ms cubic-bezier(0.23,1,0.32,1); }
+.mobile-menu a:hover { background:var(--bg3); color:var(--cyan); }
+/* Mobilmenue: WhatsApp zuerst als Hauptaktion, darunter Anrufen getoent mit Kontur (Stand 18.10.2026) */
+.mobile-menu .m-wa { display:flex; align-items:center; justify-content:center; gap:.55rem; background:var(--wa); color:#fff !important; margin-top:.5rem; font-weight:700 !important; }
+.mobile-menu .m-wa:hover, .mobile-menu .m-wa:focus-visible { background:var(--wa-hover); color:#fff !important; }
+.mobile-menu .m-cta { background:var(--tel-bg); border:1px solid var(--tel-line); color:var(--tel-text) !important; text-align:center; font-weight:700 !important; }
+.mobile-menu .m-cta:hover, .mobile-menu .m-cta:focus-visible { background:var(--tel-bg-hover); color:var(--tel-text) !important; }
+/* Fernwartung im Mobilmenue hervorgehoben (Symbol aus dem Sprite statt Blitz-Zeichen, Klasse statt Inline-Style) */
+.mobile-menu .m-fw { display:flex; align-items:center; gap:.55rem; color:var(--text); font-weight:700; }
+.mobile-menu .m-fw svg { flex-shrink:0; }
+
+/* ── Buttons ── */
+.btn-p {
+  display:inline-flex; align-items:center; gap:.45rem;
+  padding:clamp(.7rem,.9rem,1rem) clamp(1.2rem,1.8rem,2rem);
+  border-radius:var(--r-m); border:none;
+  background:var(--blue-vi); color:#fff;
+  font-family:var(--fb); font-weight:700; font-size:clamp(.82rem,.9rem,1rem);
+  cursor:pointer; transition:background .2s,transform 120ms cubic-bezier(0.23,1,0.32,1),box-shadow .2s; white-space:nowrap;
+}
+.btn-p:hover { background:#2222ff; }
+
+.btn-g {
+  display:inline-flex; align-items:center; gap:.45rem;
+  padding:clamp(.7rem,.9rem,1rem) clamp(1.2rem,1.8rem,2rem);
+  border-radius:var(--r-m); background:transparent; color:var(--text);
+  font-family:var(--fb); font-weight:600; font-size:clamp(.82rem,.9rem,1rem);
+  border:1px solid var(--border); cursor:pointer;
+  transition:border-color .2s,color .2s,background .2s,transform 120ms cubic-bezier(0.23,1,0.32,1); white-space:nowrap;
+}
+.btn-g:hover { border-color:var(--text2); background:rgba(255,255,255,.04); }   /* neutraler Hover statt Cyan-Flaeche */
+
+/* ── FAQ-Akkordeon (gemeinsam fuer Startseite und Generator-Seiten, seit 2026-09-23) ──
+   Natives <details>/<summary>, kein JS noetig. */
+.faq-wrap { max-width:820px; margin-top:3rem; display:flex; flex-direction:column; gap:.6rem; }
+.faq-item { background:var(--bg3); border:1px solid var(--border); border-radius:var(--r-m); overflow:hidden; transition:border-color .2s; }
+.faq-item[open] { border-color:var(--accent); }
+.faq-item summary {
+  padding:1.15rem 1.4rem;
+  display:flex; justify-content:space-between; align-items:center;
+  font-weight:600; font-size:1.0667rem; /* 16 px (seit 10.10.2026, vorher .9rem) */
+  cursor:pointer; color:var(--text); user-select:none;
+  list-style:none; min-height:44px; /* Touch-Target */
+}
+.faq-item summary::-webkit-details-marker { display:none; }
+.faq-item summary::marker { content:''; }
+.faq-item summary:hover { color:var(--cyan); }
+.faq-ico { color:var(--text2); font-size:1.1rem; transition:transform .3s; flex-shrink:0; margin-left:1rem; }
+.faq-item[open] .faq-ico { transform:rotate(45deg); }
+.faq-a { font-size:1.0667rem; color:var(--text2); line-height:1.7; padding:0 1.4rem 1.3rem; } /* 16 px (seit 10.10.2026, vorher .87rem) */
+
+/* ── Footer ── */
+.site-footer { background:#080b11; --text3:#7a879b; /* AA auf dem dunklen Fuss: 5,4:1 statt 4,1:1 */ border-top:1px solid var(--border); padding:clamp(2.5rem,6vw,4rem) 0 1.5rem; }
+.foot-grid { display:grid; grid-template-columns:1fr; gap:2rem; margin-bottom:2.5rem; }
+.foot-brand { font-family:var(--fh); font-size:.98rem; font-weight:700; color:var(--text); margin-bottom:.4rem; }
+.foot-desc  { font-size:.82rem; color:var(--text3); line-height:1.7; margin-bottom:1.2rem; }
+/* 2.2.0 A9: Trefferflaeche >= 24 px hoch (WCAG 2.5.8), Abstand dafuer ueber Innenabstand statt Aussenabstand */
+.foot-contact a { font-size:.82rem; color:var(--text2); display:block; padding:.2rem 0; transition:color .2s; }
+.foot-contact a:hover { color:var(--cyan); }
+.foot-h { font-family:var(--fb); font-size:.93rem; font-weight:600; letter-spacing:0; text-transform:none; color:var(--text2); margin-bottom:.9rem; } /* Spaltenkopf in normaler Schreibung, kein Versal-Etikett */
+.foot-links { list-style:none; display:flex; flex-direction:column; gap:.1rem; }
+.foot-links a { display:inline-block; padding:.2rem 0; font-size:.84rem; color:var(--text2); transition:color .2s; }
+.foot-links a:hover { color:var(--cyan); }
+.foot-links a[aria-current="page"] { color:var(--cyan); font-weight:700; }
+/* Spalten 2-5 sind <details class="foot-col"> (seit 10.10.2026): ohne JS offen, am Handy
+   klappt main.js (initFooter) sie zu. Eigener Pfeil statt Browser-Marker. */
+.foot-col > summary { list-style:none; }
+.foot-col > summary::-webkit-details-marker { display:none; }
+.foot-col > summary::marker { content:''; }
+.foot-bottom { border-top:1px solid var(--border); padding-top:1.2rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:.5rem; font-size:.76rem; color:var(--text3); }
+.foot-ci { font-family:var(--fm); font-size:.78rem; color:var(--text3); }
+/* Rechtliche Zeile (Impressum/Datenschutz/AGB/Barrierefreiheit): erste, volle Zeile in
+   .foot-bottom, klappt nie zu. Trefferflaeche der Links mindestens 24 px hoch. */
+.foot-legal { display:flex; flex-wrap:wrap; flex-basis:100%; gap:0 1.4rem; }
+.foot-legal a { display:inline-block; padding:.3rem 0; font-size:.8rem; color:var(--text2); text-decoration:none; transition:color .2s; }
+.foot-legal a:hover, .foot-legal a:focus-visible { color:var(--cyan); }
+.foot-legal a[aria-current="page"] { color:var(--cyan); font-weight:700; }
+/* Handy: Spalten als aufklappbare Zeilen mit Trennlinie, Pfeil rechts */
+@media (max-width: 767px) {
+  .foot-grid { gap:0; margin-bottom:0; }
+  .foot-grid > div:first-child { margin-bottom:1.4rem; }
+  .foot-col { border-top:1px solid var(--border); }
+  .foot-grid > .foot-col:last-child { border-bottom:1px solid var(--border); }
+  .foot-bottom { border-top:none; padding-top:1.4rem; } /* die Linie unter der letzten Spalte trennt schon */
+  .foot-col > summary { display:flex; align-items:center; justify-content:space-between; gap:1rem; min-height:48px; margin:0; cursor:pointer; }
+  .foot-col > summary::after { content:''; flex-shrink:0; width:.5rem; height:.5rem; margin-right:.3rem; border:solid currentColor; border-width:0 1.5px 1.5px 0; transform:translateY(-25%) rotate(45deg); transition:transform .2s; }
+  .foot-col[open] > summary::after { transform:translateY(25%) rotate(-135deg); }
+  .foot-col > summary:hover { color:var(--text2); }
+  .foot-col > .foot-links { padding:.2rem 0 1.2rem; }
+  /* Aufklappzeile am Handy: 15 px, normale Schrift statt Mini-Label */
+  .foot-col > .foot-h { font-family:var(--fb); font-size:1rem; font-weight:600; letter-spacing:0; text-transform:none; color:var(--text2); }
+}
+
+/* ── Responsive (Mobile-First, min-width-Skalierung) ──
+   Default ist Mobile, alle Aenderungen nach oben skaliert.
+   1:1-Aequivalent zur alten max-width-Logik:
+     0-480     -> 58px nav-h, 1-spaltig footer, hamburger
+     481-767   -> 60px nav-h
+     768-1023  -> 64px nav-h, 2-spaltig footer (erste Zelle full-width)
+     1024-1919 -> 70px nav-h, nav-links, 3-spaltig footer
+     1920+     -> 76px nav-h, html 16px, max 1440 inner */
+@media (min-width: 481px) {
+  :root { --nav-h:60px; }
+}
+@media (min-width: 768px) {
+  :root { --nav-h:64px; }
+  .foot-grid { grid-template-columns:1fr 1fr; gap:clamp(1.5rem,4vw,3.5rem); }
+  .foot-grid > div:first-child { grid-column:1/-1; }
+  /* Ab 768 px sind die Spaltenkoepfe reine Ueberschriften (main.js laesst sie offen) */
+  .foot-col > summary { list-style:none; cursor:default; }
+  .foot-pair > .foot-col + .foot-col { margin-top:1.8rem; } /* Ratgeber unter Standorte */
+}
+@media (min-width: 1024px) {
+  :root { --nav-h:70px; }
+  .nav-links { display:flex; }
+  .hamburger { display:none; }
+  .foot-grid { grid-template-columns:1.5fr repeat(4,1fr); gap:clamp(1.5rem,2.6vw,3rem); } /* seit 07.10.2026 fuenf Spalten: IT-Betreuung und KI/Software/Websites getrennt */
+  .foot-grid > div:first-child { grid-column:auto; }
+}
+@media (min-width: 1920px) {
+  :root { --nav-h:76px; }
+  html { font-size:16px; }
+  .inner { max-width:1440px; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   A11y — Release 3 Audit-Fix
+   Focus-Indikator, Reduced-Motion, Skip-Link
+═══════════════════════════════════════════════════════════════ */
+
+/* ── Fokus-Indikator CI-konform (Accent Cyan) ── */
+*:focus-visible {
+  outline: 3px solid var(--cyan);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+/* Buttons / Links mit eigener border-radius respektieren das weiterhin */
+.btn-p:focus-visible, .btn-g:focus-visible, .btn-wa:focus-visible,
+.btn-tel:focus-visible, .btn-email:focus-visible,
+.nav-wa:focus-visible, .nav-tel:focus-visible {
+  outline: 3px solid var(--cyan);
+  outline-offset: 3px;
+}
+
+/* ── Reduced Motion — vestibulaer empfindliche Nutzer ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Skip-Link zum Hauptinhalt ── */
+.skip-link {
+  position: absolute;
+  top: 0; left: 0;
+  transform: translateY(-120%);
+  z-index: 10000;
+  padding: .75rem 1.2rem;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--fb);
+  font-weight: 700;
+  font-size: .9rem;
+  text-decoration: none;
+  border-radius: 0 0 var(--r-m) 0;
+  transition: transform .2s ease-out;
+}
+.skip-link:focus {
+  transform: translateY(0);
+  outline: 3px solid var(--cyan);
+  outline-offset: 2px;
+}
+
+
+/* ── Gemeinsame Bausteine (seit 09.10.2026) ──────────────────────────
+   Standen bisher nur im <style> der Startseite; /schulung/ nutzt sie auch und zeigte
+   die Anfrage-Knoepfe deshalb als nackten Text. Werte = Endstand der Startseite
+   (Visitenkarten-Blau fuer .solid). Die Kopie in index.html raeumt der Umbau auf. */
+.btn-wa { display:inline-flex; align-items:center; gap:.55rem; padding:1rem 2rem; border-radius:var(--r-m); background:var(--wa); color:#fff; font-family:var(--fb); font-weight:700; font-size:.95rem; border:none; cursor:pointer; text-decoration:none; transition:background .2s, transform 120ms cubic-bezier(0.23,1,0.32,1); }
+.btn-wa:hover { background:var(--wa-hover); }
+/* E-Mail neutral: kein Orange, Rand und Schrift wie ein Zweitknopf */
+.btn-email { display:inline-flex; align-items:center; gap:.45rem; padding:clamp(.7rem,.9rem,1rem) clamp(1.2rem,1.8rem,2rem); border-radius:var(--r-m); border:1px solid var(--border); background:transparent; color:var(--text); font-family:var(--fb); font-weight:700; font-size:clamp(.82rem,.9rem,1rem); cursor:pointer; text-decoration:none; transition:background .2s, transform 120ms cubic-bezier(0.23,1,0.32,1), box-shadow .2s; white-space:nowrap; }
+.btn-email:hover { border-color:var(--text2); background:rgba(255,255,255,.04); }
+.price-feats { list-style:none; display:flex; flex-direction:column; gap:.65rem; margin:0 0 1.8rem; padding:0; }
+.price-feats li { display:flex; align-items:flex-start; gap:.55rem; font-size:1.0667rem; color:var(--text2); } /* 16 px (seit 10.10.2026, vorher .84rem) */
+.pfy { color:var(--text); flex-shrink:0; font-weight:700; }  /* Haken wie .lp-checklist (seit 10.10.2026; die Startseite setzt svg.pfy im eigenen Stil) */
+.pfn { color:var(--text3); flex-shrink:0; }
+.price-btn { display:block; width:100%; padding:.85rem; border-radius:var(--r-m); font-family:var(--fb); font-weight:700; font-size:.88rem; text-align:center; text-decoration:none; cursor:pointer; transition:background .2s, border-color .2s, color .2s, transform 120ms cubic-bezier(0.23,1,0.32,1), box-shadow .2s; }
+.price-btn.solid { background:var(--blue-vi); color:#fff; border:none; }
+.price-btn.solid:hover { background:#2222ff; }
+.price-btn.out { background:transparent; color:var(--text); border:1px solid var(--border); }
+.price-btn.out:hover { border-color:var(--blue-vi); color:#fff; background:var(--blue-vi-dim); }
+/* Kontaktknoepfe an Preisen (Stand 18.10.2026): WhatsApp gruen als Hauptaktion, Telefon getoent mit Kontur */
+.price-btn.wa { background:var(--wa); color:#fff; border:1px solid var(--wa); }
+.price-btn.wa:hover { background:var(--wa-hover); border-color:var(--wa-hover); }
+/* Kontur-Knopf WhatsApp (Stand 18.10.2026, Release 2.1.2): Preiskarten ohne Empfehlung. Rand und Schrift
+   --wa-text (5,6:1 auf der Karte, Rand damit >= 3:1; der Vollknopf traegt 1 px Rand in eigener Farbe, beide gleich hoch); Hover fuellt gruen wie der Vollknopf (weiss 5,3:1), Fokus mit Cyan-Ring wie alle
+   Knoepfe, Druck gibt leicht nach. Der grosse Vollknopf bleibt der Empfehlung (Business). */
+.price-btn.wa-out { background:transparent; color:var(--wa-text); border:1px solid var(--wa-text); }
+.price-btn.wa-out:hover { background:var(--wa); color:#fff; border-color:var(--wa); }
+.price-btn.tel { background:var(--tel-bg); color:var(--tel-text); border:1px solid var(--tel-line); }
+.price-btn.tel:hover { background:var(--tel-bg-hover); }
+.price-btn:focus-visible, .btn-wa:focus-visible, .btn-email:focus-visible { outline:2px solid var(--cyan); outline-offset:3px; }
+@media (max-width:640px) { .btn-wa, .btn-email { width:100%; justify-content:center; } }
+/* ──────────────────────────────────────────────────────────────── */
+
+
+/* ══ Bausteine fuer alle Seiten (seit 10.10.2026, Website-Umbau) ═══════════════════
+   Expand-Schritt: Werte = Endstand der Startseite, ohne !important. Die Kopien im
+   <style> der Startseite loescht erst der Folge-Release (Contract); bis dahin gewinnen
+   dort die Regeln der Seite. Neue Seiten bauen nur noch aus diesen Klassen. */
+
+/* Textlinks im Fliesstext unterstrichen (WCAG 1.4.1, Lighthouse "link-in-text-block").
+   Nur Links ohne eigene Klasse; :where() haelt die Spezifitaet bei einer Klasse, damit
+   Regeln fuer Knoepfe, Karten und Navigation (mit Klasse) weiter gewinnen. */
+:where(main p, main li, main dd, .faq-a) a:not([class]) { text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:.2em; }
+
+/* Seitenkopf: H1 im Mass der Startseite, darunter der Kuemmerer-Satz */
+.page-h1 { font-family:var(--fh); font-weight:800; font-size:clamp(2.1rem,4.6vw,3.7rem); line-height:1.04; letter-spacing:-.04em; color:var(--text); margin:0 0 1rem; overflow-wrap:break-word; hyphens:auto; hyphenate-limit-chars:12 5 5; text-wrap:balance; } /* Trennung nur bei langen Woertern (IT-Sicherheitsschulung), nicht bei „wechseln“ */
+@media (max-width:767px) { .page-h1 { font-size:clamp(2.4rem,9.4vw,2.6rem); } }
+.page-h1 em { font-style:normal; color:var(--cyan); }
+.page-k { font-size:clamp(1.07rem,1.4vw,1.2rem); color:var(--text); font-weight:600; max-width:40rem; margin:0 0 1rem; line-height:1.55; }
+
+/* Abschnitte: .sec Grundflaeche, --alt zweite Flaeche, --glow blaues Licht wie im Hero */
+.sec { position:relative; padding:clamp(3.5rem,8vw,6.5rem) 0; background-color:var(--bg); }
+main > .sec:first-child { margin-top:calc(var(--nav-h) + env(safe-area-inset-top)); } /* erster Abschnitt unter der festen Kopfzeile */
+.sec--alt { background-color:var(--bg2); }
+.sec--glow { background-image:none; }  /* kein Schein mehr (keine Verlaeufe als Schmuck); Klasse bleibt, der Generator setzt sie */
+.measure { max-width:68ch; }
+
+/* Belegzeile (Sterne, Erfahrung, Preise) */
+.hc-proof { list-style:none; display:flex; flex-wrap:wrap; gap:.55rem 1.5rem; margin:0 0 2.1rem; padding:0; font-size:.92rem; color:var(--text); }
+.hc-proof li { display:inline-flex; align-items:center; gap:.45rem; }
+.hc-proof svg { width:16px; height:16px; color:var(--text2); flex-shrink:0; }
+.hc-proof .is-star { color:#f5b301; }
+.hc-proof a { color:inherit; text-decoration:underline; text-decoration-color:rgba(38,189,239,.5); text-decoration-thickness:1px; text-underline-offset:.28em; transition:text-decoration-color .2s; }
+.hc-proof a:hover { text-decoration-color:var(--cyan); }
+
+/* Knoepfe im Seitenkopf (Stand 18.10.2026): WhatsApp zuerst als Hauptaktion (.hc-wa, gruen), daneben Anrufen mit
+   Nummer zurueckgenommen (.hc-call, getoent mit Kontur). Nur die Ratgeber behalten Anrufen als einzigen Knopf
+   (.btn-p.hc-call). Am Handy uebernimmt die feste Kontaktleiste unten. */
+.hc-ctas { display:flex; flex-wrap:wrap; gap:.75rem; align-items:center; }
+.hc-call { padding:.8rem 1.2rem; font-size:.93rem; gap:.55rem; }
+.hc-call:not(.btn-p) { display:inline-flex; align-items:center; padding:calc(.8rem - 1px) calc(1.2rem - 1px); border-radius:var(--r-m); border:1px solid var(--tel-line); background:var(--tel-bg); color:var(--tel-text); font-family:var(--fb); font-weight:700; white-space:nowrap; transition:background-color .2s, transform 120ms cubic-bezier(0.23,1,0.32,1); }
+.hc-call:not(.btn-p):hover { background:var(--tel-bg-hover); }
+.hc-num { font-weight:600; padding-left:.65rem; margin-left:.1rem; border-left:1px solid rgba(255,255,255,.35); font-variant-numeric:tabular-nums; }
+.hc-wa { display:inline-flex; align-items:center; gap:.55rem; padding:.8rem 1.15rem; border-radius:var(--r-m); border:none; background:var(--wa); color:#fff; font-family:var(--fb); font-weight:700; font-size:.93rem; white-space:nowrap; transition:background-color .2s, transform 120ms cubic-bezier(0.23,1,0.32,1); }
+.hc-wa svg { color:currentColor; }
+.hc-wa:hover { background:var(--wa-hover); color:#fff; }
+.hc-call:focus-visible, .hc-wa:focus-visible, .hc-proof a:focus-visible, .hc-qr a:focus-visible { outline:2px solid var(--cyan); outline-offset:3px; }
+@media (max-width:767px) { .hc-ctas { display:none; } }
+
+/* QR-Code zur Kontaktseite (nur breite Bildschirme) */
+.hc-qr { display:flex; align-items:center; gap:1rem; margin-top:1.8rem; }
+.hc-qr a { display:block; flex-shrink:0; border-radius:var(--r-m); background:#121212; padding:6px; border:1px solid var(--border); transition:border-color .2s; }
+.hc-qr a:hover { border-color:#4a5568; }
+.hc-qr img { width:88px; height:88px; display:block; border-radius:var(--r-s); filter:grayscale(1); }
+.hc-qr p { margin:0; font-size:.88rem; line-height:1.5; color:var(--text2); }
+.hc-qr strong { display:block; color:var(--text); font-weight:600; }
+.cta-qr { justify-content:center; position:relative; text-align:left; } /* Abstand oben kommt von .hc-qr (1.8rem) */
+@media (max-width:1024px) { .hc-qr { display:none; } }
+
+/* Mini-Chat: kurzer Beispielverlauf als Streifen, Blasen wie im Hero-Chat */
+.mini-chat-box { max-width:26rem; margin:1.5rem 0 0; border:1px solid var(--border); border-radius:var(--r-l); overflow:hidden; background-color:#0b141a; background-image:radial-gradient(rgba(255,255,255,.035) 1px, transparent 1.2px); background-size:18px 18px; }
+.mini-chat { list-style:none; display:flex; flex-direction:column; gap:8px; margin:0; padding:12px 12px 16px; }
+.hc-msg { max-width:84%; padding:6px 9px 5px 10px; border-radius:9px; font-size:.86rem; line-height:1.4; color:#e9edef; box-shadow:0 1px .5px rgba(0,0,0,.25); }
+.hc-msg time { display:block; margin-top:1px; text-align:right; font-size:.68rem; color:rgba(233,237,239,.6); font-variant-numeric:tabular-nums; }
+.hc-msg.is-me time { color:rgba(233,237,239,.8); }   /* auf dem Gruen der Kundenblase >= 4,5:1 */
+.hc-msg.is-me time::after { content:''; display:inline-block; width:16px; height:9px; margin-left:4px; vertical-align:-1px; background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Cpath d='M1 4.8l2.6 2.6L9.4 1.2M6.4 7.4l.4.4 6.6-6.6' fill='none' stroke='%2353bdeb' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center / contain; }
+.hc-msg.is-me { align-self:flex-end; background:#005c4b; border-top-right-radius:2px; transform-origin:100% 100%; }
+.hc-msg.is-ag { align-self:flex-start; background:#1f2c34; border-top-left-radius:2px; transform-origin:0 100%; }
+
+/* Initialen-Avatar (bis zum Foto-Shooting) */
+.ava { width:36px; height:36px; flex-shrink:0; border-radius:50%; display:grid; place-items:center; background:var(--blue-vi); color:#fff; font-family:var(--fh); font-weight:700; font-size:.8rem; letter-spacing:.02em; }
+
+/* Karten (aus dem KI-Abschnitt der Startseite) */
+.card-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr)); gap:1.2rem; margin:2.2rem 0 0; }
+.card { background:var(--bg2); border:1px solid var(--border); border-radius:var(--r-l); padding:1.5rem 1.6rem; }
+.card h3 { font-family:var(--fh); font-size:1.05rem; font-weight:800; color:var(--text); margin:0 0 .6rem; letter-spacing:-.01em; line-height:1.3; }
+.card p { font-size:1.0667rem; color:var(--text2); line-height:1.7; margin:0; }
+.card-box { background:var(--bg2); border:1px solid var(--border); border-radius:var(--r-l); padding:1.8rem; margin-top:1.6rem; }
+.card-box h3 { font-family:var(--fh); font-size:1.15rem; font-weight:800; color:var(--text); margin:0 0 .6rem; }
+.card-box p { font-size:1.0667rem; color:var(--text2); line-height:1.75; margin:0 0 1.2rem; max-width:64ch; }
+.card-box p:last-child { margin-bottom:0; }
+.card-cta { display:flex; flex-wrap:wrap; gap:.9rem; }
+@media (max-width:560px) { .card-cta .btn-p, .card-cta .btn-g { width:100%; justify-content:center; } }
+.card-more { margin:1.4rem 0 0; font-size:.9rem; color:var(--text2); line-height:1.8; }
+.card-more a { color:var(--cyan); text-underline-offset:.2em; }
+
+/* Preise (Endstand der Startseite: Empfehlung und Haupt-Knopf in Visitenkarten-Blau).
+   .price-feats, .pfy/.pfn und .price-btn stehen oben bei den Bausteinen vom 09.10.2026. */
+.price-grid { display:grid; grid-template-columns:1fr; gap:clamp(1rem,3vw,1.5rem); margin-top:clamp(2rem,5vw,3rem); }
+@media (min-width:601px) { .price-grid { grid-template-columns:repeat(2,1fr); } }
+@media (min-width:1101px) { .price-grid { grid-template-columns:repeat(4,1fr); } }
+.price-card { background:var(--bg3); border:1px solid var(--border); border-radius:var(--r-l); padding:clamp(1.25rem,3.5vw,2rem); position:relative; transition:border-color .2s, transform .2s; }
+.price-card.feat { border-color:var(--blue-vi); box-shadow:0 0 0 1px var(--blue-vi), 0 8px 24px rgba(0,0,0,.35); }   /* ruhiger Schatten statt blauem Schein */
+/* Abzeichen in normaler Schreibung, kein Versal-Etikett */
+.price-badge { position:absolute; top:-12px; left:50%; transform:translateX(-50%); background:var(--blue-vi); color:#fff; font-family:var(--fb); font-size:14px; font-weight:600; letter-spacing:0; text-transform:none; line-height:1.4; padding:.15rem .8rem; border-radius:var(--r-s); white-space:nowrap; }
+.price-tier { font-family:var(--fb); font-size:.93rem; font-weight:600; letter-spacing:0; text-transform:none; color:var(--text3); margin-bottom:.4rem; }
+.price-name { font-family:var(--fh); font-size:1.3rem; font-weight:800; color:var(--text); margin-bottom:1.2rem; }
+.price-val { font-family:var(--fm); font-size:2.4rem; font-weight:600; color:var(--text); letter-spacing:-.04em; line-height:1; }
+.price-val sup { font-size:1rem; vertical-align:super; }
+.price-per { font-size:.8rem; color:var(--text3); margin:.2rem 0 .1rem; }
+.price-note { font-size:.73rem; color:var(--text3); margin-bottom:1.6rem; }
+.price-div { border:none; border-top:1px solid var(--border); margin:1.2rem 0; }
+
+/* Kundenstimmen */
+.testi-grid { display:grid; grid-template-columns:1fr; gap:1.5rem; margin-top:3rem; }
+@media (min-width:680px)  { .testi-grid { grid-template-columns:repeat(2,1fr); } }
+@media (min-width:1150px) { .testi-grid { grid-template-columns:repeat(4,1fr); } }
+.testi-card { background:var(--bg2); border:1px solid var(--border); border-radius:var(--r-l); padding:1.8rem; position:relative; display:flex; flex-direction:column; }
+.testi-card::before { content:'"'; position:absolute; top:1rem; right:1.4rem; font-family:var(--fh); font-size:3.5rem; color:var(--border); line-height:1; }
+.stars { display:flex; gap:2px; color:var(--warning); margin-bottom:.9rem; }
+.stars svg { width:14px; height:14px; }
+.testi-txt { font-size:1.0667rem; color:var(--text2); line-height:1.7; font-style:italic; margin-bottom:1.3rem; flex:1 1 auto; }
+.testi-who { font-weight:700; font-size:.86rem; color:var(--text); }
+.testi-role { font-size:.75rem; color:var(--text2); font-family:var(--fb); }
+figure.testi-card { margin:0; }
+blockquote.testi-txt { margin-top:0; margin-left:0; margin-right:0; }
+.testi-txt p { margin:0; }
+.testi-txt p + p { margin-top:.85em; }
+.testi-ctx { font-size:.78rem; color:var(--text2); margin-top:.55rem; line-height:1.45; }
+.testi-source { margin-top:1.6rem; max-width:72ch; font-size:.8rem; color:var(--text2); line-height:1.65; }
+.testi-source strong { color:var(--text); font-weight:600; }
+.testi-source a { color:var(--cyan); text-underline-offset:.2em; }
+
+/* Abschluss mit Knoepfen */
+.cta-sec { background:var(--bg); padding:clamp(4rem,10vw,8rem) 0; text-align:center; position:relative; overflow:hidden; }
+.cta-h { font-family:var(--fh); font-size:clamp(1.6rem,4vw,2.6rem); font-weight:800; color:var(--text); letter-spacing:-.04em; margin-bottom:.8rem; position:relative; }
+.cta-h em { font-style:normal; color:var(--cyan); }
+.cta-sub { font-size:1.0667rem; color:var(--text2); max-width:440px; margin:0 auto 2.5rem; line-height:1.7; position:relative; }
+/* Fuer wen (seit 18.10.2026): ruhige Zeile direkt unter cta-sub, Klein-Stufe; der Abstand nach unten bleibt der von cta-sub */
+.cta-sub:has(+ .cta-fuer) { margin-bottom:.6rem; }
+.cta-fuer .nowrap { white-space:nowrap; }   /* „Ein-Personen-Gewerbe“ bricht am Handy nicht am Bindestrich */
+/* Am Handy mit Kontaktleiste (dort nur der WhatsApp-Knopf) knapper: die Zeile laeuft dort ohne Trennung ueber drei
+   Zeilen. Seit Release 2.1.2 steht der WhatsApp-Knopf dort wieder; damit die Seitenlaenge im Budget bleibt (check_site
+   AK5, 8.000 px), sind Abschnittsrand, Abstand zum Weiter-Link und Knopfhoehe am Handy etwas knapper. */
+@media (max-width:767px) {
+  .cta-fuer:has(+ .inline-cta-mobile) { margin-bottom:1rem; }
+  .cta-sec:has(.inline-cta-mobile) { padding-block:2.8rem; }
+  .cta-btns.inline-cta-mobile .btn-wa { padding-block:.85rem; }
+  .inline-cta-mobile ~ .cta-next { margin-top:1.2rem; }
+}
+.cta-fuer { font-size:.9333rem; color:var(--text2); max-width:440px; margin:0 auto 2.5rem; line-height:1.5; position:relative; text-wrap:balance; }
+.cta-btns { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; position:relative; }
+/* Telefon im Abschluss zurueckgenommen (Stand 18.10.2026): getoent mit Kontur, WhatsApp davor ist die Hauptaktion.
+   Innenabstand 1 px kleiner, damit die Kontur die Hoehe der Nachbarknoepfe haelt. */
+.btn-tel { display:inline-flex; align-items:center; gap:.55rem; padding:calc(1rem - 1px) calc(2rem - 1px); border-radius:var(--r-m); background:var(--tel-bg); color:var(--tel-text); font-family:var(--fb); font-weight:700; font-size:.95rem; border:1px solid var(--tel-line); cursor:pointer; transition:background .2s, border-color .2s, color .2s, transform 120ms cubic-bezier(0.23,1,0.32,1), box-shadow .2s, opacity .2s; }
+.btn-tel:hover { background:var(--tel-bg-hover); }
+@media (max-width:767px) {
+  .cta-btns { flex-direction:column; align-items:center; }
+  .cta-btns .btn-tel, .cta-btns .btn-wa, .cta-btns .btn-email { width:100%; max-width:320px; justify-content:center; }
+}
+
+/* Brotkrumen (bisher im <style> jeder Generator-Seite) */
+.lp-crumbs ol { display:flex; flex-wrap:wrap; gap:.35rem; list-style:none; margin:0 0 1.4rem; padding:0; font-size:.8rem; color:var(--text3); }
+.lp-crumbs li + li::before { content:"/"; margin-right:.35rem; color:var(--border); }
+.lp-crumbs a { color:var(--text2); text-decoration:none; }
+.lp-crumbs a:hover { color:var(--cyan); }
+.lp-crumbs [aria-current] { color:var(--text); }
+
+/* Chips (Orte, Leistungen): Pillen in einer Zeile, umbrechend */
+.chips { display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0; padding:0; list-style:none; }
+.chips > * { font-family:var(--fb); font-weight:600; font-size:.93rem; background:var(--bg2); border:1px solid var(--border); border-radius:var(--r-s); padding:.35rem .9rem; color:var(--text2); text-decoration:none; }
+.chips > a:hover { border-color:var(--text2); color:var(--text); }
+.chips > .here { border-color:var(--text2); color:var(--text); }
+.chips > [aria-current] { border-color:var(--cyan); color:var(--cyan); }
+
+/* Aufklappbarer Zusatz (seit 10.10.2026): <details class="more"><summary>…</summary>…</details>.
+   Der Inhalt steht im HTML und ist ohne JS lesbar (Crawler, KI-Suche); zu ist nur die Ansicht. */
+.more { margin-top:1.4rem; border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+.more > summary { list-style:none; display:flex; align-items:center; justify-content:space-between; gap:1rem; min-height:48px; padding:.65rem 0; font-weight:700; font-size:1rem; line-height:1.4; color:var(--text); cursor:pointer; }
+.more > summary::-webkit-details-marker { display:none; }
+.more > summary::marker { content:''; }
+.more > summary::after { content:''; flex-shrink:0; width:.5rem; height:.5rem; margin-right:.35rem; border:solid currentColor; border-width:0 2px 2px 0; transform:translateY(-25%) rotate(45deg); transition:transform .2s; }
+.more[open] > summary::after { transform:translateY(25%) rotate(-135deg); }
+.more > summary:hover { color:var(--cyan); }
+.more > summary:focus-visible { outline:2px solid var(--cyan); outline-offset:3px; border-radius:4px; }
+.more[open] { padding-bottom:1rem; }
+
+/* Sprungziel ohne eigene Flaeche (alte Anker, die in einem anderen Abschnitt weiterleben) */
+.anchor { display:block; height:0; }
+/* Nur fuer Screenreader (z. B. "enthalten" in Tabellen mit Haken) */
+.sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+
+/* ── Generator-Huelle der Unterseiten (seit 10.10.2026) ──
+   Kopf .page-head (Krumen, H1, Kernsatz, Antwortsatz, Knoepfe, Belegzeile, Beispiel-Chat), Abschnitte .sec
+   im Wechsel, Stimmen, Preise, Abschluss .cta-sec mit Autorzeile. */
+@media (max-width:767px) { .sec { padding:2.4rem 0; } }
+/* Zwei gleiche Flaechen hintereinander: Haarlinie als Trenner */
+.sec:not(.sec--alt) + .sec:not(.sec--alt), .sec--alt + .sec--alt, .sec:not(.sec--alt) + .cta-sec { border-top:1px solid var(--border); }
+.page-head-grid { display:grid; grid-template-columns:minmax(0,1fr); gap:2rem; align-items:start; }
+@media (min-width:1024px) { .page-head-grid--chat { grid-template-columns:minmax(0,1.45fr) minmax(0,1fr); gap:3.5rem; } }
+/* Brotkrumen im Kopf: 15 px, Tippflaeche 33 px; der Chat beginnt am Desktop auf Hoehe der H1 (Krumen + Abstand) */
+.page-head .lp-crumbs ol { margin-bottom:.9rem; font-size:1rem; }
+.page-head .lp-crumbs a, .page-head .lp-crumbs [aria-current] { display:inline-block; line-height:2.2rem; }
+/* Unter 480 px ohne das letzte Glied (die Seite selbst, ihr Name steht gleich darunter als H1): fuer Screenreader
+   bleibt es lesbar (sr-only-Muster), das Trennzeichen davor faellt mit weg. Lange Seitennamen brachen sonst in eine
+   zweite Zeile und schoben die Belegzeile unter die Kontaktleiste. Nur ab drei Ebenen:
+   bei zwei Ebenen bliebe sonst „Startseite“ allein stehen. */
+@media (max-width:479px) { .lp-crumbs li[aria-current]:nth-child(n+3) { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; } }
+.page-head .s-sub { margin:0 0 1.4rem; }
+.page-head .hc-ctas { margin:0 0 1.3rem; }
+.page-head .hc-proof { margin:0; }
+.page-head .mini-chat-box { margin:0; width:100%; justify-self:center; }
+@media (min-width:1024px) { .page-head-grid--chat .mini-chat-box { margin-top:3.1rem; } }
+/* Handy: Kopf so eng wie der Hero der Startseite, damit Belegzeile ueber der Kontaktleiste steht (390x700) */
+@media (max-width:767px) { .page-head { padding-top:1.05rem; } .page-head .lp-crumbs ol { margin-bottom:.7rem; } .page-head .s-sub { line-height:1.6; } }  /* 18 px enger, das schwebende Dock steht 18 px hoeher */
+/* Dokumentseiten (Rechtsseiten): Kopf nur mit Krumen und H1, der Text folgt ohne doppelten Abschnittsabstand */
+.page-head--doc { padding-bottom:clamp(1.6rem,3vw,2.6rem); }
+.page-head--doc .page-h1 { margin-bottom:0; }
+.page-head--doc + .sec { padding-top:clamp(2rem,4vw,3rem); }
+/* Begriff in der H1 zusammenhalten („Managed IT-Service“), erst ab 480 px: darunter ist er breiter als die Zeile */
+@media (min-width:480px) { .nowrap { white-space:nowrap; } }
+.s-title .nowrap { white-space:nowrap; }  /* Ueberschriften: langes Wort nie am Bindestrich trennen (schulung, FAQ) */
+.mini-chat-h { display:flex; align-items:center; gap:.6rem; padding:10px 14px; background:#1f2c34; }
+.mini-chat-who { font-size:.9rem; font-weight:700; line-height:1.25; color:#e9edef; }
+.mini-chat-who small { display:block; font-size:.8rem; font-weight:500; color:#8696a0; }
+.mini-chat .hc-msg { font-size:.95rem; }
+/* Stimmen ueber die volle Breite: zwei Spalten; eine einzelne Stimme nimmt die Zeile, aber hoechstens 46rem */
+.testi-grid--few { margin-top:1.6rem; }
+@media (min-width:680px) { .testi-grid--few { grid-template-columns:repeat(2,minmax(0,1fr)); } .testi-grid--few > :only-child { grid-column:1 / -1; } }
+.testi-grid--few > .testi-card:only-child { max-width:46rem; }
+.testi-grid--few .testi-txt { max-width:66ch; }
+.testi-source--link { margin-top:.6rem; }
+.testi-source--link a { font-size:.93rem; display:inline-block; padding:.8rem 0; min-height:44px; }  /* Tippflaeche ~47 px */
+.sec .testi-role { font-size:.8rem; color:var(--text2); }  /* Quelle „Google-Bewertung“ auf Unterseiten 12 px */
+@media (min-width:768px) { .price-grid--3 { grid-template-columns:repeat(3,minmax(0,1fr)); } }
+.price-val .price-cur { font-size:1.35rem; margin-left:.05rem; letter-spacing:0; }
+.sec .price-val { display:flex; align-items:baseline; }  /* Eurozeichen auf der Grundlinie der Zahl */
+.sec .price-per { font-size:.87rem; color:var(--text2); }  /* „/Monat zzgl. MwSt.“ gut lesbar */
+.price-desc { margin:1rem 0 0; font-size:1.0667rem; line-height:1.6; color:var(--text2); }
+.price-line { margin:1.4rem 0 0; padding:1.1rem 1.2rem; font-size:1.0667rem; line-height:1.6; color:var(--text2); background:var(--bg3); border:1px solid var(--border); border-radius:var(--r); }
+.price-line strong { color:var(--text); }
+/* Preiskarten mit Leistungen und Knopf (price-grid--wide ueber "prices_wide", seit 10.10.2026 nur schulung):
+   bis 1023 px eine Spalte in Lesebreite statt drei schmaler Spalten, ab 1024 px drei. Karte als Spalte, der Knopf
+   sitzt unten, damit die Knoepfe nebeneinanderliegender Karten auf einer Hoehe stehen. Nicht seitenweit: Flex hebt
+   das Zusammenfallen der Abstaende auf und verschiebt die Karten ohne Knopf (managed, software, websites,
+   it-notdienst) um 1-2 px. Wortabstand im Betrag: das Leerzeichen der Monospace-Schrift in „ab 165“ ist so breit
+   wie eine Ziffer und wirkt doppelt. */
+.price-grid--wide { grid-template-columns:minmax(0,1fr); max-width:36rem; }
+@media (min-width:1024px) { .price-grid--wide { grid-template-columns:repeat(3,minmax(0,1fr)); max-width:none; } }
+.price-grid--wide .price-card { display:flex; flex-direction:column; }
+.price-grid--wide .price-btn { margin-top:auto; }
+.price-grid--wide .price-val { word-spacing:-.35em; }
+.price-grid--wide .price-cur { word-spacing:normal; }  /* geschuetztes Leerzeichen vor dem Euro bleibt wie bisher */
+.sec .faq-wrap { margin-top:1.6rem; }
+/* Leistungen als Zeilen mit Haarlinie und Symbol-Kachel (Kachel wie im Schnellcheck der Startseite) */
+.feat-rows { list-style:none; display:grid; grid-template-columns:minmax(0,1fr); gap:0 2.5rem; margin:1.8rem 0 0; padding:0; }
+@media (min-width:768px) { .feat-rows { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+.feat-rows > li { display:flex; align-items:flex-start; gap:1rem; padding:1.15rem 0; border-top:1px solid var(--border); }
+.feat-ico { width:44px; height:44px; flex-shrink:0; border-radius:var(--r-m); display:flex; align-items:center; justify-content:center; color:var(--text); background:var(--bg3); border:1px solid var(--border); }
+.feat-ico svg { width:22px; height:22px; }
+.feat-rows h3 { font-family:var(--fh); font-size:1.06rem; font-weight:700; line-height:1.3; color:var(--text); margin:0 0 .35rem; }
+.feat-rows p { margin:0; font-size:1.0667rem; line-height:1.65; color:var(--text2); max-width:62ch; }
+@media (max-width:767px) { .feat-rows > li { padding:.95rem 0; } .feat-ico { width:36px; height:36px; border-radius:var(--r-m); } .feat-ico svg { width:18px; height:18px; } }
+/* Checkliste am Desktop zweispaltig mit Haarlinien (wie „Typische Anrufe“) */
+.sec .lp-checklist li { padding:.85rem 0 .85rem 1.9rem; border-top:1px solid var(--border); }
+.sec .lp-checklist li::before { top:1.22rem; }
+@media (min-width:768px) { .sec .lp-checklist { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 2.5rem; } }
+/* Zwei Spalten ab 1024 px: Text und Preis, Ablauf und Sonderfall */
+.sec-split { display:grid; grid-template-columns:minmax(0,1fr); gap:2.2rem 4rem; align-items:start; }
+@media (min-width:1024px) { .sec-split { grid-template-columns:minmax(0,1.3fr) minmax(0,1fr); } }
+.sec-split > div > .price-card { max-width:24rem; }
+.cta-btns .btn-email { padding:1rem 2rem; font-size:.95rem; }
+.cta-next { margin:1.8rem 0 0; position:relative; font-size:1.0667rem; }
+.cta-next a { display:inline-flex; align-items:center; gap:.4rem; color:var(--cyan); font-weight:600; text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:.25em; }
+.cta-next a:focus-visible { outline:2px solid var(--cyan); outline-offset:3px; border-radius:4px; }
+.cta-next svg { flex-shrink:0; }
+.cta-author { display:flex; align-items:center; justify-content:center; gap:.8rem; max-width:36rem; margin:2.4rem auto 0; padding-top:1.6rem; border-top:1px solid var(--border); position:relative; text-align:left; }
+.cta-author p { margin:0; font-size:.93rem; line-height:1.55; color:var(--text2); }
+.cta-ki { max-width:36rem; margin:.9rem auto 0; font-size:1.0667rem; line-height:1.5; color:var(--text2); text-align:center; }
+.cta-author strong { color:var(--text); font-weight:700; }
+.cta-date { font-size:.87rem; color:var(--text3); }
+/* Fliesstext-Bausteine aus "extra" (Ablauf, Checkliste, Hinweis), Werte aus NEW_STYLE/KI_STYLE des
+   Generators, Text 16 px. */
+.lp-steps { counter-reset:st; list-style:none; margin:1.2rem 0 1.8rem; padding:0; }
+.lp-steps > li { counter-increment:st; position:relative; padding:.15rem 0 1.1rem 2.9rem; font-size:1.0667rem; color:var(--text2); line-height:1.7; }
+.lp-steps > li::before { content:counter(st); position:absolute; left:0; top:.05rem; width:1.9rem; height:1.9rem; border-radius:50%; border:1px solid var(--border); color:var(--text); font-family:var(--fh); font-weight:700; font-size:.85rem; display:grid; place-items:center; }
+.lp-steps > li + li::after { content:""; position:absolute; left:.95rem; top:-1.05rem; width:1px; height:1.05rem; background:var(--border); }
+.lp-steps strong, .lp-checklist strong { color:var(--text); }
+.lp-checklist { list-style:none; margin:1rem 0 1.4rem; padding:0; }
+.lp-checklist li { position:relative; padding:.35rem 0 .35rem 1.9rem; font-size:1.0667rem; color:var(--text2); line-height:1.65; }
+.lp-checklist li::before { content:""; position:absolute; left:.35rem; top:.72rem; width:.4rem; height:.75rem; border:solid var(--text2); border-width:0 2px 2px 0; transform:rotate(45deg); }
+.ki-note { background:var(--bg2); border:1px solid var(--border); border-radius:var(--r-l); padding:1.3rem 1.5rem; margin:1.8rem 0; }
+.ki-note strong { color:var(--text); }
+.ki-note p { font-size:1.0667rem; color:var(--text2); line-height:1.75; margin:0 0 .7rem; }
+.ki-note p:last-child { margin-bottom:0; }
+/* Orte, IT-Seiten, E-Rechnung, Digitalbonus: Liste mit Kreuzen und Tabelle, Werte aus
+   NEW_STYLE/KI_STYLE, Text 16 px. */
+.lp-dont { list-style:none; margin:1rem 0 1.4rem; padding:0; }
+.lp-dont li { position:relative; padding:.35rem 0 .35rem 1.9rem; font-size:1.0667rem; color:var(--text2); line-height:1.65; }
+.lp-dont li::before, .lp-dont li::after { content:""; position:absolute; left:.2rem; top:1.15rem; width:.85rem; height:2px; border-radius:1px; background:#e8806f; transform:rotate(45deg); }
+.lp-dont li::after { transform:rotate(-45deg); }
+.lp-dont strong { color:var(--text); }
+.ki-tbl-wrap { overflow-x:auto; margin:1.4rem 0; }
+.ki-tbl { width:100%; border-collapse:collapse; font-size:1.0667rem; min-width:520px; }
+.ki-tbl th { font-family:var(--fh); font-size:.8rem; letter-spacing:.03em; text-transform:uppercase; color:var(--text3); text-align:left; padding:.7rem .9rem; border-bottom:1px solid var(--border); }
+.ki-tbl td { padding:.85rem .9rem; border-bottom:1px solid var(--border); color:var(--text2); line-height:1.65; vertical-align:top; }
+.ki-tbl td:first-child { color:var(--text); font-weight:600; white-space:nowrap; }
+.ki-tbl tr:last-child td { border-bottom:none; }
+@media (max-width:600px) {
+  .ki-tbl { min-width:0; }
+  .ki-tbl thead { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+  .ki-tbl tbody, .ki-tbl tr, .ki-tbl td { display:block; width:100%; }
+  .ki-tbl tr { border-bottom:1px solid var(--border); padding:.75rem 0; }
+  .ki-tbl tr:last-child { border-bottom:none; }
+  .ki-tbl td { border-bottom:none; padding:.2rem 0; }
+  .ki-tbl td:first-child { white-space:normal; }
+  .ki-tbl td[data-label]::before { content:attr(data-label) ": "; color:var(--text); font-weight:600; }
+}
+/* In der Huelle: Tabelle ueber die volle Breite (nicht 68ch wie Absaetze), Kreuz-Liste wie die Checkliste
+   mit Haarlinien und ab 768 px zweispaltig */
+.sec .ki-tbl-wrap { max-width:none; }
+.sec .lp-dont li { padding:.85rem 0 .85rem 1.9rem; border-top:1px solid var(--border); }
+.sec .lp-dont li::before, .sec .lp-dont li::after { top:1.65rem; }
+@media (min-width:768px) { .sec .lp-dont { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 2.5rem; } }
+/* Spalten einer Zeile (.sec-split) beginnen buendig oben. --wide: rechte Spalte breiter (1 : 1,35) und ohne
+   68ch-Grenze, wenn rechts Hinweis und Kasten stehen; so enden beide Spalten etwa gleich hoch. */
+.sec-split .lp-content > :first-child, .sec-split > div > .card-box:first-child { margin-top:0; }
+@media (min-width:1024px) {
+  .sec-split--wide { grid-template-columns:minmax(0,1fr) minmax(0,1.35fr); }
+  .sec-split--wide .lp-content > div, .sec-split--wide .card-box p { max-width:none; }
+}
+/* Kopf ohne Chat ab 1024 px: H1 ueber beide Spalten, darunter links der weisse Kernsatz, rechts Antwortsatz,
+   Knoepfe und Belegzeile (Lesefolge H1 → weiss → grau). Nur Rasterflaechen, HTML-Reihenfolge bleibt. */
+@media (min-width:1024px) {
+  .page-head-copy--two { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); grid-template-areas:"crumbs crumbs" "h1 h1" "kum antwort"; column-gap:clamp(3rem,6vw,6rem); }
+  .page-head-copy--two > .lp-crumbs { grid-area:crumbs; }
+  .page-head-copy--two > .page-h1 { grid-area:h1; }
+  .page-head-copy--two > .page-k { grid-area:kum; align-self:start; margin-bottom:0; }
+  .page-head-copy--two > .page-head-b { grid-area:antwort; align-self:start; }
+}
+/* Orte-Chips in der Huelle am Handy und Tablet mit 44 px Tippflaeche (Startseite unveraendert) */
+@media (max-width:1023px) { .sec .chips > * { display:inline-flex; align-items:center; min-height:44px; } }
+/* Abschnitt mit seitlicher Ueberschrift (FAQ, einzelne Stimme): ab 1024 px Ueberschrift links (bleibt beim
+   Scrollen stehen), Inhalt rechts in voller Spaltenbreite statt 820 px mit leerer rechter Haelfte */
+@media (min-width:1024px) {
+  .sec--aside > .inner { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,2fr); column-gap:clamp(3rem,6vw,6rem); align-items:start; }
+  .sec--aside > .inner > .s-title { position:sticky; top:calc(var(--nav-h) + 1.5rem); margin:0; }
+  /* lange seitliche Ueberschrift (aside_long, schulung: „IT-Sicherheitsschulung“ ~10,3 em in .nowrap) passt in
+     die linke Spalte: 1024 px ~27 px, ab ~1200 px 33 px (Spalte 296-376 px) */
+  .sec--aside > .inner > .s-title--long { font-size:clamp(1.6rem, 2.9vw - .15rem, 2.2rem); }
+  .sec--aside .faq-wrap { max-width:none; margin-top:0; }
+  .sec--aside .testi-grid--few { margin-top:0; }
+}
+/* KI-Bereich, Software, Websites, Ratgeber: Bausteine aus KI_STYLE/NEW_STYLE des Generators, die
+   bis dahin im <style> dieser Seiten standen, Text 16 px. Absaetze in .lp-content bekommen Groesse, Farbe und
+   Abstand aus dem gemeinsamen <style> der Generator-Seiten (gleiche Spezifitaet, steht spaeter und gewinnt);
+   wo ein Kasten davon abweicht (Kurzantwort), traegt die Regel .lp-content mit. */
+/* Hub-Kopf: Wege zu den Unterseiten, ab 1024 px rechts neben dem Kopf wie der Beispiel-Chat, darunter unter ihm */
+@media (min-width:1024px) {
+  .page-head-grid--paths { grid-template-columns:minmax(0,1.45fr) minmax(0,1fr); gap:3.5rem; }
+  .page-head-grid--paths .lp-paths { margin-top:3.1rem; }
+}
+.lp-paths { background:var(--bg); border:1px solid var(--border); border-radius:var(--r-l); padding:.6rem; }
+.lp-paths-h { font-family:var(--fh); font-size:1.1rem; font-weight:700; color:var(--text); padding:.8rem .9rem .5rem; margin:0; }
+.lp-paths ul { list-style:none; margin:0; padding:0; }
+.lp-paths li + li { border-top:1px solid var(--border); }
+.lp-paths a { display:block; padding:.95rem .9rem; border-radius:var(--r-m); text-decoration:none; transition:background .2s; }
+.lp-paths a:hover { background:var(--bg3); }
+.lp-paths a:focus-visible { outline:2px solid var(--cyan); outline-offset:2px; }
+.lp-path-t { display:block; font-family:var(--fh); font-weight:700; font-size:1.0667rem; color:var(--text); }
+.lp-path-t::after { content:" →"; color:var(--cyan); transition:margin .2s; }
+.lp-path-d { display:block; font-size:.93rem; color:var(--text2); line-height:1.55; margin-top:.25rem; }
+/* Zwischenueberschriften im Fliesstext, auch im zugeklappten Teil (<details class="more">) */
+.lp-content > h3, .lp-content > .more > h3 { font-family:var(--fh); font-size:1.15rem; font-weight:700; line-height:1.3; color:var(--text); margin:1.8rem 0 .6rem; }
+.lp-content > h3:first-child, .lp-content > .more > summary + h3 { margin-top:.4rem; }
+.lp-content > .more { max-width:68ch; }
+.lp-content > .more:has(> .ki-tbl-wrap) { max-width:none; }  /* Tabelle darin ueber die volle Breite wie ohne Zuklappen */
+.lp-content > .more > p { max-width:68ch; }
+.lp-content > .more + p { margin-top:1.2rem; }  /* Absatz nach einem zugeklappten Teil nicht an dessen Linie */
+.inner > .lp-content > .lp-steps { max-width:68ch; }  /* Ablauf ausserhalb einer Spalte in Lesebreite wie die Absaetze */
+/* Karten und Fallbeispiele im Fliesstext ueber die volle Breite (statt 68ch wie Absaetze); auf der zweiten Flaeche
+   eine Stufe heller, damit die Karte sich abhebt */
+.sec .card-grid { max-width:none; margin-top:1.6rem; }
+.sec--alt .card, .sec--alt .ki-case { background:var(--bg3); }
+.card-grid > .ki-case { margin:0; }
+.lp-content > .more > .card-grid { grid-template-columns:minmax(0,1fr); }  /* im zugeklappten Teil (68ch) untereinander */
+@media (min-width:601px) { .card-grid--4 { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (min-width:1101px) { .card-grid--4 { grid-template-columns:repeat(4,minmax(0,1fr)); } }
+/* Fallbeispiel (Karte mit Merkzeile) */
+.ki-case { background:var(--bg2); border:1px solid var(--border); border-radius:var(--r-l); padding:1.5rem 1.6rem; margin:1.1rem 0; }
+.ki-case-tag { font-family:var(--fb); font-size:.8rem; letter-spacing:0; text-transform:none; color:var(--text2); display:block; margin-bottom:.5rem; }
+.ki-case h3 { font-family:var(--fh); font-size:1.1rem; font-weight:800; line-height:1.3; color:var(--text); margin:0 0 .6rem; letter-spacing:-.01em; }
+.ki-case p { font-size:1.0667rem; color:var(--text2); line-height:1.75; margin:0 0 1rem; }
+.ki-case p:last-child { margin-bottom:0; }
+.ki-case .ki-result { color:var(--text); background:rgba(255,255,255,.05); border-radius:var(--r-s); padding:.7rem .9rem; }
+/* Kasten mit Handlung (Potenzialcheck, Website-Check): bleibt immer sichtbar */
+.ki-check { background:var(--bg2); border:1px solid var(--border); border-radius:var(--r-l); padding:1.8rem; margin:2.2rem 0 0; }
+.ki-check h3 { font-family:var(--fh); font-size:1.2rem; font-weight:800; line-height:1.3; color:var(--text); margin:0 0 .7rem; }
+.ki-check p { font-size:1.0667rem; color:var(--text2); line-height:1.75; margin:0 0 1rem; }
+.ki-check ul { list-style:none; margin:0 0 1.4rem; padding:0; }
+.ki-check li { position:relative; padding:.35rem 0 .35rem 1.5rem; font-size:1.0667rem; color:var(--text2); line-height:1.6; }
+.ki-check li::before { content:""; position:absolute; left:0; top:.95rem; width:7px; height:7px; border-radius:50%; background:var(--text3); }
+.sec--alt .ki-check { background:var(--bg3); }
+/* Satz unter den Preisen (Foerderhinweis auf Software) und Vertrauenskasten in Lesebreite statt ueber die volle Zeile */
+.price-grid + .lp-content { margin-top:1.4rem; }
+.price-grid ~ .card-box { max-width:68ch; }
+/* Ratgeber: Kurzantwort als Kasten oben im Artikel, Artikel in einer Lesespalte mit Zwischenueberschriften,
+   Listen dort einspaltig (in der Huelle sonst ab 768 px zweispaltig) */
+.lp-answer { background:var(--bg3); border:1px solid var(--border); border-radius:var(--r-l); padding:1.3rem 1.5rem; margin:0 0 2rem; }
+.lp-answer p, .lp-content .lp-answer p { margin:0; color:var(--text); font-size:1.0667rem; line-height:1.75; }
+.lp-answer p + p, .lp-content .lp-answer p + p { margin-top:.7rem; color:var(--text2); }
+.lp-article > h2 { font-family:var(--fh); font-size:clamp(1.45rem,2.6vw,1.9rem); font-weight:800; line-height:1.2; letter-spacing:-.03em; color:var(--text); margin:2.6rem 0 1rem; }
+.sec .lp-article .lp-dont, .sec .lp-article .lp-checklist { display:block; }
+.sec--alt .ki-note { background:var(--bg3); }  /* Hinweis auf der zweiten Flaeche heller, wie .card und .ki-case */
+/* ══════════════════════════════════════════════════════════════════════════════════ */
+
+
+/* ── Web-Review 2026-05-02: Globale Quick-Wins ────────────────────── */
+
+/* #5 Anker-Sprung-Korrektur: seit 07.10.2026 ueber html { scroll-padding-top } am Dateiende.
+   Ein zusaetzliches scroll-margin-top hier wuerde sich dazu addieren (doppelter Abstand). */
+
+/* #16 Touch-UX: kein 300ms-iOS-Delay, kein grauer Tap-Flash */
+a, button, summary {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* #17 Modal: kein iOS-Bounce-Bleed in den Hintergrund-Scroll */
+.modal-body, .modal-dialog {
+  overscroll-behavior: contain;
+}
+
+/* #29 Preisspalten: keine Sprünge mehr durch proportionale Ziffern */
+.price-val, .rp-head-r {
+  font-variant-numeric: tabular-nums;
+}
+/* ──────────────────────────────────────────────────────────────────── */
+
+/* Fokus und Sprungziele nicht unter Kopf- oder Kontaktleiste (WCAG 2.2 SC 2.4.11) */
+html { scroll-padding-top: calc(var(--nav-h) + env(safe-area-inset-top) + 12px); }
+@media (max-width: 1279px) { html { scroll-padding-bottom: calc(76px + env(safe-area-inset-bottom)); } }  /* Dock-Hoehe + Abstand, wie body.has-sticky-call */
+/* Sprungziele (Abschnitte mit tabindex=-1) bekommen Fokus nur fuer die Tab-Reihenfolge, keinen Rahmen */
+section[tabindex="-1"]:focus, main[tabindex="-1"]:focus { outline: none; }
+
+/* ══ Ruhige Startseite (seit 17.10.2026) ═══════════════════════════════════════════
+   Heller Abschnitt, grosses Zitat, breite KI-Karte und die Typo-Skala
+   der Startseite. Die Startseite traegt body.is-home; ihre Regeln stehen im eigenen <style>
+   mit einer Klasse, daher hier mit body.is-home davor (hoehere Spezifitaet, gleiche Werte fuer alle). */
+
+/* Heller Abschnitt (#schnellcheck): CI-Light-Werte ueber die Variablen, damit jede Regel darin
+   (Karten, Raender, Text, Fokusring) mitzieht. Harte Kante, kein Verlauf. Cyan hat auf Hell zu wenig
+   Kontrast und wird hier zum CI-Blau. */
+main .sec--light {
+  color-scheme: light;
+  --bg: #f4f7fc; --bg2: #ffffff; --bg3: #ffffff; --bg4: #e8f0fb;
+  --text: #111111; --text2: #555555; --text3: #555555;
+  --border: #d0daea;
+  --cyan: #0c4da2; --cyan-dim: rgba(12,77,162,.08);
+  background-color: #f4f7fc;
+  background-image: none;
+  color: var(--text);
+}
+main .sec--light::before, main .sec--light::after { display: none; }
+main .sec--light :where(p, li, dd) a:not([class]) { color: #0c4da2; }
+main .sec--light .sc-card { box-shadow: 0 1px 2px rgba(17,17,17,.04), 0 12px 32px rgba(12,77,162,.07); }
+main .sec--light .sc-card::before { display: none; }
+main .sec--light .sc-icon { background: var(--bg4); border-color: var(--border); }
+main .sec--light .sc-preview-btn { background: transparent; border-color: var(--border); }
+main .sec--light .sc-checklist li:hover { background: var(--bg4); }
+/* Telefon auf Hell: Visitenkarten-Blau als Schrift und Kontur (7,1:1 bzw. 8:1), leicht getoent */
+main .sec--light { --tel-bg: rgba(0,0,254,.06); --tel-bg-hover: rgba(0,0,254,.12); --tel-line: #0000FE; --tel-text: #0000FE; }
+
+/* Grosses Zitat (#referenzen): eine Stimme gross, die uebrigen in der Wischleiste darunter.
+   Das Anfuehrungszeichen steht oben links im eigens freigehaltenen Innenabstand, nie auf dem Text. */
+figure.testi-card--featured.testi-card {
+  --q-pad: clamp(1.4rem, 4vw, 3rem);
+  --q-side: clamp(1.2rem, 4vw, 3.5rem);
+  --q-ico: clamp(2.4rem, 5vw, 4rem);
+  padding: calc(var(--q-pad) + var(--q-ico) * .5 + .5rem) var(--q-side) var(--q-pad);   /* oben Platz fuer das Zeichen */
+  margin: clamp(.9rem, 3vw, 2rem) 0 clamp(1rem, 3vw, 2.4rem);
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--r-l);
+}
+figure.testi-card--featured::before {
+  content: '\201C';
+  position: absolute;
+  top: var(--q-pad); left: var(--q-side); right: auto;
+  width: .6em; height: .5em;
+  overflow: hidden;
+  font-family: var(--fh);
+  font-size: var(--q-ico);
+  line-height: 1;
+  color: var(--text3);
+}
+figure.testi-card--featured .testi-txt {
+  max-width: 34ch;
+  margin: 0 0 1.2rem;
+  font-family: var(--fh);
+  font-style: normal;
+  font-weight: 600;
+  font-size: clamp(24px, 19.54px + 1.143vw, 36px);
+  line-height: 1.3;
+  letter-spacing: -.02em;
+  color: var(--text);
+}
+figure.testi-card--featured .testi-who { font-size: 16px; }
+figure.testi-card--featured .testi-role { font-size: 14px; }
+
+/* Handy-Rahmen im Hero (ab 768 px; darunter steht der Chat als Streifen ohne Rahmen) */
+@media (min-width: 768px) {
+  body.is-home .hc-phone { border-radius: var(--r-xl); }
+  body.is-home .hc-screen { border-radius: calc(var(--r-xl) - 11px); }   /* Rahmen innen: Radius minus Innenabstand */
+}
+
+/* KI im Betrieb (#ki): erste Karte ueber die volle Zeile */
+.card-grid > .k3-card--wide { grid-column: 1 / -1; }
+@media (min-width: 768px) { .card-grid > .k3-card--wide { padding: 2rem 2.2rem; } }
+
+/* ── Typo-Skala der Startseite ──
+   Werte 390 → 1440 linear: H2 30 → 48, Anzeige 24 → 36, H3 20 → 24, Einleitung 18 → 20, Fliesstext 16 → 17,
+   Bedienelemente 16 (Handy 14), Klein 14 (Handy teils 12,9). Hero-H1 bleibt vorerst unveraendert. Text hoechstens 62ch. */
+body.is-home {
+  --fs-h2-home: clamp(30px, 23.31px + 1.714vw, 48px);
+  --fs-show-home: clamp(24px, 19.54px + 1.143vw, 36px);
+  --fs-show-tight: clamp(20px, 14.06px + 1.524vw, 36px);   /* Anzeige ab H3-Groesse (Zitat, Praxis): am Handy kuerzer */
+  --fs-h3-home: clamp(20px, 18.51px + .381vw, 24px);
+  --fs-intro-home: clamp(18px, 17.26px + .19vw, 20px);
+  --fs-text-home: clamp(16px, 15.63px + .095vw, 17px);
+  --fs-ui-home: clamp(14px, 13.26px + .19vw, 16px);   /* Knoepfe, Aufklapper: am Handy 14 wie bisher, sonst 16 */
+  --fs-small-home: 14px;
+  --fs-small-tight: clamp(12.9px, 12.2px + .15vw, 14px);   /* Klein, am Handy so dicht wie bisher (Leistungs-Chips) */
+}
+/* Der Beispiel-Chat (Handy im Hero samt Fusszeile, Mini-Chat) behaelt seine Groessen; :where() haelt die Ausnahme ohne Gewicht.
+   Reihenfolge zaehlt: alle Gruppen haben dieselbe Spezifitaet, die spaetere gewinnt (Fliesstext zuerst,
+   dann Bedienelemente und Klein, zuletzt die Ueberschriften-Stufen). */
+body.is-home main :is(p, li, dd, dt, .faq-a, .testi-txt, .praxis-text, .sc-checklist li, .sc-deliverable-list li, .sc-steps li, .price-feats li, .faq-more p, .itb-list dd, .itb-list dt):where(:not(.hc-stage *, .mini-chat-box *)) {
+  font-size: var(--fs-text-home);
+}
+body.is-home main :is(.btn-p, .btn-g, .btn-wa, .btn-tel, .btn-email, .hc-wa, .hc-call, .price-btn, .sc-cta, .sc-preview-btn, .praxis-cta,
+  summary, .testi-who, .itb-how li, .faq-more strong, .hc-num):where(:not(.hc-stage *, .mini-chat-box *)) { font-size: var(--fs-ui-home); }
+body.is-home main :is(.s-label, .hc-wer, .hc-proof, .hc-proof li, .chips > *, .itb-leist .chips > a, .itb-leist-h, .price-note, .price-per,
+  .price-tier, .price-badge, .testi-role, .testi-ctx, .testi-row-h, .hc-weiter, .sc-hint, .sc-promise span,
+  .hc-qr p, .pkg-table thead th):where(:not(.hc-stage *, .mini-chat-box *)) { font-size: var(--fs-small-home); }
+body.is-home main :is(.s-label, .itb-leist .chips > a, .itb-leist-h, .sc-hint, .sc-promise span) { font-size: var(--fs-small-tight); }
+body.is-home main :is(h3, .itb-claim, .price-name, .k3-card h3) { font-size: var(--fs-h3-home); line-height: 1.3; }
+body.is-home main :is(.sc-title, .price-val, .praxis-card h3, .testi-card--featured .testi-txt, .testi-card--featured .testi-txt p) {
+  font-size: var(--fs-show-home); line-height: 1.3;
+}
+body.is-home main .price-val { line-height: 1; }
+body.is-home main :is(.praxis-card h3, .testi-card--featured .testi-txt, .testi-card--featured .testi-txt p) { font-size: var(--fs-show-tight); }
+body.is-home main :is(p.s-sub, h3.sc-steps-h, span.price-cur, span.faq-ico) {   /* Tag + Klasse: so schwer wie die Gruppen davor */ font-size: var(--fs-intro-home); line-height: 1.5; }
+/* Hero-Kernsatz: bei 390 wie bisher 16 px (Hero-Hoehe bleibt), bei 1440 Einleitungsgroesse */
+body.is-home main p.hc-k { font-size: clamp(16px, 14.51px + .381vw, 20px); line-height: 1.5; }
+/* Die Seite setzt .s-title im eigenen <style> mit !important; die Skala muss darueber stehen */
+body.is-home main .s-title, body.is-home main .cta-h { font-size: var(--fs-h2-home) !important; line-height: 1.1; letter-spacing: -.035em; }
+/* Lesebreite: hoechstens 62ch. :where() haelt die Grundregel ohne Gewicht, damit engere Grenzen der
+   Seite bleiben; breitere Grenzen der Bausteine werden darunter ausdruecklich zurueckgeholt. */
+:where(body.is-home main) :where(p, li, dd) { max-width: 62ch; }
+body.is-home main :is(.testi-source, .pkg-monthly, .k3-school, .geo-remote p, .measure, .card-box p) { max-width: 62ch; }
+
+/* ── Release 2.2.0 (Paket A): Hover nur mit Maus, Druck-Feedback auf Knoepfen ──
+   Hover mit Bewegung oder Schatten steht nur hier, hinter (hover: hover) and (pointer: fine): am Handy bleibt sonst
+   nach dem Tippen der Hover-Zustand haengen. Reine Farbwechsel stehen weiter oben ungekapselt. Auf Touch gibt :active
+   das Feedback (Skalierung .97, 120 ms, starke Ease-out-Kurve); die transition-Listen der Knoepfe tragen transform. */
+@media (hover: hover) and (pointer: fine) {
+  .nav-links a.nav-wa:hover, .nav-links a.nav-tel:hover { transform:translateY(-1px); }
+  .btn-p:hover { transform:translateY(-2px); box-shadow:0 8px 24px var(--blue-vi-glow); }
+  .btn-wa:hover, .btn-email:hover, .hc-call:not(.btn-p):hover, .hc-wa:hover, .btn-tel:hover { transform:translateY(-2px); }
+  .price-btn.solid:hover { box-shadow:0 4px 20px var(--blue-vi-glow); }
+  .lp-paths a:hover .lp-path-t::after { margin-left:.25rem; }
+}
+.btn-p:active, .btn-g:active, .btn-wa:active, .btn-email:active, .btn-tel:active, .price-btn:active,
+.hc-wa:active, .hc-call:active, .hc-call:not(.btn-p):active, .nav-links a.nav-wa:active, .nav-links a.nav-tel:active,
+.mobile-menu .m-wa:active, .mobile-menu .m-cta:active, .sc-btn:active { transform:scale(.97); }
