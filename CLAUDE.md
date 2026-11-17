@@ -95,8 +95,11 @@ geaendert hat, nicht wegen eines neuen Footer-Links.
 - **Release 2.3.3 (13.11.2026):** `/schulung/`: Online-Portal und Kombi-Paket stehen auf „Pilotphase“ ohne Preis
   (Andreas 13.11.2026), kein Offer fuer das Portal im Course-Schema, Rechenbeispiel entfernt; Preis erst nach der Pilotphase.
   `price_card` erlaubt Karten ohne Betrag.
-- **Versionen jetzt (Release 2.3.3):** `sw.js` `CACHE_NAME` `grundke-it-v2.3.3`, `RUNTIME_CACHE` `grundke-it-runtime-v49`,
-  `ASSET_VER` 2026.11.b, `SITE_VERSION` 2.3.3 (Fuss "Version x.y.z · Stand TT.MM.JJJJ" aus dem Generator).
+- **Release 2.3.4 (17.11.2026):** /empfehlungen/ mit Karte Dell 16 (Anker `#notebook`, Partnerlink mit Tag), toter Kurzlink
+  zum USB-Kabel durch Direktlink ersetzt, Produkttexte gekuerzt (Laengenbudget 390 px bei 7.858 von 8.000). Amazon-Empfehlungen
+  fuer Kunden kommen immer zuerst hierher, die Mail verlinkt nur die Seite (Gehirn-Regel amazon-partnerlinks-ueber-empfehlungsseite).
+- **Versionen jetzt (Release 2.3.4):** `sw.js` `CACHE_NAME` `grundke-it-v2.3.4`, `RUNTIME_CACHE` `grundke-it-runtime-v50`,
+  `ASSET_VER` 2026.11.b, `SITE_VERSION` 2.3.4 (Fuss "Version x.y.z · Stand TT.MM.JJJJ" aus dem Generator).
   `SITE_VERSION` bei jedem Release mit dem `CACHE_NAME`-Suffix gleichziehen, `check_static.py` prueft das.
   `check_static.py --ci` laeuft im Deploy und stoppt ihn bei Fehlern.
 - **Kontaktleiste (Dock):** kommt aus einer Quelle im Generator (`STICKY`-Marken), nur bis 1279 px sichtbar,
