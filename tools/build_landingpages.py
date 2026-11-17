@@ -150,9 +150,9 @@ NEW_DATE_DISP = "7. Oktober 2026"
 ASSET_VER = "2026.11.b"
 # Sichtbare Website-Version im Fuss (seit 17.10.2026): gleicht dem Suffix von CACHE_NAME in sw.js
 # (check_static prueft das). SITE_DATE_DISP = Stand dieser Version im Fuss, Form TT.MM.JJJJ.
-SITE_VERSION = "2.3.3"
-SITE_DATE = "2026-11-13"
-SITE_DATE_DISP = "13.11.2026"
+SITE_VERSION = "2.3.4"
+SITE_DATE = "2026-11-17"
+SITE_DATE_DISP = "17.11.2026"
 # Stand der Seiten, deren sichtbarer Inhalt zuletzt geaendert wurde (dateModified, Sitemap, Abschluss).
 CONTENT_DATE = "2026-10-18"
 CONTENT_DATE_DISP = "18. Oktober 2026"
@@ -181,8 +181,8 @@ KONTAKT_DATE = CONTENT_DATE
 KONTAKT_DATE_DISP = CONTENT_DATE_DISP
 # Empfehlungen (Handseite, seit 11.10.2026): Stand fuer „Zuletzt aktualisiert“ im Abschluss (HAND_CLOSING) und lastmod der
 # Sitemap (STATIC_URLS). Nur hochsetzen, wenn sich der Inhalt der Seite wirklich aendert.
-EMPF_DATE = CONTENT_DATE
-EMPF_DATE_DISP = CONTENT_DATE_DISP
+EMPF_DATE = "2026-11-17"        # Dell-Notebook, Kabel-Link repariert
+EMPF_DATE_DISP = "17. November 2026"
 
 # WhatsApp mit vorbefuelltem Satz je Einstieg: Am Satz ist
 # erkennbar, ueber welchen Knopf eine Anfrage kam, ohne Tracking-Skript. Auf der Startseite

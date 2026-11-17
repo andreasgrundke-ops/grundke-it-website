@@ -155,10 +155,12 @@
  *   2.3.1 / 2026-11-08 — Hosting Hetzner: Datenschutzerklaerung §3 und §5 neu; RUNTIME_CACHE v47.
  *   2.3.3 / 2026-11-13 — /schulung/: Online-Portal und Kombi-Paket in der Pilotphase, ohne Preis;
  *                        RUNTIME_CACHE v49.
+ *   2.3.4 / 2026-11-17 — /empfehlungen/: Dell-Notebook neu, Link zum USB-Kabel repariert;
+ *                        RUNTIME_CACHE v50.
  */
 
-const CACHE_NAME    = 'grundke-it-v2.3.3';
-const RUNTIME_CACHE = 'grundke-it-runtime-v49';
+const CACHE_NAME    = 'grundke-it-v2.3.4';
+const RUNTIME_CACHE = 'grundke-it-runtime-v50';
 const ASSET_VER     = '2026.11.b';   // muss ASSET_VER im Generator entsprechen
 
 /* Pre-Cache: minimaler Kern fuer Offline-First-Boot */
